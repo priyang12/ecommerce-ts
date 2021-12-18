@@ -7,7 +7,7 @@ import { AuthContext } from "../Context/AuthContext";
 import styled from "styled-components";
 import Navigators from "../Components/Navigators";
 
-const StyledContainer = styled.form`
+const StyledContainer = styled.div`
   width: 100%;
   max-width: 80ch;
   margin: 0 auto;
@@ -56,63 +56,64 @@ const PlaceOrder = () => {
   };
 
   if (!Cart || !Address || !PayMethod || !ProductsAmount)
-    return <Redirect to="/cart" />;
+    return <Redirect to='/cart' />;
 
-  if (Cart?.length === 0) return <Redirect to="/" />;
+  if (Cart?.length === 0) return <Redirect to='/' />;
 
   return (
     <StyledContainer>
       <Navigators />
-      <div className="OrderDetails">
-        <div className="detail">
+      <div className='OrderDetails'>
+        <div className='detail'>
           <h1>SHIPPING </h1>
           <p>
             Address: {Address.homeAddress} , {Address.city} ,
             {Address.postalCode}, {Address.country}
           </p>
         </div>
-        <div className="detail">
+        <div className='detail'>
           <h1>PAYMENT METHOD</h1>
           <p>Method: {PayMethod}</p>
         </div>
-        <div className="order-details">
+        <div className='order-details'>
           <h1>ORDER ITEMS</h1>
-          <ul className="order-list">
+          <ul className='order-list'>
             {Cart.map((item) => (
               // @ts-ignore: Unreachable code error
-              <ProductList Cart={item} type="order" key={item._id} />
+              <ProductList Cart={item} type='order' key={item._id} />
             ))}
           </ul>
         </div>
       </div>
-      <div className="OrderSummary">
-        <form onSubmit={PlaceTheOrder} data-testid="PlaceOrder">
-          <ul className="checkout">
+      <div className='OrderSummary'>
+        <form onSubmit={PlaceTheOrder} data-testid='PlaceOrder'>
+          <ul className='checkout'>
             <h1>ORDER SUMMARY</h1>
             <li>
               Items Cost : <span> {ProductsAmount}</span>
             </li>
             <li>
               Shipping Cost :
-              <span data-testid="ShippingCost">
+              <span data-testid='ShippingCost'>
                 {addDecimals(ProductsAmount > 500 ? 0 : 100)}
               </span>
             </li>
             <li>
               Tax Cost :
-              <span data-testid="TaxCost">
+              <span data-testid='TaxCost'>
                 {addDecimals(0.1 * ProductsAmount)}
               </span>
             </li>
             <li>
               Total Cost :
-              <span data-testid="TotalAmount">
+              <span data-testid='TotalAmount'>
                 {ExtraAmount + ProductsAmount}
               </span>
             </li>
             <li></li>
           </ul>
-          <TimeoutBtn classValue="btn" FormValue="Place Order" Time={4000} />
+          {/* <TimeoutBtn classValue='btn' FormValue='Place Order' Time={4000} /> */}
+          <TimeoutBtn Time={1000} classValue='btn' FormValue='PlaceOrder' />
         </form>
       </div>
     </StyledContainer>

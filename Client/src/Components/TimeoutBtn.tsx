@@ -1,4 +1,4 @@
-import { useToggle } from '../Utils/CustomHooks';
+import { useToggle } from "../Utils/CustomHooks";
 
 type prop = {
   classValue: string;
