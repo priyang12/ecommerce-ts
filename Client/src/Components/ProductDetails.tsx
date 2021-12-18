@@ -46,8 +46,8 @@ const ProductDetails: React.FC<{ Product: DetailedProduct }> = ({
               <img src={Product.image} alt={Product.name} />
               <StyledDetails>
                 <h2>{Product.name}</h2>
-                <div className="star-review">
-                  <span className="stars">
+                <div className='star-review'>
+                  <span className='stars'>
                     <Rating
                       value={Product.rating}
                       text={`${Product.numReviews} reviews`}
@@ -55,17 +55,17 @@ const ProductDetails: React.FC<{ Product: DetailedProduct }> = ({
                   </span>
                 </div>
                 <h4>Price: {Product.price}</h4>
-                <div className="Description">
+                <div className='Description'>
                   <div>Description:</div>
                   {Product.description}
                 </div>
               </StyledDetails>
               <StyledCheckout>
-                <h3>Price: {Product.price}</h3>
+                <h3 className='status-label'>Price: {Product.price}</h3>
                 {Product.countInStock === 0 ? (
                   <h3 style={{ color: "red" }}>Status: Out In Stock</h3>
                 ) : (
-                  <h3>Status: In Stock</h3>
+                  <h3 className='status-label'>Status: In Stock</h3>
                 )}
 
                 {Product.countInStock !== 0 && (
@@ -79,16 +79,16 @@ const ProductDetails: React.FC<{ Product: DetailedProduct }> = ({
                     {user ? (
                       <TimeoutBtn
                         Time={1000}
-                        classValue="btn"
-                        FormValue="ADD TO CART"
+                        classValue='btn'
+                        FormValue='ADD TO CART'
                       />
                     ) : (
-                      <div className="btn-gray">Login/Register</div>
+                      <div className='btn-gray'>Login/Register</div>
                     )}
                   </form>
                 )}
-                {Alert && <div className="alert">{Alert}</div>}
-                {Err && <div className="alert">{Err}</div>}
+                {Alert && <div className='alert'>{Alert}</div>}
+                {Err && <div className='alert'>{Err}</div>}
               </StyledCheckout>
             </StyledProduct>
           </StyledContainer>

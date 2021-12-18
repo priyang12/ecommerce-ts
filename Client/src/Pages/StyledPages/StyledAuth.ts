@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const StyledAuthPage = styled.section`
   width: 100%;
@@ -12,7 +12,7 @@ export const StyledAuthPage = styled.section`
     z-index: 1;
     &::after {
       position: absolute;
-      content: '';
+      content: "";
       width: 100%;
       height: 100%;
       top: 0%;
@@ -23,7 +23,7 @@ export const StyledAuthPage = styled.section`
     }
     &::before {
       position: absolute;
-      content: '';
+      content: "";
       width: 100%;
       height: 100%;
       top: 0%;
@@ -54,7 +54,7 @@ export const StyledAuthPage = styled.section`
     color: white;
     text-align: center;
     a {
-      color: #0f1e20;
+      color: #fff;
       &:hover {
         border-bottom: 3px solid #80d8e4;
       }

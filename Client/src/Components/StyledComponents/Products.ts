@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { CardBoard, Card } from './CardBoard';
+import styled from "styled-components";
+import { CardBoard, Card } from "./CardBoard";
 
 export const StyledDisplay = styled.section`
   text-align: center;

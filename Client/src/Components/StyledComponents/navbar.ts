@@ -6,13 +6,22 @@ export const StyledNavbar = styled.nav`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  @media (max-width: 576px) {
+    flex-direction: column;
+    h1 {
+      margin: 0;
+    }
+    & > * {
+      margin: 0.5em;
+    }
+  }
 `;
+
 export const Logo = styled.div`
   h1 {
     font-size: 3rem;
     color: white;
   }
-
   text-align: center;
 `;
 export const SearchBar = styled.div`
@@ -22,19 +31,23 @@ export const SearchBar = styled.div`
 
 export const SerchButton = styled.button`
   border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  font-size: 1.5rem;
   margin-left: 1rem;
   box-shadow: none;
-  color: white;
+  color: var(--assertive-color);
 `;
 export const SerachInput = styled.input`
   color: white;
   padding: 0.7em;
   font-size: 1.1rem;
-  background-color: $secondarycolor;
+  background-color: var(--secondary-color);
+
   &:hover,
   &:focus {
-    color: $secondarycolor;
-    background-color: darken($color: $PrimaryColor, $amount: 10);
+    color: var(--secondary-color);
+    background-color: var(--main-dark-color);
     outline: none;
   }
 `;
@@ -43,26 +56,25 @@ export const StyledLinks = styled.div`
   text-align: center;
   margin-right: 1em;
   a {
-    color: $secondarycolor;
+    color: var(--secondary-color);
     &:hover {
-      color: lighten($color: $secondarycolor, $amount: 50);
+      color: #fff;
     }
   }
 `;
 export const DropDown = styled.div`
   position: relative;
-  padding-right: 5rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: lighten($color: $secondarycolor, $amount: 30);
+  color: var(--secondary-light-color);
   .dropdown-content {
     display: none;
     position: absolute;
-    top: 50%;
-    right: 20%;
+    top: 100%;
+    right: 0%;
     padding: 0rem;
-    background-color: lighten($color: $PrimaryColor, $amount: 10);
+    background-color: var(--assertive-color);
     min-width: fit-content;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
@@ -70,22 +82,33 @@ export const DropDown = styled.div`
     li {
       width: fit-content;
       padding: 0.5rem 2rem;
-      border-bottom: 2px solid $PrimaryColor;
+      border-bottom: 2px solid var(--main-color);
       border-radius: 20px;
       a {
-        color: lighten($color: $secondarycolor, $amount: 20);
+        color: var(--secondary-color);
       }
     }
-  }
-  button {
-    cursor: pointer;
-    margin: 0rem 0.5rem;
-    background-color: transparent;
-    color: $secondarycolor;
-    border: none;
-    &:focus ~ .dropdown-content,
-    & ~ .dropdown-content:hover {
-      display: block;
+    @media (max-width: 576px) {
+      top: 50%;
+      left: 0%;
     }
+  }
+`;
+
+export const StyledDropDownButton = styled.button`
+  cursor: pointer;
+  font-size: 1.2rem;
+  margin: 0rem 0.5rem;
+  background-color: transparent;
+  color: var(--seccondary-color);
+  border-radius: 50%;
+  border-color: var(--seccondary-color);
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    background-color: var(--assertive-color);
+  }
+  &:focus ~ .dropdown-content,
+  & ~ .dropdown-content:hover {
+    display: block;
   }
 `;

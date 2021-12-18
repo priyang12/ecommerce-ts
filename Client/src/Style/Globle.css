@@ -15,12 +15,17 @@
   --main-bg-color: #916bbf;
   --main-color: #916bbf;
   --main-dark-color: #7a45bb;
+  --main-light-color: #ae7ceb;
   --secondary-color: #c996cc;
   --secondary-light-color: #d9b5db;
   --secondary-dark-color: #7f0e7f;
   --assertive-color: #3d2c8d;
   --font-stack: "cursive";
   --Secondary-font-stack: "Nunito", sans-serif;
+  --media-mobile: 576px;
+  --media-tablet: 768px;
+  --media-query-width-lg: 992px;
+  --media-desktop: 1200px;
 }
 * {
   list-style: none;
@@ -85,4 +90,26 @@ form input[type="submit"] {
   padding-bottom: 20px;
   border-bottom: 4px solid sandybrown;
   border-radius: 5px;
+}
+
+.btn {
+  padding: 1rem 2rem;
+  margin: 0.5rem;
+  border: 2px solid transparent;
+  transition: background-color 1s;
+  border-radius: 5 em;
+  font-size: 1.5rem;
+}
+
+.btn:hover {
+  color: var(--secondary-color);
+  background-color: black;
+}
+
+.btn-gray {
+  padding: 1rem 2rem;
+  width: fit-content;
+  border: 2px solid transparent;
+  background-color: #626d78;
+  color: white;
 }

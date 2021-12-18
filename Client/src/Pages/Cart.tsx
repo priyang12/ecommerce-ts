@@ -54,9 +54,9 @@ const Cart = () => {
     });
   };
 
-  if (!localStorage.token) return <Redirect to="/" />;
+  if (!localStorage.token) return <Redirect to='/' />;
 
-  if (loading) return <div data-testid="Loading">Loading</div>;
+  if (loading) return <div data-testid='Loading'>Loading</div>;
 
   if (!FetchData || FetchData.cart?.length === 0)
     return (
@@ -67,8 +67,8 @@ const Cart = () => {
 
   return (
     <Fragment>
-      {Err && <AlertDisplay msg={Err} type="fail" />}
-      {Alert && <AlertDisplay msg={Alert} type="success" />}
+      {Err && <AlertDisplay msg={Err} type='fail' />}
+      {Alert && <AlertDisplay msg={Alert} type='success' />}
       <StyledContainer>
         <h1>SHOPPING CART</h1>
         {FetchData.cart?.map((item: CartItem) => (
@@ -77,7 +77,7 @@ const Cart = () => {
             Cart={item}
             DeleteFromCart={RemoveFromCart}
             UpdateQty={UpdateQuantity}
-            type="cart"
+            type='cart'
           />
         ))}
 
@@ -85,8 +85,8 @@ const Cart = () => {
           <StyledCheckout>
             <h3>SUBTOTAL ({TotalProducts}) ITEMS</h3>
             <p>${TotalAmount}</p>
-            <Link className="btn" to="/address">
-              Proceed To Checkout
+            <Link className='btn' to='/address'>
+              Checkout
             </Link>
           </StyledCheckout>
         </StyledContainer>

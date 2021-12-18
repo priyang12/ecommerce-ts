@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import styled from "styled-components";
 import { useForm } from "../Utils/CustomHooks";
 import { Address } from "../types";
 import Navigators from "../Components/Navigators";
+import { StyledPaymentContainer } from "../Components/StyledComponents/StyledPayment";
 
 let init: Address = {
   homeAddress: "",
@@ -12,12 +12,6 @@ let init: Address = {
   country: "",
 };
 if (localStorage.address) init = JSON.parse(localStorage.address);
-
-const StyledContainer = styled.section`
-  width: 100%;
-  max-width: 80ch;
-  margin: 0 auto;
-`;
 
 const AddressPage = () => {
   const history = useHistory();
@@ -53,68 +47,68 @@ const AddressPage = () => {
     }
   };
   return (
-    <StyledContainer>
+    <StyledPaymentContainer>
       <Navigators />
       <form onSubmit={SubmitAddress}>
         <h1>SHIPPING</h1>
-        <div className="form-control">
+        <div className='form-control'>
           <input
-            type="text"
-            name="homeAddress"
-            id="Address"
+            type='text'
+            name='homeAddress'
+            id='Address'
             onChange={ChangeShippingAddress}
             value={homeAddress}
             required
           />
-          <span className="highlight"></span>
-          <span className="bar"></span>
-          <label htmlFor="Address">homeAddress</label>
+          <span className='highlight'></span>
+          <span className='bar'></span>
+          <label htmlFor='Address'>homeAddress</label>
         </div>
-        <div className="form-control">
+        <div className='form-control'>
           <input
-            type="text"
-            name="city"
-            id="City"
+            type='text'
+            name='city'
+            id='City'
             onChange={ChangeShippingAddress}
             value={city}
             required
           />
-          <span className="highlight"></span>
-          <span className="bar"></span>
-          <label htmlFor="City">City</label>
+          <span className='highlight'></span>
+          <span className='bar'></span>
+          <label htmlFor='City'>City</label>
         </div>
-        <div className="form-control">
+        <div className='form-control'>
           <input
-            type="text"
-            name="postalCode"
-            id="PostalCode"
+            type='text'
+            name='postalCode'
+            id='PostalCode'
             onChange={ChangeShippingAddress}
             value={postalCode}
             required
           />
-          <span className="highlight"></span>
-          <span className="bar"></span>
-          <label htmlFor="PostalCode">Postal Code</label>
+          <span className='highlight'></span>
+          <span className='bar'></span>
+          <label htmlFor='PostalCode'>Postal Code</label>
         </div>
-        <div className="form-control">
+        <div className='form-control'>
           <input
-            type="text"
-            name="country"
-            id="Country"
+            type='text'
+            name='country'
+            id='Country'
             onChange={ChangeShippingAddress}
             value={country}
             required
           />
-          <span className="highlight"></span>
-          <span className="bar"></span>
-          <label htmlFor="Country">Country</label>
+          <span className='highlight'></span>
+          <span className='bar'></span>
+          <label htmlFor='Country'>Country</label>
         </div>
-        <input type="submit" className="btn" value="Continue" />
+        <input type='submit' className='btn' value='Continue' />
         {Valid && (
-          <div className="alert">Please Enter All the Fields Properly</div>
+          <div className='alert'>Please Enter All the Fields Properly</div>
         )}
       </form>
-    </StyledContainer>
+    </StyledPaymentContainer>
   );
 };
 

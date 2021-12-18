@@ -1,13 +1,6 @@
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import styled from "styled-components";
-
-const LinkContainer = styled.ul`
-  padding-left: 0%;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-evenly;
-`;
+import { LinkContainer } from "./StyledComponents/StyledPayment";
 
 const Navigators = () => {
   const { pathname } = useLocation();
@@ -15,13 +8,13 @@ const Navigators = () => {
   return (
     <LinkContainer>
       <li className={pathname === "/address" ? "Link-border" : ""}>
-        <Link to="/address">Address</Link>
+        <Link to='/address'>Address</Link>
       </li>
       <li className={pathname === "/payment" ? "Link-border" : ""}>
-        <Link to="/payment">Payment</Link>
+        <Link to='/payment'>Payment</Link>
       </li>
       <li className={pathname === "/PlaceOrder" ? "Link-border" : ""}>
-        <Link to="/PlaceOrder">Place Order</Link>
+        <Link to='/PlaceOrder'>Place Order</Link>
       </li>
     </LinkContainer>
   );

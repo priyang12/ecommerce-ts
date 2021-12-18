@@ -10,6 +10,7 @@ import {
   SerchButton,
   StyledLinks,
   DropDown,
+  StyledDropDownButton,
 } from "./StyledComponents/navbar";
 
 const Navbar = () => {
@@ -33,7 +34,7 @@ const Navbar = () => {
 
   const GuestLink = (
     <Fragment>
-      <Link to="/Auth" className="Auth">
+      <Link to='/Auth' className='Auth'>
         Login/Register
       </Link>
     </Fragment>
@@ -44,21 +45,21 @@ const Navbar = () => {
       {user && (
         <DropDown>
           <div>{user.name}</div>
-          <button>
-            <i className="fas fa-caret-down">D</i>
-          </button>
-          <ul className="dropdown-content">
+          <StyledDropDownButton>
+            <i className='fas fa-caret-down'></i>
+          </StyledDropDownButton>
+          <div className='dropdown-content'>
             <li>
-              <Link to="/OrderStatus">
-                <span className="hide-sm">Orders</span>
+              <Link to='/OrderStatus'>
+                <span className='hide-sm'>Orders</span>
               </Link>
             </li>
             <li>
-              <Link to="/Auth" onClick={onLogout}>
-                <span className="hide-sm">Logout</span>
+              <Link to='/Auth' onClick={onLogout}>
+                <span className='hide-sm'>Logout</span>
               </Link>
             </li>
-          </ul>
+          </div>
         </DropDown>
       )}
     </Fragment>
@@ -67,31 +68,31 @@ const Navbar = () => {
   return (
     <StyledNavbar>
       <Logo>
-        <Link to="/">
+        <Link to='/'>
           <h1>SHOP IT</h1>
         </Link>
       </Logo>
       <SearchBar>
         <SerachInput
-          type="text"
-          placeholder="Search Product"
+          type='text'
+          placeholder='Search Product'
           value={searchValue}
           onChange={(e) => {
             setSearchValue(e.target.value);
           }}
         />
-        <SerchButton onClick={search}>🔍</SerchButton>
+        <SerchButton onClick={search}>Find</SerchButton>
       </SearchBar>
 
       {user && (
         <StyledLinks>
-          <Link to="/cart" className="cart link">
-            <i className="fas fa-shopping-cart"></i> CART
+          <Link to='/cart' className='cart link'>
+            <i className='fas fa-shopping-cart'></i> CART
           </Link>
         </StyledLinks>
       )}
       {user?.isAdmin && (
-        <Link to="/adminDashboard" className="AdminIcon link">
+        <Link to='/adminDashboard' className='AdminIcon link'>
           AdminDashboard
         </Link>
       )}
