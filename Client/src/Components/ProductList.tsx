@@ -27,17 +27,11 @@ export type CartItem = {
 
 type PropType = {
   Cart: CartItem;
-  type: string;
-  DeleteFromCart: (id: string) => void;
-  UpdateQty: (_id: string, quantity: number) => void;
+  DeleteFromCart?: (id: string) => void;
+  UpdateQty?: (_id: string, quantity: number) => void;
 };
 
-const ProductList: FC<PropType> = ({
-  Cart,
-  type,
-  DeleteFromCart,
-  UpdateQty,
-}) => {
+const ProductList: FC<PropType> = ({ Cart, DeleteFromCart, UpdateQty }) => {
   const { _id, product, qty } = Cart;
 
   return (
@@ -48,9 +42,9 @@ const ProductList: FC<PropType> = ({
         <p>{product.price}</p>
         <StyledQuantity>
           <label>Qty</label>
-          {type === "cart" ? (
+          {UpdateQty ? (
             <select
-              data-testid="selectQty"
+              data-testid='selectQty'
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                 UpdateQty(product._id, parseInt(e.target.value))
               }
@@ -61,13 +55,13 @@ const ProductList: FC<PropType> = ({
             <div>{qty}</div>
           )}
         </StyledQuantity>
-        {type === "cart" && (
+        {DeleteFromCart && (
           <button
-            data-testid="DeleteIcon"
-            className="btn"
+            data-testid='DeleteIcon'
+            className='btn'
             onClick={() => DeleteFromCart(_id)}
           >
-            <i className="fas fa-trash">delete</i>
+            <i className='fas fa-trash'>delete</i>
           </button>
         )}
       </StyledItem>

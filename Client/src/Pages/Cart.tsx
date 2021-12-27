@@ -77,7 +77,6 @@ const Cart = () => {
             Cart={item}
             DeleteFromCart={RemoveFromCart}
             UpdateQty={UpdateQuantity}
-            type='cart'
           />
         ))}
 
