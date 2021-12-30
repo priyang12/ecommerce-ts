@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useForm } from "../Utils/CustomHooks";
 import { Address } from "../types";
@@ -11,18 +11,23 @@ let init: Address = {
   postalCode: "",
   country: "",
 };
-if (localStorage.address) init = JSON.parse(localStorage.address);
 
 const AddressPage = () => {
   const history = useHistory();
-  const [ShippingAddress, ChangeShippingAddress] = useForm(init);
+  const [ShippingAddress, ChangeShippingAddress, SetState] = useForm(init);
   const { homeAddress, city, postalCode, country } = ShippingAddress;
+
+  useEffect(() => {
+    if (localStorage.address) {
+      SetState(JSON.parse(localStorage.address));
+    }
+    // eslint-disable-next-line
+  }, []);
 
   const [Valid, setValid] = useState(false);
   if (!localStorage.Cart || localStorage.Cart.length === 0) {
     history.push("/cart");
   }
-
   const validate = () => {
     if (
       homeAddress === "" ||

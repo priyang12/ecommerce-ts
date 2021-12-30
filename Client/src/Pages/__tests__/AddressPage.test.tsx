@@ -1,17 +1,17 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
-import AddressPage from '../AddressPage';
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { createMemoryHistory } from "history";
+import { Router } from "react-router-dom";
+import AddressPage from "../AddressPage";
 
 beforeEach(() => {
   const history = createMemoryHistory();
   const cart: any = [
     {
-      name: 'sdsd',
+      name: "sdsd",
     },
   ];
-  localStorage.setItem('cart', cart);
+  localStorage.setItem("cart", cart);
   render(
     <Router history={history}>
       <AddressPage />
@@ -19,17 +19,19 @@ beforeEach(() => {
   );
 });
 
-it('Do not Submit on inValid', () => {
+it("Do not Submit on inValid", () => {
   userEvent.click(screen.getByText(/Continue/i));
-  expect(screen.getByText(/Please Enter All the Fields Properly/));
+  expect(
+    screen.getByText("Please Enter All the Fields Properly")
+  ).toBeInTheDocument();
 });
 
-it('Store Address in Local Storage', () => {
+it("Store Address in Local Storage", () => {
   const address = {
-    homeAddress: '202,Pipload',
-    city: 'Surat',
-    postalCode: '456123',
-    country: 'India',
+    homeAddress: "202,Pipload",
+    city: "Surat",
+    postalCode: "456123",
+    country: "India",
   };
   userEvent.type(screen.getByLabelText(/homeAddress/i), address.homeAddress);
   userEvent.type(screen.getByLabelText(/city/i), address.city);

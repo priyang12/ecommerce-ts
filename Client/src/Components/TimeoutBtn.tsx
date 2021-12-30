@@ -1,12 +1,12 @@
 import { useToggle } from "../Utils/CustomHooks";
 
 type prop = {
-  classValue: string;
+  classname: string;
   FormValue: string;
   Time: number;
 };
 
-const TimeoutBtn = ({ classValue, FormValue, Time }: prop) => {
+const TimeoutBtn = ({ classname, FormValue, Time }: prop) => {
   const [Dis, ToggleDis, SetDisable] = useToggle(false);
   const DisableBtn = () => {
     setTimeout(() => {
@@ -18,13 +18,9 @@ const TimeoutBtn = ({ classValue, FormValue, Time }: prop) => {
   };
 
   return (
-    <input
-      type='submit'
-      className={classValue}
-      disabled={Dis}
-      onClick={DisableBtn}
-      value={FormValue}
-    />
+    <button className={classname} disabled={Dis} onClick={DisableBtn}>
+      {FormValue}
+    </button>
   );
 };
 
