@@ -1,14 +1,15 @@
-import axios, { AxiosRequestConfig } from 'axios';
-import { useEffect, useState } from 'react';
+import axios, { AxiosRequestConfig } from "axios";
+import { useEffect, useState } from "react";
 
 export const useAxios = (Params: AxiosRequestConfig) => {
   const [loading, setLoading] = useState(false);
   const [FetchData, setFetchData] = useState<any>(null);
   const [Err, setErr] = useState<string | null>(null);
-  const [Alert, setAlert] = useState<string>('');
+  const [Alert, setAlert] = useState<string>("");
   useEffect(() => {
     const fetchData = async () => {
-      console.log('Call API');
+      console.log("Call API");
+
       try {
         setLoading(true);
         const { data }: any = await axios.request(Params);
@@ -16,7 +17,7 @@ export const useAxios = (Params: AxiosRequestConfig) => {
         if (data.msg) setAlert(data.msg);
         setErr(null);
       } catch (error) {
-        let ErrorMessage = 'Server Error Try Again Later';
+        let ErrorMessage = "Server Error Try Again Later";
         if (error instanceof Error) {
           ErrorMessage = error.message;
         }
@@ -25,13 +26,18 @@ export const useAxios = (Params: AxiosRequestConfig) => {
       } finally {
         setLoading(false);
         setTimeout(() => {
-          setAlert('');
+          setAlert("");
         }, 5000);
       }
     };
     if (Params) fetchData();
+    return () => {
+      setLoading(false);
+      setFetchData(null);
+      setErr(null);
+      setAlert("");
+    };
   }, [Params]);
-
   return { loading, FetchData, Err, Alert };
 };
 
@@ -47,10 +53,13 @@ export const useFetch = (url: string) => {
 
         setFetchData(data);
         setErr(null);
-      } catch (error) {
-        let ErrorMessage = 'Server Error Try Again Later';
+      } catch (error: any) {
+        let ErrorMessage = "Server Error Try Again Later";
         if (error instanceof Error) {
           ErrorMessage = error.message;
+        }
+        if (error.response && error.response.data?.msg) {
+          ErrorMessage = error.response.data.msg;
         }
         setErr(ErrorMessage);
         setFetchData(null);
@@ -59,18 +68,30 @@ export const useFetch = (url: string) => {
       }
     };
     fetchData();
+    return () => {
+      setLoading(false);
+      setFetchData(null);
+      setErr(null);
+    };
   }, [url]);
-  return { FetchData, Err, loading };
+  return [FetchData, Err, loading];
 };
 
 export const useForm = (
   initialState: any
-): [any, (e: React.ChangeEvent<HTMLInputElement>) => void] => {
+): [
+  any,
+  (e: React.ChangeEvent<HTMLInputElement>) => void,
+  (NewState: any) => void
+] => {
   const [state, setState] = useState(initialState);
+  const SetState = (NewState: unknown) => {
+    setState(NewState);
+  };
   const ChangeState = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
-  return [state, ChangeState];
+  return [state, ChangeState, SetState];
 };
 
 export const useToggle = (

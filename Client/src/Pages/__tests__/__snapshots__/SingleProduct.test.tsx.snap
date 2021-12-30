@@ -1,0 +1,219 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Check SnapShot of Order 1`] = `
+<DocumentFragment>
+  <div>
+    <section
+      class="sc-hKwDye eScKcu"
+    >
+      <div
+        class="sc-eCImPb fPFPeL"
+      >
+        <img
+          alt="Airpods Wireless Bluetooth Headphones"
+          src="/Photos/image-1627384388351.webp"
+        />
+        <div
+          class="sc-jRQBWg iwhfcq"
+        >
+          <h2>
+            Airpods Wireless Bluetooth Headphones
+          </h2>
+          <div
+            class="star-review"
+          >
+            <span
+              class="stars"
+            >
+              <span>
+                <i
+                  class="fas fa-star"
+                  style="color: rgb(248, 232, 37);"
+                />
+              </span>
+              <span>
+                <i
+                  class="fas fa-star"
+                  style="color: rgb(248, 232, 37);"
+                />
+              </span>
+              <span>
+                <i
+                  class="fas fa-star"
+                  style="color: rgb(248, 232, 37);"
+                />
+              </span>
+              <span>
+                <i
+                  class="fas fa-star"
+                  style="color: rgb(248, 232, 37);"
+                />
+              </span>
+              <span>
+                <i
+                  class="far fa-star"
+                  style="color: rgb(248, 232, 37);"
+                />
+              </span>
+              <span>
+                1 reviews
+              </span>
+            </span>
+          </div>
+          <h4>
+            Price: 89.99
+          </h4>
+          <div
+            class="Description"
+          >
+            <div>
+              Description:
+            </div>
+            Bluetooth technology lets you connect it with compatible devices wirelessly High-quality AAC audio offers immersive listening experience Built-in microphone allows you to take calls while working
+          </div>
+        </div>
+        <div
+          class="sc-gKclnd edbgla"
+        >
+          <h3
+            class="status-label"
+          >
+            Price: 89.99
+          </h3>
+          <h3
+            class="status-label"
+          >
+            Status: In Stock
+          </h3>
+          <form>
+            <label>
+              Qty
+            </label>
+            <select>
+              <option
+                value="1"
+              >
+                1
+              </option>
+              <option
+                value="2"
+              >
+                2
+              </option>
+              <option
+                value="3"
+              >
+                3
+              </option>
+              <option
+                value="4"
+              >
+                4
+              </option>
+              <option
+                value="5"
+              >
+                5
+              </option>
+              <option
+                value="6"
+              >
+                6
+              </option>
+              <option
+                value="7"
+              >
+                7
+              </option>
+              <option
+                value="8"
+              >
+                8
+              </option>
+              <option
+                value="9"
+              >
+                9
+              </option>
+              <option
+                value="10"
+              >
+                10
+              </option>
+            </select>
+            <br />
+            <div
+              class="btn-gray"
+            >
+              Login/Register
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+    <div
+      class="sc-bdvvtL qEhOG"
+    >
+      <h1>
+        REVIEWS
+      </h1>
+      <ul
+        class="sc-gsDKAQ gNizMB"
+      >
+        <li
+          class="sc-dkPtRN ffMqkt"
+        >
+          <strong>
+            Priyang
+          </strong>
+          <div
+            class="star-review"
+          >
+            <span
+              class="stars"
+            >
+              <span>
+                <i
+                  class="fas fa-star"
+                  style="color: rgb(248, 232, 37);"
+                />
+              </span>
+              <span>
+                <i
+                  class="fas fa-star"
+                  style="color: rgb(248, 232, 37);"
+                />
+              </span>
+              <span>
+                <i
+                  class="fas fa-star"
+                  style="color: rgb(248, 232, 37);"
+                />
+              </span>
+              <span>
+                <i
+                  class="fas fa-star"
+                  style="color: rgb(248, 232, 37);"
+                />
+              </span>
+              <span>
+                <i
+                  class="far fa-star"
+                  style="color: rgb(248, 232, 37);"
+                />
+              </span>
+              <span />
+            </span>
+          </div>
+          <p>
+            2021-08-27
+          </p>
+          <p>
+            very good
+          </p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</DocumentFragment>
+`;

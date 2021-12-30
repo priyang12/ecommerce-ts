@@ -13,7 +13,7 @@ const OrderDetails = () => {
     Comment: "",
   });
   const { id } = useParams<{ id: string }>();
-  const { Err, FetchData, loading } = useFetch(`/api/orders/order/${id}`);
+  const [FetchData, Err, loading] = useFetch(`/api/orders/order/${id}`);
 
   const SubmitReview = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -107,7 +107,7 @@ const OrderDetails = () => {
               <p className='success'>Delivered</p>
             ) : state.user?.isAdmin ? (
               <TimeoutBtn
-                classValue='btn'
+                classname='btn'
                 FormValue='Mark as Deliver'
                 Time={5}
               />

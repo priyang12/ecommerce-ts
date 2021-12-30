@@ -4,7 +4,7 @@ import { useFetch } from "../Utils/CustomHooks";
 
 const OrderStatus = () => {
   const Url = "/api/orders";
-  const { Err, loading, FetchData } = useFetch(Url);
+  const [FetchData, Err, loading] = useFetch(Url);
 
   if (loading) return <Spinner />;
   if (Err) return <div>{Err}</div>;
