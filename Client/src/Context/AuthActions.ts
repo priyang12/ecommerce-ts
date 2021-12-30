@@ -4,30 +4,26 @@ import {
   LOAD_USER,
   SET_LOADING,
   LOG_OUT,
-} from './Authtypes';
+} from "./Authtypes";
 
-import axios, { AxiosError } from 'axios';
-import setAuthToken from '../Utils/setAuthToken';
-import { AuthActions } from './AuthReducer';
-import React from 'react';
+import axios, { AxiosError } from "axios";
+import { AuthActions } from "./AuthReducer";
+import React from "react";
 
 export const loadUser = async (
   token: any,
   dispatch: React.Dispatch<AuthActions>
 ) => {
   if (token) {
-    setAuthToken(token);
     try {
       setLoading(dispatch);
-      console.log(axios.defaults);
-
-      const { data }: any = await axios.get('/api/users');
+      const { data }: any = await axios.get("/api/users");
       dispatch({
         type: LOAD_USER,
         payload: data,
       });
     } catch (err: any | AxiosError) {
-      let ErrorMessage = 'Server Error Try Again Later';
+      let ErrorMessage = "Server Error Try Again Later";
       if (err as AxiosError) {
         ErrorMessage = err.response.data?.msg;
       }
@@ -45,15 +41,15 @@ export const LoginUser = async (
 ) => {
   try {
     setLoading(dispatch);
-    const { data }: any = await axios.post('/api/users/login', user);
+    const { data }: any = await axios.post("/api/users/login", user);
     dispatch({
       type: LOGIN_SUCCESS,
       payload: data,
     });
-    localStorage.setItem('token', data.token);
+    localStorage.setItem("token", data.token);
     loadUser(data.token, dispatch);
   } catch (err: any | AxiosError) {
-    let ErrorMessage = 'Server Error Try Again Later';
+    let ErrorMessage = "Server Error Try Again Later";
     if (err as AxiosError) {
       ErrorMessage = err.response.data?.msg;
     }
@@ -70,16 +66,16 @@ export const RegisterUser = async (
 ) => {
   try {
     setLoading(dispatch);
-    const { data }: any = await axios.post('/api/users/register', user);
+    const { data }: any = await axios.post("/api/users/register", user);
     dispatch({
       type: LOGIN_SUCCESS,
       payload: data,
     });
-    localStorage.setItem('token', data.token);
+    localStorage.setItem("token", data.token);
 
     loadUser(data.token, dispatch);
   } catch (err: any | AxiosError) {
-    let ErrorMessage = 'Server Error Try Again Later';
+    let ErrorMessage = "Server Error Try Again Later";
     if (err as AxiosError) {
       ErrorMessage = err.response.data?.msg;
     }
@@ -101,7 +97,7 @@ export const Logout = (dispatch: React.Dispatch<AuthActions>) => {
   } catch (error) {
     dispatch({
       type: AUTH_ERROR,
-      payload: 'Server Error Reload ',
+      payload: "Server Error Reload ",
     });
   }
 };

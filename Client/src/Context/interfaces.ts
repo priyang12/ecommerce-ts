@@ -1,4 +1,4 @@
-import { AuthActions } from './AuthReducer';
+import { AuthActions } from "./AuthReducer";
 
 export type AuthValues = {
   email: string;
@@ -7,6 +7,7 @@ export type AuthValues = {
 export interface User {
   name: string;
   isAdmin: boolean;
+  id: string;
 }
 
 export interface AuthState {
