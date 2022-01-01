@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Link, Redirect } from "react-router-dom";
-import { RegisterUser } from "../Context/AuthActions";
-import { AuthContext } from "../Context/AuthContext";
+import { RegisterUser } from "../Context/Authentication/AuthActions";
+import { AuthContext } from "../Context/Authentication/AuthContext";
 import { useForm } from "../Utils/CustomHooks";
 import {
   ConfirmPassword,

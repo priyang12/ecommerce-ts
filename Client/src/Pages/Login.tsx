@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
 import { StyledContainer } from "../Components/StyledComponents/Container";
-import { useToggle, useForm } from "../Utils/CustomHooks";
-import { LoginUser } from "../Context/AuthActions";
-import { AuthContext } from "../Context/AuthContext";
+import { useForm } from "../Utils/CustomHooks";
+import { LoginUser } from "../Context/Authentication/AuthActions";
+import { AuthContext } from "../Context/Authentication/AuthContext";
 import { ValidateEmail, ValidatePassword } from "../Utils/Validation";
 import { Link } from "react-router-dom";
 
 const Login = () => {
   const { dispatch } = useContext(AuthContext);
-
+  /* eslint-disable */
   const [User, ChangeState, setState, FormErrors, setErrors] = useForm({
     email: "",
     password: "",

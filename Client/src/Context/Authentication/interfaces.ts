@@ -6,6 +6,8 @@ export type AuthValues = {
 };
 export interface User {
   name: string;
+  email: string;
+  createdAt: string;
   isAdmin: boolean;
   id: string;
 }

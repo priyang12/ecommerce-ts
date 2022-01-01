@@ -1,7 +1,7 @@
 import { Fragment, useContext, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { Logout } from "../Context/AuthActions";
-import { AuthContext } from "../Context/AuthContext";
+import { Logout } from "../Context/Authentication/AuthActions";
+import { AuthContext } from "../Context/Authentication/AuthContext";
 import {
   StyledNavbar,
   Logo,
@@ -86,13 +86,13 @@ const Navbar = () => {
 
       {user && (
         <StyledLinks>
-          <Link to='/cart' className='cart link'>
+          <Link to='/Cart' className='cart link'>
             <i className='fas fa-shopping-cart'></i> CART
           </Link>
         </StyledLinks>
       )}
       {user?.isAdmin && (
-        <Link to='/adminDashboard' className='AdminIcon link'>
+        <Link to='/AdminDashboard' className='AdminIcon link'>
           AdminDashboard
         </Link>
       )}
