@@ -4,7 +4,7 @@ import { LinkContainer } from "./StyledComponents/StyledPayment";
 
 const Navigators = () => {
   const { pathname } = useLocation();
-  console.log(pathname);
+
   return (
     <LinkContainer>
       <li className={pathname === "/address" ? "Link-border" : ""}>

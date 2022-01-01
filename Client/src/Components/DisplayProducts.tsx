@@ -1,14 +1,14 @@
-import { Product } from '../types';
-import { useFetch } from '../Utils/CustomHooks';
-import ProductCard from './ProductCard';
-import { StyledDisplay, StyledProducts } from './StyledComponents/Products';
+import { Product } from "../types";
+import { useFetch } from "../Utils/CustomHooks";
+import ProductCard from "./ProductCard";
+import { StyledDisplay, StyledProducts } from "./StyledComponents/Products";
 
 type props = {
   url: string;
 };
 
 const DisplayProducts = ({ url }: props) => {
-  const { FetchData, Err, loading } = useFetch(url);
+  const [FetchData, Err, loading] = useFetch(url);
   return (
     <div>
       {loading ? (

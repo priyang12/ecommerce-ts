@@ -30,11 +30,11 @@ const Orders = [
   },
 ];
 
-const mock = new MockAdapter(axios);
+  const mock = new MockAdapter(axios);
 
-afterEach(() => {
-  mock.reset();
-});
+  afterEach(() => {
+    mock.reset();
+  });
 
 it("Mock Order Data", async () => {
   mock.onGet("/api/orders").reply(200, Orders);

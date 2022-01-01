@@ -9,6 +9,7 @@ import { StyledContainer, StyledCheckout } from "./StyledPages/StyledCart";
 const Cart = () => {
   const [TotalAmount, setTotalAmount] = useState(0);
   const [TotalProducts, setTotalProducts] = useState(0);
+
   const [Params, setParams] = useState<any>({
     method: "GET",
     url: "/api/cart",

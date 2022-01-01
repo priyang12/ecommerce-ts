@@ -1,17 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import TimeoutBtn from "../Components/TimeoutBtn";
 import ProductList from "../Components/ProductList";
+import Navigators from "../Components/Navigators";
 import { Redirect, useHistory } from "react-router";
 import { Address, Cart } from "../types";
 import { AuthContext } from "../Context/AuthContext";
-import styled from "styled-components";
-import Navigators from "../Components/Navigators";
-
-const StyledContainer = styled.div`
-  width: 100%;
-  max-width: 80ch;
-  margin: 0 auto;
-`;
+import { StyledPaymentContainer } from "../Components/StyledComponents/StyledPayment";
 
 const PlaceOrder = () => {
   const history = useHistory();
@@ -61,7 +55,7 @@ const PlaceOrder = () => {
   if (Cart?.length === 0) return <Redirect to='/' />;
 
   return (
-    <StyledContainer>
+    <StyledPaymentContainer>
       <Navigators />
       <div className='OrderDetails'>
         <div className='detail'>
@@ -79,8 +73,7 @@ const PlaceOrder = () => {
           <h1>ORDER ITEMS</h1>
           <ul className='order-list'>
             {Cart.map((item) => (
-              // @ts-ignore: Unreachable code error
-              <ProductList Cart={item} type='order' key={item._id} />
+              <ProductList Cart={item} key={item._id} />
             ))}
           </ul>
         </div>
@@ -113,10 +106,10 @@ const PlaceOrder = () => {
             <li></li>
           </ul>
           {/* <TimeoutBtn classValue='btn' FormValue='Place Order' Time={4000} /> */}
-          <TimeoutBtn Time={1000} classValue='btn' FormValue='PlaceOrder' />
+          <TimeoutBtn Time={1000} classname='btn' FormValue='PlaceOrder' />
         </form>
       </div>
-    </StyledContainer>
+    </StyledPaymentContainer>
   );
 };
 
