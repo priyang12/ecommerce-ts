@@ -1,7 +1,7 @@
 import { Fragment, useContext, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { AuthContext } from "./Context/AuthContext";
-import { loadUser } from "./Context/AuthActions";
+import { AuthContext } from "./Context/Authentication/AuthContext";
+import { loadUser } from "./Context/Authentication/AuthActions";
 import Auth from "./Pages/Auth";
 import Home from "./Pages/Home";
 import Navbar from "./Components/Navbar";
@@ -14,6 +14,7 @@ import Paypal from "./Pages/PayPal";
 import OrderStatus from "./Pages/OrderStatus";
 import setAuthToken from "./Utils/setAuthToken";
 import OrderDetails from "./Pages/OrderDetails";
+import AdminDashboard from "./Pages/AdminDashboard";
 
 function App() {
   const { state, dispatch } = useContext(AuthContext);
@@ -36,6 +37,9 @@ function App() {
       <Route exact path='/PlaceOrder' component={PlaceOrder} />
       <Route exact path='/OrderStatus' component={OrderStatus} />
       <Route exact path='/OrderStatus/:id' component={OrderDetails} />
+      <Route exact path='/AdminDashboard' component={AdminDashboard} />
+      <Route exact path='/AdminOrders' component={OrderStatus} />
+      <Route exact path='/AdminOrders' component={OrderStatus} />
     </Fragment>
   );
 
