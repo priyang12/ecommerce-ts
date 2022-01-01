@@ -113,3 +113,18 @@ form input[type="submit"] {
   background-color: #626d78;
   color: white;
 }
+
+.alert {
+  color: #d86969;
+  text-align: center;
+  background-color: #fff;
+  padding: 1em;
+  background-color: rgba(17, 25, 40, 0.43);
+}
+.success {
+  color: #78e762;
+  text-align: center;
+  background-color: #fff;
+  padding: 1em;
+  background-color: rgba(17, 25, 40, 0.43);
+}
