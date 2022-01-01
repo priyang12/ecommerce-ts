@@ -17,6 +17,8 @@ export const loadUser = async (
   if (token) {
     try {
       setLoading(dispatch);
+
+      // setAuthToken(token);
       const { data }: any = await axios.get("/api/users");
       dispatch({
         type: LOAD_USER,
@@ -44,14 +46,15 @@ export const LoginUser = async (
     const { data }: any = await axios.post("/api/users/login", user);
     dispatch({
       type: LOGIN_SUCCESS,
-      payload: data,
+      payload: data.token,
     });
     localStorage.setItem("token", data.token);
+
     loadUser(data.token, dispatch);
   } catch (err: any | AxiosError) {
     let ErrorMessage = "Server Error Try Again Later";
     if (err as AxiosError) {
-      ErrorMessage = err.response.data?.msg;
+      ErrorMessage = err.response?.data?.msg;
     }
 
     dispatch({
@@ -69,7 +72,7 @@ export const RegisterUser = async (
     const { data }: any = await axios.post("/api/users/register", user);
     dispatch({
       type: LOGIN_SUCCESS,
-      payload: data,
+      payload: data.token,
     });
     localStorage.setItem("token", data.token);
 

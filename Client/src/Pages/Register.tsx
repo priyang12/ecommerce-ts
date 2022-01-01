@@ -1,44 +1,70 @@
-import { useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { RegisterUser } from '../Context/AuthActions';
-import { AuthContext } from '../Context/AuthContext';
-import { useToggle, useForm } from '../Utils/CustomHooks';
-import { ConfirmPassword, ValidateEmail } from '../Utils/Validation';
-import { StyledContainer } from './StyledComponents/Container';
+import { useContext } from "react";
+import { Link, Redirect } from "react-router-dom";
+import { RegisterUser } from "../Context/AuthActions";
+import { AuthContext } from "../Context/AuthContext";
+import { useForm } from "../Utils/CustomHooks";
+import {
+  ConfirmPassword,
+  ValidateEmail,
+  ValidateName,
+  ValidatePassword,
+} from "../Utils/Validation";
+
+import { StyledContainer } from "../Components/StyledComponents/Container";
+import Spinner from "../Components/Spinner";
 
 const init = {
-  name: '',
-  email: '',
-  password: '',
-  password2: '',
+  name: "",
+  email: "",
+  password: "",
+  password2: "",
 };
 
 const Register = () => {
-  const { dispatch } = useContext(AuthContext);
+  const { state, dispatch } = useContext(AuthContext);
 
-  const [User, ChangeState] = useForm(init);
+  const [User, ChangeState, setState, FormErrors, setErrors] = useForm(init);
   const { name, email, password, password2 } = User;
-
-  const [nameValidation, toggleName] = useToggle(false);
-  const [emailValidation, toggleEmail] = useToggle(false);
-  const [PasswordValidation, togglePass] = useToggle(false);
 
   const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     let validate = true;
+    let Errors = {
+      name: "",
+      email: "",
+      password: "",
+      password2: "",
+    };
+
+    if (!ValidateName(name)) {
+      Errors.name = "Name Should be 5-10 Characters";
+      validate = false;
+    }
     if (!ValidateEmail(email)) {
-      toggleEmail();
+      Errors.email = "Email is not Valid";
+      validate = false;
+    }
+    if (!ValidatePassword(password)) {
+      Errors.password = "Password Should be more than 6 Characters";
       validate = false;
     }
     if (!ConfirmPassword(password, password2)) {
-      togglePass();
+      Errors.password2 = "Passwords Does not Match";
       validate = false;
     }
-    if (name === '') toggleName();
     if (validate) {
       RegisterUser(User, dispatch);
+      setErrors(Errors);
+    } else {
+      setErrors(Errors);
     }
   };
+  if (state.token) {
+    return <Redirect to='/' />;
+  }
+  if (state.loading) {
+    return <Spinner />;
+  }
   return (
     <StyledContainer>
       <form onSubmit={onSubmit}>
@@ -53,7 +79,11 @@ const Register = () => {
           />
           <span className='bar'></span>
           <label htmlFor='name'>
-            {nameValidation ? 'Name Should 5-10 Letters' : 'Name'}
+            {FormErrors.name ? (
+              <span className='error'>{FormErrors.name}</span>
+            ) : (
+              "name"
+            )}
           </label>
         </div>
         <div className='form-control'>
@@ -67,7 +97,11 @@ const Register = () => {
           />
           <span className='bar'></span>
           <label htmlFor='email'>
-            {!emailValidation ? ' Email' : 'Enter a Valid Email'}
+            {FormErrors.email ? (
+              <span className='error'>{FormErrors.email}</span>
+            ) : (
+              "email"
+            )}
           </label>
         </div>
         <div className='form-control'>
@@ -80,7 +114,13 @@ const Register = () => {
             required
           />
           <span className='bar'></span>
-          <label htmlFor='password'> Password</label>
+          <label htmlFor='password'>
+            {FormErrors.password ? (
+              <span className='error'>{FormErrors.password}</span>
+            ) : (
+              "password"
+            )}
+          </label>
         </div>
         <div className='form-control'>
           <input
@@ -93,17 +133,16 @@ const Register = () => {
           />
           <span className='bar'></span>
           <label htmlFor='password2'>
-            {!PasswordValidation
-              ? 'Confirm Password'
-              : 'Passwords Does not Match'}
+            {FormErrors.password2 ? (
+              <span className='error'>{FormErrors.password2}</span>
+            ) : (
+              "confirm password"
+            )}
           </label>
         </div>
         <input type='submit' className='btn' value='Register' />
       </form>
       <div className='help'>
-        <span>Already have a Account/</span>
-        <Link to='#'> Login here</Link>
-        <br />
         <Link to='#'> Need Help</Link>
       </div>
     </StyledContainer>

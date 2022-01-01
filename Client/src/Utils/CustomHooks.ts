@@ -82,16 +82,36 @@ export const useForm = (
 ): [
   any,
   (e: React.ChangeEvent<HTMLInputElement>) => void,
-  (NewState: any) => void
+  (NewState: any) => void,
+  any,
+  (ErrorState: any) => void
 ] => {
   const [state, setState] = useState(initialState);
+  const [ErrorsState, setErrorsState] = useState(initialState);
   const SetState = (NewState: unknown) => {
     setState(NewState);
   };
   const ChangeState = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setState({ ...state, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (value === "")
+      setErrorsState({
+        ...ErrorsState,
+        [name]: `${name.toUpperCase()} is required`,
+      });
+    else setErrorsState({ ...ErrorsState, [name]: null });
+
+    setState({ ...state, [name]: value });
   };
-  return [state, ChangeState, SetState];
+
+  const setErrors = (ErrorState: any) => {
+    setErrorsState(ErrorState);
+  };
+  // Pass Init State
+  // Pass Change State for on change event
+  // Pass SetErrorState for set error state
+  // Pass Set State for set state to null of init
+
+  return [state, ChangeState, SetState, ErrorsState, setErrors];
 };
 
 export const useToggle = (
