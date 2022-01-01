@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Order } from "../types";
 
 type Props = {
   Orders: [];
@@ -17,9 +18,16 @@ const OrderList = ({ Orders }: Props) => {
   }
   return (
     <ul className='list'>
-      {Orders.map((order: any, index: number) => (
+      {Orders.map((order: Order, index: number) => (
         <li className='list-item' key={index}>
-          <h4>ORDER:{order._id}</h4>
+          {order.user ? (
+            <div>
+              <p>name :{order.user.name}</p>
+              <p>Email :{order.user.email}</p>
+            </div>
+          ) : (
+            <h4>ORDER:{order._id}</h4>
+          )}
           <p>Method: {order.paymentMethod}</p>
           <p>Total:${order.totalPrice}</p>
           {order.isDelivered ? (

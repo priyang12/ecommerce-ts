@@ -50,3 +50,44 @@ export interface ListProduct {
   name: string;
   image: string;
 }
+
+export interface OrderItems {
+  _id: string;
+  product: {
+    price: string;
+    _id: string;
+    name: string;
+    image: string;
+  };
+  qty: string;
+}
+
+export interface Order {
+  _id: string;
+  user: {
+    name: string;
+    email: string;
+  };
+  paymentMethod: string;
+  totalPrice: number;
+  isDelivered: boolean;
+}
+
+export interface FullOrder {
+  id: string;
+  itemsPrice: string;
+  taxPrice: string;
+  shippingPrice: string;
+  totalPrice: string;
+  isDelivered: boolean;
+  user: string;
+  orderItems: OrderItems[];
+  shippingAddress: Address;
+  paymentMethod: string;
+  paymentResult: {
+    id: string;
+    status: string;
+    update_time: string;
+    email_address: string;
+  };
+}

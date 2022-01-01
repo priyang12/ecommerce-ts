@@ -6,7 +6,7 @@ import {
 import OrderStatus from "../OrderStatus";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { BrowserRouter as Router } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
 
 const Orders = [
@@ -30,18 +30,51 @@ const Orders = [
   },
 ];
 
-  const mock = new MockAdapter(axios);
+const AdminOrders = [
+  {
+    _id: "612894962f469f19e8ee85e8",
+    user: {
+      name: "John Doe",
+      email: "sdsads@gmail.com",
+    },
+    totalPrice: "517",
+    isDelivered: true,
+    paymentMethod: "Paypal Or Debit Card",
+  },
+  {
+    _id: "612894962f469f19e8eeasdas8",
+    user: {
+      name: "asdasd Doe",
+      email: "sdsads@gmail.com",
+    },
+    totalPrice: "517",
+    isDelivered: false,
+    paymentMethod: "Paypal Or Debit Card",
+  },
+  {
+    _id: "612894962f469f19e8ee8asdsad8",
+    user: {
+      name: "Joasdasdhn Doe",
+      email: "sdsads@gmail.com",
+    },
+    totalPrice: "2000",
+    isDelivered: true,
+    paymentMethod: "Paypal Or Debit Card",
+  },
+];
 
-  afterEach(() => {
-    mock.reset();
-  });
+const mock = new MockAdapter(axios);
+
+afterEach(() => {
+  mock.reset();
+});
 
 it("Mock Order Data", async () => {
   mock.onGet("/api/orders").reply(200, Orders);
   render(
-    <Router>
+    <MemoryRouter initialEntries={["OrderStatus"]}>
       <OrderStatus />
-    </Router>
+    </MemoryRouter>
   );
 
   //check if the loading is true
@@ -58,9 +91,9 @@ it("Mock Order Data", async () => {
 it("Empty Order", async () => {
   mock.onGet("/api/orders").reply(200, []);
   render(
-    <Router>
+    <MemoryRouter initialEntries={["OrderStatus"]}>
       <OrderStatus />
-    </Router>
+    </MemoryRouter>
   );
 
   //check if the loading is true
@@ -75,9 +108,9 @@ it("Empty Order", async () => {
 it("Server Error", async () => {
   mock.onGet("/api/orders").reply(500);
   render(
-    <Router>
+    <MemoryRouter initialEntries={["OrderStatus"]}>
       <OrderStatus />
-    </Router>
+    </MemoryRouter>
   );
 
   //check if the loading is true
@@ -87,4 +120,18 @@ it("Server Error", async () => {
   expect(
     screen.getByText("Request failed with status code 500")
   ).toBeInTheDocument();
+});
+
+it("Call All the Order For Admin", async () => {
+  mock.onGet("/api/orders/all").reply(200, AdminOrders);
+  render(
+    <MemoryRouter initialEntries={["/AdminOrders"]}>
+      <OrderStatus />
+    </MemoryRouter>
+  );
+
+  //check if the loading is true
+  await waitForElementToBeRemoved(screen.getByTestId("Loading")).then(() => {});
+  //check if the loading is true
+  expect(screen.getByText(/John Doe/)).toBeInTheDocument();
 });

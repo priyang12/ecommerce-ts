@@ -68,8 +68,8 @@ const Cart = () => {
 
   return (
     <Fragment>
-      {Err && <AlertDisplay msg={Err} type='fail' />}
-      {Alert && <AlertDisplay msg={Alert} type='success' />}
+      {Err && <AlertDisplay msg={Err} type={false} />}
+      {Alert && <AlertDisplay msg={Alert} type={true} />}
       <StyledContainer>
         <h1>SHOPPING CART</h1>
         {FetchData.cart?.map((item: CartItem) => (

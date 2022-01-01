@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { useToggle } from "../Utils/CustomHooks";
-import { AuthContext } from "../Context/AuthContext";
+import { AuthContext } from "../Context/Authentication/AuthContext";
 import { StyledAuthPage } from "./StyledPages/StyledAuth";
 import { Redirect } from "react-router";
 import Login from "./Login";
