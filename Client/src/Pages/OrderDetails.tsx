@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { CartItem } from "../Components/ProductList";
 import Spinner from "../Components/Spinner";
 import TimeoutBtn from "../Components/TimeoutBtn";
-import { AuthContext } from "../Context/AuthContext";
+import { AuthContext } from "../Context/Authentication/AuthContext";
 import { useFetch, useForm } from "../Utils/CustomHooks";
 
 const OrderDetails = () => {

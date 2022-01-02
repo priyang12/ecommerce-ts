@@ -67,7 +67,7 @@ const Paypal = () => {
         </div>
       ) : (
         <FragmentContainer>
-          <AlertDisplay msg={Alert} type='success' />
+          <AlertDisplay msg={Alert} type={true} />
           <PayPalButton
             amount={Order.totalPrice}
             onSuccess={successPaymentHandler}

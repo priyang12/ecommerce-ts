@@ -14,7 +14,7 @@ const GetCartProducts = asyncHandler(async (req, res) => {
     .select("cart name")
     .populate("cart.product", ["price", "image", "name", "countInStock"]);
   if (user) {
-    res.json(user);
+    res.status(200).json({ Cart: user.cart });
   } else {
     res.status(404).json({ msg: "No Product in the Cart" });
   }
@@ -76,7 +76,7 @@ const DeleteCartProduct = asyncHandler(async (req, res) => {
     } else {
       user.cart.splice(removeIndex, 1);
       await user.save();
-      res.json(user.cart);
+      res.json({ Cart: user.cart });
     }
   } else {
     res.status(404);

@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import { AuthProvider } from "./Context/AuthContext";
+import { AuthProvider } from "./Context/Authentication/AuthContext";
 import "./Style/Globle.css";
 ReactDOM.render(
   <AuthProvider>

@@ -22,7 +22,7 @@ const init = {
 
 const Register = () => {
   const { state, dispatch } = useContext(AuthContext);
-
+  /* eslint-disable */
   const [User, ChangeState, setState, FormErrors, setErrors] = useForm(init);
   const { name, email, password, password2 } = User;
 

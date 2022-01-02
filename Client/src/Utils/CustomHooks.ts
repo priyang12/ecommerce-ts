@@ -9,7 +9,7 @@ export const useAxios = (Params: AxiosRequestConfig) => {
   useEffect(() => {
     const fetchData = async () => {
       console.log("Call API");
-
+      console.log(Params);
       try {
         setLoading(true);
         const { data }: any = await axios.request(Params);
