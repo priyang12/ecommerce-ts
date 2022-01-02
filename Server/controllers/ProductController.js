@@ -1,9 +1,9 @@
-const asyncHandler = require('express-async-handler');
+const asyncHandler = require("express-async-handler");
 
 //modal
-const Products = require('../modals/Product');
+const Products = require("../modals/Product");
 
-const Orders = require('../modals/order');
+const Orders = require("../modals/order");
 
 // @desc    Get All Products
 // @route   Get /api/products
@@ -16,7 +16,7 @@ const GetAllProducts = asyncHandler(async (req, res) => {
     ? {
         name: {
           $regex: req.query.keyword,
-          $options: 'i',
+          $options: "i",
         },
       }
     : {};
@@ -39,7 +39,7 @@ const GetTopProducts = asyncHandler(async (req, res) => {
   const products = await Products.find({})
     .sort({ rating: -1 })
     .limit(5)
-    .select('name image description');
+    .select("name image description");
   res.json(products);
 });
 
@@ -51,7 +51,7 @@ const GetProductByID = asyncHandler(async (req, res) => {
   if (product) {
     res.json(product);
   } else {
-    res.status(404).json({ msg: 'Product not Found' });
+    res.status(404).json({ msg: "Product not Found" });
   }
 });
 
@@ -61,21 +61,23 @@ const GetProductByID = asyncHandler(async (req, res) => {
 const AddProduct = asyncHandler(async (req, res) => {
   try {
     const product = new Products({
-      name: 'Sample name',
+      name: "Sample name",
       price: 0,
       user: req.user._id,
-      image: '/images/sample.jpg',
-      brand: 'Sample brand',
-      category: 'Sample category',
+      image: "/images/sample.jpg",
+      brand: "Sample brand",
+      category: "Sample category",
       countInStock: 0,
       numReviews: 0,
-      description: 'Sample description',
+      description: "Sample description",
     });
     const createdProduct = await product.save();
-    res.status(201).json(createdProduct);
+    res
+      .status(201)
+      .json({ msg: "Product added successfully", product: createdProduct._id });
   } catch (error) {
     res.status(404);
-    throw Error('Adding Error In Server ' + error);
+    throw Error("Adding Error In Server " + error);
   }
 });
 
@@ -85,7 +87,7 @@ const AddProduct = asyncHandler(async (req, res) => {
 const UpdateProduct = asyncHandler(async (req, res) => {
   try {
     const product = await Products.findById(req.params.id);
-    if (!product) throw Error('No Product Found');
+    if (!product) throw Error("No Product Found");
     const {
       name,
       price,
@@ -110,7 +112,7 @@ const UpdateProduct = asyncHandler(async (req, res) => {
     res.status(201).json(updatedProduct);
   } catch (error) {
     res.status(404);
-    throw Error('Adding Error In Server ' + error);
+    throw Error("Adding Error In Server " + error);
   }
 });
 
@@ -120,12 +122,15 @@ const UpdateProduct = asyncHandler(async (req, res) => {
 const deleteProduct = asyncHandler(async (req, res) => {
   try {
     const product = await Products.findById(req.params.id);
+    if (!product) throw Error("No Product Found");
     await product.remove();
     const products = await Products.find({});
-    res.json(products);
+    res
+      .status(200)
+      .json({ msg: product.name + " Deleted Successfully", products });
   } catch (error) {
     res.status(404);
-    throw new Error('Product not found');
+    throw new Error("Deleting Error In Server : " + error.message);
   }
 });
 
@@ -134,19 +139,19 @@ const deleteProduct = asyncHandler(async (req, res) => {
 // @access  Private
 const AddReview = asyncHandler(async (req, res) => {
   const { name, rating, comment, order_id } = req.body;
-  const order = await Orders.findById(order_id).select('_id');
+  const order = await Orders.findById(order_id).select("_id");
   const product = await Products.findById(req.params.id);
 
   if (!order || !product) {
     res.status(404);
-    throw new Error('Product not Found or not Ordered Error');
+    throw new Error("Product not Found or not Ordered Error");
   } else {
     const alreadyReviewed = product.reviews.find(
       (r) => r.user.toString() === req.user.id.toString()
     );
     if (alreadyReviewed) {
       res.status(404);
-      throw new Error('Alerady Reviewed');
+      throw new Error("Already Reviewed");
     } else {
       const review = {
         name: name,
@@ -160,7 +165,7 @@ const AddReview = asyncHandler(async (req, res) => {
         product.reviews.reduce((acc, item) => item.rating + acc, 0) /
         product.reviews.length;
       await product.save();
-      res.status(201).json({ mag: 'Review Added' });
+      res.status(201).json({ mag: "Review Added" });
     }
   }
 });
