@@ -1,11 +1,11 @@
-import { render, screen, act } from '@testing-library/react';
-import { Router } from 'react-router-dom';
-import { AuthContext } from '../../Context/AuthContext';
-import { createMemoryHistory, MemoryHistory } from 'history';
-import renderer from 'react-test-renderer';
-import PlaceOrder from '../PlaceOrder';
-import userEvent from '@testing-library/user-event';
-import '@testing-library/jest-dom';
+import { render, screen, act } from "@testing-library/react";
+import { Router } from "react-router-dom";
+import { AuthContext } from "../../Context/Authentication/AuthContext";
+import { createMemoryHistory, MemoryHistory } from "history";
+import renderer from "react-test-renderer";
+import PlaceOrder from "../PlaceOrder";
+import userEvent from "@testing-library/user-event";
+import "@testing-library/jest-dom";
 
 let History: MemoryHistory<unknown>;
 
@@ -16,8 +16,11 @@ const state = {
   err: null,
   token: null,
   user: {
-    name: 'Priyang',
+    name: "Priyang",
     isAdmin: false,
+    email: "asdas",
+    id: "asdasd",
+    createdAt: "asasd",
   },
 };
 const dispatch = jest.fn();
@@ -27,37 +30,37 @@ const dispatch = jest.fn();
 ///////////////////////////////xxxxxxxxxxxxxxxxxxxxxxx//////////////////////////////
 const Cart = [
   {
-    _id: '617028b4ae931d0004f7d964',
+    _id: "617028b4ae931d0004f7d964",
     product: {
       price: 89.99,
       countInStock: 2,
-      _id: '60d5e622e5179e2bb44bd838',
-      name: 'Airpods Wireless Bluetooth Headphones',
-      image: '/Photos/image-1627384388351.webp',
+      _id: "60d5e622e5179e2bb44bd838",
+      name: "Airpods Wireless Bluetooth Headphones",
+      image: "/Photos/image-1627384388351.webp",
     },
     qty: 2,
   },
   {
-    _id: '61705624b54854000494b5ce',
+    _id: "61705624b54854000494b5ce",
     product: {
       price: 929.99,
       countInStock: 5,
-      _id: '60d5e622e5179e2bb44bd83c',
-      name: 'Logtech mouse',
-      image: '/Photos/image-1627385386692.webp',
+      _id: "60d5e622e5179e2bb44bd83c",
+      name: "Logtech mouse",
+      image: "/Photos/image-1627385386692.webp",
     },
     qty: 1,
   },
 ];
 
 const address = {
-  homeAddress: '202,Pipload',
-  city: 'Surat',
-  postalCode: '456123',
-  country: 'India',
+  homeAddress: "202,Pipload",
+  city: "Surat",
+  postalCode: "456123",
+  country: "India",
 };
 
-const Method = 'PayPal or Credit Card';
+const Method = "PayPal or Credit Card";
 
 const productsAmount = 2000;
 
@@ -75,8 +78,8 @@ beforeAll(() => {
   History = createMemoryHistory();
 });
 
-describe('Check Redirects', () => {
-  it('Return to cart Page ', () => {
+describe("Check Redirects", () => {
+  it("Return to cart Page ", () => {
     render(
       <AuthContext.Provider value={{ state, dispatch }}>
         <Router history={History}>
@@ -84,13 +87,13 @@ describe('Check Redirects', () => {
         </Router>
       </AuthContext.Provider>
     );
-    expect(History.location.pathname).toBe('/cart');
+    expect(History.location.pathname).toBe("/cart");
   });
-  it('Return to cart Page on Empty Cart', () => {
-    localStorage.setItem('cart', JSON.stringify([]));
-    localStorage.setItem('address', JSON.stringify(address));
-    localStorage.setItem('payMethod', Method);
-    localStorage.setItem('productsAmount', JSON.stringify(productsAmount));
+  it("Return to cart Page on Empty Cart", () => {
+    localStorage.setItem("cart", JSON.stringify([]));
+    localStorage.setItem("address", JSON.stringify(address));
+    localStorage.setItem("payMethod", Method);
+    localStorage.setItem("productsAmount", JSON.stringify(productsAmount));
     render(
       <AuthContext.Provider value={{ state, dispatch }}>
         <Router history={History}>
@@ -98,17 +101,17 @@ describe('Check Redirects', () => {
         </Router>
       </AuthContext.Provider>
     );
-    expect(History.location.pathname).toBe('/');
+    expect(History.location.pathname).toBe("/");
   });
 });
 
-describe('Check Order Details', () => {
+describe("Check Order Details", () => {
   let His = createMemoryHistory();
   beforeEach(() => {
-    localStorage.setItem('cart', JSON.stringify(Cart));
-    localStorage.setItem('address', JSON.stringify(address));
-    localStorage.setItem('payMethod', Method);
-    localStorage.setItem('productsAmount', JSON.stringify(productsAmount));
+    localStorage.setItem("cart", JSON.stringify(Cart));
+    localStorage.setItem("address", JSON.stringify(address));
+    localStorage.setItem("payMethod", Method);
+    localStorage.setItem("productsAmount", JSON.stringify(productsAmount));
     render(
       <AuthContext.Provider value={{ state, dispatch }}>
         <Router history={His}>
@@ -117,21 +120,21 @@ describe('Check Order Details', () => {
       </AuthContext.Provider>
     );
   });
-  it('Check For Amount Summery ', () => {
+  it("Check For Amount Summery ", () => {
     const shipping = addDecimals(productsAmount > 500 ? 0 : 100);
     const Tax = addDecimals(productsAmount * 0.1);
 
-    expect(screen.getByTestId('ShippingCost').textContent).toMatch(
+    expect(screen.getByTestId("ShippingCost").textContent).toMatch(
       String(shipping)
     );
-    expect(screen.getByTestId('TaxCost').textContent).toMatch(String(Tax));
+    expect(screen.getByTestId("TaxCost").textContent).toMatch(String(Tax));
 
     const TotalAmount = Math.round(shipping + Tax + productsAmount);
-    expect(screen.getByTestId('TotalAmount').textContent).toMatch(
+    expect(screen.getByTestId("TotalAmount").textContent).toMatch(
       String(TotalAmount)
     );
   });
-  it('Check SnapShot of Order', () => {
+  it("Check SnapShot of Order", () => {
     const tree = renderer
       .create(
         <AuthContext.Provider value={{ state, dispatch }}>
@@ -143,7 +146,7 @@ describe('Check Order Details', () => {
       .toJSON();
     expect(tree).toMatchSnapshot();
   });
-  it(' Store Order in Local Storage And Redirect to Payment Gateway', () => {
+  it(" Store Order in Local Storage And Redirect to Payment Gateway", () => {
     jest.useFakeTimers();
     const shipping = addDecimals(productsAmount > 500 ? 0 : 100);
     const Tax = addDecimals(productsAmount * 0.1);
@@ -156,7 +159,7 @@ describe('Check Order Details', () => {
       shippingPrice: shipping,
       totalPrice: Math.round(shipping + Tax + productsAmount),
     };
-    const PlaceOrderBtn = screen.getByText('Place Order');
+    const PlaceOrderBtn = screen.getByText("Place Order");
     userEvent.click(PlaceOrderBtn);
     act(() => {
       jest.advanceTimersByTime(1);

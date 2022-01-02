@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { useEffect, useState } from "react";
 
 export const useAxios = (Params: AxiosRequestConfig) => {
@@ -9,17 +9,17 @@ export const useAxios = (Params: AxiosRequestConfig) => {
   useEffect(() => {
     const fetchData = async () => {
       console.log("Call API");
-      console.log(Params);
       try {
         setLoading(true);
         const { data }: any = await axios.request(Params);
         setFetchData(data);
         if (data.msg) setAlert(data.msg);
         setErr(null);
-      } catch (error) {
+      } catch (err: any | AxiosError) {
+        console.log(err);
         let ErrorMessage = "Server Error Try Again Later";
-        if (error instanceof Error) {
-          ErrorMessage = error.message;
+        if (err as AxiosError) {
+          ErrorMessage = err.response?.data?.msg;
         }
         setErr(ErrorMessage);
         setFetchData(null);

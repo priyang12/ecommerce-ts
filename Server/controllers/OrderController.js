@@ -1,10 +1,10 @@
-const asyncHandler = require('express-async-handler');
+const asyncHandler = require("express-async-handler");
 
-const User = require('../modals/User');
+const User = require("../modals/User");
 
-const Product = require('../modals/Product');
+const Product = require("../modals/Product");
 
-const Order = require('../modals/order');
+const Order = require("../modals/order");
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -13,7 +13,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
   try {
     const {
       orderItems,
-      shippingAddress,
+
       paymentMethod,
       itemsPrice,
       taxPrice,
@@ -24,7 +24,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
     const user = req.user.id;
     if (orderItems && orderItems.length === 0) {
       res.status(400);
-      throw new Error('No order items');
+      throw new Error("No order items");
     } else {
       const paymentResult = {
         id: payment.id,
@@ -32,7 +32,11 @@ const addOrderItems = asyncHandler(async (req, res) => {
         update_time: payment.update_time,
         email_address: payment.payer.email_address,
       };
-
+      const shippingAddress = {
+        address: req.body.shippingAddress.homeAddress,
+        city: req.body.shippingAddress.city,
+        postalcode: req.body.shippingAddress.postalCode,
+      };
       const order = new Order({
         user: user,
         orderItems,
@@ -54,17 +58,17 @@ const addOrderItems = asyncHandler(async (req, res) => {
 
       const createdOrder = await order.save();
       res.status(201);
-      res.json({ msg: 'Order has Been Placed', order: createdOrder });
+      res.json({ msg: "Order has Been Placed", order: createdOrder });
     }
   } catch (error) {
     res.status(400);
-    throw new Error('Order Server error' + error);
+    throw new Error("Order Server error" + error);
   }
 });
 
 const updateProduct = async (item) => {
   const newProduct = await Product.findById(item.product._id).select(
-    'name countInStock image price'
+    "name countInStock image price"
   );
   newProduct.countInStock = newProduct.countInStock - item.qty;
   console.log(newProduct);
@@ -76,14 +80,14 @@ const updateProduct = async (item) => {
 // @access  Private
 const getOrder = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id).populate(
-    'user',
-    'name email'
+    "user",
+    "name email"
   );
   if (order) {
     res.json(order);
   } else {
     res.status(404);
-    throw new Error('Order not found');
+    throw new Error("Order not found");
   }
 });
 
@@ -92,14 +96,14 @@ const getOrder = asyncHandler(async (req, res) => {
 // @access  Private
 const getUserOrders = asyncHandler(async (req, res) => {
   const order = await Order.find({ user: req.user.id }).select(
-    'paymentMethod totalPrice isDelivered'
+    "paymentMethod totalPrice isDelivered"
   );
 
   if (order) {
     res.json(order);
   } else {
     res.status(404);
-    throw new Error('Orders not found');
+    throw new Error("Orders not found");
   }
 });
 
@@ -108,13 +112,13 @@ const getUserOrders = asyncHandler(async (req, res) => {
 // @access  Admin
 const getAllOrders = asyncHandler(async (req, res) => {
   const order = await Order.find({})
-    .select('paymentMethod totalPrice isDelivered ')
-    .populate('user', ['name', 'email']);
+    .select("paymentMethod totalPrice isDelivered ")
+    .populate("user", ["name", "email"]);
   if (order) {
     res.json(order);
   } else {
     res.status(404);
-    throw new Error('Orders not found');
+    throw new Error("Orders not found");
   }
 });
 
@@ -130,7 +134,7 @@ const UpdateOrder = asyncHandler(async (req, res) => {
     res.json(order);
   } catch {
     res.status(404);
-    throw new Error('Orders not found');
+    throw new Error("Orders not found");
   }
 });
 
@@ -143,7 +147,7 @@ const DeleteOrder = asyncHandler(async (req, res) => {
     res.json(order);
   } else {
     res.status(404);
-    throw new Error('Orders not found');
+    throw new Error("Orders not found");
   }
 });
 

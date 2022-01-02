@@ -38,6 +38,7 @@ const Paypal = () => {
     console.log(Order);
     setParams({
       method: "POST",
+      url: "/api/orders",
       data: Order,
     });
     if (FetchData?.order?._id) {
@@ -57,17 +58,18 @@ const Paypal = () => {
         Loading
       </div>
     );
-  if (Err) return <div className='Error'>{Err}</div>;
   if (PaymentErrors) return <div className='Error'>{PaymentErrors}</div>;
+  if (Err) return <AlertDisplay msg={Err} type={false} />;
   return (
-    <StyledContainer>
+    <StyledContainer theme={{ marginTop: "2" }}>
       {!SdkReady ? (
         <div className='loading' data-testid='Loading'>
           Loading
         </div>
       ) : (
         <FragmentContainer>
-          <AlertDisplay msg={Alert} type={true} />
+          {Alert && <AlertDisplay msg={Alert} type={true} />}
+          <br />
           <PayPalButton
             amount={Order.totalPrice}
             onSuccess={successPaymentHandler}

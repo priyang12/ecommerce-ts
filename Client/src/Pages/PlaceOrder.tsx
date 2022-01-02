@@ -4,8 +4,15 @@ import ProductList from "../Components/ProductList";
 import Navigators from "../Components/Navigators";
 import { Redirect, useHistory } from "react-router";
 import { Address, Cart } from "../types";
-import { AuthContext } from "../Context/AuthContext";
+import { AuthContext } from "../Context/Authentication/AuthContext";
 import { StyledPaymentContainer } from "../Components/StyledComponents/StyledPayment";
+import {
+  StyledHeader,
+  StyledOrderSummary,
+  StyledOrderSummaryBody,
+  StyledOrderSummaryItem,
+  StyledPlaceOrder,
+} from "./StyledPages/StyledPlaceOrder";
 
 const PlaceOrder = () => {
   const history = useHistory();
@@ -55,60 +62,61 @@ const PlaceOrder = () => {
   if (Cart?.length === 0) return <Redirect to='/' />;
 
   return (
-    <StyledPaymentContainer>
+    <StyledPaymentContainer theme={{ maxWidth: "80vw" }}>
       <Navigators />
-      <div className='OrderDetails'>
-        <div className='detail'>
-          <h1>SHIPPING </h1>
-          <p>
-            Address: {Address.homeAddress} , {Address.city} ,
-            {Address.postalCode}, {Address.country}
-          </p>
+      <StyledPlaceOrder>
+        <div className='OrderDetails'>
+          <div className='detail'>
+            <StyledHeader>SHIPPING </StyledHeader>
+            <p>
+              Address: {Address.homeAddress} , {Address.city} ,
+              {Address.postalCode}, {Address.country}
+            </p>
+          </div>
+          <div className='detail'>
+            <StyledHeader>PAYMENT METHOD</StyledHeader>
+            <p>Method: {PayMethod}</p>
+          </div>
+          <div className='order-details'>
+            <StyledHeader>ORDER ITEMS</StyledHeader>
+            <ul className='order-list'>
+              {Cart.map((item) => (
+                <ProductList Cart={item} key={item._id} styledWidth='80%' />
+              ))}
+            </ul>
+          </div>
         </div>
-        <div className='detail'>
-          <h1>PAYMENT METHOD</h1>
-          <p>Method: {PayMethod}</p>
-        </div>
-        <div className='order-details'>
-          <h1>ORDER ITEMS</h1>
-          <ul className='order-list'>
-            {Cart.map((item) => (
-              <ProductList Cart={item} key={item._id} />
-            ))}
-          </ul>
-        </div>
-      </div>
-      <div className='OrderSummary'>
-        <form onSubmit={PlaceTheOrder} data-testid='PlaceOrder'>
-          <ul className='checkout'>
-            <h1>ORDER SUMMARY</h1>
-            <li>
-              Items Cost : <span> {ProductsAmount}</span>
-            </li>
-            <li>
-              Shipping Cost :
-              <span data-testid='ShippingCost'>
-                {addDecimals(ProductsAmount > 500 ? 0 : 100)}
-              </span>
-            </li>
-            <li>
-              Tax Cost :
-              <span data-testid='TaxCost'>
-                {addDecimals(0.1 * ProductsAmount)}
-              </span>
-            </li>
-            <li>
-              Total Cost :
-              <span data-testid='TotalAmount'>
-                {ExtraAmount + ProductsAmount}
-              </span>
-            </li>
-            <li></li>
-          </ul>
-          {/* <TimeoutBtn classValue='btn' FormValue='Place Order' Time={4000} /> */}
-          <TimeoutBtn Time={1000} classname='btn' FormValue='PlaceOrder' />
-        </form>
-      </div>
+        <StyledOrderSummary>
+          <form onSubmit={PlaceTheOrder} data-testid='PlaceOrder'>
+            <StyledOrderSummaryBody>
+              <StyledHeader>ORDER SUMMARY</StyledHeader>
+              <StyledOrderSummaryItem>
+                Items Cost : <span> {ProductsAmount}</span>
+              </StyledOrderSummaryItem>
+              <StyledOrderSummaryItem>
+                Shipping Cost :
+                <span data-testid='ShippingCost'>
+                  {addDecimals(ProductsAmount > 500 ? 0 : 100)}
+                </span>
+              </StyledOrderSummaryItem>
+              <StyledOrderSummaryItem>
+                Tax Cost :
+                <span data-testid='TaxCost'>
+                  {addDecimals(0.1 * ProductsAmount)}
+                </span>
+              </StyledOrderSummaryItem>
+              <StyledOrderSummaryItem>
+                Total Cost :
+                <span data-testid='TotalAmount'>
+                  {ExtraAmount + ProductsAmount}
+                </span>
+              </StyledOrderSummaryItem>
+            </StyledOrderSummaryBody>
+            {/* <TimeoutBtn classValue='btn' FormValue='Place Order' Time={4000} /> */}
+            <TimeoutBtn Time={1000} classname='btn' FormValue='PlaceOrder' />
+          </form>
+        </StyledOrderSummary>
+      </StyledPlaceOrder>
     </StyledPaymentContainer>
   );
 };

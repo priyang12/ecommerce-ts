@@ -108,6 +108,7 @@ form input[type="submit"] {
 .btn:hover {
   color: var(--secondary-color);
   background-color: black;
+  border: 2px solid var(--secondary-color);
 }
 
 .btn-gray {
