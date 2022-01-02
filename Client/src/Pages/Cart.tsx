@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAxios } from "../Utils/CustomHooks";
 import AlertDisplay from "../Components/AlertDisplay";
@@ -14,26 +14,22 @@ const Cart = () => {
     method: "GET",
     url: "/api/cart",
   });
+
   const { Alert, Err, FetchData, loading } = useAxios(Params);
 
-  const SummeryCall = useCallback(() => {
-    let amount = 0;
-    let Products = 0;
-    if (FetchData) {
-      FetchData.cart?.forEach((item: CartItem) => {
-        amount = amount + item.product.price;
-        Products = Products + item.qty;
-      });
-      setTotalAmount(amount);
-      setTotalProducts(Products);
-      localStorage.setItem("ProductsAmount", JSON.stringify(amount));
-      localStorage.setItem("Cart", JSON.stringify(FetchData?.cart));
-    }
-  }, [FetchData]);
+  const CartItems = FetchData?.Cart as CartItem[];
 
   useEffect(() => {
-    SummeryCall();
-  }, [SummeryCall]);
+    let TotalProducts = 0;
+    const Total = CartItems?.reduce((acc, item: CartItem) => {
+      TotalProducts += item.qty;
+      return acc + item.product.price * item.qty;
+    }, 0);
+    setTotalAmount(Total);
+    setTotalProducts(TotalProducts);
+    localStorage.setItem("ProductsAmount", Total?.toString());
+    localStorage.setItem("Cart", JSON.stringify(CartItems));
+  }, [CartItems]);
 
   const UpdateQuantity = (_id: string, quantity: number) => {
     const cartProduct = {
@@ -59,7 +55,7 @@ const Cart = () => {
 
   if (loading) return <div data-testid='Loading'>Loading</div>;
 
-  if (!FetchData || FetchData.cart?.length === 0)
+  if (!CartItems || CartItems?.length === 0)
     return (
       <StyledContainer>
         <h1>Empty Cart</h1>
@@ -72,9 +68,10 @@ const Cart = () => {
       {Alert && <AlertDisplay msg={Alert} type={true} />}
       <StyledContainer>
         <h1>SHOPPING CART</h1>
-        {FetchData.cart?.map((item: CartItem) => (
+        {CartItems?.map((item: CartItem) => (
           <ProductList
             key={item._id}
+            styledWidth='auto'
             Cart={item}
             DeleteFromCart={RemoveFromCart}
             UpdateQty={UpdateQuantity}

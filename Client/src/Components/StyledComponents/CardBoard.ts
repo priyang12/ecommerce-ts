@@ -10,11 +10,13 @@ export const CardBoard = styled.section`
   gap: 2rem;
 `;
 
-export const Card = styled.div`
+export const Card = styled.article`
   display: grid;
+  text-align: center;
   grid-auto-flow: row;
   grid-auto-columns: minmax(0, 1fr);
   align-items: center;
+  justify-items: center;
   padding: 1rem;
 
   img {

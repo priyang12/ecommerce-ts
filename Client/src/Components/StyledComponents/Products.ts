@@ -19,13 +19,6 @@ export const StyledDisplay = styled.section`
 
 // export const StyledProducts = styled.section`
 export const StyledProducts = styled(CardBoard)`
-  display: grid;
-  width: 100%;
-  margin: auto;
-  padding: 1em;
-  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
-  grid-template-rows: 1fr;
-  gap: 2rem;
   backdrop-filter: blur(8px) saturate(142%);
   -webkit-backdrop-filter: blur(8px) saturate(142%);
   background-color: #040202a3;

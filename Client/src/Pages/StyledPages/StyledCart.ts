@@ -14,8 +14,17 @@ export const StyledCheckout = styled.div`
   background-color: var(--secondary-light-color);
   max-width: 30ch;
   width: 100%;
-  text-align: center;
-  margin: auto;
+  margin: 1em auto;
   padding: 1em;
-  color: var(--main-dark-color);
+  color: var(--assertive-color);
+  p {
+    font-size: 1.5rem;
+    background-color: var(--main-light-color);
+    padding: 0.5em;
+  }
+  .btn {
+    margin: 0;
+    border: 2px solid var(--main-dark-color);
+    transition: all 0.3s ease-in-out;
+  }
 `;

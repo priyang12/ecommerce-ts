@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const StyledContainer = styled.section`
   width: 100%;
-  margin: 0 auto;
+  margin: ${(props) => props.theme.marginTop}em auto;
   max-width: 100ch;
 `;
 

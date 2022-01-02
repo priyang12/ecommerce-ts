@@ -4,20 +4,10 @@ import { ListProduct } from "../types";
 import Quantity from "./Quantity";
 import {
   StyledItem,
+  StyledPrice,
   StyledProductList,
   StyledQuantity,
 } from "./StyledComponents/StyledProductList";
-
-// interface List {
-//   Product: ListProduct;
-//   type: string;
-// }
-// interface CartList extends ListProduct {
-//   ClickFunction: (id: string) => void;
-// }
-// interface OrderList extends ListProduct {
-//   qty: number;
-// }
 
 export type CartItem = {
   _id: string;
@@ -27,24 +17,33 @@ export type CartItem = {
 
 type PropType = {
   Cart: CartItem;
+  styledWidth: string;
   DeleteFromCart?: (id: string) => void;
   UpdateQty?: (_id: string, quantity: number) => void;
 };
 
-const ProductList: FC<PropType> = ({ Cart, DeleteFromCart, UpdateQty }) => {
+const ProductList: FC<PropType> = ({
+  Cart,
+  DeleteFromCart,
+  UpdateQty,
+  styledWidth,
+}) => {
   const { _id, product, qty } = Cart;
 
   return (
     <StyledProductList>
-      <StyledItem>
+      <StyledItem theme={{ width: styledWidth }}>
         <img src={product.image} alt={Image.name} />
         <Link to={`/product/${product._id}`}>{product.name}</Link>
-        <p>{product.price}</p>
+        <StyledPrice>
+          {UpdateQty ? product.price : `${product.price} x ${qty}`}
+        </StyledPrice>
         <StyledQuantity>
-          <label>Qty</label>
+          <label>{UpdateQty ? "Qty :" : "Total"}</label>
           {UpdateQty ? (
             <select
               data-testid='selectQty'
+              value={qty}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                 UpdateQty(product._id, parseInt(e.target.value))
               }
@@ -52,7 +51,7 @@ const ProductList: FC<PropType> = ({ Cart, DeleteFromCart, UpdateQty }) => {
               <Quantity countInStock={product.countInStock} />
             </select>
           ) : (
-            <div>{qty}</div>
+            <div> : {qty * product.price}</div>
           )}
         </StyledQuantity>
         {DeleteFromCart && (
@@ -61,7 +60,7 @@ const ProductList: FC<PropType> = ({ Cart, DeleteFromCart, UpdateQty }) => {
             className='btn'
             onClick={() => DeleteFromCart(_id)}
           >
-            <i className='fas fa-trash'>delete</i>
+            <i className='fas fa-trash'></i>
           </button>
         )}
       </StyledItem>

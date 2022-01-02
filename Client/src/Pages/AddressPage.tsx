@@ -52,7 +52,7 @@ const AddressPage = () => {
     }
   };
   return (
-    <StyledPaymentContainer>
+    <StyledPaymentContainer theme={{ maxWidth: "60ch" }}>
       <Navigators />
       <form onSubmit={SubmitAddress}>
         <h1>SHIPPING</h1>
