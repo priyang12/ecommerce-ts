@@ -3,7 +3,7 @@ import { CardBoard, Card } from "./CardBoard";
 
 export const StyledDisplay = styled.section`
   text-align: center;
-  background-color: #774bac;
+  background-color: var(--main-dark-color);
   /* background: url('../images/circle-scatter-haikei.svg') repeat center/cover; */
   height: 100vh;
   min-height: 1500px;

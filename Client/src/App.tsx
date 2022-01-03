@@ -15,6 +15,8 @@ import OrderStatus from "./Pages/OrderStatus";
 import setAuthToken from "./Utils/setAuthToken";
 import OrderDetails from "./Pages/OrderDetails";
 import AdminDashboard from "./Pages/AdminDashboard";
+import AdminProducts from "./Pages/AdminProducts";
+import AdminUsers from "./Pages/AdminUsers";
 
 function App() {
   const { state, dispatch } = useContext(AuthContext);
@@ -39,7 +41,8 @@ function App() {
       <Route exact path='/OrderStatus/:id' component={OrderDetails} />
       <Route exact path='/AdminDashboard' component={AdminDashboard} />
       <Route exact path='/AdminOrders' component={OrderStatus} />
-      <Route exact path='/AdminOrders' component={OrderStatus} />
+      <Route exact path='/AdminProducts' component={AdminProducts} />
+      <Route exact path='/AdminUsers' component={AdminUsers} />
     </Fragment>
   );
 

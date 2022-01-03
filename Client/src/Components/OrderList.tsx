@@ -1,9 +1,29 @@
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 import { Order } from "../types";
+import { StyledContainer } from "./StyledComponents/Container";
 
 type Props = {
   Orders: [];
 };
+
+const ListItem = styled.ul`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: var(--assertive-color);
+  color: var(--main-light-color);
+  border-radius: 15px;
+  div {
+    min-width: 300px;
+  }
+  p {
+    min-width: 100px;
+  }
+  a {
+    color: var(--bg-light);
+  }
+`;
 
 const OrderList = ({ Orders }: Props) => {
   if (!Orders) return null;
@@ -17,9 +37,9 @@ const OrderList = ({ Orders }: Props) => {
     );
   }
   return (
-    <ul className='list'>
+    <StyledContainer theme={{ marginTop: 5 }}>
       {Orders.map((order: Order, index: number) => (
-        <li className='list-item' key={index}>
+        <ListItem key={index}>
           {order.user ? (
             <div>
               <p>name :{order.user.name}</p>
@@ -37,9 +57,9 @@ const OrderList = ({ Orders }: Props) => {
           )}
 
           <Link to={`./OrderStatus/${order._id}`}>Details</Link>
-        </li>
+        </ListItem>
       ))}
-    </ul>
+    </StyledContainer>
   );
 };
 
