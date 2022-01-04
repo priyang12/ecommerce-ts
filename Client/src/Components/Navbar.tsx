@@ -11,6 +11,7 @@ import {
   StyledLinks,
   DropDown,
   StyledDropDownButton,
+  StyledSecondaryNav,
 } from "./StyledComponents/navbar";
 
 const Navbar = () => {
@@ -84,19 +85,21 @@ const Navbar = () => {
         <SerchButton onClick={search}>Find</SerchButton>
       </SearchBar>
 
-      {user && (
-        <StyledLinks>
-          <Link to='/Cart' className='cart link'>
-            <i className='fas fa-shopping-cart'></i> CART
-          </Link>
-        </StyledLinks>
-      )}
-      {user?.isAdmin && (
-        <Link to='/AdminDashboard' className='AdminIcon link'>
-          AdminDashboard
-        </Link>
-      )}
-      {user ? AuthLink : GuestLink}
+      <StyledSecondaryNav>
+        {user && (
+          <StyledLinks>
+            <Link to='/Cart'>
+              <i className='fas fa-shopping-cart'></i> CART
+            </Link>
+          </StyledLinks>
+        )}
+        {user?.isAdmin && (
+          <StyledLinks>
+            <Link to='/AdminDashboard'>AdminDashboard</Link>
+          </StyledLinks>
+        )}
+        {user ? AuthLink : GuestLink}
+      </StyledSecondaryNav>
     </StyledNavbar>
   );
 };

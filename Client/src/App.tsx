@@ -34,6 +34,7 @@ function App() {
     <Fragment>
       <Navbar />
       <Route exact path='/' component={Home} />
+      <Route exact path='/search/:id' component={Home} />
       <Route exact path='/product/:id' component={SingleProduct} />
       <Route exact path='/cart' component={Cart} />
       <Route exact path='/PlaceOrder' component={PlaceOrder} />

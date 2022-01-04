@@ -4,15 +4,30 @@ export const StyledNavbar = styled.nav`
   color: #c996cc;
   background-color: #916bbf;
   display: flex;
+  flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+  h1 {
+    margin: 0;
+  }
+  @media (min-width: 800px) {
+    flex-direction: row;
+    padding: 3rem 0;
+  }
+`;
+
+export const StyledSecondaryNav = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  & > * {
+    margin: 0.5em;
+    padding: 2em;
+  }
   @media (max-width: 576px) {
     flex-direction: column;
-    h1 {
-      margin: 0;
-    }
     & > * {
-      margin: 0.5em;
+      padding: 0.5em;
     }
   }
 `;
@@ -60,6 +75,8 @@ export const StyledLinks = styled.div`
     &:hover {
       color: #fff;
     }
+  }
+  @media (max-width: 800px) {
   }
 `;
 export const DropDown = styled.div`

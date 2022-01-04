@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const CardBoard = styled.section`
   display: grid;
-  width: 100%;
+
   margin: auto;
   padding: 1em;
   grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
