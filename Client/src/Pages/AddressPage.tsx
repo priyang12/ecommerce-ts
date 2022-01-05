@@ -9,7 +9,6 @@ let init: Address = {
   homeAddress: "",
   city: "",
   postalCode: "",
-  country: "",
 };
 
 const AddressPage = () => {
@@ -95,19 +94,7 @@ const AddressPage = () => {
           <span className='bar'></span>
           <label htmlFor='PostalCode'>Postal Code</label>
         </div>
-        <div className='form-control'>
-          <input
-            type='text'
-            name='country'
-            id='Country'
-            onChange={ChangeShippingAddress}
-            value={country}
-            required
-          />
-          <span className='highlight'></span>
-          <span className='bar'></span>
-          <label htmlFor='Country'>Country</label>
-        </div>
+
         <input type='submit' className='btn' value='Continue' />
         {Valid && (
           <div className='alert'>Please Enter All the Fields Properly</div>

@@ -2,6 +2,9 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
+import "@testing-library/jest-dom";
+
+//components
 import AddressPage from "../AddressPage";
 
 beforeEach(() => {
@@ -31,12 +34,10 @@ it("Store Address in Local Storage", () => {
     homeAddress: "202,Pipload",
     city: "Surat",
     postalCode: "456123",
-    country: "India",
   };
   userEvent.type(screen.getByLabelText(/homeAddress/i), address.homeAddress);
   userEvent.type(screen.getByLabelText(/city/i), address.city);
   userEvent.type(screen.getByLabelText(/postal Code/i), address.postalCode);
-  userEvent.type(screen.getByLabelText(/country/i), address.country);
 
   userEvent.click(screen.getByText(/Continue/i));
   expect(JSON.parse(localStorage.address)).toStrictEqual(address);
