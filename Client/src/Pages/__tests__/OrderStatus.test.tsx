@@ -72,15 +72,13 @@ afterEach(() => {
 it("Mock Order Data", async () => {
   mock.onGet("/api/orders").reply(200, Orders);
   render(
-    <MemoryRouter initialEntries={["OrderStatus"]}>
+    <MemoryRouter initialEntries={["/OrderStatus"]}>
       <OrderStatus />
     </MemoryRouter>
   );
 
   //check if the loading is true
-  await waitForElementToBeRemoved(screen.getByTestId("Loading")).then(() => {
-    // expect(screen.getByTestId("Loading")).toBeNull(); //check if the loading is false
-  });
+  await waitForElementToBeRemoved(screen.getByTestId("Loading")).then(() => {});
 
   // Check if the Order is rendering.
   expect(
@@ -91,7 +89,7 @@ it("Mock Order Data", async () => {
 it("Empty Order", async () => {
   mock.onGet("/api/orders").reply(200, []);
   render(
-    <MemoryRouter initialEntries={["OrderStatus"]}>
+    <MemoryRouter initialEntries={["/OrderStatus"]}>
       <OrderStatus />
     </MemoryRouter>
   );
@@ -108,7 +106,7 @@ it("Empty Order", async () => {
 it("Server Error", async () => {
   mock.onGet("/api/orders").reply(500);
   render(
-    <MemoryRouter initialEntries={["OrderStatus"]}>
+    <MemoryRouter initialEntries={["/OrderStatus"]}>
       <OrderStatus />
     </MemoryRouter>
   );

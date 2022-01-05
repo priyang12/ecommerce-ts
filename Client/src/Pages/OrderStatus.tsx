@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useFetch } from "../Utils/CustomHooks";
 import OrderList from "../Components/OrderList";
@@ -5,11 +6,14 @@ import Spinner from "../Components/Spinner";
 
 const OrderStatus = () => {
   const { pathname } = useLocation();
-  console.log(pathname);
-  const Url = pathname === "/OrderStatus" ? "/api/orders" : "/api/orders/all";
+
+  const [Url, setUrl] = useState("");
 
   const [FetchData, Err, loading] = useFetch(Url);
-  console.log(Url);
+  useEffect(() => {
+    if (pathname === "/OrderStatus") setUrl("/api/orders");
+    else setUrl("/api/orders/all");
+  }, [pathname]);
 
   if (loading) return <Spinner />;
   if (Err) return <div>{Err}</div>;

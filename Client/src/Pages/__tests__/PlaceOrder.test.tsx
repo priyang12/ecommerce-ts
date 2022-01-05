@@ -79,7 +79,8 @@ beforeAll(() => {
 });
 
 describe("Check Redirects", () => {
-  it("Return to cart Page ", () => {
+  it("Return to cart Page Removed Values", () => {
+    localStorage.clear();
     render(
       <AuthContext.Provider value={{ state, dispatch }}>
         <Router history={History}>
@@ -87,7 +88,7 @@ describe("Check Redirects", () => {
         </Router>
       </AuthContext.Provider>
     );
-    expect(History.location.pathname).toBe("/cart");
+    expect(History.location.pathname).toBe("/");
   });
   it("Return to cart Page on Empty Cart", () => {
     localStorage.setItem("cart", JSON.stringify([]));
@@ -108,10 +109,11 @@ describe("Check Redirects", () => {
 describe("Check Order Details", () => {
   let His = createMemoryHistory();
   beforeEach(() => {
-    localStorage.setItem("cart", JSON.stringify(Cart));
+    localStorage.setItem("Cart", JSON.stringify(Cart));
     localStorage.setItem("address", JSON.stringify(address));
     localStorage.setItem("payMethod", Method);
-    localStorage.setItem("productsAmount", JSON.stringify(productsAmount));
+    localStorage.setItem("ProductsAmount", JSON.stringify(productsAmount));
+
     render(
       <AuthContext.Provider value={{ state, dispatch }}>
         <Router history={His}>
@@ -120,10 +122,11 @@ describe("Check Order Details", () => {
       </AuthContext.Provider>
     );
   });
-  it("Check For Amount Summery ", () => {
+  it("Check For Amount Summery", () => {
     const shipping = addDecimals(productsAmount > 500 ? 0 : 100);
     const Tax = addDecimals(productsAmount * 0.1);
-
+    console.log(localStorage.getItem(""));
+    console.log(His.location.pathname);
     expect(screen.getByTestId("ShippingCost").textContent).toMatch(
       String(shipping)
     );
@@ -134,18 +137,7 @@ describe("Check Order Details", () => {
       String(TotalAmount)
     );
   });
-  it("Check SnapShot of Order", () => {
-    const tree = renderer
-      .create(
-        <AuthContext.Provider value={{ state, dispatch }}>
-          <Router history={His}>
-            <PlaceOrder />
-          </Router>
-        </AuthContext.Provider>
-      )
-      .toJSON();
-    expect(tree).toMatchSnapshot();
-  });
+
   it(" Store Order in Local Storage And Redirect to Payment Gateway", () => {
     jest.useFakeTimers();
     const shipping = addDecimals(productsAmount > 500 ? 0 : 100);
@@ -159,14 +151,13 @@ describe("Check Order Details", () => {
       shippingPrice: shipping,
       totalPrice: Math.round(shipping + Tax + productsAmount),
     };
-    const PlaceOrderBtn = screen.getByText("Place Order");
+    const PlaceOrderBtn = screen.getByText(/PlaceOrder/);
     userEvent.click(PlaceOrderBtn);
     act(() => {
       jest.advanceTimersByTime(1);
     });
     expect(PlaceOrderBtn).toBeDisabled();
     expect(JSON.parse(localStorage.order)).toStrictEqual(Order);
-
     expect(His.location.pathname).toMatch(/PayPal/);
   });
 });

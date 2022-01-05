@@ -6,6 +6,7 @@ import Reviews from "../Components/Reviews";
 import Rating from "../Components/Rating";
 import Quantity from "../Components/Quantity";
 import TimeoutBtn from "../Components/TimeoutBtn";
+import AlertDisplay from "../Components/AlertDisplay";
 
 //styles
 import {
@@ -22,12 +23,14 @@ const SingleProduct = () => {
   );
 
   const [Qty, setQty] = useState("1");
-  const [Params, setParams] = useState<any>(null);
+  const [Params, setParams] = useState<any>({
+    url: "",
+  });
   const { Alert, Err } = useAxios(Params);
 
   const AddToCart = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Add Cart");
+
     const CartItem = {
       id: Product._id,
       qty: Qty,
@@ -96,8 +99,9 @@ const SingleProduct = () => {
                   )}
                 </form>
               )}
-              {Alert && <div className='alert'>{Alert}</div>}
-              {Err && <div className='alert'>{Err}</div>}
+
+              {Alert && <AlertDisplay msg={Alert} type={true} />}
+              {Err && <AlertDisplay msg={Err} type={false} />}
             </StyledCheckout>
           </StyledProduct>
         </StyledContainer>

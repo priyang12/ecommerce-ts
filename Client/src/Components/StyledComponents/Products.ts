@@ -23,8 +23,8 @@ export const StyledProducts = styled(CardBoard)`
   -webkit-backdrop-filter: blur(8px) saturate(142%);
   background-color: #040202a3;
   border: 1px solid rgba(255, 255, 255, 0.125);
-  max-width: 90%;
-  width: 90%;
+  max-width: 70%;
+  width: 100%;
 `;
 
 /* export const StyledProductCard = styled.div` */

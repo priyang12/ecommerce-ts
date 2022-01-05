@@ -8,7 +8,6 @@ import "@testing-library/jest-dom";
 
 //Component
 import SingleProduct from "../SingleProduct";
-import { AuthContext } from "../../Context/AuthContext";
 
 const product = {
   rating: 4,
@@ -61,24 +60,6 @@ it("Mock Fetch Product Details", async () => {
 
   //Check for Review
   expect(screen.getByText(/REVIEWS/)).toBeInTheDocument();
-});
-
-it("Check SnapShot of Order", async () => {
-  mock.onGet("/api/products/product/123123").reply(200, product);
-  const { asFragment } = render(
-    <Router history={history}>
-      <Route path='/product/:id'>
-        <SingleProduct />
-      </Route>
-    </Router>
-  );
-  await waitFor(() => {
-    expect(
-      screen.getByText(/Airpods Wireless Bluetooth Headphones/)
-    ).toBeInTheDocument();
-  });
-
-  expect(asFragment()).toMatchSnapshot();
 });
 
 it("Mock Add to Cart", async () => {

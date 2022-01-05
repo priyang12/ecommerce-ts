@@ -1,30 +1,32 @@
 import { Product } from "../types";
-import { useFetch } from "../Utils/CustomHooks";
 import ProductCard from "./ProductCard";
+import Spinner from "./Spinner";
 import { StyledDisplay, StyledProducts } from "./StyledComponents/Products";
 
 type props = {
-  url: string;
+  loading: boolean;
+  Products: Product[];
+  title: string;
 };
 
-const DisplayProducts = ({ url }: props) => {
-  const [FetchData, Err, loading] = useFetch(url);
+const DisplayProducts = ({ loading, Products, title }: props) => {
+  if (loading) return <Spinner />;
+
+  if (!Products) return null;
+
+  if (!Products.length) return <p>No products found</p>;
+
   return (
     <div>
-      {loading ? (
-        <div className='loading'>Loading</div>
-      ) : (
-        <StyledDisplay>
-          <h1>Product Display</h1>
-          <StyledProducts>
-            {FetchData &&
-              FetchData.products.map((product: Product) => (
-                <ProductCard product={product} key={product._id} />
-              ))}
-            {Err && <div className='Error'>{Err}</div>}
-          </StyledProducts>
-        </StyledDisplay>
-      )}
+      <StyledDisplay>
+        <h1>{title}</h1>
+        <StyledProducts>
+          {Products &&
+            Products.map((product: Product) => (
+              <ProductCard product={product} key={product._id} />
+            ))}
+        </StyledProducts>
+      </StyledDisplay>
     </div>
   );
 };

@@ -4,6 +4,7 @@ import { AuthContext } from "./Context/Authentication/AuthContext";
 import { loadUser } from "./Context/Authentication/AuthActions";
 import Auth from "./Pages/Auth";
 import Home from "./Pages/Home";
+import Search from "./Pages/Search";
 import Navbar from "./Components/Navbar";
 import SingleProduct from "./Pages/SingleProduct";
 import Cart from "./Pages/Cart";
@@ -34,7 +35,12 @@ function App() {
     <Fragment>
       <Navbar />
       <Route exact path='/' component={Home} />
-      <Route exact path='/search/:id' component={Home} />
+      <Route exact path='/search/name=:keyword' component={Search} />
+      <Route
+        exact
+        path='/search/name=:keyword/:pageNumber'
+        component={Search}
+      />
       <Route exact path='/product/:id' component={SingleProduct} />
       <Route exact path='/cart' component={Cart} />
       <Route exact path='/PlaceOrder' component={PlaceOrder} />

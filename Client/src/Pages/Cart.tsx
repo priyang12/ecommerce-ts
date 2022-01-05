@@ -12,7 +12,7 @@ const Cart = () => {
 
   const [Params, setParams] = useState<any>({
     method: "GET",
-    url: "/api/cart",
+    url: "",
   });
 
   const { Alert, Err, FetchData, loading } = useAxios(Params);
@@ -20,27 +20,36 @@ const Cart = () => {
   const CartItems = FetchData?.Cart as CartItem[];
 
   useEffect(() => {
-    let TotalProducts = 0;
-    const Total = CartItems?.reduce((acc, item: CartItem) => {
-      TotalProducts += item.qty;
-      return acc + item.product.price * item.qty;
-    }, 0);
-    setTotalAmount(Total);
-    setTotalProducts(TotalProducts);
-    localStorage.setItem("ProductsAmount", Total?.toString());
-    localStorage.setItem("Cart", JSON.stringify(CartItems));
+    setParams({
+      method: "GET",
+      url: "/api/cart",
+    });
+  }, []);
+
+  useEffect(() => {
+    if (CartItems?.length !== 0) {
+      let TotalProducts = 0;
+      let TotalAmount = 0;
+      const Total = CartItems?.reduce((acc, item: CartItem) => {
+        TotalProducts += item.qty;
+        return acc + item.product.price * item.qty;
+      }, 0);
+      TotalAmount = Math.round(Total * 100) / 100;
+      setTotalAmount(TotalAmount);
+      setTotalProducts(TotalProducts);
+      localStorage.setItem("ProductsAmount", JSON.stringify(TotalProducts));
+      localStorage.setItem("Cart", JSON.stringify(CartItems));
+    }
   }, [CartItems]);
 
   const UpdateQuantity = (_id: string, quantity: number) => {
-    const cartProduct = {
-      id: _id,
-      qty: quantity,
-    };
-
     setParams({
       method: "POST",
       url: `/api/cart`,
-      data: cartProduct,
+      data: {
+        id: _id,
+        qty: quantity,
+      },
     });
   };
 
@@ -51,7 +60,7 @@ const Cart = () => {
     });
   };
 
-  if (!localStorage.token) return <Redirect to='/' />;
+  if (!FetchData) return <div>Server Error</div>;
 
   if (loading) return <div data-testid='Loading'>Loading</div>;
 

@@ -19,12 +19,6 @@ const PlaceOrder = () => {
   const { state } = useContext(AuthContext);
   const { token } = state;
 
-  useEffect(() => {
-    if (!token) {
-      history.push("/");
-    }
-  }, [token, history]);
-
   const Cart: Cart[] = localStorage.Cart && JSON.parse(localStorage.Cart);
   const Address: Address =
     localStorage.address && JSON.parse(localStorage.address);
@@ -33,6 +27,12 @@ const PlaceOrder = () => {
     localStorage.ProductsAmount && JSON.parse(localStorage.ProductsAmount);
 
   let ExtraAmount: number = 0;
+
+  useEffect(() => {
+    if (!token) {
+      history.push("/");
+    }
+  }, [token, history]);
 
   const addDecimals = (num: number) => {
     const result = Number((Math.round(num * 100) / 100).toFixed(2));
@@ -70,7 +70,7 @@ const PlaceOrder = () => {
             <StyledHeader>SHIPPING </StyledHeader>
             <p>
               Address: {Address.homeAddress} , {Address.city} ,
-              {Address.postalCode}, {Address.country}
+              {Address.postalCode},
             </p>
           </div>
           <div className='detail'>
@@ -108,12 +108,12 @@ const PlaceOrder = () => {
               <StyledOrderSummaryItem>
                 Total Cost :
                 <span data-testid='TotalAmount'>
-                  {ExtraAmount + ProductsAmount}
+                  {Math.round(ExtraAmount + ProductsAmount)}
                 </span>
               </StyledOrderSummaryItem>
             </StyledOrderSummaryBody>
             {/* <TimeoutBtn classValue='btn' FormValue='Place Order' Time={4000} /> */}
-            <TimeoutBtn Time={1000} classname='btn' FormValue='PlaceOrder' />
+            <TimeoutBtn Time={4000} classname='btn' FormValue='PlaceOrder' />
           </form>
         </StyledOrderSummary>
       </StyledPlaceOrder>

@@ -1,8 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
-import Register from "../Register";
 import "@testing-library/jest-dom";
+
+//Components: Register,Context
+import Register from "../Register";
+import { AuthProvider } from "../../Context/Authentication/AuthContext";
 
 let name: HTMLElement;
 let email: HTMLElement;
@@ -11,9 +14,11 @@ let password2: HTMLElement;
 
 beforeEach(() => {
   render(
-    <Router>
-      <Register />
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Register />
+      </Router>
+    </AuthProvider>
   );
 
   name = screen.getByLabelText(/name/i);

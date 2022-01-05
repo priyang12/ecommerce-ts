@@ -12,7 +12,7 @@ import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 
 import Auth from "../Auth";
-import { AuthProvider } from "../../Context/AuthContext";
+import { AuthProvider } from "../../Context/Authentication/AuthContext";
 import "@testing-library/jest-dom";
 
 describe("Toggle Login Register", () => {

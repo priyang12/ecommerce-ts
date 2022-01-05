@@ -30,7 +30,7 @@ export const useAxios = (Params: AxiosRequestConfig) => {
         }, 5000);
       }
     };
-    if (Params) fetchData();
+    if (Params.url) fetchData();
     return () => {
       setLoading(false);
       setFetchData(null);
@@ -50,7 +50,7 @@ export const useFetch = (url: string) => {
       try {
         setLoading(true);
         const { data }: any = await axios.get(url);
-
+        console.log("API CALL");
         setFetchData(data);
         setErr(null);
       } catch (error: any) {
@@ -67,7 +67,7 @@ export const useFetch = (url: string) => {
         setLoading(false);
       }
     };
-    fetchData();
+    if (url) fetchData();
     return () => {
       setLoading(false);
       setFetchData(null);

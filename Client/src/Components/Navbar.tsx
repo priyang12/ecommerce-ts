@@ -23,7 +23,7 @@ const Navbar = () => {
 
   const search = () => {
     if (searchValue !== "") {
-      let path = `/keyword=${searchValue}`;
+      let path = `/search/name=${searchValue}`;
       history.push(path);
     }
   };

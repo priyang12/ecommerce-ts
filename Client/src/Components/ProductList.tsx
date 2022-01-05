@@ -51,7 +51,7 @@ const ProductList: FC<PropType> = ({
               <Quantity countInStock={product.countInStock} />
             </select>
           ) : (
-            <div> : {qty * product.price}</div>
+            <div> : {Math.round(qty * product.price)}</div>
           )}
         </StyledQuantity>
         {DeleteFromCart && (
