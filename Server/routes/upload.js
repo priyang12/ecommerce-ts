@@ -1,12 +1,12 @@
-const path = require('path');
-const express = require('express');
-const multer = require('multer');
+const path = require("path");
+const express = require("express");
+const multer = require("multer");
 const router = express.Router();
-const Admin = require('../middleware/admin');
+const Admin = require("../middleware/admin");
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, 'Server/Photos/');
+    cb(null, "Server/Photos/");
   },
   filename(req, file, cb) {
     cb(
@@ -24,7 +24,7 @@ function checkFileType(file, cb) {
   if (extname && mimetype) {
     return cb(null, true);
   } else {
-    cb('Images only!');
+    cb("Images only!");
   }
 }
 
@@ -35,9 +35,12 @@ const upload = multer({
   },
 });
 
-router.post('/', Admin, upload.single('image'), (req, res) => {
+router.post("/", Admin, upload.single("image"), (req, res) => {
   try {
-    res.send(`/Photos/${req.file.filename}`);
+    res.status(200).json({
+      msg: "Image Uploaded",
+      image: `${req.file.filename}`,
+    });
   } catch (error) {
     throw Error(error);
   }

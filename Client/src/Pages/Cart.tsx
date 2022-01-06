@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useAxios } from "../Utils/CustomHooks";
 import AlertDisplay from "../Components/AlertDisplay";
 import ProductList, { CartItem } from "../Components/ProductList";
-import { Redirect } from "react-router-dom";
 import { StyledContainer, StyledCheckout } from "./StyledPages/StyledCart";
 
 const Cart = () => {

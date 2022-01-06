@@ -29,6 +29,7 @@ const StyledProductTitle = styled.h2`
   margin: 0;
   color: var(--secondary-light-color);
 `;
+
 const AdminProducts = () => {
   const history = useHistory();
   const [Params, setParams] = useState<any>({
@@ -40,7 +41,6 @@ const AdminProducts = () => {
 
   const Products: DetailedProduct[] = FetchData?.products;
 
-  console.log(Products);
   const DeleteProduct = (id: string) => {
     console.log(id);
     setParams({

@@ -41,7 +41,7 @@ const SingleProduct = () => {
       data: CartItem,
     });
   };
-
+  console.log(FetchData?.countInStock);
   if (loading) return <div data-testid='Loading'>Loading</div>;
 
   if (ProductError) return <div className='Error'>{ProductError}</div>;
@@ -74,13 +74,13 @@ const SingleProduct = () => {
             </StyledDetails>
             <StyledCheckout>
               <h3 className='status-label'>Price: {Product.price}</h3>
-              {Product.countInStock === 0 ? (
+              {Product.countInStock <= 0 ? (
                 <h3 style={{ color: "red" }}>Status: Out In Stock</h3>
               ) : (
                 <h3 className='status-label'>Status: In Stock</h3>
               )}
 
-              {Product.countInStock !== 0 && (
+              {Product.countInStock > 0 && (
                 <form onSubmit={AddToCart}>
                   <label>Qty</label>
                   <select onChange={(e) => setQty(e.target.value)}>
