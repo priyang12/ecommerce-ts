@@ -78,9 +78,9 @@ const Login = () => {
         <input type='submit' value='login' className='btn' />
       </form>
       <div className='help'>
-        <Link to='#'>Forget Password /</Link>
+        <Link to='/StillWorking'>Forget Password /</Link>
         <br />
-        <Link to='#'> Need Help</Link>
+        <Link to='/StillWorking'> Need Help</Link>
       </div>
     </StyledContainer>
   );

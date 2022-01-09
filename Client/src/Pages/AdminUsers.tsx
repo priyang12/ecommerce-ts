@@ -1,7 +1,9 @@
 import { Profiler } from "react";
-import Spinner from "../Components/Spinner";
 import { User } from "../Context/Authentication/interfaces";
 import { useFetch } from "../Utils/CustomHooks";
+import { Redirect, useHistory } from "react-router-dom";
+import Spinner from "../Components/Spinner";
+
 import {
   StyledHeaders,
   StyledItems,
@@ -10,6 +12,8 @@ import {
 } from "./StyledPages/StyledTableView";
 
 const AdminUsers = () => {
+  const history = useHistory();
+
   const [Users, Errors, loading] = useFetch("/api/users/admin/all");
 
   if (loading) return <Spinner />;
@@ -42,7 +46,14 @@ const AdminUsers = () => {
               <p>{user.email}</p>
               <p>{user.isAdmin ? "Admin" : "User"}</p>
               <p>{user.createdAt.slice(0, 10)}</p>
-              <button className='btn'>Remove User</button>
+              <button
+                className='btn'
+                onClick={() => {
+                  history.push(`/StillWorking`);
+                }}
+              >
+                Remove User
+              </button>
             </StyledItems>
           ))}
         </StyledList>

@@ -1,7 +1,7 @@
 import AlertDisplay from "../Components/AlertDisplay";
 import Spinner from "../Components/Spinner";
 import TimeoutBtn from "../Components/TimeoutBtn";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useAxios } from "../Utils/CustomHooks";
 import { DetailedProduct } from "../types";
@@ -39,6 +39,15 @@ const AdminProducts = () => {
 
   const { Alert, Err, FetchData, loading } = useAxios(Params);
 
+  useEffect(() => {
+    if (Alert === "Product added successfully") {
+      setTimeout(() => {
+        history.push("/StillWorking");
+      }, 3000);
+      // history.push("/admin/products");
+    }
+  }, [Alert]);
+
   const Products: DetailedProduct[] = FetchData?.products;
 
   const DeleteProduct = (id: string) => {
@@ -49,20 +58,23 @@ const AdminProducts = () => {
     });
   };
 
-  const AddNewProduct = () => {
+  const AddNewProduct = (e: any) => {
+    e.preventDefault();
     setParams({
       method: "POST",
       url: "/api/products",
     });
+    // setTimeout(() => {
+    //   history.push(`/StillWorking`);
+    // }, 2000);
   };
-  if (Alert === "Product added successfully") {
-    const id = FetchData.product;
-    history.push(`/UpdateProduct/${id}`);
-  }
 
   if (loading) return <Spinner />;
   if (Err) return <AlertDisplay msg={Err} type={false} />;
   if (!FetchData) return <div>Server Error Please Try Again</div>;
+
+  if (FetchData?.product)
+    return <AlertDisplay msg={Alert + " Redirecting"} type={true} />;
 
   return (
     <section id='AdminProduct'>
@@ -74,7 +86,7 @@ const AdminProducts = () => {
         </form>
       )}
 
-      {Products.length > 0 ? (
+      {Products?.length > 0 ? (
         <ul>
           {Products.map((product: any, index: number) => (
             <StyledProducts key={index}>

@@ -9,9 +9,16 @@
     "client": "npm start --prefix Client",
     "clientinstall": "npm install --prefix Client",
     "dev": "concurrently \"yarn run server\" \"yarn run client\"",
+    "test": "cd Client && yarn test --watchAll && cd ..",
     "data:import": "node Server/seeder",
     "data:destroy": "node Server/seeder -d",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
+    "prepare": "husky install"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "cd Client && yarn test --watchAll && cd .."
+    }
   },
   "author": "Priyang",
   "license": "ISC",
@@ -29,6 +36,7 @@
     "nodemailer": "^6.6.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "husky": "^7.0.0"
   }
 }

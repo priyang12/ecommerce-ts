@@ -5,7 +5,7 @@ export const StyledProductList = styled.ul`
 `;
 
 export const StyledItem = styled.li`
-  box-shadow: 0px 8px 16px #d3d3d3;
+  box-shadow: inset 0px 0px 2px 0px #d3d3d3;
   border-radius: 10px;
   font-size: 1.2rem;
   padding: 1rem;
@@ -14,6 +14,10 @@ export const StyledItem = styled.li`
   align-items: center;
   justify-items: center;
   text-align: center;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    box-shadow: inset 0px 0px 20px 0px #d3d3d3;
+  }
   width: ${(props) => props.theme.width};
   }
   a {

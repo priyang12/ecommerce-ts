@@ -18,6 +18,7 @@ import OrderDetails from "./Pages/OrderDetails";
 import AdminDashboard from "./Pages/AdminDashboard";
 import AdminProducts from "./Pages/AdminProducts";
 import AdminUsers from "./Pages/AdminUsers";
+import StillWorking from "./Pages/StillWorking";
 
 function App() {
   const { state, dispatch } = useContext(AuthContext);
@@ -60,6 +61,7 @@ function App() {
         <Route exact path='/address' component={AddressPage} />
         <Route exact path='/payment' component={PaymentMethod} />
         <Route exact path='/PayPal' component={Paypal} />
+        <Route exact path='/StillWorking' component={StillWorking} />
         <Route component={DefaultContainer} />
       </Switch>
     </Router>

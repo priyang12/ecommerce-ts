@@ -4,9 +4,7 @@ import { CardBoard, Card } from "./CardBoard";
 export const StyledDisplay = styled.section`
   text-align: center;
   background-color: var(--main-dark-color);
-  /* background: url('../images/circle-scatter-haikei.svg') repeat center/cover; */
-  height: 100vh;
-  min-height: 1500px;
+  background: url("./images/haikei.svg") repeat center/cover;
   color: #fff;
   margin: 0;
   h1 {
@@ -47,4 +45,6 @@ export const StyledProductCard = styled(Card)`
   }
 `;
 
-export const StyledRating = styled.div``;
+export const StyledRating = styled.span`
+  padding: 0.5rem;
+`;
