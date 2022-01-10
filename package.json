@@ -7,12 +7,14 @@
     "start": "node Server/server.js",
     "server": "nodemon Server/server.js",
     "client": "npm start --prefix Client",
-    "clientinstall": "npm install --prefix Client",
+    "clientInstall": "yarn install --prefix Client",
+    "clientBuild": "cd Client && yarn build Client ",
     "dev": "concurrently \"yarn run server\" \"yarn run client\"",
     "test": "cd Client && yarn test --watchAll && cd ..",
     "data:import": "node Server/seeder",
     "data:destroy": "node Server/seeder -d",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "deploy": "yarn run clientBuild"
   },
   "husky": {
     "hooks": {
