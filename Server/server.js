@@ -32,10 +32,10 @@ const _dirname = path.resolve();
 app.use("/Photos", express.static(path.join(__dirname, "/Photos")));
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(_dirname, "/client/build")));
+  app.use(express.static(path.join(_dirname, "/Client/build")));
 
   app.get("*", (req, res) =>
-    res.sendFile(path.resolve(_dirname, "client", "build", "index.html"))
+    res.sendFile(path.resolve(_dirname, "Client", "build", "index.html"))
   );
 } else {
   app.get("/", (req, res) => {
