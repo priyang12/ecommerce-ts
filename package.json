@@ -14,7 +14,7 @@
     "data:import": "node Server/seeder",
     "data:destroy": "node Server/seeder -d",
     "prepare": "husky install",
-    "deploy": "yarn run clientBuild"
+    "deploy": "yarn run clientInstall && yarn run clientBuild"
   },
   "husky": {
     "hooks": {
