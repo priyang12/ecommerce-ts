@@ -12,7 +12,6 @@
     "test": "cd Client && yarn test --watchAll && cd ..",
     "data:import": "node Server/seeder",
     "data:destroy": "node Server/seeder -d",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
     "prepare": "husky install"
   },
   "husky": {
