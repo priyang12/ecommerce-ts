@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-cd Client && react-script test && cd ..
+cd Client && CI=true yarn react-scripts test && cd ..
