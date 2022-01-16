@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-cd Client && yarn test --watchAll && echo SUCCESS && cd ..
+cd Client && react-script test && cd ..
