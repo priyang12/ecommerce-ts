@@ -2,6 +2,7 @@ import AlertDisplay from "../Components/AlertDisplay";
 import DisplayProducts from "../Components/DisplayProducts";
 import { useFetch } from "../Utils/CustomHooks";
 import { StyledHome } from "./StyledPages/StyledHome";
+import Spinner from "../Components/Spinner";
 
 const Home = () => {
   const [ProductsData, Err, loading] = useFetch("/api/products");

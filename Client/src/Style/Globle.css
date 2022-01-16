@@ -1,16 +1,3 @@
-/* .border {
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  background: linear-gradient(
-    to right,
-    #ff8983 17.85%,
-    #7f0e7f 53.28%,
-    #007a65 100%
-  );
-  content: '';
-  height: 4px;
-  width: 100%;
-} */
 :root {
   --main-bg-color: #916bbf;
   --main-color: #916bbf;
@@ -46,6 +33,7 @@ body {
 a {
   text-decoration: none;
   text-align: center;
+  color: var(--bg-dark);
 }
 a:active {
   color: var(--bg-light);
