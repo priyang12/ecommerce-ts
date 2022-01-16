@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useAxios } from "../Utils/CustomHooks";
 import { DetailedProduct } from "../types";
+
 import styled from "styled-components";
 
 const StyledProducts = styled.ul`
@@ -46,7 +47,7 @@ const AdminProducts = () => {
       }, 3000);
       // history.push("/admin/products");
     }
-  }, [Alert]);
+  }, [Alert, history]);
 
   const Products: DetailedProduct[] = FetchData?.products;
 
@@ -64,9 +65,6 @@ const AdminProducts = () => {
       method: "POST",
       url: "/api/products",
     });
-    // setTimeout(() => {
-    //   history.push(`/StillWorking`);
-    // }, 2000);
   };
 
   if (loading) return <Spinner />;
@@ -85,13 +83,12 @@ const AdminProducts = () => {
           <TimeoutBtn FormValue='Add New Product' Time={3000} classname='btn' />
         </form>
       )}
-
       {Products?.length > 0 ? (
         <ul>
-          {Products.map((product: any, index: number) => (
-            <StyledProducts key={index}>
+          {Products.map((product: DetailedProduct, index: number) => (
+            <StyledProducts className='Product-list' key={index}>
               <div className='right'>
-                <img src={product.image} alt='' />
+                <img src={product.image} alt={product.name} />
               </div>
               <div className='left'>
                 <StyledProductTitle>{product.name}</StyledProductTitle>

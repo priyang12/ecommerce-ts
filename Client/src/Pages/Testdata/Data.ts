@@ -71,7 +71,7 @@ export const Products = [
     price: 399.99,
     countInStock: 0,
     _id: "60d5e622e5179e2bb44bd839",
-    name: "iPhone ",
+    name: "iPhone",
     image: "/Photos/image-1628092416984.webp",
     description:
       "The ultimate home entertainment center starts with PlayStation. Whether you are into gaming, HD movies, television, music",
