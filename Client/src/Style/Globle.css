@@ -58,7 +58,6 @@ form .form-control .bar {
 form .form-control label {
   position: absolute;
   margin-left: 1.3em;
-
   transition: all 0.5s ease;
 }
 form .form-control input {
@@ -74,9 +73,16 @@ form .form-control input:valid ~ label {
   margin-left: 3px;
   margin-top: 0.1em;
 }
+form .form-control textarea:valid ~ label {
+  margin-left: 3px;
+  margin-bottom: 7em;
+}
 form .form-control input:focus ~ .bar {
   height: 5px;
   background-color: #333;
+}
+form select {
+  padding: 0.5rem;
 }
 form input[type="submit"] {
   margin: auto;
@@ -88,7 +94,14 @@ form input[type="submit"] {
   border-bottom: 4px solid sandybrown;
   border-radius: 5px;
 }
-
+.display {
+  font-size: 2.5rem;
+}
+@media screen and (max-width: 576px) {
+  .display {
+    text-align: center;
+  }
+}
 .btn {
   cursor: pointer;
   padding: 1rem 2rem;

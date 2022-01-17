@@ -19,6 +19,9 @@ const StyledProducts = styled.ul`
     width: 100%;
     height: 100%;
   }
+  .btn-light {
+    color: #fff;
+  }
   @media (max-width: 768px) {
     grid-template-columns: 1fr 1fr;
   }
@@ -33,12 +36,20 @@ const StyledProductTitle = styled.h2`
 
 const AdminProducts = () => {
   const history = useHistory();
+
   const [Params, setParams] = useState<any>({
     method: "GET",
-    url: "/api/products",
+    url: "",
   });
 
   const { Alert, Err, FetchData, loading } = useAxios(Params);
+
+  useEffect(() => {
+    setParams({
+      method: "GET",
+      url: "/api/products",
+    });
+  }, []);
 
   useEffect(() => {
     if (Alert === "Product added successfully") {
@@ -105,7 +116,10 @@ const AdminProducts = () => {
                 </div>
               </div>
               <div style={{ display: "flex", flexDirection: "column" }}>
-                <Link to={`/adminProducts/${product._id}`} className='btn'>
+                <Link
+                  to={`/adminProducts/${product._id}`}
+                  className='btn btn-light'
+                >
                   Edit
                 </Link>
                 <button

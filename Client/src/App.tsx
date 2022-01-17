@@ -19,6 +19,7 @@ import AdminDashboard from "./Pages/AdminDashboard";
 import AdminProducts from "./Pages/AdminProducts";
 import AdminUsers from "./Pages/AdminUsers";
 import StillWorking from "./Pages/StillWorking";
+import AdminUpdateProduct from "./Pages/AdminUpdateProduct";
 
 function App() {
   const { state, dispatch } = useContext(AuthContext);
@@ -50,6 +51,7 @@ function App() {
       <Route exact path='/AdminDashboard' component={AdminDashboard} />
       <Route exact path='/AdminOrders' component={OrderStatus} />
       <Route exact path='/AdminProducts' component={AdminProducts} />
+      <Route exact path='/AdminProducts/:id' component={AdminUpdateProduct} />
       <Route exact path='/AdminUsers' component={AdminUsers} />
     </Fragment>
   );

@@ -1,14 +1,16 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export const useAxios = (Params: AxiosRequestConfig) => {
   const [loading, setLoading] = useState(false);
   const [FetchData, setFetchData] = useState<any>(null);
   const [Err, setErr] = useState<string | null>(null);
   const [Alert, setAlert] = useState<string>("");
+  const [PrevParams, setPrevParams] = useState<any>("");
   useEffect(() => {
     const fetchData = async () => {
-      console.log("Call API");
+      console.log("call API");
+      setPrevParams(Params);
       try {
         setLoading(true);
         const { data }: any = await axios.request(Params);
@@ -30,7 +32,7 @@ export const useAxios = (Params: AxiosRequestConfig) => {
         }, 5000);
       }
     };
-    if (Params.url) fetchData();
+    if ((!PrevParams || PrevParams !== Params) && Params.url) fetchData();
     return () => {
       setLoading(false);
       setFetchData(null);

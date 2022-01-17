@@ -30,16 +30,16 @@
 - Checkout process (shipping, payment method, etc)
 - PayPal / credit card integration
 - Database seeder (products & users)
+- Admin Update product
+- deployment to Vercel
 
 ## Features Still In Development
 
-- Product sorting
-- Admin Update product
+- Product Search
 - User account management
 - Mailchimp integration
 - Forget password
 - end-to-end testing/cypress
-- deployment to Vercel
 
 ## Usage
 

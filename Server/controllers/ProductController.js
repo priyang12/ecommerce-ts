@@ -109,7 +109,9 @@ const UpdateProduct = asyncHandler(async (req, res) => {
     product.numReviews = numReviews;
 
     const updatedProduct = await product.save();
-    res.status(201).json(updatedProduct);
+    res
+      .status(201)
+      .json({ msg: "Product Updated Successfully", product: updatedProduct });
   } catch (error) {
     res.status(404);
     throw Error("Adding Error In Server " + error);
