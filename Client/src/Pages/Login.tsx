@@ -61,7 +61,7 @@ const Login = () => {
           <input
             type='password'
             name='password'
-            id='Password'
+            id='password'
             value={password}
             onChange={ChangeState}
             required

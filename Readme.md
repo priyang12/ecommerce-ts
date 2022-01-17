@@ -35,11 +35,12 @@
 
 ## Features Still In Development
 
-- Product Search
+- Product Sorting
 - User account management
-- Mailchimp integration
+- Carsoul slider
 - Forget password
 - end-to-end testing/cypress
+- Demo Usage
 
 ## Usage
 

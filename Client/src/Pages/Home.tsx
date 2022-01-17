@@ -13,7 +13,7 @@ const Home = () => {
       <DisplayProducts
         Products={ProductsData?.products}
         loading={loading}
-        title='Product Display'
+        title='Products Display'
       />
     </StyledHome>
   );
