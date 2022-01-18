@@ -4,17 +4,17 @@ import { BrowserRouter as Router } from "react-router-dom";
 import Login from "../Login";
 import "@testing-library/jest-dom";
 
-beforeEach(() => {
+const setup = () =>
   render(
     <Router>
       <Login />
     </Router>
   );
-});
 
 it("Check For onchange Input Empty Validate", () => {
+  setup();
   const email = screen.getByLabelText(/email/i);
-  const password = screen.getByLabelText(/Password/i);
+  const password = screen.getByLabelText(/password/i);
 
   userEvent.type(email, "sdas#gmail.com");
   userEvent.type(password, "asdas");
@@ -30,8 +30,9 @@ it("Check For onchange Input Empty Validate", () => {
 });
 
 it("Input Validation on Submit", () => {
+  setup();
   const email = screen.getByLabelText(/email/i);
-  const password = screen.getByLabelText(/Password/i);
+  const password = screen.getByLabelText(/password/i);
 
   userEvent.type(email, "sdas#gmail.com");
   userEvent.type(password, "asd");

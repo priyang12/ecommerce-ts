@@ -67,7 +67,7 @@ const Login = () => {
             required
           />
           <span className='bar'></span>
-          <label htmlFor='Password'>
+          <label htmlFor='password'>
             {FormErrors.email ? (
               <span className='error'>{FormErrors.password}</span>
             ) : (
