@@ -20,11 +20,13 @@
 
 - Top products carousel
 - Product pagination
+- Carousel slider
 - Full featured shopping cart
 - Product reviews and ratings
 - Product search feature
 - Save the Cart in User
 - Order Placement
+- end-to-end testing/cypress
 - Admin product management
 - Admin Order details page
 - Checkout process (shipping, payment method, etc)
@@ -37,9 +39,7 @@
 
 - Product Sorting
 - User account management
-- Carsoul slider
 - Forget password
-- end-to-end testing/cypress
 - Demo Usage
 
 ## Usage
