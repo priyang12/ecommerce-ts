@@ -1,10 +1,43 @@
-import { DetailedProduct } from "../../types";
+import { DetailedProduct } from "../../interfaces";
 
 type SearchResult = {
   products: DetailedProduct[];
   page: number;
   pages: number;
 };
+
+export const slides = [
+  {
+    title: "Sony Playstation 4 Pro White Version",
+    subtitle: "Peru",
+    description: "Adventure is never far away",
+    image: "/Photos/image-1628092377429.webp",
+  },
+  {
+    title: "Chamonix",
+    subtitle: "France",
+    description: "Let your dreams come true",
+    image: "",
+  },
+  {
+    title: "Mimisa Rocks",
+    subtitle: "Australia",
+    description: "A piece of heaven",
+    image: "",
+  },
+  {
+    title: " Playstation 4",
+    subtitle: "Sony Playstation 4 Pro White Version",
+    description: "A piece of heaven",
+    image: "",
+  },
+  {
+    title: "Five",
+    subtitle: "Australia",
+    description: "A piece of heaven",
+    image: "",
+  },
+];
 
 export const Products = [
   {

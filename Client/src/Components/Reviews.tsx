@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Review } from "../types";
+import { Review } from "../interfaces";
 import Rating from "./Rating";
 import {
   ReviewContainer,
@@ -17,9 +17,9 @@ const Reviews: React.FC<{ reviews: Review[] }> = ({ reviews }) => {
           {reviews.map((review) => (
             <ReviewItem key={review._id}>
               <strong>{review.name}</strong>
-              <div className="star-review">
-                <span className="stars">
-                  <Rating value={review.rating} text="" />
+              <div className='star-review'>
+                <span className='stars'>
+                  <Rating value={review.rating} text='' />
                 </span>
               </div>
               <p>{review.createdAt.slice(0, 10)}</p>

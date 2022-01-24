@@ -4,7 +4,7 @@ import TimeoutBtn from "../Components/TimeoutBtn";
 import { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useAxios } from "../Utils/CustomHooks";
-import { DetailedProduct } from "../types";
+import { DetailedProduct } from "../interfaces";
 
 import styled from "styled-components";
 

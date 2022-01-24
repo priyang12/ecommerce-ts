@@ -1,4 +1,4 @@
-import { Product } from "../types";
+import { Product } from "../interfaces";
 import ProductCard from "./ProductCard";
 import Spinner from "./Spinner";
 import { StyledDisplay, StyledProducts } from "./StyledComponents/Products";

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Order } from "../types";
+import { Order } from "../interfaces";
 import { StyledContainer } from "./StyledComponents/Container";
 
 type Props = {

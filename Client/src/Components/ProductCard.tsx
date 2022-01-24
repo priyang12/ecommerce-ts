@@ -1,6 +1,6 @@
 import { StyledRating, StyledProductCard } from "./StyledComponents/Products";
 import { Link } from "react-router-dom";
-import { Product } from "../types";
+import { Product } from "../interfaces";
 import Rating from "./Rating";
 
 type props = {

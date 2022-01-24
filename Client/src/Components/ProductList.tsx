@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import { ListProduct } from "../types";
+import { ListProduct } from "../interfaces";
 import Quantity from "./Quantity";
 import {
   StyledItem,

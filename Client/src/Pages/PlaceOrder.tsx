@@ -3,7 +3,7 @@ import TimeoutBtn from "../Components/TimeoutBtn";
 import ProductList from "../Components/ProductList";
 import Navigators from "../Components/Navigators";
 import { Redirect, useHistory } from "react-router";
-import { Address, Cart } from "../types";
+import { Address, Cart } from "../interfaces";
 import { AuthContext } from "../Context/Authentication/AuthContext";
 import { StyledPaymentContainer } from "../Components/StyledComponents/StyledPayment";
 import {
