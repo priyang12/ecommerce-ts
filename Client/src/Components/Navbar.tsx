@@ -7,7 +7,7 @@ import {
   Logo,
   SearchBar,
   SerachInput,
-  SerchButton,
+  SerchButton as SerachButton,
   StyledLinks,
   DropDown,
   StyledDropDownButton,
@@ -46,7 +46,7 @@ const Navbar = () => {
       {user && (
         <DropDown>
           <div>{user.name}</div>
-          <StyledDropDownButton>
+          <StyledDropDownButton className='Dropdown-btn'>
             <i className='fas fa-caret-down'></i>
           </StyledDropDownButton>
           <div className='dropdown-content'>
@@ -77,12 +77,15 @@ const Navbar = () => {
         <SerachInput
           type='text'
           placeholder='Search Product'
-          value={searchValue}
-          onChange={(e) => {
+          name='search'
+          onKeyUp={(e: any) => {
             setSearchValue(e.target.value);
+            if (e.key === "Enter") {
+              search();
+            }
           }}
         />
-        <SerchButton onClick={search}>Find</SerchButton>
+        <SerachButton onClick={search}>Find</SerachButton>
       </SearchBar>
 
       <StyledSecondaryNav>

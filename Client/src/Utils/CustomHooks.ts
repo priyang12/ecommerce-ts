@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 export const useAxios = (Params: AxiosRequestConfig) => {
   const [loading, setLoading] = useState(false);
@@ -9,7 +9,6 @@ export const useAxios = (Params: AxiosRequestConfig) => {
   const [PrevParams, setPrevParams] = useState<any>("");
   useEffect(() => {
     const fetchData = async () => {
-      console.log("call API");
       setPrevParams(Params);
       try {
         setLoading(true);
