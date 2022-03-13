@@ -1,25 +1,56 @@
+import axios from "axios";
+import { useQuery } from "react-query";
 import AlertDisplay from "../Components/AlertDisplay";
 import Carousel from "../Components/Carousel";
-import DisplayProducts from "../Components/DisplayProducts";
-import { useFetch } from "../Utils/CustomHooks";
+import ProductCard from "../Components/ProductCard";
+import { Product } from "../interfaces";
+
+import Spinner from "../Components/Spinner";
+import {
+  StyledDisplay,
+  StyledProducts,
+} from "../Components/StyledComponents/Products";
 import { StyledHome } from "./StyledPages/StyledHome";
 
 //Fake Data
-import { Products } from "./Testdata/Data";
+// import { Products } from "./Testdata/Data";
 
-const Home = () => {
-  const [ProductsData, Err, loading] = useFetch("/api/products");
+const Home = ({ title = "Products Display" }) => {
+  const {
+    data: ProductsData,
+    error: Err,
+    isLoading,
+  }: { data: any; error: any; isLoading: boolean } = useQuery(
+    ["products"],
+
+    async () => {
+      const url = "/api/products";
+      try {
+        const res = await axios.get(url);
+        console.log(res);
+        return res.data;
+      } catch (error) {
+        throw new Error("Something went wrong.");
+      }
+    }
+  );
+
+  if (isLoading) return <Spinner />;
 
   if (Err) return <AlertDisplay msg={Err} type={false} />;
 
   return (
     <StyledHome>
-      {/* <Carousel products={Products} /> */}
-      <DisplayProducts
-        Products={ProductsData?.products}
-        loading={loading}
-        title='Products Display'
-      />
+      {/* <Carousel products={ProductsData} /> */}
+      <StyledDisplay>
+        <h1>{title}</h1>
+        <StyledProducts>
+          {ProductsData?.products &&
+            ProductsData?.products.map((product: Product) => (
+              <ProductCard product={product} key={product._id} />
+            ))}
+        </StyledProducts>
+      </StyledDisplay>
     </StyledHome>
   );
 };

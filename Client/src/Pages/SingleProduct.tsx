@@ -15,33 +15,54 @@ import {
   StyledDetails,
   StyledCheckout,
 } from "../Components/StyledComponents/Productdetails";
+import axios from "axios";
+import { useQuery, useMutation } from "react-query";
 
 const SingleProduct = () => {
   const { id } = useParams<{ id: string }>();
-  const [FetchData, ProductError, loading] = useFetch(
-    `/api/products/product/${id}`
+
+  const {
+    data: FetchData,
+    error: ProductError,
+    isLoading: loading,
+  }: { data: any; error: any; isLoading: boolean } = useQuery(
+    ["products", { id: id }],
+
+    async () => {
+      const url = `/api/products/product/${id}`;
+      try {
+        const res = await axios.get(url);
+
+        return res.data;
+      } catch (error) {
+        throw new Error("Something went wrong.");
+      }
+    }
   );
-
-  const [Qty, setQty] = useState("1");
-  const [Params, setParams] = useState<any>({
-    url: "",
-  });
-  const { Alert, Err } = useAxios(Params);
-
-  const AddToCart = (e: React.ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  const {
+    isLoading: ChangeingQty,
+    mutate: PostQty,
+    data: QtyData,
+  } = useMutation<any>(async () => {
     const CartItem = {
       id: Product._id,
       qty: Qty,
     };
-    setParams({
-      method: "POST",
-      url: "/api/cart",
-      data: CartItem,
-    });
+    const url = `/api/cart`;
+    try {
+      const res = await axios.post(url, CartItem);
+      return res.data;
+    } catch (error) {
+      throw new Error("Something went wrong.");
+    }
+  });
+  const [Qty, setQty] = useState("1");
+
+  const AddToCart = (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    PostQty();
   };
-  console.log(FetchData?.countInStock);
+
   if (loading) return <div data-testid='Loading'>Loading</div>;
 
   if (ProductError) return <div className='Error'>{ProductError}</div>;
@@ -99,9 +120,8 @@ const SingleProduct = () => {
                   )}
                 </form>
               )}
-
-              {Alert && <AlertDisplay msg={Alert} type={true} />}
-              {Err && <AlertDisplay msg={Err} type={false} />}
+              {ChangeingQty && <AlertDisplay msg='Making A Call' type={true} />}
+              {QtyData && <AlertDisplay msg={QtyData.msg} type={true} />}
             </StyledCheckout>
           </StyledProduct>
         </StyledContainer>
