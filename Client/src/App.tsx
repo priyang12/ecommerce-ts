@@ -49,7 +49,7 @@ function App() {
         component={Search}
       />
       <Route exact path='/product/:id' component={SingleProduct} />
-      <PrivateRoute exact path='/cart' component={Cart} />
+      <Route exact path='/cart' component={Cart} />
       <PrivateRoute exact path='/PlaceOrder' component={PlaceOrder} />
       <PrivateRoute exact path='/OrderStatus' component={OrderStatus} />
       <PrivateRoute exact path='/OrderStatus/:id' component={OrderDetails} />

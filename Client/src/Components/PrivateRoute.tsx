@@ -11,6 +11,7 @@ const PrivateRoute = (props: PrivateRouteProps) => {
 
   const { state } = React.useContext(AuthContext);
   const { user: User } = state;
+
   return (
     <Route
       {...rest}

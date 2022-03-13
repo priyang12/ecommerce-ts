@@ -1,29 +1,24 @@
 import { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useAxios } from "../Utils/CustomHooks";
 import AlertDisplay from "../Components/AlertDisplay";
 import ProductList, { CartItem } from "../Components/ProductList";
 import { StyledContainer, StyledCheckout } from "./StyledPages/StyledCart";
+import { LoadCartQuery, RemoveFromCartQuery } from "../API/CartAPI";
+import { useMutation, useQuery } from "react-query";
 
 const Cart = () => {
   const [TotalAmount, setTotalAmount] = useState(0);
   const [TotalProducts, setTotalProducts] = useState(0);
 
-  const [Params, setParams] = useState<any>({
-    method: "GET",
-    url: "",
-  });
+  const {
+    data: FetchData,
+    error: Err,
+    isLoading: loading,
+  } = useQuery(["Cart"], LoadCartQuery);
 
-  const { Alert, Err, FetchData, loading } = useAxios(Params);
+  const { mutate, isSuccess } = useMutation(["Cart"], RemoveFromCartQuery);
 
   const CartItems = FetchData?.Cart as CartItem[];
-
-  useEffect(() => {
-    setParams({
-      method: "GET",
-      url: "/api/cart",
-    });
-  }, []);
 
   useEffect(() => {
     if (CartItems?.length !== 0) {
@@ -42,21 +37,16 @@ const Cart = () => {
   }, [CartItems]);
 
   const UpdateQuantity = (_id: string, quantity: number) => {
-    setParams({
-      method: "POST",
-      url: `/api/cart`,
-      data: {
-        id: _id,
-        qty: quantity,
-      },
-    });
+    // updata
+    // url: `/api/cart`,
+    // data: {
+    //   id: _id,
+    //   qty: quantity,
+    // },
   };
 
   const RemoveFromCart = (id: string) => {
-    setParams({
-      method: "DELETE",
-      url: `/api/cart/${id}`,
-    });
+    mutate(id);
   };
 
   if (!FetchData) return <div>Server Error</div>;
@@ -72,8 +62,8 @@ const Cart = () => {
 
   return (
     <Fragment>
-      {Err && <AlertDisplay msg={Err} type={false} />}
-      {Alert && <AlertDisplay msg={Alert} type={true} />}
+      {/* {Err && <AlertDisplay msg={Err} type={false} />} */}
+      {isSuccess && <AlertDisplay msg='Product is Deleted' type={true} />}
       <StyledContainer>
         <h1>SHOPPING CART</h1>
         {CartItems?.map((item: CartItem) => (
