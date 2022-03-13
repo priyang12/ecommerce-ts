@@ -33,6 +33,7 @@
 - PayPal / credit card integration
 - Database seeder (products & users)
 - Admin Update product
+- Private and Protected Routes
 - deployment to Vercel
 
 ## Features Still In Development

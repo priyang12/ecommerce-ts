@@ -18,7 +18,7 @@ const Paypal = () => {
   const [PaymentErrors, setPaymentErrors] = useState("");
   const Order = localStorage.order && JSON.parse(localStorage.order);
   const [SdkReady, setSdkReady] = useState(false);
-  console.log("asdasd");
+
   useEffect(() => {
     const addPayPalScript = async () => {
       const { data: clientId } = await axios.get("api/config/paypal");
