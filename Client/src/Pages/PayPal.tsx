@@ -10,12 +10,15 @@ import {
 } from "../Components/StyledComponents/Container";
 
 const Paypal = () => {
-  const [Params, setParams] = useState<any>(null);
+  const [Params, setParams] = useState<any>({
+    method: "",
+    url: "",
+  });
   const { Alert, Err, FetchData, loading } = useAxios(Params);
   const [PaymentErrors, setPaymentErrors] = useState("");
   const Order = localStorage.order && JSON.parse(localStorage.order);
   const [SdkReady, setSdkReady] = useState(false);
-
+  console.log("asdasd");
   useEffect(() => {
     const addPayPalScript = async () => {
       const { data: clientId } = await axios.get("api/config/paypal");
