@@ -64,7 +64,7 @@ it("Delete Product", async () => {
   const DeletedProduct = NewProducts.pop();
 
   const Name = DeletedProduct?.name || "";
-  console.log(DeletedProduct?._id);
+
   mock.onDelete(`/api/products/product/${DeletedProduct?._id}`).reply(200, {
     msg: `${Name} deleted successfully`,
     products: NewProducts,
@@ -124,18 +124,15 @@ it("Redirect to Update Product Page on Success of New Product", async () => {
   const addNewProductButton = screen.getByText("Add New Product");
   addNewProductButton.click();
 
-  // //wait for loading to finish
-  // await waitFor(() => {
-  //   expect(screen.queryByTestId("Loading")).not.toBeInTheDocument();
-  // });
+  //wait for loading to finish
+  await waitFor(() => {
+    expect(screen.queryByTestId("Loading")).not.toBeInTheDocument();
+  });
 
-  // //check if products are loaded
-  // expect(screen.getByText(/Add New Product/)).toBeInTheDocument();
+  //check if products are loaded
+  expect(
+    screen.getByText(/Product added successfully Redirecting/)
+  ).toBeInTheDocument();
 
-  // //Redirect to Update Page
-  // await waitFor(() => {
-  //   expect(history.push).toHaveBeenCalledWith(
-  //     `/adminProducts/${Products[0]._id}`
-  //   );
-  // });
+  //Redirect to Update Page
 });

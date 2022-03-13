@@ -63,7 +63,6 @@ const AdminProducts = () => {
   const Products: DetailedProduct[] = FetchData?.products;
 
   const DeleteProduct = (id: string) => {
-    console.log(id);
     setParams({
       method: "DELETE",
       url: `/api/products/product/${id}`,

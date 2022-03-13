@@ -12,7 +12,7 @@ let email: HTMLElement;
 let password: HTMLElement;
 let password2: HTMLElement;
 
-beforeEach(() => {
+const setup = () => {
   render(
     <AuthProvider>
       <Router>
@@ -25,9 +25,10 @@ beforeEach(() => {
   email = screen.getByLabelText(/email/i);
   password = screen.getByLabelText("password");
   password2 = screen.getByLabelText(/confirm password/i);
-});
+};
 
 it("Check For User Validation on Invalid Submit", () => {
+  setup();
   userEvent.click(screen.getByText(/Register/i));
   expect(screen.getByText(/Email is not Valid/i)).toBeInTheDocument();
   expect(screen.getByText(/Name Should be 5-10 /)).toBeInTheDocument();
@@ -37,18 +38,21 @@ it("Check For User Validation on Invalid Submit", () => {
 });
 
 it("Check For empty value onChange", () => {
+  setup();
   userEvent.type(name, "asdas");
   userEvent.clear(name);
   expect(screen.getByText(/NAME is required/)).toBeInTheDocument();
 });
 
 it("Invalid Email", () => {
+  setup();
   userEvent.type(email, "asdas");
   userEvent.click(screen.getByText(/Register/i));
   expect(screen.getByText(/Email is not Valid/)).toBeInTheDocument();
 });
 
 it("Check For User's Matching Passwords", () => {
+  setup();
   userEvent.type(password, "123456");
   userEvent.type(password2, "1566");
 

@@ -108,12 +108,7 @@ describe("Check Redirects", () => {
 
 describe("Check Order Details", () => {
   let His = createMemoryHistory();
-  beforeEach(() => {
-    localStorage.setItem("Cart", JSON.stringify(Cart));
-    localStorage.setItem("address", JSON.stringify(address));
-    localStorage.setItem("payMethod", Method);
-    localStorage.setItem("ProductsAmount", JSON.stringify(productsAmount));
-
+  const setup = () =>
     render(
       <AuthContext.Provider value={{ state, dispatch }}>
         <Router history={His}>
@@ -121,12 +116,18 @@ describe("Check Order Details", () => {
         </Router>
       </AuthContext.Provider>
     );
+
+  beforeEach(() => {
+    localStorage.setItem("Cart", JSON.stringify(Cart));
+    localStorage.setItem("address", JSON.stringify(address));
+    localStorage.setItem("payMethod", Method);
+    localStorage.setItem("ProductsAmount", JSON.stringify(productsAmount));
   });
   it("Check For Amount Summery", () => {
+    setup();
     const shipping = addDecimals(productsAmount > 500 ? 0 : 100);
     const Tax = addDecimals(productsAmount * 0.1);
-    console.log(localStorage.getItem(""));
-    console.log(His.location.pathname);
+
     expect(screen.getByTestId("ShippingCost").textContent).toMatch(
       String(shipping)
     );
@@ -138,7 +139,8 @@ describe("Check Order Details", () => {
     );
   });
 
-  it(" Store Order in Local Storage And Redirect to Payment Gateway", () => {
+  it("Store Order in Local Storage And Redirect to Payment Gateway", () => {
+    setup();
     jest.useFakeTimers();
     const shipping = addDecimals(productsAmount > 500 ? 0 : 100);
     const Tax = addDecimals(productsAmount * 0.1);

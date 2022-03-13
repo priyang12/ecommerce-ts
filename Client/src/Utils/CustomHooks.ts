@@ -17,7 +17,6 @@ export const useAxios = (Params: AxiosRequestConfig) => {
         if (data.msg) setAlert(data.msg);
         setErr(null);
       } catch (err: any | AxiosError) {
-        console.log(err);
         let ErrorMessage = "Server Error Try Again Later";
         if (err as AxiosError) {
           ErrorMessage = err.response?.data?.msg;
@@ -51,7 +50,7 @@ export const useFetch = (url: string) => {
       try {
         setLoading(true);
         const { data }: any = await axios.get(url);
-        console.log("API CALL");
+
         setFetchData(data);
         setErr(null);
       } catch (error: any) {

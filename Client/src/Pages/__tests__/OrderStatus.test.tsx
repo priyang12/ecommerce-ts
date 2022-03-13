@@ -78,7 +78,9 @@ it("Mock Order Data", async () => {
   );
 
   //check if the loading is true
-  await waitForElementToBeRemoved(screen.getByTestId("Loading")).then(() => {});
+  await waitForElementToBeRemoved(screen.queryByTestId("Loading")).then(
+    () => {}
+  );
 
   // Check if the Order is rendering.
   expect(
@@ -95,8 +97,8 @@ it("Empty Order", async () => {
   );
 
   //check if the loading is true
-  await waitForElementToBeRemoved(screen.getByTestId("Loading")).then(() => {
-    // expect(screen.getByTestId("Loading")).toBeNull(); //check if the loading is false
+  await waitForElementToBeRemoved(screen.queryByTestId("Loading")).then(() => {
+    // expect(screen.queryByTestId("Loading")).toBeNull(); //check if the loading is false
   });
 
   // Check if the Order is Empty.
@@ -112,7 +114,9 @@ it("Server Error", async () => {
   );
 
   //check if the loading is true
-  await waitForElementToBeRemoved(screen.getByTestId("Loading")).then(() => {});
+  await waitForElementToBeRemoved(screen.queryByTestId("Loading")).then(
+    () => {}
+  );
 
   //Check if the Error Message is rendered.
   expect(
@@ -129,7 +133,9 @@ it("Call All the Order For Admin", async () => {
   );
 
   //check if the loading is true
-  await waitForElementToBeRemoved(screen.getByTestId("Loading")).then(() => {});
+  await waitForElementToBeRemoved(screen.queryByTestId("Loading")).then(
+    () => {}
+  );
   //check if the loading is true
   expect(screen.getByText(/John Doe/)).toBeInTheDocument();
 });
