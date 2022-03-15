@@ -4,6 +4,7 @@ import { useAxios } from "../Utils/CustomHooks";
 import AlertDisplay from "../Components/AlertDisplay";
 import ProductList, { CartItem } from "../Components/ProductList";
 import { StyledContainer, StyledCheckout } from "./StyledPages/StyledCart";
+import Spinner from "../Components/Spinner";
 
 const Cart = () => {
   const [TotalAmount, setTotalAmount] = useState(0);
@@ -59,9 +60,9 @@ const Cart = () => {
     });
   };
 
-  if (!FetchData) return <div>Server Error</div>;
+  if (loading) return <Spinner />;
 
-  if (loading) return <div data-testid='Loading'>Loading</div>;
+  if (!FetchData) return <div>Server Error</div>;
 
   if (!CartItems || CartItems?.length === 0)
     return (
