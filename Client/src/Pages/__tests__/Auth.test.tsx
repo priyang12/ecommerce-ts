@@ -1,4 +1,5 @@
 import {
+  act,
   render,
   screen,
   waitForElementToBeRemoved,
@@ -15,33 +16,36 @@ import Auth from "../Auth";
 import { AuthProvider } from "../../Context/Authentication/AuthContext";
 import "@testing-library/jest-dom";
 
-describe("Toggle Login Register", () => {
-  beforeEach(() => {
-    const history = createMemoryHistory();
-    render(
-      <AuthProvider>
-        <Router history={history}>
-          <Auth />
-        </Router>
-      </AuthProvider>
-    );
+const setup = () => {
+  const history = createMemoryHistory();
+  render(
+    <AuthProvider>
+      <Router history={history}>
+        <Auth />
+      </Router>
+    </AuthProvider>
+  );
+};
+
+it("Login on init", async () => {
+  act(() => {
+    setup();
   });
-  it("Login on init", () => {
-    expect(screen.getByDisplayValue(/login/i)).toBeInTheDocument();
-  });
-  it("Toggle on Click ", () => {
-    userEvent.click(screen.getByText("Register"));
-    expect(screen.getByDisplayValue(/Register/i)).toBeInTheDocument();
-    userEvent.click(screen.getByText("Login"));
-    expect(screen.getByDisplayValue(/login/i)).toBeInTheDocument();
-  });
+  expect(screen.getByDisplayValue(/login/i)).toBeInTheDocument();
+});
+it("Toggle on Click", () => {
+  setup();
+  userEvent.click(screen.getByText("Register"));
+  expect(screen.getByDisplayValue(/Register/i)).toBeInTheDocument();
+  userEvent.click(screen.getByText("Login"));
+  expect(screen.getByDisplayValue(/login/i)).toBeInTheDocument();
 });
 
-describe("Mock Calls ", () => {
+describe("Mock Calls", () => {
   const mock = new MockAdapter(axios);
-  const History = createMemoryHistory();
 
-  beforeEach(() => {
+  const History = createMemoryHistory();
+  const setup = () => {
     render(
       <AuthProvider>
         <Router history={History}>
@@ -49,12 +53,13 @@ describe("Mock Calls ", () => {
         </Router>
       </AuthProvider>
     );
-  });
+  };
 
   afterEach(() => {
     mock.reset();
   });
   it("Successful login And Redirect To Home", async () => {
+    setup();
     const data = {
       token: "asdbsabdibaisd45asd",
     };
@@ -65,7 +70,7 @@ describe("Mock Calls ", () => {
     userEvent.click(screen.getByText("login"));
 
     //Check For Loading State
-    await waitForElementToBeRemoved(() => screen.getByTestId("Loading"));
+    await waitForElementToBeRemoved(() => screen.queryByTestId("Loading"));
 
     //check For Redirect
     expect(History.location.pathname).toBe("/");
@@ -75,6 +80,7 @@ describe("Mock Calls ", () => {
   });
 
   it("Successful Register and Redirect", async () => {
+    setup();
     //Click register
     userEvent.click(screen.getByText("Register"));
 
@@ -102,7 +108,7 @@ describe("Mock Calls ", () => {
     userEvent.click(screen.getByDisplayValue(/Register/i));
 
     //check for loading state
-    await waitForElementToBeRemoved(() => screen.getByTestId("Loading"));
+    await waitForElementToBeRemoved(() => screen.queryByTestId("Loading"));
 
     //check for redirect
     expect(History.location.pathname).toBe("/");

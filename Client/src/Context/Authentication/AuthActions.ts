@@ -17,8 +17,6 @@ export const loadUser = async (
   if (token) {
     try {
       setLoading(dispatch);
-
-      // setAuthToken(token);
       const { data }: any = await axios.get("/api/users");
       dispatch({
         type: LOAD_USER,
@@ -107,6 +105,13 @@ export const Logout = (dispatch: React.Dispatch<AuthActions>) => {
 export const setLoading = (dispatch: React.Dispatch<AuthActions>) => {
   dispatch({
     type: SET_LOADING,
-    payload: null,
+    payload: true,
+  });
+};
+
+export const StopLoading = (dispatch: React.Dispatch<AuthActions>) => {
+  dispatch({
+    type: SET_LOADING,
+    payload: false,
   });
 };

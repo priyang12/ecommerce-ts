@@ -4,15 +4,15 @@ import {
   LOAD_USER,
   SET_LOADING,
   LOG_OUT,
-} from './Authtypes';
+} from "./Authtypes";
 
-import { AuthState, User } from './interfaces';
+import { AuthState, User } from "./interfaces";
 
 type AuthPayload = {
   [LOGIN_SUCCESS]: string | null;
   [AUTH_ERROR]: string | null;
   [LOAD_USER]: User | null;
-  [SET_LOADING]: User | null;
+  [SET_LOADING]: boolean;
   [LOG_OUT]: null;
 };
 
@@ -46,7 +46,7 @@ export const AuthReducer = (state: AuthState, action: AuthActions) => {
     case SET_LOADING:
       return {
         ...state,
-        loading: true,
+        loading: action.payload,
       };
     case AUTH_ERROR:
       return {

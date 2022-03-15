@@ -1,25 +1,27 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useToggle } from "../Utils/CustomHooks";
 import { AuthContext } from "../Context/Authentication/AuthContext";
 import { StyledAuthPage } from "./StyledPages/StyledAuth";
 import { Redirect } from "react-router";
 import Login from "./Login";
 import Register from "./Register";
+import Spinner from "../Components/Spinner";
+import { StopLoading } from "../Context/Authentication/AuthActions";
 
 const Auth = () => {
   const [Toggle, toggleValues] = useToggle(true);
-  const { state } = useContext(AuthContext);
+  const { state, dispatch } = useContext(AuthContext);
   const { loading, err, token } = state;
-
+  useEffect(() => {
+    StopLoading(dispatch);
+  }, [dispatch]);
   if (token) {
     return <Redirect to='/' />;
   }
   return (
     <StyledAuthPage>
       {loading ? (
-        <div className='loading' data-testid='Loading'>
-          Loading
-        </div>
+        <Spinner />
       ) : (
         <div className='container'>
           {err && <div className='alert'>{err}</div>}
