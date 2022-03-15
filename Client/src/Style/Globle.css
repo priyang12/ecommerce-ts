@@ -117,7 +117,9 @@ form input[type="submit"] {
   background-color: black;
   border: 2px solid var(--secondary-color);
 }
-
+.btn:disabled {
+  display: none;
+}
 .btn-gray {
   padding: 1rem 2rem;
   width: fit-content;

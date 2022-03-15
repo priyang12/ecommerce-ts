@@ -30,7 +30,7 @@ const SingleProduct = () => {
 
   const AddToCart = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    console.log("click");
     const CartItem = {
       id: Product._id,
       qty: Qty,
@@ -90,8 +90,8 @@ const SingleProduct = () => {
 
                   {localStorage.token ? (
                     <TimeoutBtn
-                      Time={1000}
-                      classname='btn'
+                      Time={5000}
+                      className='btn'
                       FormValue='ADD TO CART'
                     />
                   ) : (

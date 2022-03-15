@@ -113,7 +113,7 @@ const PlaceOrder = () => {
               </StyledOrderSummaryItem>
             </StyledOrderSummaryBody>
             {/* <TimeoutBtn classValue='btn' FormValue='Place Order' Time={4000} /> */}
-            <TimeoutBtn Time={4000} classname='btn' FormValue='PlaceOrder' />
+            <TimeoutBtn Time={4000} className='btn' FormValue='PlaceOrder' />
           </form>
         </StyledOrderSummary>
       </StyledPlaceOrder>
