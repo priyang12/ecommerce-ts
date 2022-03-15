@@ -109,7 +109,7 @@ const OrderDetails = () => {
               <TimeoutBtn
                 className='btn'
                 FormValue='Mark as Deliver'
-                Time={5}
+                Time={5000}
               />
             ) : (
               <p className='alert'>Not Delivered</p>
