@@ -11,7 +11,7 @@ export const LoadCartQuery = async () => {
 
 export const AddToCartQuery = async (data: { id: string; qty: number }) => {
   try {
-    const response = await axios.post("/api/cart", { data });
+    const response = await axios.post("/api/cart", data);
     return response.data;
   } catch (error: any) {
     return error.response;

@@ -3,20 +3,57 @@ import { Link } from "react-router-dom";
 import AlertDisplay from "../Components/AlertDisplay";
 import ProductList, { CartItem } from "../Components/ProductList";
 import { StyledContainer, StyledCheckout } from "./StyledPages/StyledCart";
-import { LoadCartQuery, RemoveFromCartQuery } from "../API/CartAPI";
+import {
+  AddToCartQuery,
+  LoadCartQuery,
+  RemoveFromCartQuery,
+} from "../API/CartAPI";
 import { useMutation, useQuery } from "react-query";
+import { queryClient } from "../index";
+import Spinner from "../Components/Spinner";
 
 const Cart = () => {
   const [TotalAmount, setTotalAmount] = useState(0);
   const [TotalProducts, setTotalProducts] = useState(0);
-
+  const [Alert, setAlert] = useState({
+    msg: "",
+    type: false,
+  });
   const {
     data: FetchData,
     error: Err,
     isLoading: loading,
   } = useQuery(["Cart"], LoadCartQuery);
 
-  const { mutate, isSuccess } = useMutation(["Cart"], RemoveFromCartQuery);
+  const { mutate: DeleteCart } = useMutation(RemoveFromCartQuery, {
+    onSuccess: (data) => {
+      setAlert({ msg: data.msg, type: true });
+      queryClient.invalidateQueries(["Cart"]);
+    },
+    onSettled: (data) => {
+      setTimeout(() => {
+        setAlert({ msg: "", type: false });
+      }, 3000);
+    },
+    onError: (err: any) => {
+      setAlert(err.data.msg);
+    },
+  });
+
+  const { mutate: UpdateCart } = useMutation(AddToCartQuery, {
+    onSuccess: (data) => {
+      setAlert({ msg: data.msg, type: true });
+      queryClient.invalidateQueries(["Cart"]);
+    },
+    onSettled: (data) => {
+      setTimeout(() => {
+        setAlert({ msg: "", type: false });
+      }, 3000);
+    },
+    onError: (err: any) => {
+      setAlert(err.data.msg);
+    },
+  });
 
   const CartItems = FetchData?.Cart as CartItem[];
 
@@ -37,21 +74,19 @@ const Cart = () => {
   }, [CartItems]);
 
   const UpdateQuantity = (_id: string, quantity: number) => {
-    // updata
-    // url: `/api/cart`,
-    // data: {
-    //   id: _id,
-    //   qty: quantity,
-    // },
+    UpdateCart({
+      id: _id,
+      qty: quantity,
+    });
   };
 
   const RemoveFromCart = (id: string) => {
-    mutate(id);
+    DeleteCart(id);
   };
 
-  if (!FetchData) return <div>Server Error</div>;
+  if (loading) return <Spinner />;
 
-  if (loading) return <div data-testid='Loading'>Loading</div>;
+  if (Err) return <div>Server Error</div>;
 
   if (!CartItems || CartItems?.length === 0)
     return (
@@ -62,8 +97,7 @@ const Cart = () => {
 
   return (
     <Fragment>
-      {/* {Err && <AlertDisplay msg={Err} type={false} />} */}
-      {isSuccess && <AlertDisplay msg='Product is Deleted' type={true} />}
+      {Alert.msg && <AlertDisplay msg={Alert.msg} type={true} />}
       <StyledContainer>
         <h1>SHOPPING CART</h1>
         {CartItems?.map((item: CartItem) => (

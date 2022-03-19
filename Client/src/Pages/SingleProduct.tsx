@@ -17,10 +17,12 @@ import {
 } from "../Components/StyledComponents/Productdetails";
 import axios from "axios";
 import { useQuery, useMutation } from "react-query";
+import { AddToCartQuery } from "../API/CartAPI";
+import { queryClient } from "../index";
 
 const SingleProduct = () => {
   const { id } = useParams<{ id: string }>();
-
+  const [Alert, setAlert] = useState("");
   const {
     data: FetchData,
     error: ProductError,
@@ -39,28 +41,32 @@ const SingleProduct = () => {
       }
     }
   );
-  const {
-    isLoading: ChangeingQty,
-    mutate: PostQty,
-    data: QtyData,
-  } = useMutation<any>(async () => {
-    const CartItem = {
-      id: Product._id,
-      qty: Qty,
-    };
-    const url = `/api/cart`;
-    try {
-      const res = await axios.post(url, CartItem);
-      return res.data;
-    } catch (error) {
-      throw new Error("Something went wrong.");
+  const { isLoading: ChangingQty, mutate: PostQty } = useMutation(
+    AddToCartQuery,
+    {
+      onSuccess: (data) => {
+        queryClient.invalidateQueries(["Cart"]);
+        data.msg && setAlert(data.msg); // if data.msg is not null
+      },
+      onSettled: () => {
+        setTimeout(() => {
+          setAlert("");
+        }, 3000);
+      },
+      onError: (err: any) => {
+        console.log(err);
+      },
     }
-  });
+  );
   const [Qty, setQty] = useState("1");
 
   const AddToCart = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    PostQty();
+    console.log(Product._id);
+    PostQty({
+      id: Product._id,
+      qty: parseInt(Qty),
+    });
   };
 
   if (loading) return <div data-testid='Loading'>Loading</div>;
@@ -120,8 +126,8 @@ const SingleProduct = () => {
                   )}
                 </form>
               )}
-              {ChangeingQty && <AlertDisplay msg='Making A Call' type={true} />}
-              {QtyData && <AlertDisplay msg={QtyData.msg} type={true} />}
+              {ChangingQty && <AlertDisplay msg='Adding to cart' type={true} />}
+              {Alert && <AlertDisplay msg={Alert} type={true} />}
             </StyledCheckout>
           </StyledProduct>
         </StyledContainer>

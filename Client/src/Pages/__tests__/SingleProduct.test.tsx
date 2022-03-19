@@ -8,13 +8,9 @@ import "@testing-library/jest-dom";
 
 //Component
 import SingleProduct from "../SingleProduct";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { Products } from "../Testdata/Data";
 
-const queryClient = new QueryClient();
-const Wrapper = ({ children }: any) => (
-  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-);
+import { Products } from "../Testdata/Data";
+import { Wrapper } from "./setup";
 
 const product = Products[0];
 

@@ -8,7 +8,7 @@ import { ReactQueryDevtools } from "react-query/devtools";
 
 import "./Style/Globle.css";
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
