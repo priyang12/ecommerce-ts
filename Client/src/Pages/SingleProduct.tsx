@@ -18,7 +18,7 @@ import {
 import axios from "axios";
 import { useQuery, useMutation } from "react-query";
 import { AddToCartQuery } from "../API/CartAPI";
-import { queryClient } from "../index";
+import { queryClient } from "../query";
 
 const SingleProduct = () => {
   const { id } = useParams<{ id: string }>();

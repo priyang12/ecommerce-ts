@@ -9,21 +9,28 @@ import {
   RemoveFromCartQuery,
 } from "../API/CartAPI";
 import { useMutation, useQuery } from "react-query";
-import { queryClient } from "../index";
+import { queryClient } from "../query";
 import Spinner from "../Components/Spinner";
 
 const Cart = () => {
   const [TotalAmount, setTotalAmount] = useState(0);
   const [TotalProducts, setTotalProducts] = useState(0);
+  const [CartItems, setCart] = useState<CartItem[]>([]);
+
   const [Alert, setAlert] = useState({
     msg: "",
     type: false,
   });
+
   const {
-    data: FetchData,
+    data,
     error: Err,
     isLoading: loading,
-  } = useQuery(["Cart"], LoadCartQuery);
+  } = useQuery(["Cart"], LoadCartQuery, {
+    onSuccess: (data) => {
+      setCart(data.Cart);
+    },
+  });
 
   const { mutate: DeleteCart } = useMutation(RemoveFromCartQuery, {
     onSuccess: (data) => {
@@ -55,13 +62,11 @@ const Cart = () => {
     },
   });
 
-  const CartItems = FetchData?.Cart as CartItem[];
-
   useEffect(() => {
     if (CartItems?.length !== 0) {
       let TotalProducts = 0;
       let TotalAmount = 0;
-      const Total = CartItems?.reduce((acc, item: CartItem) => {
+      const Total = CartItems?.reduce((acc: any, item: CartItem) => {
         TotalProducts += item.qty;
         return acc + item.product.price * item.qty;
       }, 0);
@@ -87,8 +92,10 @@ const Cart = () => {
   if (loading) return <Spinner />;
 
   if (Err) return <div>Server Error</div>;
+  console.log(data);
+  if (!data) return null;
 
-  if (!CartItems || CartItems?.length === 0)
+  if (CartItems.length === 0)
     return (
       <StyledContainer>
         <h1>Empty Cart</h1>
