@@ -1,7 +1,7 @@
 import { Profiler } from "react";
 import { User } from "../Context/Authentication/interfaces";
 import { useFetch } from "../Utils/CustomHooks";
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Spinner from "../Components/Spinner";
 
 import {
@@ -10,17 +10,20 @@ import {
   StyledList,
   StyledTableContainer,
 } from "./StyledPages/StyledTableView";
+import { useQuery } from "react-query";
+import { LoadUsers } from "../API/AdminAPI";
 
 const AdminUsers = () => {
   const history = useHistory();
+  const {
+    data: Users,
+    error: UserError,
+    isLoading,
+  } = useQuery(["Users"], LoadUsers);
 
-  const [Users, Errors, loading] = useFetch("/api/users/admin/all");
+  if (isLoading) return <Spinner />;
 
-  if (loading) return <Spinner />;
-
-  if (Errors) return <div>{Errors}</div>;
-
-  if (!Users) return <div>Server Error Please Try Again</div>;
+  if (UserError) return <div>Server Error</div>;
 
   if (Users.length === 0) return <div>No Users Found</div>;
 

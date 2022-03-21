@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useFetch, useAxios } from "../Utils/CustomHooks";
 import { DetailedProduct } from "../interfaces";
 import Reviews from "../Components/Reviews";
 import Rating from "../Components/Rating";
