@@ -30,6 +30,7 @@
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
     "googleapis": "^78.0.0",
+    "imagekit": "^3.2.5",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.8",
     "morgan": "^1.10.0",
@@ -37,7 +38,7 @@
     "nodemailer": "^6.6.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15",
-    "husky": "^7.0.0"
+    "husky": "^7.0.0",
+    "nodemon": "^2.0.15"
   }
 }
