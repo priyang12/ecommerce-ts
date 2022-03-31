@@ -4,6 +4,7 @@ const asyncHandler = require("express-async-handler");
 const Products = require("../modals/Product");
 
 const Orders = require("../modals/order");
+const imageKit = require("../config/imageKit");
 
 // @desc    Get All Products
 // @route   Get /api/products
@@ -85,37 +86,40 @@ const AddProduct = asyncHandler(async (req, res) => {
 // @route   PUT api/admin/product
 // @access  Admin
 const UpdateProduct = asyncHandler(async (req, res) => {
-  try {
-    const product = await Products.findById(req.params.id);
-    if (!product) throw Error("No Product Found");
-    const {
-      name,
-      price,
-      image,
-      brand,
-      category,
-      countInStock,
-      description,
-      numReviews,
-    } = req.body;
+  const product = await Products.findById(req.params.id);
+  if (!product) throw Error("No Product Found");
 
-    product.name = name;
-    product.price = price;
-    product.description = description;
-    product.image = image;
-    product.brand = brand;
-    product.category = category;
-    product.countInStock = countInStock;
-    product.numReviews = numReviews;
+  // upload product image
 
-    const updatedProduct = await product.save();
-    res
-      .status(201)
-      .json({ msg: "Product Updated Successfully", product: updatedProduct });
-  } catch (error) {
-    res.status(404);
-    throw Error("Adding Error In Server " + error);
+  if (req.file) {
+    const image = await imageKit.upload({
+      file: req.file.buffer,
+      fileName: req.file.originalname,
+      tags: ["test", "image"],
+    });
+    product.image = image.url;
   }
+  // update product
+  const {
+    name,
+    price,
+    brand,
+    category,
+    countInStock,
+    description,
+    numReviews,
+  } = req.body;
+
+  product.name = name;
+  product.price = price;
+  product.description = description;
+  product.brand = brand;
+  product.category = category;
+  product.countInStock = countInStock;
+  product.numReviews = numReviews;
+
+  await product.save();
+  res.status(201).json({ msg: "Product Updated Successfully" });
 });
 
 // @desc    Delete a product
