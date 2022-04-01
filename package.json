@@ -18,8 +18,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "echo ”[Husky] pre-commit”",
-      "pre-push": "echo ”[Husky] pre-push”"
+      "pre-commit": "echo ”[Husky] pre-commit”"
     }
   },
   "author": "Priyang",
