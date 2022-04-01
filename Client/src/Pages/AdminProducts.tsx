@@ -86,26 +86,26 @@ const AdminProducts = () => {
     return <AlertDisplay msg={Alert + " Redirecting"} type={true} />;
 
   return (
-    <section id='AdminProduct'>
+    <section id="AdminProduct">
       {Alert ? (
         <AlertDisplay msg={Alert} type={true} />
       ) : (
         <form onSubmit={AddNewProduct}>
-          <TimeoutBtn FormValue='Add New Product' Time={3000} className='btn' />
+          <TimeoutBtn FormValue="Add New Product" Time={3000} className="btn" />
         </form>
       )}
       {Products?.length > 0 ? (
         <ul>
           {Products.map((product: DetailedProduct, index: number) => (
-            <StyledProducts className='Product-list' key={index}>
-              <div className='right'>
+            <StyledProducts className="Product-list" key={index}>
+              <div className="right">
                 <img src={product.image} alt={product.name} />
               </div>
-              <div className='left'>
+              <div className="left">
                 <StyledProductTitle>{product.name}</StyledProductTitle>
                 <h4>description</h4>
                 <span>{product.description}</span>
-                <div className='details'>
+                <div className="details">
                   <h3>brand : {product.brand}</h3>
                   <h3>Price : ${product.price}</h3>
                   <h3>countInStock : {product.countInStock}</h3>
@@ -118,12 +118,12 @@ const AdminProducts = () => {
               <div style={{ display: "flex", flexDirection: "column" }}>
                 <Link
                   to={`/adminProducts/${product._id}`}
-                  className='btn btn-light'
+                  className="btn btn-light"
                 >
                   Edit
                 </Link>
                 <button
-                  className='btn delete'
+                  className="btn delete"
                   onClick={() => DeleteProduct(product._id)}
                 >
                   Delete
