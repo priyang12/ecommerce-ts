@@ -37,17 +37,19 @@ const PrivateRoute = (props: PrivateRouteProps) => {
 export const AdminRoute = (props: PrivateRouteProps) => {
   const { component: Component, ...rest } = props;
   const { state } = React.useContext(AuthContext);
-  const { user: User } = state;
+  const { user: User, loading } = state;
   return (
     <Route
       {...rest}
       render={(routeProps) =>
-        User && User.isAdmin ? (
+        loading ? (
+          <Spinner />
+        ) : User ? (
           <Component {...routeProps} />
         ) : (
           <Redirect
             to={{
-              pathname: "/Home",
+              pathname: "/Auth",
               state: { from: routeProps.location },
             }}
           />

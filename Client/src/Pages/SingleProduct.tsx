@@ -15,6 +15,7 @@ import {
   StyledDetails,
   StyledCheckout,
 } from "../Components/StyledComponents/Productdetails";
+import Spinner from "../Components/Spinner";
 
 const SingleProduct = () => {
   const { id } = useParams<{ id: string }>();
@@ -41,8 +42,8 @@ const SingleProduct = () => {
       data: CartItem,
     });
   };
-  console.log(FetchData?.countInStock);
-  if (loading) return <div data-testid='Loading'>Loading</div>;
+
+  if (loading) return <Spinner />;
 
   if (ProductError) return <div className='Error'>{ProductError}</div>;
 
