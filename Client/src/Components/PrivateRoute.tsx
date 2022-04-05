@@ -44,12 +44,12 @@ export const AdminRoute = (props: PrivateRouteProps) => {
       render={(routeProps) =>
         loading ? (
           <Spinner />
-        ) : User ? (
+        ) : User?.isAdmin ? (
           <Component {...routeProps} />
         ) : (
           <Redirect
             to={{
-              pathname: "/Auth",
+              pathname: "/Home",
               state: { from: routeProps.location },
             }}
           />

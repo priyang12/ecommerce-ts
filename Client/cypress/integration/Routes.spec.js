@@ -22,19 +22,28 @@ it("Test Private Routes", () => {
 
 // Admin Routes
 it("Test Admin Routes", () => {
+  cy.get('input[name="email"]').type("fdsaasdsaf@gmail.com");
+  cy.get('input[name="password"]').type("123123");
+  cy.get("form").submit(); // <-- add this
+
+  cy.url().should("eq", "http://localhost:3000/");
+
+  //check for User Name
+  cy.contains("NewUser");
+
   cy.visit("/AdminDashboard");
   // IT SHOULD BE REDIRECTED TO HOME PAGE
   cy.url().should("include", "/Home");
 
   cy.visit("/AdminOrders");
-  // IT SHOULD BE REDIRECTED TO HOME PAGE
+  // // IT SHOULD BE REDIRECTED TO HOME PAGE
   cy.url().should("include", "/Home");
 
   cy.visit("/AdminProducts");
-  // IT SHOULD BE REDIRECTED TO HOME PAGE
+  // // IT SHOULD BE REDIRECTED TO HOME PAGE
   cy.url().should("include", "/Home");
 
   cy.visit("/AdminUsers");
-  // IT SHOULD BE REDIRECTED TO HOME PAGE
+  // // IT SHOULD BE REDIRECTED TO HOME PAGE
   cy.url().should("include", "/Home");
 });
