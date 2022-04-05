@@ -1,3 +1,6 @@
+beforeEach(function () {
+  cy.visit("/Auth");
+});
 it("Test Private Routes", () => {
   cy.visit("/cart");
   // IT SHOULD BE REDIRECTED TO LOGIN PAGE
