@@ -4,9 +4,6 @@ import DisplayProducts from "../Components/DisplayProducts";
 import { useFetch } from "../Utils/CustomHooks";
 import { StyledHome } from "./StyledPages/StyledHome";
 
-//Fake Data
-import { Products } from "./Testdata/Data";
-
 const Home = () => {
   const [ProductsData, Err, loading] = useFetch("/api/products");
 
@@ -18,7 +15,7 @@ const Home = () => {
       <DisplayProducts
         Products={ProductsData?.products}
         loading={loading}
-        title='Products Display'
+        title="Products Display"
       />
     </StyledHome>
   );

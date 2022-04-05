@@ -20,7 +20,7 @@ const DisplayProducts = ({ loading, Products, title }: props) => {
     <div>
       <StyledDisplay>
         <h1>{title}</h1>
-        <StyledProducts>
+        <StyledProducts id="Products">
           {Products &&
             Products.map((product: Product) => (
               <ProductCard product={product} key={product._id} />

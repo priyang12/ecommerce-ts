@@ -67,7 +67,7 @@ const Cart = () => {
   if (!CartItems || CartItems?.length === 0)
     return (
       <StyledContainer>
-        <h1>Empty Cart</h1>
+        <h1>Your Cart is Empty</h1>
       </StyledContainer>
     );
 
@@ -80,7 +80,7 @@ const Cart = () => {
         {CartItems?.map((item: CartItem) => (
           <ProductList
             key={item._id}
-            styledWidth='auto'
+            styledWidth="auto"
             Cart={item}
             DeleteFromCart={RemoveFromCart}
             UpdateQty={UpdateQuantity}
@@ -91,7 +91,7 @@ const Cart = () => {
           <StyledCheckout>
             <h3>SUBTOTAL ({TotalProducts}) ITEMS</h3>
             <p>${TotalAmount}</p>
-            <Link className='btn' to='/address'>
+            <Link className="btn" to="/address">
               Checkout
             </Link>
           </StyledCheckout>
