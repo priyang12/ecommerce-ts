@@ -5,7 +5,7 @@ export const Alert = styled.div`
   color: ${(props) => props.theme.alertTextColor}; /* text color */
   border-radius: ${(props) =>
     props.theme.radius ? props.theme.radius : "5px"}; /* border radius */
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   width: 100%;
   font-weight: bold;
   padding: 1em;
@@ -21,5 +21,7 @@ export const AlertContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  transition: all 0.5s ease-in-out;
+  transform: ${(props) =>
+    props.theme.show ? "translateY(0)" : "translateY(-100vh)"};
 `;

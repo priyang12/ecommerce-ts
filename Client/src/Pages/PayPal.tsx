@@ -60,7 +60,7 @@ const Paypal = () => {
 
   if (!Order) return history.push("/");
 
-  if (PaymentErrors) return <div className='Error'>{PaymentErrors}</div>;
+  if (PaymentErrors) return <div className="Error">{PaymentErrors}</div>;
 
   return (
     <StyledContainer theme={{ marginTop: "2" }}>
@@ -69,7 +69,7 @@ const Paypal = () => {
       ) : (
         <FragmentContainer>
           {OrderError && (
-            <AlertDisplay msg='Error While Placing Order' type={false} />
+            <AlertDisplay msg="Error While Placing Order" type={false} />
           )}
           <PayPalButton
             amount={Order.totalPrice}
