@@ -1,12 +1,21 @@
 import { FC } from "react";
-import { Alert } from "./StyledComponents/AlertDisplayStyled";
+import { Alert, AlertContainer } from "./StyledComponents/AlertDisplayStyled";
 
 const AlertDisplay: FC<{ msg: string; type: boolean }> = ({ msg, type }) => {
   const theme = {
     alertTextColor: type ? "#00b500" : "#ddadad",
     bg: type ? "#afdbaf" : "#ef251b",
+    radius: "0px",
   };
-  return <Alert theme={theme}>{msg}</Alert>;
+  return (
+    <AlertContainer
+      theme={{
+        position: "sticky",
+      }}
+    >
+      <Alert theme={theme}>{msg}</Alert>
+    </AlertContainer>
+  );
 };
 
 export default AlertDisplay;

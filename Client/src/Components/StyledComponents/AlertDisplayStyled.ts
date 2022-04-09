@@ -3,9 +3,23 @@ import styled from "styled-components";
 export const Alert = styled.div`
   background-color: ${(props) => props.theme.bg}; /* background-color */
   color: ${(props) => props.theme.alertTextColor}; /* text color */
-  border-radius: 5px;
-  font-size: 1.2rem;
+  border-radius: ${(props) =>
+    props.theme.radius ? props.theme.radius : "5px"}; /* border radius */
+  font-size: 1.5rem;
+  width: 100%;
   font-weight: bold;
-  padding: 1rem;
+  padding: 1em;
   text-align: center;
+`;
+
+export const AlertContainer = styled.div`
+  position: ${(props) => props.theme.position}; /* text color */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
 `;
