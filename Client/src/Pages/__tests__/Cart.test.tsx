@@ -19,7 +19,7 @@ const Wrapper = ({ children }: any) => (
 const mock = new MockAdapter(axios);
 
 afterEach(() => {
-  mock.reset();
+  mock.resetHandlers();
 });
 
 const EmptyCart = {
@@ -104,58 +104,58 @@ it("Empty Cart", async () => {
   });
 });
 
-// it("Mock Get User Cart On Load", async () => {
-//   mock.onGet("/api/cart").reply(200, LoadUserCart);
-//   await act(async () => {
-//     render(
-//       <Wrapper>
-//         <BrowserRouter>
-//           <Cart />
-//         </BrowserRouter>
-//       </Wrapper>
-//     );
-//   });
-//   expect(screen.getByText(/Bluetooth Headphones/)).toBeInTheDocument();
-//   expect(screen.getByText(/Logtech mouse/)).toBeInTheDocument();
-// });
+it("Mock Get User Cart On Load", async () => {
+  mock.onGet("/api/cart").reply(200, LoadUserCart);
+  await act(async () => {
+    render(
+      <Wrapper>
+        <BrowserRouter>
+          <Cart />
+        </BrowserRouter>
+      </Wrapper>
+    );
+  });
+  expect(screen.getByText(/Bluetooth Headphones/)).toBeInTheDocument();
+  expect(screen.getByText(/Logtech mouse/)).toBeInTheDocument();
+});
 
-// it("Mock Change Cart Qty", async () => {
-//   mock.onGet("/api/cart").reply(200, LoadUserCart);
-//   mock.onPost("/api/cart").reply(200, UpdateProduct);
-//   await act(async () => {
-//     render(
-//       <Wrapper>
-//         <BrowserRouter>
-//           <Cart />
-//         </BrowserRouter>
-//       </Wrapper>
-//     );
-//   });
-//   const QtySelects = screen.getAllByTestId("selectQty");
-//   await act(async () => {
-//     userEvent.selectOptions(QtySelects[1], "3");
-//   });
-//   expect(screen.getByText(/Updated in Cart/)).toBeInTheDocument();
-// });
+it("Mock Change Cart Qty", async () => {
+  mock.onGet("/api/cart").reply(200, LoadUserCart);
+  mock.onPost("/api/cart").reply(200, UpdateProduct);
+  await act(async () => {
+    render(
+      <Wrapper>
+        <BrowserRouter>
+          <Cart />
+        </BrowserRouter>
+      </Wrapper>
+    );
+  });
+  const QtySelects = screen.getAllByTestId("selectQty");
+  await act(async () => {
+    userEvent.selectOptions(QtySelects[1], "3");
+  });
+  expect(screen.getByText(/Updated in Cart/)).toBeInTheDocument();
+});
 
-// it("Mock Delete Product Form Cart", async () => {
-//   mock.onGet("/api/cart").reply(200, LoadUserCart);
-//   mock
-//     .onDelete(`/api/cart/${LoadUserCart.Cart[0]._id}`)
-//     .reply(200, AfterDeleteCart);
+it("Mock Delete Product Form Cart", async () => {
+  mock.onGet("/api/cart").reply(200, LoadUserCart);
+  mock
+    .onDelete(`/api/cart/${LoadUserCart.Cart[0]._id}`)
+    .reply(200, AfterDeleteCart);
 
-//   await act(async () => {
-//     render(
-//       <Wrapper>
-//         <BrowserRouter>
-//           <Cart />
-//         </BrowserRouter>
-//       </Wrapper>
-//     );
-//   });
-//   const DeleteBtn = screen.getAllByTestId("DeleteIcon");
-//   await act(async () => {
-//     userEvent.click(DeleteBtn[0]);
-//   });
-//   expect(screen.getByText(/Deleted from the Cart/)).toBeInTheDocument();
-// });
+  await act(async () => {
+    render(
+      <Wrapper>
+        <BrowserRouter>
+          <Cart />
+        </BrowserRouter>
+      </Wrapper>
+    );
+  });
+  const DeleteBtn = screen.getAllByTestId("DeleteIcon");
+  await act(async () => {
+    userEvent.click(DeleteBtn[0]);
+  });
+  expect(screen.getByText(/Deleted From the Cart/)).toBeInTheDocument();
+});

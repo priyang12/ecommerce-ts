@@ -110,7 +110,7 @@ const Cart = () => {
         {CartItems?.map((item: CartItem) => (
           <ProductList
             key={item._id}
-            styledWidth='auto'
+            styledWidth="auto"
             Cart={item}
             DeleteFromCart={RemoveFromCart}
             UpdateQty={UpdateQuantity}
@@ -121,7 +121,7 @@ const Cart = () => {
           <StyledCheckout>
             <h3>SUBTOTAL ({TotalProducts}) ITEMS</h3>
             <p>${TotalAmount}</p>
-            <Link className='btn' to='/address'>
+            <Link className="btn" to="/address">
               Checkout
             </Link>
           </StyledCheckout>
