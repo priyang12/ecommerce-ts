@@ -2,7 +2,6 @@ import { render, screen, act } from "@testing-library/react";
 import { Router } from "react-router-dom";
 import { AuthContext } from "../../Context/Authentication/AuthContext";
 import { createMemoryHistory, MemoryHistory } from "history";
-import renderer from "react-test-renderer";
 import PlaceOrder from "../PlaceOrder";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
@@ -78,16 +77,31 @@ beforeAll(() => {
   History = createMemoryHistory();
 });
 
-describe("Check Redirects", () => {
-  it("Return to cart Page Removed Values", () => {
-    localStorage.clear();
-    render(
-      <AuthContext.Provider value={{ state, dispatch }}>
+const Setup = () => {
+  localStorage.setItem("Cart", JSON.stringify(Cart));
+  localStorage.setItem("address", JSON.stringify(address));
+  localStorage.setItem("payMethod", Method);
+  localStorage.setItem("ProductsAmount", JSON.stringify(productsAmount));
+  const contextValue = {
+    state,
+    dispatch,
+  };
+  ExtraAmount = 0;
+  return render(
+    <>
+      <AuthContext.Provider value={contextValue}>
         <Router history={History}>
           <PlaceOrder />
         </Router>
       </AuthContext.Provider>
-    );
+    </>
+  );
+};
+
+describe("Check Redirects", () => {
+  it("Return to cart Page Removed Values", () => {
+    localStorage.clear();
+    Setup();
     expect(History.location.pathname).toBe("/");
   });
   it("Return to cart Page on Empty Cart", () => {
@@ -95,36 +109,14 @@ describe("Check Redirects", () => {
     localStorage.setItem("address", JSON.stringify(address));
     localStorage.setItem("payMethod", Method);
     localStorage.setItem("productsAmount", JSON.stringify(productsAmount));
-    render(
-      <AuthContext.Provider value={{ state, dispatch }}>
-        <Router history={History}>
-          <PlaceOrder />
-        </Router>
-      </AuthContext.Provider>
-    );
+    Setup();
     expect(History.location.pathname).toBe("/");
   });
 });
 
 describe("Check Order Details", () => {
-  let His = createMemoryHistory();
-  const setup = () =>
-    render(
-      <AuthContext.Provider value={{ state, dispatch }}>
-        <Router history={His}>
-          <PlaceOrder />
-        </Router>
-      </AuthContext.Provider>
-    );
-
-  beforeEach(() => {
-    localStorage.setItem("Cart", JSON.stringify(Cart));
-    localStorage.setItem("address", JSON.stringify(address));
-    localStorage.setItem("payMethod", Method);
-    localStorage.setItem("ProductsAmount", JSON.stringify(productsAmount));
-  });
   it("Check For Amount Summery", () => {
-    setup();
+    Setup();
     const shipping = addDecimals(productsAmount > 500 ? 0 : 100);
     const Tax = addDecimals(productsAmount * 0.1);
 
@@ -140,7 +132,7 @@ describe("Check Order Details", () => {
   });
 
   it("Store Order in Local Storage And Redirect to Payment Gateway", () => {
-    setup();
+    Setup();
     jest.useFakeTimers();
     const shipping = addDecimals(productsAmount > 500 ? 0 : 100);
     const Tax = addDecimals(productsAmount * 0.1);
@@ -151,7 +143,7 @@ describe("Check Order Details", () => {
       itemsPrice: productsAmount,
       taxPrice: Tax,
       shippingPrice: shipping,
-      totalPrice: Math.round(shipping + Tax + productsAmount),
+      totalPrice: Math.round(ExtraAmount + productsAmount),
     };
     const PlaceOrderBtn = screen.getByText(/PlaceOrder/);
     userEvent.click(PlaceOrderBtn);
@@ -160,6 +152,6 @@ describe("Check Order Details", () => {
     });
     expect(PlaceOrderBtn).toBeDisabled();
     expect(JSON.parse(localStorage.order)).toStrictEqual(Order);
-    expect(His.location.pathname).toMatch(/PayPal/);
+    expect(History.location.pathname).toMatch(/PayPal/);
   });
 });

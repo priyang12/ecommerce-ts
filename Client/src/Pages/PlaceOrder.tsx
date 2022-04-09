@@ -1,11 +1,12 @@
 import React, { useContext, useEffect } from "react";
+import { Redirect, useHistory } from "react-router";
 import TimeoutBtn from "../Components/TimeoutBtn";
 import ProductList from "../Components/ProductList";
 import Navigators from "../Components/Navigators";
-import { Redirect, useHistory } from "react-router";
 import { Address, Cart } from "../interfaces";
 import { AuthContext } from "../Context/Authentication/AuthContext";
 import { StyledPaymentContainer } from "../Components/StyledComponents/StyledPayment";
+
 import {
   StyledHeader,
   StyledOrderSummary,
@@ -57,37 +58,37 @@ const PlaceOrder = () => {
   };
 
   if (!Cart || !Address || !PayMethod || !ProductsAmount)
-    return <Redirect to='/cart' />;
+    return <Redirect to="/cart" />;
 
-  if (Cart?.length === 0) return <Redirect to='/' />;
+  if (Cart?.length === 0) return <Redirect to="/" />;
 
   return (
     <StyledPaymentContainer theme={{ maxWidth: "80vw" }}>
       <Navigators />
       <StyledPlaceOrder>
-        <div className='OrderDetails'>
-          <div className='detail'>
+        <div className="OrderDetails">
+          <div className="detail">
             <StyledHeader>SHIPPING </StyledHeader>
             <p>
               Address: {Address.homeAddress} , {Address.city} ,
               {Address.postalCode},
             </p>
           </div>
-          <div className='detail'>
+          <div className="detail">
             <StyledHeader>PAYMENT METHOD</StyledHeader>
             <p>Method: {PayMethod}</p>
           </div>
-          <div className='order-details'>
+          <div className="order-details">
             <StyledHeader>ORDER ITEMS</StyledHeader>
-            <ul className='order-list'>
+            <ul className="order-list">
               {Cart.map((item) => (
-                <ProductList Cart={item} key={item._id} styledWidth='80%' />
+                <ProductList Cart={item} key={item._id} styledWidth="80%" />
               ))}
             </ul>
           </div>
         </div>
         <StyledOrderSummary>
-          <form onSubmit={PlaceTheOrder} data-testid='PlaceOrder'>
+          <form onSubmit={PlaceTheOrder} data-testid="PlaceOrder">
             <StyledOrderSummaryBody>
               <StyledHeader>ORDER SUMMARY</StyledHeader>
               <StyledOrderSummaryItem>
@@ -95,25 +96,25 @@ const PlaceOrder = () => {
               </StyledOrderSummaryItem>
               <StyledOrderSummaryItem>
                 Shipping Cost :
-                <span data-testid='ShippingCost'>
+                <span data-testid="ShippingCost">
                   {addDecimals(ProductsAmount > 500 ? 0 : 100)}
                 </span>
               </StyledOrderSummaryItem>
               <StyledOrderSummaryItem>
                 Tax Cost :
-                <span data-testid='TaxCost'>
+                <span data-testid="TaxCost">
                   {addDecimals(0.1 * ProductsAmount)}
                 </span>
               </StyledOrderSummaryItem>
               <StyledOrderSummaryItem>
                 Total Cost :
-                <span data-testid='TotalAmount'>
+                <span data-testid="TotalAmount">
                   {Math.round(ExtraAmount + ProductsAmount)}
                 </span>
               </StyledOrderSummaryItem>
             </StyledOrderSummaryBody>
-            {/* <TimeoutBtn classValue='btn' FormValue='Place Order' Time={4000} /> */}
-            <TimeoutBtn Time={4000} classname='btn' FormValue='PlaceOrder' />
+
+            <TimeoutBtn Time={4000} classname="btn" FormValue="PlaceOrder" />
           </form>
         </StyledOrderSummary>
       </StyledPlaceOrder>
