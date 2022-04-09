@@ -11,6 +11,7 @@ import {
   StyledProducts,
 } from "../Components/StyledComponents/Products";
 import { StyledHome } from "./StyledPages/StyledHome";
+import { LoadProducts } from "../API/ProductAPI";
 
 //Fake Data
 // import { Products } from "./Testdata/Data";
@@ -22,17 +23,7 @@ const Home = ({ title = "Products Display" }) => {
     isLoading,
   }: { data: any; error: any; isLoading: boolean } = useQuery(
     ["products"],
-
-    async () => {
-      const url = "/api/products";
-      try {
-        const res = await axios.get(url);
-        console.log(res);
-        return res.data;
-      } catch (error) {
-        throw new Error("Something went wrong.");
-      }
-    }
+    LoadProducts
   );
 
   if (isLoading) return <Spinner />;
