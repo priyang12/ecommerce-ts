@@ -1,9 +1,7 @@
-import { QueryClientProvider } from "react-query";
+import { QueryClientProvider, QueryClient } from "react-query";
 
-import { queryClient } from "./query";
+const client = new QueryClient();
 
 export const Wrapper = ({ children }: any) => {
-  return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
+  return <QueryClientProvider client={client}>{children}</QueryClientProvider>;
 };

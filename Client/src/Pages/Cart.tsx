@@ -92,7 +92,7 @@ const Cart = () => {
   if (loading) return <Spinner />;
 
   if (Err) return <div>Server Error</div>;
-  console.log(data);
+
   if (!data) return null;
 
   if (CartItems.length === 0)

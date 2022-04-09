@@ -8,13 +8,7 @@ import "@testing-library/jest-dom";
 
 // Components
 import Cart from "../Cart";
-import { QueryClient, QueryClientProvider } from "react-query";
-
-const queryClient = new QueryClient();
-
-const Wrapper = ({ children }: any) => (
-  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-);
+import { Wrapper } from "../../TestSetup";
 
 const mock = new MockAdapter(axios);
 
