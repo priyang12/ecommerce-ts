@@ -8,8 +8,19 @@ import "@testing-library/jest-dom";
 import AdminProducts from "../AdminProducts";
 //data
 import { Products } from "../Testdata/Data";
+import { Wrapper } from "../../TestSetup";
 
 const mock = new MockAdapter(axios);
+
+const Setup = () => {
+  return render(
+    <Wrapper>
+      <MemoryRouter>
+        <AdminProducts />
+      </MemoryRouter>
+    </Wrapper>
+  );
+};
 
 it("Load Products", async () => {
   const data = {
@@ -17,12 +28,7 @@ it("Load Products", async () => {
   };
   mock.onGet("/api/products").reply(200, data);
 
-  render(
-    <MemoryRouter>
-      <AdminProducts />
-    </MemoryRouter>
-  );
-
+  Setup();
   //wait for loading
   await waitFor(() => {
     expect(screen.getByTestId("Loading")).toBeInTheDocument();
@@ -39,11 +45,12 @@ it("Load Products", async () => {
     //image
     expect(screen.getByAltText(Products[i].name)).toBeInTheDocument();
   }
+  mock.resetHandlers();
 });
 
 it("No Products", async () => {
   mock.onGet("/api/products").reply(200, []);
-  render(<AdminProducts />);
+  Setup();
 
   //wait for loading to finish
   await waitFor(() => {
@@ -52,6 +59,7 @@ it("No Products", async () => {
 
   //check if products are loaded
   expect(screen.getByText(/No Products/)).toBeInTheDocument();
+  mock.resetHandlers();
 });
 
 it("Delete Product", async () => {
@@ -67,14 +75,9 @@ it("Delete Product", async () => {
 
   mock.onDelete(`/api/products/product/${DeletedProduct?._id}`).reply(200, {
     msg: `${Name} deleted successfully`,
-    products: NewProducts,
   });
 
-  render(
-    <MemoryRouter>
-      <AdminProducts />
-    </MemoryRouter>
-  );
+  Setup();
 
   //wait for loading to finish
   await waitFor(() => {
@@ -95,7 +98,8 @@ it("Delete Product", async () => {
   });
 
   //check if products is deleted
-  expect(screen.queryByText(Name)).not.toBeInTheDocument();
+  expect(screen.getByText(/iPhone deleted successfully/)).toBeInTheDocument();
+  mock.resetHandlers();
 });
 
 it("Redirect to Update Product Page on Success of New Product", async () => {
@@ -105,15 +109,8 @@ it("Redirect to Update Product Page on Success of New Product", async () => {
     msg: "Product added successfully",
     product: Products[0],
   });
-  const history: any = {
-    push: jest.fn(),
-  };
 
-  render(
-    <MemoryRouter>
-      <AdminProducts />
-    </MemoryRouter>
-  );
+  Setup();
 
   //wait for loading to finish
   await waitFor(() => {
@@ -125,14 +122,7 @@ it("Redirect to Update Product Page on Success of New Product", async () => {
   addNewProductButton.click();
 
   //wait for loading to finish
-  await waitFor(() => {
-    expect(screen.queryByTestId("Loading")).not.toBeInTheDocument();
-  });
+  expect(screen.getByText(/ Redirecting/)).toBeInTheDocument();
 
-  //check if products are loaded
-  expect(
-    screen.getByText(/Product added successfully Redirecting/)
-  ).toBeInTheDocument();
-
-  //Redirect to Update Page
+  mock.resetHandlers();
 });

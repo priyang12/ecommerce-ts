@@ -1,110 +1,95 @@
 import AlertDisplay from "../Components/AlertDisplay";
 import Spinner from "../Components/Spinner";
 import TimeoutBtn from "../Components/TimeoutBtn";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { useAxios } from "../Utils/CustomHooks";
+import { useMutation, useQuery } from "react-query";
 import { DetailedProduct } from "../interfaces";
 
-import styled from "styled-components";
-
-const StyledProducts = styled.ul`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 1rem;
-  padding: 2em;
-  border: 1px solid #ccc;
-  margin: 1em;
-  img {
-    width: 100%;
-    height: 100%;
-  }
-  .btn-light {
-    color: #fff;
-  }
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr 1fr;
-  }
-  @media (max-width: 576px) {
-    grid-template-columns: 1fr;
-  }
-`;
-const StyledProductTitle = styled.h2`
-  margin: 0;
-  color: var(--secondary-light-color);
-`;
+import {
+  StyledProducts,
+  StyledProductTitle,
+} from "./StyledPages/StyledAdminProducts";
+import { LoadProducts } from "../API/ProductAPI";
+import { DeleteProductCall } from "../API/AdminAPI";
+import { queryClient } from "../query";
 
 const AdminProducts = () => {
   const history = useHistory();
-
-  const [Params, setParams] = useState<any>({
-    method: "GET",
-    url: "",
+  const [Redirect, setRedirect] = useState(false);
+  const [Alert, setAlert] = useState({
+    msg: "",
+    type: false,
   });
 
-  const { Alert, Err, FetchData, loading } = useAxios(Params);
+  const {
+    data: FetchData,
+    isLoading,
+    isError,
+    error,
+  }: {
+    data: any;
+    isLoading: boolean;
+    isError: boolean;
+    error: any;
+  } = useQuery(["products"], LoadProducts);
 
-  useEffect(() => {
-    setParams({
-      method: "GET",
-      url: "/api/products",
-    });
-  }, []);
-
-  useEffect(() => {
-    if (Alert === "Product added successfully") {
+  const { mutateAsync } = useMutation(DeleteProductCall, {
+    onSuccess: (data) => {
+      setAlert({ msg: data.msg, type: true });
+      queryClient.invalidateQueries(["products"]);
+    },
+    onSettled: (data) => {
       setTimeout(() => {
-        history.push("/StillWorking");
+        setAlert({ msg: "", type: false });
       }, 3000);
-      // history.push("/admin/products");
-    }
-  }, [Alert, history]);
-
+    },
+    onError: (err: any) => {
+      setAlert(err.data.msg);
+    },
+  });
   const Products: DetailedProduct[] = FetchData?.products;
 
   const DeleteProduct = (id: string) => {
-    setParams({
-      method: "DELETE",
-      url: `/api/products/product/${id}`,
-    });
+    mutateAsync(id);
   };
 
   const AddNewProduct = (e: any) => {
     e.preventDefault();
-    setParams({
-      method: "POST",
-      url: "/api/products",
-    });
+    setAlert({ msg: "Redirecting to Product Edit", type: true });
+    setRedirect(true);
+    setTimeout(() => {
+      history.push("/AdminProducts/add");
+    }, 2000);
   };
 
-  if (loading) return <Spinner />;
-  if (Err) return <AlertDisplay msg={Err} type={false} />;
-  if (!FetchData) return <div>Server Error Please Try Again</div>;
+  if (isLoading) return <Spinner />;
+  if (isError) return <AlertDisplay msg={error.msg} type={false} />;
 
-  if (FetchData?.product)
-    return <AlertDisplay msg={Alert + " Redirecting"} type={true} />;
+  if (Redirect)
+    return <AlertDisplay msg={Alert.msg + " Redirecting"} type={true} />;
 
   return (
-    <section id='AdminProduct'>
-      {Alert ? (
-        <AlertDisplay msg={Alert} type={true} />
+    <section id="AdminProduct">
+      {Alert.msg ? (
+        <AlertDisplay msg={Alert.msg} type={Alert.type} />
       ) : (
         <form onSubmit={AddNewProduct}>
-          <TimeoutBtn FormValue='Add New Product' Time={3000} classname='btn' />
+          <TimeoutBtn FormValue="Add New Product" Time={3000} classname="btn" />
         </form>
       )}
       {Products?.length > 0 ? (
         <ul>
           {Products.map((product: DetailedProduct, index: number) => (
-            <StyledProducts className='Product-list' key={index}>
-              <div className='right'>
+            <StyledProducts className="Product-list" key={index}>
+              <div className="right">
                 <img src={product.image} alt={product.name} />
               </div>
-              <div className='left'>
+              <div className="left">
                 <StyledProductTitle>{product.name}</StyledProductTitle>
                 <h4>description</h4>
                 <span>{product.description}</span>
-                <div className='details'>
+                <div className="details">
                   <h3>brand : {product.brand}</h3>
                   <h3>Price : ${product.price}</h3>
                   <h3>countInStock : {product.countInStock}</h3>
@@ -117,12 +102,12 @@ const AdminProducts = () => {
               <div style={{ display: "flex", flexDirection: "column" }}>
                 <Link
                   to={`/adminProducts/${product._id}`}
-                  className='btn btn-light'
+                  className="btn btn-light"
                 >
                   Edit
                 </Link>
                 <button
-                  className='btn delete'
+                  className="btn delete"
                   onClick={() => DeleteProduct(product._id)}
                 >
                   Delete
