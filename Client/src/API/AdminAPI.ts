@@ -1,4 +1,5 @@
 import axios from "axios";
+import { DetailedProduct } from "../interfaces";
 
 export const LoadUsers = async () => {
   try {
@@ -11,7 +12,37 @@ export const LoadUsers = async () => {
 
 export const AddProductCall = async (product: any) => {
   try {
-    const response = await axios.post("/api/products/admin/add", product);
+    // config multipart form dat
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    };
+
+    const response = await axios.post(
+      "/api/products/admin/add",
+      product,
+      config
+    );
+    return response.data;
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+export const EditProductCall = async (product: any) => {
+  try {
+    // config multipart form dat
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    };
+    const response = await axios.put(
+      `/api/products/admin/${product.id}`,
+      product,
+      config
+    );
     return response.data;
   } catch (error: any) {
     return error.response;
