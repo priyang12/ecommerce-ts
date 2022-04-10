@@ -16,16 +16,16 @@ const Auth = () => {
     StopLoading(dispatch);
   }, [dispatch]);
   if (token) {
-    return <Redirect to='/' />;
+    return <Redirect to="/" />;
   }
   return (
     <StyledAuthPage>
       {loading ? (
         <Spinner />
       ) : (
-        <div className='container'>
-          {err && <div className='alert'>{err}</div>}
-          <div className='title'>
+        <div className="container">
+          {err && <div className="alert">{err}</div>}
+          <div className="title">
             <div className={Toggle ? "Link-border" : ""}>
               <h1 onClick={toggleValues}>Login</h1>
             </div>

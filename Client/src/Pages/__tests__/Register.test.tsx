@@ -5,7 +5,7 @@ import "@testing-library/jest-dom";
 
 //Components: Register,Context
 import Register from "../Register";
-import { AuthProvider } from "../../Context/Authentication/AuthContext";
+import { AuthContext } from "../../Context/Authentication/AuthContext";
 
 let name: HTMLElement;
 let email: HTMLElement;
@@ -14,11 +14,21 @@ let password2: HTMLElement;
 
 const setup = () => {
   render(
-    <AuthProvider>
+    <AuthContext.Provider
+      value={{
+        state: {
+          loading: false,
+          err: null,
+          token: null,
+          user: null,
+        },
+        dispatch: () => {},
+      }}
+    >
       <Router>
         <Register />
       </Router>
-    </AuthProvider>
+    </AuthContext.Provider>
   );
 
   name = screen.getByLabelText(/name/i);
