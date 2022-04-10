@@ -1,5 +1,7 @@
 const asyncHandler = require("express-async-handler");
+const dotenv = require("dotenv");
 
+dotenv.config();
 //modal
 const Products = require("../modals/Product");
 
@@ -60,26 +62,28 @@ const GetProductByID = asyncHandler(async (req, res) => {
 // @route   Post api/product
 // @access  Admin
 const AddProduct = asyncHandler(async (req, res) => {
-  try {
-    const product = new Products({
-      name: "Sample name",
-      price: 0,
-      user: req.user._id,
-      image: "/images/sample.jpg",
-      brand: "Sample brand",
-      category: "Sample category",
-      countInStock: 0,
-      numReviews: 0,
-      description: "Sample description",
+  const EndPoint = process.env.END_POINT;
+
+  const product = await Products.create({
+    name: req.body.name,
+    description: req.body.description,
+    price: req.body.price,
+    brand: req.body.brand,
+    image: `${EndPoint}/sample_a81IvE0ug.webp`,
+    category: req.body.category,
+    stock: req.body.stock,
+    countInStock: req.body.countInStock,
+  });
+  if (req.file) {
+    const image = await imageKit.upload({
+      file: req.file.buffer,
+      fileName: req.file.originalname,
+      tags: ["test", "image"],
     });
-    const createdProduct = await product.save();
-    res
-      .status(201)
-      .json({ msg: "Product added successfully", product: createdProduct._id });
-  } catch (error) {
-    res.status(404);
-    throw Error("Adding Error In Server " + error);
+    product.image = image.url;
   }
+  await product.save();
+  res.status(201).json({ msg: `${product.name} is Added` });
 });
 
 // @desc    Update Product

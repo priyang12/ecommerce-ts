@@ -21,9 +21,10 @@ const upload = multer({
   },
 });
 //Product
-router.route("/").get(GetAllProducts).post(Admin, AddProduct);
+router.route("/").get(GetAllProducts);
 
 router.route("/top").get(GetTopProducts);
+router.route("/add").post(Admin, upload.single("image"), AddProduct);
 router
   .route("/product/:id")
   .get(GetProductByID)
