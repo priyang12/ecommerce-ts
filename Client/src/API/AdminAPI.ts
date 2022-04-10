@@ -19,11 +19,8 @@ export const AddProductCall = async (product: any) => {
       },
     };
 
-    const response = await axios.post(
-      "/api/products/admin/add",
-      product,
-      config
-    );
+    const response = await axios.post("/api/products/add", product, config);
+
     return response.data;
   } catch (error: any) {
     return error.response;
@@ -38,8 +35,10 @@ export const EditProductCall = async (product: any) => {
         "content-type": "multipart/form-data",
       },
     };
+    const id = product.get("id");
+
     const response = await axios.put(
-      `/api/products/admin/${product.id}`,
+      `/api/products/product/${id}`,
       product,
       config
     );

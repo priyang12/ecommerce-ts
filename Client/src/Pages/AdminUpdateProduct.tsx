@@ -1,47 +1,90 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useAxios, useForm } from "../Utils/CustomHooks";
+import { useForm } from "../Utils/CustomHooks";
 import AlertDisplay from "../Components/AlertDisplay";
 import Spinner from "../Components/Spinner";
-
 import { StyledContainer } from "../Components/StyledComponents/Container";
 import {
   StyledEditProduct,
   StyledImageContainer,
 } from "./StyledPages/StyledAdminUpdateProduct";
+import { useMutation, useQuery } from "react-query";
+import { SingleProductCall } from "../API/ProductAPI";
+import { AddProductCall, EditProductCall } from "../API/AdminAPI";
+import { queryClient } from "../query";
 
 const initialState = {
-  numReviews: "0",
-  price: "",
-  countInStock: "",
-  name: "",
-  image: "",
-  description: "",
-  brand: "",
-  category: "",
+  name: "Sample name",
+  price: 0,
+  image: "https://ik.imagekit.io/5aalo5l7bu7/sample_a81IvE0ug.webp",
+  brand: "Sample brand",
+  category: "Sample category",
+  countInStock: 0,
+  numReviews: 0,
+  description: "Sample description",
 };
 
 const AdminUpdateProduct = () => {
   const { id } = useParams<{ id: string }>();
-
+  const Type = id === "add" ? true : false;
+  const [Alert, setAlert] = useState({
+    msg: "",
+    type: false,
+  });
   const [UploadedImage, setUploadedImage] = useState<any>(null);
   const [ImageFile, setImageFile] = useState<any>(null);
+  const [ProductData, changeProductData, setProductData, ErrorsState] = useForm(
+    {
+      name: "",
+      price: 0,
+      image: "",
+      brand: "",
+      category: "",
+      countInStock: 0,
+      numReviews: 0,
+      description: "",
+    }
+  );
 
-  const [
-    ProductData,
-    changeProductData,
-    setProductData,
-    ErrorState,
-    setErrors,
-  ] = useForm(initialState);
-
-  const [Params, setParams] = useState<any>({
-    method: "GET",
-    url: `/api/products/product/${id}`,
+  const {
+    data: Product,
+    error: Err,
+    isLoading,
+  } = useQuery([`product/${id}`, id], () => SingleProductCall(id), {
+    enabled: !Type,
   });
-  const { Alert, Err, loading, FetchData } = useAxios(Params);
 
-  const Product = FetchData?.product ? FetchData.product : FetchData;
+  const { mutate: AddMutation } = useMutation(
+    (Type ? "addProduct" : "updateProduct") as any,
+    AddProductCall,
+    {
+      onSuccess: () => {
+        setAlert({ msg: "Product added successfully", type: true });
+        queryClient.invalidateQueries(["products"]);
+        setTimeout(() => {
+          setAlert({ msg: "", type: false });
+          // Redirect to the product page
+          window.location.href = "/AdminProducts";
+        }, 3000);
+      },
+      onError: (err: any) => {
+        setAlert(err.data.msg);
+      },
+    }
+  );
+  const { mutate: UpdateMutate, isLoading: Updating } = useMutation(
+    "updateProduct",
+    EditProductCall,
+    {
+      onSuccess: (data) => {
+        setAlert({ msg: data.msg, type: true });
+        queryClient.invalidateQueries(["products"]);
+      },
+      onError: (err: any) => {
+        setAlert(err.data.msg);
+      },
+    }
+  );
 
   useEffect(() => {
     if (Product) {
@@ -50,20 +93,10 @@ const AdminUpdateProduct = () => {
         if (key in productData) productData[key] = Product[key];
       }
       setProductData(productData);
+    } else {
+      setProductData(initialState);
     }
-  }, [id, Product]);
-
-  // // useEffect(() => {
-  // //   if (Alert === "Image Uploaded") {
-  // //     setParams({
-  // //       method: "PUT",
-  // //       url: `/api/products/product/${id}`,
-  // //       data: {
-  // //         ProductData,
-  // //       },
-  // //     });
-  // //   }
-  // // }, [Alert, ProductData, id, Params]);
+  }, [Product]);
 
   const changeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -83,135 +116,140 @@ const AdminUpdateProduct = () => {
       });
     }
   };
-  console.log(ImageFile);
-  const UpdateProduct = () => {
-    if (ImageFile) {
-      setParams({
-        method: "PUT",
-        url: `/api/upload`,
-        data: ImageFile,
-      });
-    } else {
-      console.log(ProductData);
-      setParams({
-        method: "PUT",
-        url: `/api/products/product/${id}`,
-        data: ProductData,
-      });
-    }
+  function Formate() {
+    const formData = new FormData();
+    formData.append("id", id);
+    formData.append("image", ImageFile);
+    formData.append("name", ProductData.name);
+    formData.append("price", ProductData.price);
+    formData.append("countInStock", ProductData.countInStock);
+    formData.append("description", ProductData.description);
+    formData.append("brand", ProductData.brand);
+    formData.append("category", ProductData.category);
+    formData.append("numReviews", ProductData.numReviews);
+    return formData;
+  }
+  const AddProduct = async () => {
+    const formData = Formate();
+    AddMutation(formData);
   };
-  // console.log(ProductData);
-  if (loading) return <Spinner />;
-  if (Err) return <div>{Err}</div>;
-  if (!Product) return null;
+  const UpdateProduct = () => {
+    const formData = Formate();
+    UpdateMutate(formData);
+  };
+
+  if (isLoading || Updating) return <Spinner />;
+  if (Err) return <div>Server Error</div>;
 
   return (
     <StyledContainer theme={{ marginTop: 2 }}>
-      {Alert && <AlertDisplay msg={Alert} type={true} />}
-      <h1 className='display'>Admin Update Product</h1>
+      {Alert.msg && <AlertDisplay msg={Alert.msg} type={true} />}
+      <h1 className="display">
+        {Type ? "Add New Product" : "Admin Update Product"}
+      </h1>
       <StyledEditProduct>
         <form>
-          <div className='form-control'>
+          <div className="form-control">
             <input
-              type='text'
-              name='name'
-              id='name'
+              type="text"
+              name="name"
+              id="name"
               value={ProductData.name}
               onChange={changeProductData}
               required
             />
-            <span className='bar'></span>
-            <label htmlFor='name'>
-              {ErrorState.name ? (
-                <span className='error'>{ErrorState.name}</span>
+            <span className="bar"></span>
+            <label htmlFor="name">
+              {ErrorsState.name ? (
+                <span className="error">{ErrorsState.name}</span>
               ) : (
                 "Product Name"
               )}
             </label>
           </div>
-          <div className='form-control'>
+          <div className="form-control">
             <textarea
-              name='description'
-              id='description'
+              name="description"
+              id="description"
               rows={5}
               value={ProductData.description}
               onChange={changeTextarea}
               required
             ></textarea>
 
-            <span className='bar'></span>
-            <label htmlFor='description'>
-              {ErrorState.description ? (
-                <span className='error'>{ErrorState.description}</span>
+            <span className="bar"></span>
+            <label htmlFor="description">
+              {ErrorsState.description ? (
+                <span className="error">{ErrorsState.description}</span>
               ) : (
                 "Product Description"
               )}
             </label>
           </div>
-          <div className='form-control'>
+          <div className="form-control">
             <input
-              type='text'
-              name='brand'
-              id='brand'
+              type="text"
+              name="brand"
+              id="brand"
               value={ProductData.brand}
               onChange={changeProductData}
               required
             />
-            <span className='bar'></span>
-            <label htmlFor='brand'>
-              {ErrorState.brand ? (
-                <span className='error'>{ErrorState.brand}</span>
+            <span className="bar"></span>
+            <label htmlFor="brand">
+              {ErrorsState.brand ? (
+                <span className="error">{ErrorsState.brand}</span>
               ) : (
                 "Brand"
               )}
             </label>
           </div>
-          <div className='form-control'>
+          <div className="form-control">
             <input
-              type='number'
-              name='countInStock'
-              id='countInStock'
+              type="number"
+              name="countInStock"
+              id="countInStock"
               value={ProductData.countInStock}
               onChange={changeProductData}
               required
             />
-            <span className='bar'></span>
-            <label htmlFor='countInStock'>
-              {ErrorState.countInStock ? (
-                <span className='error'>{ErrorState.countInStock}</span>
+            <span className="bar"></span>
+            <label htmlFor="countInStock">
+              {ErrorsState.countInStock ? (
+                <span className="error">{ErrorsState.countInStock}</span>
               ) : (
                 "CountInStock"
               )}
             </label>
           </div>
-          <div className='form-control'>
+          <div className="form-control">
             <div>Category</div>
             <select
-              name='category'
+              name="category"
               onChange={changeSelect}
               defaultValue={ProductData.category}
             >
-              <option value='Electronics'>Electronics</option>
-              <option value='Fashion'>Fashion</option>
-              <option value='Grocery'>Grocery</option>
-              <option value='Carpenter'>Carpenter</option>
-              <option value='Health'>Health</option>
-              <option value='Home'>Home</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Fashion">Fashion</option>
+              <option value="Grocery">Grocery</option>
+              <option value="Carpenter">Carpenter</option>
+              <option value="Health">Health</option>
+              <option value="Home">Home</option>
             </select>
           </div>
-          <div className='form-control'>
+          <div className="form-control">
             <input
-              type='number'
-              name='price'
-              id='price'
+              type="number"
+              name="price"
+              id="price"
               value={ProductData.price}
               onChange={changeProductData}
               required
             />
-            <span className='bar'></span>
-            <label htmlFor='price'>
-              {ErrorState.price ? (
-                <span className='error'>{ErrorState.price}</span>
+            <span className="bar"></span>
+            <label htmlFor="price">
+              {ErrorsState.price ? (
+                <span className="error">{ErrorsState.price}</span>
               ) : (
                 "Product Price"
               )}
@@ -222,11 +260,18 @@ const AdminUpdateProduct = () => {
           <h2>Product Image</h2>
           <img
             src={UploadedImage ? UploadedImage.image : ProductData.image}
-            alt='Product'
+            alt="Product"
           />
-          <input type='file' name='image' id='image' onChange={onImageChange} />
-          <button className='btn' onClick={UpdateProduct}>
-            Update Product
+          <input
+            type="file"
+            name="image"
+            id="image"
+            onChange={onImageChange}
+            data-testid="UploadImage"
+          />
+
+          <button className="btn" onClick={Type ? AddProduct : UpdateProduct}>
+            {Type ? "Add Product" : "Update Product"}
           </button>
         </StyledImageContainer>
       </StyledEditProduct>

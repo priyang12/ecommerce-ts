@@ -34,7 +34,7 @@ const AdminProducts = () => {
     error: any;
   } = useQuery(["products"], LoadProducts);
 
-  const { mutateAsync } = useMutation(DeleteProductCall, {
+  const { mutateAsync, isLoading: Deleting } = useMutation(DeleteProductCall, {
     onSuccess: (data) => {
       setAlert({ msg: data.msg, type: true });
       queryClient.invalidateQueries(["products"]);
@@ -63,7 +63,7 @@ const AdminProducts = () => {
     }, 2000);
   };
 
-  if (isLoading) return <Spinner />;
+  if (isLoading || Deleting) return <Spinner />;
   if (isError) return <AlertDisplay msg={error.msg} type={false} />;
 
   if (Redirect)
