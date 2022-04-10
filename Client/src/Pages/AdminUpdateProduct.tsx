@@ -53,9 +53,8 @@ const AdminUpdateProduct = () => {
   } = useQuery([`product/${id}`, id], () => SingleProductCall(id), {
     enabled: !Type,
   });
-
-  const { mutate: AddMutation } = useMutation(
-    (Type ? "addProduct" : "updateProduct") as any,
+  const { mutate: AddMutation, isLoading: LoadAdding } = useMutation(
+    "addProduct" as any,
     AddProductCall,
     {
       onSuccess: () => {
@@ -118,6 +117,7 @@ const AdminUpdateProduct = () => {
   };
   function Formate() {
     const formData = new FormData();
+
     formData.append("id", id);
     formData.append("image", ImageFile);
     formData.append("name", ProductData.name);
@@ -138,7 +138,7 @@ const AdminUpdateProduct = () => {
     UpdateMutate(formData);
   };
 
-  if (isLoading || Updating) return <Spinner />;
+  if (isLoading || Updating || LoadAdding) return <Spinner />;
   if (Err) return <div>Server Error</div>;
 
   return (
