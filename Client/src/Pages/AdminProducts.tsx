@@ -75,7 +75,7 @@ const AdminProducts = () => {
         <AlertDisplay msg={Alert.msg} type={Alert.type} />
       ) : (
         <form onSubmit={AddNewProduct}>
-          <TimeoutBtn FormValue="Add New Product" Time={3000} classname="btn" />
+          <TimeoutBtn FormValue="Add New Product" Time={3000} className="btn" />
         </form>
       )}
       {Products?.length > 0 ? (

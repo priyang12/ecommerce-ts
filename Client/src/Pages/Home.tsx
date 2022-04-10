@@ -1,10 +1,8 @@
-import axios from "axios";
 import { useQuery } from "react-query";
 import AlertDisplay from "../Components/AlertDisplay";
 import Carousel from "../Components/Carousel";
 import ProductCard from "../Components/ProductCard";
 import { Product } from "../interfaces";
-
 import Spinner from "../Components/Spinner";
 import {
   StyledDisplay,
@@ -12,9 +10,6 @@ import {
 } from "../Components/StyledComponents/Products";
 import { StyledHome } from "./StyledPages/StyledHome";
 import { LoadProducts } from "../API/ProductAPI";
-
-//Fake Data
-// import { Products } from "./Testdata/Data";
 
 const Home = ({ title = "Products Display" }) => {
   const {

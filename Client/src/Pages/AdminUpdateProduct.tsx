@@ -95,6 +95,7 @@ const AdminUpdateProduct = () => {
     } else {
       setProductData(initialState);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [Product]);
 
   const changeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {

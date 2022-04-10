@@ -1,6 +1,5 @@
 import { Profiler } from "react";
 import { User } from "../Context/Authentication/interfaces";
-import { useFetch } from "../Utils/CustomHooks";
 import { useHistory } from "react-router-dom";
 import Spinner from "../Components/Spinner";
 
@@ -29,7 +28,7 @@ const AdminUsers = () => {
 
   return (
     <Profiler
-      id='AdminUsers'
+      id="AdminUsers"
       onRender={(id, phase, actualDuration) => {
         console.log({ id, phase, actualDuration });
       }}
@@ -50,7 +49,7 @@ const AdminUsers = () => {
               <p>{user.isAdmin ? "Admin" : "User"}</p>
               <p>{user.createdAt.slice(0, 10)}</p>
               <button
-                className='btn'
+                className="btn"
                 onClick={() => {
                   history.push(`/StillWorking`);
                 }}

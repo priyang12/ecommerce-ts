@@ -1,5 +1,4 @@
 import axios from "axios";
-import { DetailedProduct } from "../interfaces";
 
 export const LoadUsers = async () => {
   try {

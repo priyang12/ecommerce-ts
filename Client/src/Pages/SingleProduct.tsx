@@ -68,9 +68,9 @@ const SingleProduct = () => {
     });
   };
 
-  if (loading) return <div data-testid='Loading'>Loading</div>;
+  if (loading) return <div data-testid="Loading">Loading</div>;
 
-  if (ProductError) return <div className='Error'>{ProductError}</div>;
+  if (ProductError) return <div className="Error">{ProductError}</div>;
 
   if (!FetchData) return null;
 
@@ -84,8 +84,8 @@ const SingleProduct = () => {
             <img src={Product.image} alt={Product.name} />
             <StyledDetails>
               <h2>{Product.name}</h2>
-              <div className='star-review'>
-                <span className='stars'>
+              <div className="star-review">
+                <span className="stars">
                   <Rating
                     value={Product.rating}
                     text={`${Product.numReviews} reviews`}
@@ -93,17 +93,17 @@ const SingleProduct = () => {
                 </span>
               </div>
               <h4>Price: {Product.price}</h4>
-              <div className='Description'>
+              <div className="Description">
                 <div>Description:</div>
                 {Product.description}
               </div>
             </StyledDetails>
             <StyledCheckout>
-              <h3 className='status-label'>Price: {Product.price}</h3>
+              <h3 className="status-label">Price: {Product.price}</h3>
               {Product.countInStock <= 0 ? (
                 <h3 style={{ color: "red" }}>Status: Out In Stock</h3>
               ) : (
-                <h3 className='status-label'>Status: In Stock</h3>
+                <h3 className="status-label">Status: In Stock</h3>
               )}
 
               {Product.countInStock > 0 && (
@@ -117,15 +117,15 @@ const SingleProduct = () => {
                   {localStorage.token ? (
                     <TimeoutBtn
                       Time={1000}
-                      classname='btn'
-                      FormValue='ADD TO CART'
+                      className="btn"
+                      FormValue="ADD TO CART"
                     />
                   ) : (
-                    <div className='btn-gray'>Login/Register</div>
+                    <div className="btn-gray">Login/Register</div>
                   )}
                 </form>
               )}
-              {ChangingQty && <AlertDisplay msg='Adding to cart' type={true} />}
+              {ChangingQty && <AlertDisplay msg="Adding to cart" type={true} />}
               {Alert && <AlertDisplay msg={Alert} type={true} />}
             </StyledCheckout>
           </StyledProduct>
