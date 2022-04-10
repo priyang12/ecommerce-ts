@@ -107,9 +107,9 @@ const OrderDetails = () => {
               <p className='success'>Delivered</p>
             ) : state.user?.isAdmin ? (
               <TimeoutBtn
-                classname='btn'
+                className='btn'
                 FormValue='Mark as Deliver'
-                Time={5}
+                Time={5000}
               />
             ) : (
               <p className='alert'>Not Delivered</p>

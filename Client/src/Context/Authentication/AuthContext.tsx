@@ -1,12 +1,12 @@
-import { AuthState, IContextModel } from './interfaces';
-import { createContext, useReducer } from 'react';
-import { AuthReducer } from './AuthReducer';
+import { AuthState, IContextModel } from "./interfaces";
+import { createContext, useReducer } from "react";
+import { AuthReducer } from "./AuthReducer";
 
 let Token = null;
 if (localStorage.token) Token = localStorage.token;
 
 const initialState: AuthState = {
-  loading: false,
+  loading: true,
   err: null,
   token: Token,
   user: null,

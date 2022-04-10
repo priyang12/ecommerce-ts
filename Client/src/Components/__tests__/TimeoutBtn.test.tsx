@@ -6,7 +6,7 @@ import TimeoutBtn from "../TimeoutBtn";
 
 it("Disable and Enable on CLick", () => {
   jest.useFakeTimers();
-  render(<TimeoutBtn classname='btn' FormValue='ADD TO CART' Time={2000} />);
+  render(<TimeoutBtn className='btn' FormValue='ADD TO CART' Time={2000} />);
   const Btn = screen.getByText(/ADD TO CART/i);
   userEvent.click(Btn);
   act(() => {
