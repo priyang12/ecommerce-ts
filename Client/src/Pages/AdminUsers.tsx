@@ -1,7 +1,10 @@
 import { Profiler, useState } from "react";
 import { User } from "../Context/Authentication/interfaces";
-import { useHistory } from "react-router-dom";
 import Spinner from "../Components/Spinner";
+import { useMutation, useQuery } from "react-query";
+import { LoadUsers, RemoveUser } from "../API/AdminAPI";
+import { queryClient } from "../query";
+import AlertDisplay from "../Components/AlertDisplay";
 
 import {
   StyledHeaders,
@@ -9,10 +12,6 @@ import {
   StyledList,
   StyledTableContainer,
 } from "./StyledPages/StyledTableView";
-import { useMutation, useQuery } from "react-query";
-import { LoadUsers, RemoveUser } from "../API/AdminAPI";
-import { queryClient } from "../query";
-import AlertDisplay from "../Components/AlertDisplay";
 
 const AdminUsers = () => {
   const {

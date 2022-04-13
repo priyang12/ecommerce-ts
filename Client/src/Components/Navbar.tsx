@@ -17,7 +17,6 @@ import {
 const Navbar = () => {
   const { state, dispatch } = useContext(AuthContext);
   const { user } = state;
-
   const history = useHistory();
   const [searchValue, setSearchValue] = useState<string>("");
 
@@ -35,7 +34,7 @@ const Navbar = () => {
 
   const GuestLink = (
     <Fragment>
-      <Link to='/Auth' className='Auth'>
+      <Link to="/Auth" className="Auth">
         Login/Register
       </Link>
     </Fragment>
@@ -46,18 +45,23 @@ const Navbar = () => {
       {user && (
         <DropDown>
           <div>{user.name}</div>
-          <StyledDropDownButton className='Dropdown-btn'>
-            <i className='fas fa-caret-down'></i>
+          <StyledDropDownButton className="Dropdown-btn">
+            <i className="fas fa-caret-down"></i>
           </StyledDropDownButton>
-          <div className='dropdown-content'>
+          <div className="dropdown-content">
             <li>
-              <Link to='/OrderStatus'>
-                <span className='hide-sm'>Orders</span>
+              <Link to="/Profile">
+                <span className="hide-sm">Profile</span>
               </Link>
             </li>
             <li>
-              <Link to='/Auth' onClick={onLogout}>
-                <span className='hide-sm'>Logout</span>
+              <Link to="/OrderStatus">
+                <span className="hide-sm">Orders</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/Auth" onClick={onLogout}>
+                <span className="hide-sm">Logout</span>
               </Link>
             </li>
           </div>
@@ -69,15 +73,15 @@ const Navbar = () => {
   return (
     <StyledNavbar>
       <Logo>
-        <Link to='/'>
+        <Link to="/">
           <h1>SHOP IT</h1>
         </Link>
       </Logo>
       <SearchBar>
         <SerachInput
-          type='text'
-          placeholder='Search Product'
-          name='search'
+          type="text"
+          placeholder="Search Product"
+          name="search"
           onKeyUp={(e: any) => {
             setSearchValue(e.target.value);
             if (e.key === "Enter") {
@@ -91,14 +95,14 @@ const Navbar = () => {
       <StyledSecondaryNav>
         {user && (
           <StyledLinks>
-            <Link to='/Cart'>
-              <i className='fas fa-shopping-cart'></i> CART
+            <Link to="/Cart">
+              <i className="fas fa-shopping-cart"></i> CART
             </Link>
           </StyledLinks>
         )}
         {user?.isAdmin && (
           <StyledLinks>
-            <Link to='/AdminDashboard'>AdminDashboard</Link>
+            <Link to="/AdminDashboard">AdminDashboard</Link>
           </StyledLinks>
         )}
         {user ? AuthLink : GuestLink}
