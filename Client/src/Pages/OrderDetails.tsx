@@ -26,9 +26,9 @@ const OrderDetails = () => {
 
   return (
     <Fragment>
-      <section className='container' id='order'>
-        <div className='left'>
-          <div className='detail'>
+      <section className="container" id="order">
+        <div className="left">
+          <div className="detail">
             <h1>SHIPPING</h1>
             <p>Name: {FetchData.user.name}</p>
             <p>Email: {FetchData.user.email}</p>
@@ -39,15 +39,15 @@ const OrderDetails = () => {
               {FetchData.shippingAddress.postalcode}
             </p>
           </div>
-          <div className='detail'>
+          <div className="detail">
             <h1>PAYMENT METHOD</h1>
             <p>Method: {FetchData.paymentMethod}</p>
           </div>
-          <div className='details'>
+          <div className="details">
             <h1>ORDER ITEMS</h1>
-            <ul className='list'>
+            <ul className="list">
               {FetchData.orderItems.map((orderitems: CartItem) => (
-                <li className='list-item' key={orderitems._id}>
+                <li className="list-item" key={orderitems._id}>
                   <img
                     src={`..${orderitems.product.image}`}
                     alt={orderitems.product.name}
@@ -62,24 +62,24 @@ const OrderDetails = () => {
 
                   {/* Review the Product If it is User's product */}
                   {!state.user?.isAdmin ||
-                    (FetchData.user.id === state.user.id &&
+                    (FetchData.user._id === state.user._id &&
                       FetchData.isDelivered && (
-                        <form className='review' onSubmit={SubmitReview}>
+                        <form className="review" onSubmit={SubmitReview}>
                           <label>Rating</label>
-                          <select className='rating'>
-                            <option value=''>Select...</option>
-                            <option value='1'>1 - Poor</option>
-                            <option value='2'>2 - Fair</option>
-                            <option value='3'>3 - Good</option>
-                            <option value='4'>4 - Very Good</option>
-                            <option value='5'>5 - Excellent</option>
+                          <select className="rating">
+                            <option value="">Select...</option>
+                            <option value="1">1 - Poor</option>
+                            <option value="2">2 - Fair</option>
+                            <option value="3">3 - Good</option>
+                            <option value="4">4 - Very Good</option>
+                            <option value="5">5 - Excellent</option>
                           </select>
                           <label>Comment</label>
                           <input
-                            type='textarea'
+                            type="textarea"
                             onChange={onchangeReview}
                           ></input>
-                          <input type='submit' />
+                          <input type="submit" />
                         </form>
                       ))}
                 </li>
@@ -87,7 +87,7 @@ const OrderDetails = () => {
             </ul>
           </div>
         </div>
-        <div className='right'>
+        <div className="right">
           <ul>
             <h1>ORDER SUMMARY</h1>
             <li>
@@ -104,15 +104,15 @@ const OrderDetails = () => {
             </li>
             <li></li>
             {FetchData.isDelivered ? (
-              <p className='success'>Delivered</p>
+              <p className="success">Delivered</p>
             ) : state.user?.isAdmin ? (
               <TimeoutBtn
-                className='btn'
-                FormValue='Mark as Deliver'
+                className="btn"
+                FormValue="Mark as Deliver"
                 Time={5000}
               />
             ) : (
-              <p className='alert'>Not Delivered</p>
+              <p className="alert">Not Delivered</p>
             )}
           </ul>
         </div>

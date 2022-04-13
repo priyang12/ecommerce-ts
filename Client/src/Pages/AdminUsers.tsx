@@ -1,4 +1,4 @@
-import { Profiler } from "react";
+import { Profiler, useState } from "react";
 import { User } from "../Context/Authentication/interfaces";
 import { useHistory } from "react-router-dom";
 import Spinner from "../Components/Spinner";
@@ -9,16 +9,31 @@ import {
   StyledList,
   StyledTableContainer,
 } from "./StyledPages/StyledTableView";
-import { useQuery } from "react-query";
-import { LoadUsers } from "../API/AdminAPI";
+import { useMutation, useQuery } from "react-query";
+import { LoadUsers, RemoveUser } from "../API/AdminAPI";
+import { queryClient } from "../query";
+import AlertDisplay from "../Components/AlertDisplay";
 
 const AdminUsers = () => {
-  const history = useHistory();
   const {
     data: Users,
     error: UserError,
     isLoading,
   } = useQuery(["Users"], LoadUsers);
+  const [alert, setAlert] = useState({
+    msg: "",
+    type: false,
+  });
+  const { mutate: DeleteCall } = useMutation(RemoveUser, {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["Users"]);
+      setAlert({ msg: data.message, type: true });
+    },
+  });
+
+  const DeleteAccount = (id: string) => {
+    DeleteCall(id);
+  };
 
   if (isLoading) return <Spinner />;
 
@@ -34,6 +49,7 @@ const AdminUsers = () => {
       }}
     >
       <StyledTableContainer>
+        {alert.msg && <AlertDisplay msg={alert.msg} type={alert.type} />}
         <StyledHeaders>
           <h2>Name</h2>
           <h2>Email</h2>
@@ -51,7 +67,7 @@ const AdminUsers = () => {
               <button
                 className="btn"
                 onClick={() => {
-                  history.push(`/StillWorking`);
+                  DeleteAccount(user._id);
                 }}
               >
                 Remove User

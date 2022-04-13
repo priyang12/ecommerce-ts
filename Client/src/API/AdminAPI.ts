@@ -9,6 +9,15 @@ export const LoadUsers = async () => {
   }
 };
 
+export const RemoveUser = async (id: string) => {
+  try {
+    const response = await axios.delete(`/api/users/admin/${id}`);
+    return response.data;
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
 export const AddProductCall = async (product: any) => {
   try {
     // config multipart form dat
