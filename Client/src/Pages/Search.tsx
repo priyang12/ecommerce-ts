@@ -4,6 +4,7 @@ import { useFetch } from "../Utils/CustomHooks";
 import { StyledHome } from "./StyledPages/StyledHome";
 import AlertDisplay from "../Components/AlertDisplay";
 import DisplayProducts from "../Components/DisplayProducts";
+import Spinner from "../Components/Spinner";
 
 const Home = () => {
   const { keyword, pageNumber }: any = useParams();
@@ -19,6 +20,8 @@ const Home = () => {
 
   const [ProductData, Err, loading] = useFetch(Url);
 
+  if (loading) return <Spinner />;
+
   if (!ProductData) return null;
 
   if (Err) return <AlertDisplay msg={Err} type={false} />;
@@ -27,14 +30,13 @@ const Home = () => {
     <StyledHome>
       <DisplayProducts
         Products={ProductData?.products}
-        loading={loading}
         title={`Search Results for ${keyword}`}
       />
       {ProductData.pages > 1 && (
-        <div className='pagination'>
+        <div className="pagination">
           {ProductData.page !== 1 && (
             <button
-              className='pagination-button'
+              className="pagination-button"
               onClick={() => {
                 if (page > 1) {
                   <Link
@@ -49,7 +51,7 @@ const Home = () => {
           )}
 
           <button
-            className='pagination-button'
+            className="pagination-button"
             onClick={() => {
               if (page < ProductData.pages) {
                 <Link to={`/products?keyword=${keyword}&page=${page + 1}`} />;

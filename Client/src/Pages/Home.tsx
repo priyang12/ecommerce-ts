@@ -25,8 +25,7 @@ const Home = ({ title = "Products Display" }) => {
 
   if (Err) return <AlertDisplay msg={Err} type={false} />;
 
-  if (!ProductsData)
-    return <AlertDisplay msg="No Products Found" type={false} />;
+  if (!ProductsData) return null;
 
   return (
     <StyledHome>
