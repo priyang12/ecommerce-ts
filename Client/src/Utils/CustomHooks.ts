@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const useAxios = (Params: AxiosRequestConfig) => {
   const [loading, setLoading] = useState(false);
@@ -148,3 +148,48 @@ export const useOnScreen = (
   }, [ref, rootMargin]);
   return { isIntersecting };
 };
+
+export function useTilt(active: any) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (!ref.current || !active) {
+      return;
+    }
+
+    const state: {
+      [key: string]: any;
+    } = {
+      rect: null,
+      mouseX: 0,
+      mouseY: 0,
+    };
+
+    let el = ref.current as HTMLElement;
+
+    const handleMouseMove = (e: any) => {
+      if (!el) {
+        return;
+      }
+      if (!state.rect) {
+        state.rect = el.getBoundingClientRect();
+      }
+      state.mouseX = e.clientX;
+      state.mouseY = e.clientY;
+
+      const px: number = (state.mouseX - state.rect.left) / state.rect.width;
+      const py: number = (state.mouseY - state.rect.top) / state.rect.height;
+
+      el.style.setProperty("--px", px.toString());
+      el.style.setProperty("--py", py.toString());
+    };
+
+    el.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      el.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [active]);
+
+  return ref;
+}

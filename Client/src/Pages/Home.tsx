@@ -25,9 +25,12 @@ const Home = ({ title = "Products Display" }) => {
 
   if (Err) return <AlertDisplay msg={Err} type={false} />;
 
+  if (!ProductsData)
+    return <AlertDisplay msg="No Products Found" type={false} />;
+
   return (
     <StyledHome>
-      {/* <Carousel products={ProductsData} /> */}
+      <Carousel products={ProductsData.products.slice(0, 4)} />
       <StyledDisplay>
         <h1>{title}</h1>
         <StyledProducts>
