@@ -9,9 +9,12 @@ const Home = () => {
 
   if (Err) return <AlertDisplay msg={Err} type={false} />;
 
+  if (!ProductsData)
+    return <AlertDisplay msg="No Products Found" type={false} />;
+
   return (
     <StyledHome>
-      {/* <Carousel products={Products} /> */}
+      <Carousel products={ProductsData.products} />
       <DisplayProducts
         Products={ProductsData?.products}
         loading={loading}

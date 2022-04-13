@@ -1,37 +1,52 @@
-// @ts-nocheck
-import { useTilt } from "./Carousel";
+import { useTilt } from "../Utils/CustomHooks";
+import {
+  StyledContentInner,
+  StyledSlideBackground,
+  StyledSlideContent,
+  StyledShowMore,
+} from "./StyledComponents/Styledslides";
 
-const Slide = ({ slide, offset }) => {
+const Slide = ({ slide, offset }: { slide: any; offset: number }) => {
   const active = offset === 0 ? true : null;
   const ref = useTilt(active);
-
   return (
     <div
       ref={ref}
-      className='slide'
-      data-active={active}
+      className="slide"
       style={{
+        // @ts-ignore
         "--offset": offset,
         "--dir": offset === 0 ? 0 : offset > 0 ? 1 : -1,
       }}
     >
-      <div
-        className='slideBackground'
+      <StyledSlideBackground
         style={{
           backgroundImage: `url('${slide.image}')`,
         }}
       />
-      <div
-        className='slideContent'
+      <StyledSlideContent
         style={{
           backgroundImage: `url('${slide.image}')`,
+          opacity: active ? 1 : 0.7,
         }}
+        // className={active ? "active" : ""}
       >
-        <div className='slideContentInner'>
-          <h2 className='slideTitle'>{slide.title}</h2>
-          <p className='slideDescription'>{slide.description}</p>
-        </div>
-      </div>
+        <StyledContentInner
+          style={{
+            opacity: active ? 1 : 0,
+          }}
+        >
+          <h2 className="slideTitle">{slide.title}</h2>
+          <p className="slideDescription">{slide.description}</p>
+        </StyledContentInner>
+        <StyledShowMore
+          style={{
+            display: active ? "block" : "none",
+          }}
+        >
+          Show More
+        </StyledShowMore>
+      </StyledSlideContent>
     </div>
   );
 };
