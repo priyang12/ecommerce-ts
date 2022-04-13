@@ -1,17 +1,13 @@
 import { Product } from "../interfaces";
 import ProductCard from "./ProductCard";
-import Spinner from "./Spinner";
 import { StyledDisplay, StyledProducts } from "./StyledComponents/Products";
 
 type props = {
-  loading: boolean;
   Products: Product[];
   title: string;
 };
 
-const DisplayProducts = ({ loading, Products, title }: props) => {
-  if (loading) return <Spinner />;
-
+const DisplayProducts = ({ Products, title }: props) => {
   if (!Products) return null;
 
   if (!Products.length) return <p>No products found</p>;
