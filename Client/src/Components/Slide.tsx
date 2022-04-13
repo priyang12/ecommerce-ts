@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useTilt } from "../Utils/CustomHooks";
 import {
   StyledContentInner,
@@ -44,7 +45,7 @@ const Slide = ({ slide, offset }: { slide: any; offset: number }) => {
             display: active ? "block" : "none",
           }}
         >
-          Show More
+          <Link to={`/product/${slide._id}`}>Show More</Link>
         </StyledShowMore>
       </StyledSlideContent>
     </div>

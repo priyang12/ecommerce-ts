@@ -14,7 +14,7 @@ const Home = () => {
 
   return (
     <StyledHome>
-      <Carousel products={ProductsData.products} />
+      <Carousel products={ProductsData.products.slice(0, 3)} />
       <DisplayProducts
         Products={ProductsData?.products}
         loading={loading}
