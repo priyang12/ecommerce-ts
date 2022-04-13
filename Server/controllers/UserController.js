@@ -159,7 +159,10 @@ const UpdateProfile = asyncHandler(async (req, res) => {
 
   if (user) {
     user.name = req.body.name || user.name;
-    if (req.body.password) {
+    if (
+      req.body.CurrentPassword &&
+      user.matchPassword(req.body.CurrentPassword)
+    ) {
       user.password = req.body.password;
     }
 

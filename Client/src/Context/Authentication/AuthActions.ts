@@ -4,6 +4,7 @@ import {
   LOAD_USER,
   SET_LOADING,
   LOG_OUT,
+  UPDATE_USER,
 } from "./Authtypes";
 
 import axios, { AxiosError } from "axios";
@@ -79,6 +80,30 @@ export const RegisterUser = async (
     let ErrorMessage = "Server Error Try Again Later";
     if (err as AxiosError) {
       ErrorMessage = err.response.data?.msg;
+    }
+    dispatch({
+      type: AUTH_ERROR,
+      payload: ErrorMessage,
+    });
+  }
+};
+
+export const UpdateUser = async (
+  dispatch: React.Dispatch<AuthActions>,
+  user: any
+) => {
+  try {
+    setLoading(dispatch);
+    const { data }: any = await axios.put("/api/users/update", user);
+    dispatch({
+      type: UPDATE_USER,
+      payload: data,
+    });
+  } catch (err: any | AxiosError) {
+    let ErrorMessage = "Server Error Try Again Later";
+    console.log(err);
+    if (err as AxiosError) {
+      ErrorMessage = err.response.data.message;
     }
     dispatch({
       type: AUTH_ERROR,
