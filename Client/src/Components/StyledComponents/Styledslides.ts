@@ -38,7 +38,7 @@ export const StyledSlide = styled.div`
     align-items: center;
     justify-content: center;
     position: absolute;
-    font-size: 5rem;
+    font-size: 1.5rem;
     width: 5rem;
     height: 5rem;
     transition: opacity 0.3s;
@@ -58,10 +58,10 @@ export const StyledSlide = styled.div`
       right: 10%;
     }
     @media (max-width: 568px) {
-      font-size: 3rem;
+      display: none;
       width: 3rem;
       height: 3rem;
-      top: 55%;
+      top: 52%;
     }
   }
 `;
@@ -143,6 +143,6 @@ export const StyledShowMore = styled.button`
     outline: none;
   }
   @media (max-width: 768px) {
-    font-size: 1.5rem;
+    font-size: 1rem;
   }
 `;

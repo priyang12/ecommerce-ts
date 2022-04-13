@@ -1,3 +1,4 @@
+import { Dispatch } from "react";
 import { Link } from "react-router-dom";
 import { useTilt } from "../Utils/CustomHooks";
 import {
@@ -7,13 +8,31 @@ import {
   StyledShowMore,
 } from "./StyledComponents/Styledslides";
 
-const Slide = ({ slide, offset }: { slide: any; offset: number }) => {
+const Slide = ({
+  slide,
+  offset,
+  dispatch,
+}: {
+  slide: any;
+  offset: number;
+  dispatch: Dispatch<any>;
+}) => {
   const active = offset === 0 ? true : null;
   const ref = useTilt(active);
   return (
     <div
       ref={ref}
       className="slide"
+      onTouchMove={(e) => {
+        if (e.touches.length >= 1) {
+          if (offset === 1) {
+            dispatch({ type: "NEXT" });
+          }
+          if (offset === -1) {
+            dispatch({ type: "PREV" });
+          }
+        }
+      }}
       style={{
         // @ts-ignore
         "--offset": offset,

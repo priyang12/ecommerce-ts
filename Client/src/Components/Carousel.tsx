@@ -31,14 +31,20 @@ const Carousel: FC<{ products: any }> = ({ products: Products }: any) => {
   return (
     <StyledSlidesContainer>
       <StyledSlide>
-        <button onClick={() => dispatch({ type: "PREV" })}>{"<"}</button>
+        <button onClick={() => dispatch({ type: "PREV" })}>
+          <i className="fas fa-chevron-left"></i>
+        </button>
 
         {[...Products, ...Products, ...Products].map((slide, i) => {
           let offset = Products.length + (state.slideIndex - i);
 
-          return <Slide slide={slide} offset={offset} key={i} />;
+          return (
+            <Slide slide={slide} offset={offset} key={i} dispatch={dispatch} />
+          );
         })}
-        <button onClick={() => dispatch({ type: "NEXT" })}>{">"}</button>
+        <button onClick={() => dispatch({ type: "NEXT" })}>
+          <i className="fas fa-chevron-right"></i>
+        </button>
       </StyledSlide>
     </StyledSlidesContainer>
   );
