@@ -23,6 +23,7 @@ import AdminUpdateProduct from "./Pages/AdminUpdateProduct";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 // Route for Admin and User
 import PrivateRoute, { AdminRoute } from "./Components/PrivateRoute";
+import { LOG_OUT } from "./Context/Authentication/Authtypes";
 
 function App() {
   const { state, dispatch } = useContext(AuthContext);
@@ -31,6 +32,11 @@ function App() {
   useEffect(() => {
     if (token) {
       loadUser(token, dispatch);
+    } else {
+      dispatch({
+        type: LOG_OUT,
+        payload: null,
+      });
     }
   }, [token, dispatch]);
 
@@ -40,39 +46,39 @@ function App() {
   const DefaultContainer = () => (
     <Fragment>
       <Navbar />
-      <Route exact path='/' component={Home} />
-      <Route exact path='/Home' component={Home} />
-      <Route exact path='/search/name=:keyword' component={Search} />
+      <Route exact path="/" component={Home} />
+      <Route exact path="/Home" component={Home} />
+      <Route exact path="/search/name=:keyword" component={Search} />
       <Route
         exact
-        path='/search/name=:keyword/:pageNumber'
+        path="/search/name=:keyword/:pageNumber"
         component={Search}
       />
-      <Route exact path='/product/:id' component={SingleProduct} />
-      <Route exact path='/cart' component={Cart} />
-      <PrivateRoute exact path='/PlaceOrder' component={PlaceOrder} />
-      <PrivateRoute exact path='/OrderStatus' component={OrderStatus} />
-      <PrivateRoute exact path='/OrderStatus/:id' component={OrderDetails} />
-      <AdminRoute exact path='/AdminDashboard' component={AdminDashboard} />
-      <AdminRoute exact path='/AdminOrders' component={OrderStatus} />
-      <AdminRoute exact path='/AdminProducts' component={AdminProducts} />
+      <Route exact path="/product/:id" component={SingleProduct} />
+      <PrivateRoute exact path="/cart" component={Cart} />
+      <PrivateRoute exact path="/PlaceOrder" component={PlaceOrder} />
+      <PrivateRoute exact path="/OrderStatus" component={OrderStatus} />
+      <PrivateRoute exact path="/OrderStatus/:id" component={OrderDetails} />
+      <AdminRoute exact path="/AdminDashboard" component={AdminDashboard} />
+      <AdminRoute exact path="/AdminOrders" component={OrderStatus} />
+      <AdminRoute exact path="/AdminProducts" component={AdminProducts} />
       <AdminRoute
         exact
-        path='/AdminProducts/:id'
+        path="/AdminProducts/:id"
         component={AdminUpdateProduct}
       />
-      <AdminRoute exact path='/AdminUsers' component={AdminUsers} />
+      <AdminRoute exact path="/AdminUsers" component={AdminUsers} />
     </Fragment>
   );
 
   return (
     <Router>
       <Switch>
-        <Route exact path='/Auth' component={Auth} />
-        <PrivateRoute exact path='/address' component={AddressPage} />
-        <PrivateRoute exact path='/payment' component={PaymentMethod} />
-        <PrivateRoute exact path='/PayPal' component={Paypal} />
-        <Route exact path='/StillWorking' component={StillWorking} />
+        <Route exact path="/Auth" component={Auth} />
+        <PrivateRoute exact path="/address" component={AddressPage} />
+        <PrivateRoute exact path="/payment" component={PaymentMethod} />
+        <PrivateRoute exact path="/PayPal" component={Paypal} />
+        <Route exact path="/StillWorking" component={StillWorking} />
         <Route component={DefaultContainer} />
       </Switch>
     </Router>
