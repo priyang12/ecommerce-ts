@@ -31,18 +31,20 @@ export const StyledSlide = styled.div`
   > button {
     cursor: pointer;
     appearance: none;
-    background: transparent;
+    border-radius: 50%;
     border: none;
-    color: white;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: absolute;
     font-size: 5rem;
     width: 5rem;
     height: 5rem;
-    top: 30%;
     transition: opacity 0.3s;
     opacity: 0.7;
     z-index: 5;
-    top: 70%;
+    top: 30rem;
     &:hover {
       opacity: 1;
     }
@@ -54,6 +56,12 @@ export const StyledSlide = styled.div`
     }
     &:last-child {
       right: 10%;
+    }
+    @media (max-width: 568px) {
+      font-size: 3rem;
+      width: 3rem;
+      height: 3rem;
+      top: 55%;
     }
   }
 `;
@@ -99,10 +107,11 @@ export const StyledContentInner = styled.div`
     font-size: 2rem;
     letter-spacing: 0.2ch;
   }
-  @media (max-width: 768px) {
-    .slideTitle {
+  @media (max-width: 1028px) {
+    .slideDescription {
       font-size: 1.5rem;
     }
+  @media (max-width: 768px) {
     .slideDescription {
       display: none;
     }
