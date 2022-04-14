@@ -1,4 +1,4 @@
-import { FC, useReducer } from "react";
+import { FC, useEffect, useReducer } from "react";
 import Slide from "./Slide";
 import {
   StyledSlide,
@@ -27,6 +27,12 @@ const Carousel: FC<{ products: any }> = ({ products: Products }: any) => {
   };
 
   const [state, dispatch] = useReducer(slidesReducer, initialState);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      dispatch({ type: "NEXT" });
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <StyledSlidesContainer>
@@ -35,9 +41,10 @@ const Carousel: FC<{ products: any }> = ({ products: Products }: any) => {
           <i className="fas fa-chevron-left"></i>
         </button>
 
-        {[...Products, ...Products, ...Products].map((slide, i) => {
-          let offset = Products.length + (state.slideIndex - i);
-
+        {Products.map((slide: any, i: number) => {
+          let offset = state.slideIndex - i;
+          // New Effect
+          // if (offset < 0) offset += Products.length;
           return (
             <Slide slide={slide} offset={offset} key={i} dispatch={dispatch} />
           );
