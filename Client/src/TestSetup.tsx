@@ -1,3 +1,4 @@
+import "@testing-library/jest-dom";
 import { QueryClientProvider, QueryClient } from "react-query";
 
 export const client = new QueryClient({

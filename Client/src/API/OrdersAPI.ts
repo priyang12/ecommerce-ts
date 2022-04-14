@@ -17,3 +17,14 @@ export const LoadOrderDetails = async (id: string) => {
     throw Error(error.message);
   }
 };
+
+export const MarkOrderAsDelivered = async (id: any) => {
+  try {
+    const response = await axios.put(`/api/orders/order/${id}`, {
+      isDelivered: true,
+    });
+    return response.data;
+  } catch (error: any) {
+    return error.response;
+  }
+};

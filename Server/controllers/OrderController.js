@@ -131,7 +131,9 @@ const UpdateOrder = asyncHandler(async (req, res) => {
     const Del = req.body.isDelivered;
     order.isDelivered = Del;
     order.save();
-    res.json(order);
+    res.json({
+      msg: "Order is Delivered",
+    });
   } catch {
     res.status(404);
     throw new Error("Orders not found");

@@ -52,7 +52,7 @@ const Cart = () => {
       setAlert({ msg: data.msg, type: true });
       queryClient.invalidateQueries(["Cart"]);
     },
-    onSettled: (data) => {
+    onSettled: () => {
       setTimeout(() => {
         setAlert({ msg: "", type: false });
       }, 3000);
