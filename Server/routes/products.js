@@ -31,6 +31,9 @@ router
   .put(Admin, upload.single("image"), UpdateProduct)
   .delete(Admin, deleteProduct);
 
+// Search
+router.route("/Search").get(GetAllProducts);
+
 router.route("/review/:id").post(Auth, AddReview);
 
 module.exports = router;

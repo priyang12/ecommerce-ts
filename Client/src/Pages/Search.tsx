@@ -1,30 +1,38 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useFetch } from "../Utils/CustomHooks";
 import { StyledHome } from "./StyledPages/StyledHome";
 import AlertDisplay from "../Components/AlertDisplay";
 import DisplayProducts from "../Components/DisplayProducts";
 import Spinner from "../Components/Spinner";
+import { useQuery } from "react-query";
+import { SearchProduct } from "../API/ProductAPI";
 
 const Home = () => {
   const { keyword, pageNumber }: any = useParams();
   const page = pageNumber ? pageNumber : 1;
 
-  const [Url, setUrl] = useState("");
+  const [Url, setUrl] = useState(
+    pageNumber
+      ? `?keyword=${keyword}&page=${pageNumber}`
+      : `?keyword=${keyword}`
+  );
 
   useEffect(() => {
-    if (pageNumber)
-      setUrl(`/api/products?keyword=${keyword}&page=${pageNumber}`);
-    else setUrl(`/api/products?keyword=${keyword}`);
+    if (pageNumber) setUrl(`?keyword=${keyword}&page=${pageNumber}`);
+    else setUrl(`?keyword=${keyword}`);
   }, [keyword, pageNumber]);
 
-  const [ProductData, Err, loading] = useFetch(Url);
+  const {
+    data: ProductData,
+    isLoading,
+    error: Err,
+  } = useQuery([`Search/${Url}`, { Url }], SearchProduct, {});
 
-  if (loading) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
   if (!ProductData) return null;
 
-  if (Err) return <AlertDisplay msg={Err} type={false} />;
+  if (Err) return <AlertDisplay msg={"Something Went Wrong"} type={false} />;
 
   return (
     <StyledHome>
