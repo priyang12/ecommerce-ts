@@ -8,6 +8,7 @@ import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { MemoryRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
+import { client, Wrapper } from "../../TestSetup";
 
 const Orders = [
   {
@@ -65,77 +66,83 @@ const AdminOrders = [
 
 const mock = new MockAdapter(axios);
 
-afterEach(() => {
-  mock.reset();
-});
+describe("User Orders", () => {
+  it("Empty Order", async () => {
+    mock.onGet("/api/orders").reply(200, []);
+    render(
+      <Wrapper>
+        <MemoryRouter initialEntries={["/OrderStatus"]}>
+          <OrderStatus />
+        </MemoryRouter>
+      </Wrapper>
+    );
 
-it("Mock Order Data", async () => {
-  mock.onGet("/api/orders").reply(200, Orders);
-  render(
-    <MemoryRouter initialEntries={["/OrderStatus"]}>
-      <OrderStatus />
-    </MemoryRouter>
-  );
+    //check if the loading is true
+    await waitForElementToBeRemoved(screen.queryByTestId("Loading")).then(
+      () => {
+        // expect(screen.queryByTestId("Loading")).toBeNull(); //check if the loading is false
+      }
+    );
 
-  //check if the loading is true
-  await waitForElementToBeRemoved(screen.queryByTestId("Loading")).then(
-    () => {}
-  );
+    // Check if the Order is Empty.
+    expect(screen.getByText("No Order Are In Place")).toBeInTheDocument();
+  });
+  it("Mock Order Data", async () => {
+    client.clear();
+    mock.onGet("/api/orders").reply(200, Orders);
+    render(
+      <Wrapper>
+        <MemoryRouter initialEntries={["/OrderStatus"]}>
+          <OrderStatus />
+        </MemoryRouter>
+      </Wrapper>
+    );
 
-  // Check if the Order is rendering.
-  expect(
-    screen.getByText("ORDER:612894962f469f19e8ee85e8")
-  ).toBeInTheDocument();
-});
+    //check if the loading is true
+    await waitForElementToBeRemoved(screen.queryByTestId("Loading"));
 
-it("Empty Order", async () => {
-  mock.onGet("/api/orders").reply(200, []);
-  render(
-    <MemoryRouter initialEntries={["/OrderStatus"]}>
-      <OrderStatus />
-    </MemoryRouter>
-  );
-
-  //check if the loading is true
-  await waitForElementToBeRemoved(screen.queryByTestId("Loading")).then(() => {
-    // expect(screen.queryByTestId("Loading")).toBeNull(); //check if the loading is false
+    // Check if the Order is rendering.
+    expect(
+      screen.getByText("ORDER:612894962f469f19e8ee85e8")
+    ).toBeInTheDocument();
   });
 
-  // Check if the Order is Empty.
-  expect(screen.getByText("No Order Are In Place")).toBeInTheDocument();
+  it("Server Error", async () => {
+    client.clear();
+    mock.onGet("/api/orders").reply(500);
+    render(
+      <Wrapper>
+        <MemoryRouter initialEntries={["/OrderStatus"]}>
+          <OrderStatus />
+        </MemoryRouter>
+      </Wrapper>
+    );
+
+    //check if the loading is true
+    await waitForElementToBeRemoved(screen.queryByTestId("Loading"));
+    //Check if the Error Message is rendered.
+    expect(
+      screen.getByText("Request failed with status code 500")
+    ).toBeInTheDocument();
+  });
 });
 
-it("Server Error", async () => {
-  mock.onGet("/api/orders").reply(500);
-  render(
-    <MemoryRouter initialEntries={["/OrderStatus"]}>
-      <OrderStatus />
-    </MemoryRouter>
-  );
+describe("Admin Orders", () => {
+  it("Call All the Order For Admin", async () => {
+    mock.onGet("/api/orders/all").reply(200, AdminOrders);
+    render(
+      <Wrapper>
+        <MemoryRouter initialEntries={["/AdminOrders"]}>
+          <OrderStatus />
+        </MemoryRouter>
+      </Wrapper>
+    );
 
-  //check if the loading is true
-  await waitForElementToBeRemoved(screen.queryByTestId("Loading")).then(
-    () => {}
-  );
-
-  //Check if the Error Message is rendered.
-  expect(
-    screen.getByText("Request failed with status code 500")
-  ).toBeInTheDocument();
-});
-
-it("Call All the Order For Admin", async () => {
-  mock.onGet("/api/orders/all").reply(200, AdminOrders);
-  render(
-    <MemoryRouter initialEntries={["/AdminOrders"]}>
-      <OrderStatus />
-    </MemoryRouter>
-  );
-
-  //check if the loading is true
-  await waitForElementToBeRemoved(screen.queryByTestId("Loading")).then(
-    () => {}
-  );
-  //check if the loading is true
-  expect(screen.getByText(/John Doe/)).toBeInTheDocument();
+    //check if the loading is true
+    await waitForElementToBeRemoved(screen.queryByTestId("Loading")).then(
+      () => {}
+    );
+    //check if the loading is true
+    expect(screen.getByText(/John Doe/)).toBeInTheDocument();
+  });
 });

@@ -1,10 +1,12 @@
 import { Fragment, useContext } from "react";
+import { useQuery } from "react-query";
 import { Link, useParams } from "react-router-dom";
+import { LoadOrderDetails } from "../API/OrdersAPI";
 import { CartItem } from "../Components/ProductList";
 import Spinner from "../Components/Spinner";
 import TimeoutBtn from "../Components/TimeoutBtn";
 import { AuthContext } from "../Context/Authentication/AuthContext";
-import { useFetch, useForm } from "../Utils/CustomHooks";
+import { useForm } from "../Utils/CustomHooks";
 
 const OrderDetails = () => {
   const { state } = useContext(AuthContext);
@@ -13,16 +15,27 @@ const OrderDetails = () => {
     Comment: "",
   });
   const { id } = useParams<{ id: string }>();
-  const [FetchData, Err, loading] = useFetch(`/api/orders/order/${id}`);
+
+  const {
+    data: OrderDetails,
+    isLoading,
+    error,
+    isError,
+  }: {
+    data: any;
+    isLoading: boolean;
+    error: any;
+    isError: boolean;
+  } = useQuery([`OrderDetails/${id}`], () => LoadOrderDetails(id));
 
   const SubmitReview = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(Review);
   };
 
-  if (loading) return <Spinner />;
-  if (Err) return <div>{Err}</div>;
-  if (!FetchData) return <div>Server Error Please Try Again</div>;
+  if (isLoading) return <Spinner />;
+  if (isError) return <div>{error}</div>;
+  if (!OrderDetails) return <div>Server Error Please Try Again</div>;
 
   return (
     <Fragment>
@@ -30,23 +43,23 @@ const OrderDetails = () => {
         <div className="left">
           <div className="detail">
             <h1>SHIPPING</h1>
-            <p>Name: {FetchData.user.name}</p>
-            <p>Email: {FetchData.user.email}</p>
+            <p>Name: {OrderDetails.user.name}</p>
+            <p>Email: {OrderDetails.user.email}</p>
             <p>
-              Address: {FetchData.shippingAddress.address},{" "}
-              {FetchData.shippingAddress.city},{" "}
-              {FetchData.shippingAddress.country} ,{" "}
-              {FetchData.shippingAddress.postalcode}
+              Address: {OrderDetails.shippingAddress.address},{" "}
+              {OrderDetails.shippingAddress.city},{" "}
+              {OrderDetails.shippingAddress.country} ,{" "}
+              {OrderDetails.shippingAddress.postalcode}
             </p>
           </div>
           <div className="detail">
             <h1>PAYMENT METHOD</h1>
-            <p>Method: {FetchData.paymentMethod}</p>
+            <p>Method: {OrderDetails.paymentMethod}</p>
           </div>
           <div className="details">
             <h1>ORDER ITEMS</h1>
             <ul className="list">
-              {FetchData.orderItems.map((orderitems: CartItem) => (
+              {OrderDetails.orderItems.map((orderitems: CartItem) => (
                 <li className="list-item" key={orderitems._id}>
                   <img
                     src={`..${orderitems.product.image}`}
@@ -62,8 +75,8 @@ const OrderDetails = () => {
 
                   {/* Review the Product If it is User's product */}
                   {!state.user?.isAdmin ||
-                    (FetchData.user._id === state.user._id &&
-                      FetchData.isDelivered && (
+                    (OrderDetails.user._id === state.user._id &&
+                      OrderDetails.isDelivered && (
                         <form className="review" onSubmit={SubmitReview}>
                           <label>Rating</label>
                           <select className="rating">
@@ -91,19 +104,19 @@ const OrderDetails = () => {
           <ul>
             <h1>ORDER SUMMARY</h1>
             <li>
-              Items : <span> ${FetchData.itemsPrice}</span>
+              Items : <span> ${OrderDetails.itemsPrice}</span>
             </li>
             <li>
-              Shipping : <span> ${FetchData.shippingPrice}</span>
+              Shipping : <span> ${OrderDetails.shippingPrice}</span>
             </li>
             <li>
-              Tax : <span> ${FetchData.taxPrice}</span>
+              Tax : <span> ${OrderDetails.taxPrice}</span>
             </li>
             <li>
-              Total : <span>{FetchData.totalPrice}</span>
+              Total : <span>{OrderDetails.totalPrice}</span>
             </li>
             <li></li>
-            {FetchData.isDelivered ? (
+            {OrderDetails.isDelivered ? (
               <p className="success">Delivered</p>
             ) : state.user?.isAdmin ? (
               <TimeoutBtn
