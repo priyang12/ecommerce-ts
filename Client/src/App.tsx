@@ -23,16 +23,23 @@ import AdminUpdateProduct from "./Pages/AdminUpdateProduct";
 
 // Route for Admin and User
 import PrivateRoute, { AdminRoute } from "./Components/PrivateRoute";
-import { LOG_OUT } from "./Context/Authentication/Authtypes";
+import { LOAD_USER, LOG_OUT } from "./Context/Authentication/Authtypes";
 import setAuthToken from "./Utils/setAuthToken";
 
 function App() {
   const { state, dispatch } = useContext(AuthContext);
   const { token, user } = state;
-
   useEffect(() => {
     if (token) {
-      loadUser(token, dispatch);
+      if (JSON.parse(sessionStorage.getItem("User") || "")) {
+        setAuthToken(token);
+        dispatch({
+          type: LOAD_USER,
+          payload: JSON.parse(sessionStorage.getItem("User") || ""),
+        });
+      } else {
+        loadUser(token, dispatch);
+      }
     } else {
       dispatch({
         type: LOG_OUT,
