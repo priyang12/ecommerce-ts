@@ -32,7 +32,7 @@ const Home = ({ title = "Products Display" }) => {
   return (
     <StyledHome>
       <React.Suspense fallback={<Spinner />}>
-        <Carousel products={ProductsData.products.slice(0, 4)} />
+        <Carousel products={ProductsData?.products.slice(0, 4)} />
       </React.Suspense>
       <StyledDisplay>
         <h1>{title}</h1>
