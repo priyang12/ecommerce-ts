@@ -10,6 +10,7 @@ import {
   StyledProducts,
 } from "../Components/StyledComponents/Products";
 import type { Product } from "../interfaces";
+import { Helmet } from "react-helmet";
 
 const Carousel = React.lazy(() => import("../Components/Carousel"));
 
@@ -31,6 +32,13 @@ const Home = ({ title = "Products Display" }) => {
 
   return (
     <StyledHome>
+      <Helmet>
+        <title>Products Page</title>
+        <meta
+          name="description"
+          content="Products Page - Browse our products"
+        />
+      </Helmet>
       <React.Suspense fallback={<Spinner />}>
         <Carousel products={ProductsData?.products.slice(0, 4)} />
       </React.Suspense>

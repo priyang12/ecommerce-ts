@@ -28,6 +28,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "coverage": "react-scripts test --watchAll --coverage",
     "eject": "react-scripts eject",
     "e2e": "cypress open"
   },
@@ -52,6 +53,7 @@
   },
   "devDependencies": {
     "@testing-library/react-hooks": "^7.0.2",
+    "@types/react-helmet": "^6.1.5",
     "@types/react-router-dom": "^5.3.1",
     "@types/react-test-renderer": "^17.0.1",
     "@types/styled-components": "^5.1.15",

@@ -19,6 +19,7 @@ import { useQuery, useMutation } from "react-query";
 import { AddToCartQuery } from "../API/CartAPI";
 import { queryClient } from "../query";
 import Spinner from "../Components/Spinner";
+import { Helmet } from "react-helmet";
 
 const SingleProduct = () => {
   const { id } = useParams<{ id: string }>();
@@ -79,6 +80,10 @@ const SingleProduct = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>{Product.name}</title>
+        <meta name="description" content={Product.description} />
+      </Helmet>
       {FetchData && (
         <StyledContainer>
           <StyledProduct>

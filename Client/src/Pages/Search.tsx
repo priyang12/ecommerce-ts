@@ -6,6 +6,7 @@ import DisplayProducts from "../Components/DisplayProducts";
 import Spinner from "../Components/Spinner";
 import { useQuery } from "react-query";
 import { SearchProduct } from "../API/ProductAPI";
+import { Helmet } from "react-helmet";
 
 const Home = () => {
   const { keyword, pageNumber }: any = useParams();
@@ -36,6 +37,13 @@ const Home = () => {
 
   return (
     <StyledHome>
+      <Helmet>
+        <title>{keyword}</title>
+        <meta
+          name="description"
+          content={`${keyword} - ${ProductData.products.length} results"`}
+        />
+      </Helmet>
       <DisplayProducts
         Products={ProductData?.products}
         title={`Search Results for ${keyword}`}
