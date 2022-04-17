@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Img from "../Assets/loading.gif";
 
 const StyledCenter = styled.div`
   display: flex;
@@ -13,8 +14,8 @@ const StyledCenter = styled.div`
 
 const Spinner = () => {
   return (
-    <StyledCenter data-testid='Loading'>
-      <img src='./images/loading.gif' alt='Loading Please Wait' />
+    <StyledCenter data-testid="Loading">
+      <img src={Img} alt="Loading Please Wait" />
     </StyledCenter>
   );
 };

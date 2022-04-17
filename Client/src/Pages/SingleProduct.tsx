@@ -18,6 +18,7 @@ import axios from "axios";
 import { useQuery, useMutation } from "react-query";
 import { AddToCartQuery } from "../API/CartAPI";
 import { queryClient } from "../query";
+import Spinner from "../Components/Spinner";
 
 const SingleProduct = () => {
   const { id } = useParams<{ id: string }>();
@@ -68,7 +69,7 @@ const SingleProduct = () => {
     });
   };
 
-  if (loading) return <div data-testid="Loading">Loading</div>;
+  if (loading) return <Spinner />;
 
   if (ProductError) return <div className="Error">{ProductError}</div>;
 
