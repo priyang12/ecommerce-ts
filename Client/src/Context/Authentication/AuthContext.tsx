@@ -5,11 +5,13 @@ import { AuthReducer } from "./AuthReducer";
 let Token = null;
 if (localStorage.token) Token = localStorage.token;
 
+const user = sessionStorage.getItem("User");
+
 const initialState: AuthState = {
   loading: true,
   err: null,
   token: Token,
-  user: null,
+  user: user && JSON.parse(user),
 };
 
 export const AuthContext = createContext({} as IContextModel);

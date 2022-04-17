@@ -152,3 +152,45 @@ export const SerachResult: SearchResult = {
   page: 1,
   pages: 1,
 };
+
+export const MockedOrderDetails = {
+  shippingAddress: {
+    address: "asdsad",
+    city: "asdasd",
+    postalcode: "asdasd",
+  },
+  paymentResult: {
+    id: "19E044142W705484L",
+    status: "COMPLETED",
+    update_time: "2022-01-02T19:31:14Z",
+    email_address: "sb-x1wih6477696@personal.example.com",
+  },
+  itemsPrice: 629.93,
+  taxPrice: 62.992999999999995,
+  shippingPrice: 0,
+  totalPrice: 693,
+  isDelivered: false,
+  _id: "61d1fdcc78d91ad851125bb8",
+  user: {
+    _id: "6106f4c09d285d000436ed0a",
+    name: "Priyang",
+    email: "patelpriyang95@gmail.com",
+  },
+  orderItems: [
+    {
+      product: {
+        price: 89.99,
+        _id: "60d5e622e5179e2bb44bd838",
+        name: "Airpods Wireless Bluetooth Headphones",
+        image: "/Photos/image-1627384388351.webp",
+      },
+      _id: "61d19ca72b1719ae39c17744",
+      qty: 7,
+    },
+  ],
+  paymentMethod: "PayPal or Credit Card",
+  paidAt: "2022-01-02T19:32:28.144Z",
+  createdAt: "2022-01-02T19:32:28.194Z",
+  updatedAt: "2022-01-02T19:32:28.194Z",
+  __v: 0,
+};

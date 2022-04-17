@@ -1,46 +1,89 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useAxios, useForm } from "../Utils/CustomHooks";
+import { useForm } from "../Utils/CustomHooks";
 import AlertDisplay from "../Components/AlertDisplay";
 import Spinner from "../Components/Spinner";
-
 import { StyledContainer } from "../Components/StyledComponents/Container";
 import {
   StyledEditProduct,
   StyledImageContainer,
 } from "./StyledPages/StyledAdminUpdateProduct";
+import { useMutation, useQuery } from "react-query";
+import { SingleProductCall } from "../API/ProductAPI";
+import { AddProductCall, EditProductCall } from "../API/AdminAPI";
+import { queryClient } from "../query";
 
 const initialState = {
-  numReviews: "0",
-  price: "",
-  countInStock: "",
-  name: "",
-  image: "",
-  description: "",
-  brand: "",
-  category: "",
+  name: "Sample name",
+  price: 0,
+  image: "https://ik.imagekit.io/5aalo5l7bu7/sample_a81IvE0ug.webp",
+  brand: "Sample brand",
+  category: "Sample category",
+  countInStock: 0,
+  numReviews: 0,
+  description: "Sample description",
 };
 
 const AdminUpdateProduct = () => {
   const { id } = useParams<{ id: string }>();
-
+  const Type = id === "add" ? true : false;
+  const [Alert, setAlert] = useState({
+    msg: "",
+    type: false,
+  });
   const [UploadedImage, setUploadedImage] = useState<any>(null);
   const [ImageFile, setImageFile] = useState<any>(null);
-  const [
-    ProductData,
-    changeProductData,
-    setProductData,
-    ErrorState,
-    setErrors,
-  ] = useForm(initialState);
+  const [ProductData, changeProductData, setProductData, ErrorsState] = useForm(
+    {
+      name: "",
+      price: 0,
+      image: "",
+      brand: "",
+      category: "",
+      countInStock: 0,
+      numReviews: 0,
+      description: "",
+    }
+  );
 
-  const [Params, setParams] = useState<any>({
-    method: "GET",
-    url: `/api/products/product/${id}`,
+  const {
+    data: Product,
+    error: Err,
+    isLoading,
+  } = useQuery([`product/${id}`, id], () => SingleProductCall(id), {
+    enabled: !Type,
   });
-  const { Alert, Err, loading, FetchData } = useAxios(Params);
-
-  const Product = FetchData?.product ? FetchData.product : FetchData;
+  const { mutate: AddMutation, isLoading: LoadAdding } = useMutation(
+    "addProduct" as any,
+    AddProductCall,
+    {
+      onSuccess: () => {
+        setAlert({ msg: "Product added successfully", type: true });
+        queryClient.invalidateQueries(["products"]);
+        setTimeout(() => {
+          setAlert({ msg: "", type: false });
+          // Redirect to the product page
+          window.location.href = "/AdminProducts";
+        }, 3000);
+      },
+      onError: (err: any) => {
+        setAlert(err.data.msg);
+      },
+    }
+  );
+  const { mutate: UpdateMutate, isLoading: Updating } = useMutation(
+    "updateProduct",
+    EditProductCall,
+    {
+      onSuccess: (data) => {
+        setAlert({ msg: data.msg, type: true });
+        queryClient.invalidateQueries(["products"]);
+      },
+      onError: (err: any) => {
+        setAlert(err.data.msg);
+      },
+    }
+  );
 
   useEffect(() => {
     if (Product) {
@@ -49,8 +92,11 @@ const AdminUpdateProduct = () => {
         if (key in productData) productData[key] = Product[key];
       }
       setProductData(productData);
+    } else {
+      setProductData(initialState);
     }
-  }, [id, Product]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [Product]);
 
   const changeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -70,8 +116,10 @@ const AdminUpdateProduct = () => {
       });
     }
   };
-  const UpdateProduct = () => {
+  function Formate() {
     const formData = new FormData();
+
+    formData.append("id", id);
     formData.append("image", ImageFile);
     formData.append("name", ProductData.name);
     formData.append("price", ProductData.price);
@@ -80,23 +128,26 @@ const AdminUpdateProduct = () => {
     formData.append("brand", ProductData.brand);
     formData.append("category", ProductData.category);
     formData.append("numReviews", ProductData.numReviews);
-
-    setParams({
-      method: "PUT",
-      url: `/api/products/product/${id}`,
-      data: formData,
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    return formData;
+  }
+  const AddProduct = async () => {
+    const formData = Formate();
+    AddMutation(formData);
   };
-  // console.log(ProductData);
-  if (loading) return <Spinner />;
-  if (Err) return <div>{Err}</div>;
-  if (!Product) return null;
+  const UpdateProduct = () => {
+    const formData = Formate();
+    UpdateMutate(formData);
+  };
+
+  if (isLoading || Updating || LoadAdding) return <Spinner />;
+  if (Err) return <div>Server Error</div>;
 
   return (
     <StyledContainer theme={{ marginTop: 2 }}>
-      {Alert && <AlertDisplay msg={Alert} type={true} />}
-      <h1 className="display">Admin Update Product</h1>
+      {Alert.msg && <AlertDisplay msg={Alert.msg} type={true} />}
+      <h1 className="display">
+        {Type ? "Add New Product" : "Admin Update Product"}
+      </h1>
       <StyledEditProduct>
         <form>
           <div className="form-control">
@@ -110,8 +161,8 @@ const AdminUpdateProduct = () => {
             />
             <span className="bar"></span>
             <label htmlFor="name">
-              {ErrorState.name ? (
-                <span className="error">{ErrorState.name}</span>
+              {ErrorsState.name ? (
+                <span className="error">{ErrorsState.name}</span>
               ) : (
                 "Product Name"
               )}
@@ -129,8 +180,8 @@ const AdminUpdateProduct = () => {
 
             <span className="bar"></span>
             <label htmlFor="description">
-              {ErrorState.description ? (
-                <span className="error">{ErrorState.description}</span>
+              {ErrorsState.description ? (
+                <span className="error">{ErrorsState.description}</span>
               ) : (
                 "Product Description"
               )}
@@ -147,8 +198,8 @@ const AdminUpdateProduct = () => {
             />
             <span className="bar"></span>
             <label htmlFor="brand">
-              {ErrorState.brand ? (
-                <span className="error">{ErrorState.brand}</span>
+              {ErrorsState.brand ? (
+                <span className="error">{ErrorsState.brand}</span>
               ) : (
                 "Brand"
               )}
@@ -165,8 +216,8 @@ const AdminUpdateProduct = () => {
             />
             <span className="bar"></span>
             <label htmlFor="countInStock">
-              {ErrorState.countInStock ? (
-                <span className="error">{ErrorState.countInStock}</span>
+              {ErrorsState.countInStock ? (
+                <span className="error">{ErrorsState.countInStock}</span>
               ) : (
                 "CountInStock"
               )}
@@ -198,8 +249,8 @@ const AdminUpdateProduct = () => {
             />
             <span className="bar"></span>
             <label htmlFor="price">
-              {ErrorState.price ? (
-                <span className="error">{ErrorState.price}</span>
+              {ErrorsState.price ? (
+                <span className="error">{ErrorsState.price}</span>
               ) : (
                 "Product Price"
               )}
@@ -212,9 +263,16 @@ const AdminUpdateProduct = () => {
             src={UploadedImage ? UploadedImage.image : ProductData.image}
             alt="Product"
           />
-          <input type="file" name="image" id="image" onChange={onImageChange} />
-          <button className="btn" onClick={UpdateProduct}>
-            Update Product
+          <input
+            type="file"
+            name="image"
+            id="image"
+            onChange={onImageChange}
+            data-testid="UploadImage"
+          />
+
+          <button className="btn" onClick={Type ? AddProduct : UpdateProduct}>
+            {Type ? "Add Product" : "Update Product"}
           </button>
         </StyledImageContainer>
       </StyledEditProduct>

@@ -4,6 +4,7 @@ import {
   LOAD_USER,
   SET_LOADING,
   LOG_OUT,
+  UPDATE_USER,
 } from "./Authtypes";
 
 import axios, { AxiosError } from "axios";
@@ -18,6 +19,7 @@ export const loadUser = async (
     try {
       setLoading(dispatch);
       const { data }: any = await axios.get("/api/users");
+      sessionStorage.setItem("User", JSON.stringify(data));
       dispatch({
         type: LOAD_USER,
         payload: data,
@@ -87,10 +89,35 @@ export const RegisterUser = async (
   }
 };
 
+export const UpdateUser = async (
+  dispatch: React.Dispatch<AuthActions>,
+  user: any
+) => {
+  try {
+    setLoading(dispatch);
+    const { data }: any = await axios.put("/api/users/update", user);
+    dispatch({
+      type: UPDATE_USER,
+      payload: data,
+    });
+  } catch (err: any | AxiosError) {
+    let ErrorMessage = "Server Error Try Again Later";
+    console.log(err);
+    if (err as AxiosError) {
+      ErrorMessage = err.response.data.message;
+    }
+    dispatch({
+      type: AUTH_ERROR,
+      payload: ErrorMessage,
+    });
+  }
+};
+
 export const Logout = (dispatch: React.Dispatch<AuthActions>) => {
   try {
     setLoading(dispatch);
     localStorage.clear();
+    sessionStorage.clear();
     dispatch({
       type: LOG_OUT,
       payload: null,

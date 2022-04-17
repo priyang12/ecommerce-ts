@@ -1,36 +1,72 @@
 import { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useAxios } from "../Utils/CustomHooks";
 import AlertDisplay from "../Components/AlertDisplay";
 import ProductList, { CartItem } from "../Components/ProductList";
 import { StyledContainer, StyledCheckout } from "./StyledPages/StyledCart";
+import {
+  AddToCartQuery,
+  LoadCartQuery,
+  RemoveFromCartQuery,
+} from "../API/CartAPI";
+import { useMutation, useQuery } from "react-query";
+import { queryClient } from "../query";
 import Spinner from "../Components/Spinner";
 
 const Cart = () => {
   const [TotalAmount, setTotalAmount] = useState(0);
   const [TotalProducts, setTotalProducts] = useState(0);
+  const [CartItems, setCart] = useState<CartItem[]>([]);
 
-  const [Params, setParams] = useState<any>({
-    method: "GET",
-    url: "",
+  const [Alert, setAlert] = useState({
+    msg: "",
+    type: false,
   });
 
-  const { Alert, Err, FetchData, loading } = useAxios(Params);
+  const {
+    data,
+    error: Err,
+    isLoading: loading,
+  } = useQuery(["Cart"], LoadCartQuery, {
+    onSuccess: (data) => {
+      setCart(data.Cart);
+    },
+  });
 
-  const CartItems = FetchData?.Cart as CartItem[];
+  const { mutate: DeleteCart } = useMutation(RemoveFromCartQuery, {
+    onSuccess: (data) => {
+      setAlert({ msg: data.msg, type: true });
+      queryClient.invalidateQueries(["Cart"]);
+    },
+    onSettled: (data) => {
+      setTimeout(() => {
+        setAlert({ msg: "", type: false });
+      }, 3000);
+    },
+    onError: (err: any) => {
+      setAlert(err.data.msg);
+    },
+  });
 
-  useEffect(() => {
-    setParams({
-      method: "GET",
-      url: "/api/cart",
-    });
-  }, []);
+  const { mutate: UpdateCart } = useMutation(AddToCartQuery, {
+    onSuccess: (data) => {
+      setAlert({ msg: data.msg, type: true });
+      queryClient.invalidateQueries(["Cart"]);
+    },
+    onSettled: () => {
+      setTimeout(() => {
+        setAlert({ msg: "", type: false });
+      }, 3000);
+    },
+    onError: (err: any) => {
+      setAlert(err.data.msg);
+    },
+  });
 
   useEffect(() => {
     if (CartItems?.length !== 0) {
       let TotalProducts = 0;
       let TotalAmount = 0;
-      const Total = CartItems?.reduce((acc, item: CartItem) => {
+      const Total = CartItems?.reduce((acc: any, item: CartItem) => {
         TotalProducts += item.qty;
         return acc + item.product.price * item.qty;
       }, 0);
@@ -43,28 +79,23 @@ const Cart = () => {
   }, [CartItems]);
 
   const UpdateQuantity = (_id: string, quantity: number) => {
-    setParams({
-      method: "POST",
-      url: `/api/cart`,
-      data: {
-        id: _id,
-        qty: quantity,
-      },
+    UpdateCart({
+      id: _id,
+      qty: quantity,
     });
   };
 
   const RemoveFromCart = (id: string) => {
-    setParams({
-      method: "DELETE",
-      url: `/api/cart/${id}`,
-    });
+    DeleteCart(id);
   };
 
   if (loading) return <Spinner />;
 
-  if (!FetchData) return <div>Server Error</div>;
+  if (Err) return <div>Server Error</div>;
 
-  if (!CartItems || CartItems?.length === 0)
+  if (!data) return null;
+
+  if (CartItems.length === 0)
     return (
       <StyledContainer>
         <h1>Your Cart is Empty</h1>
@@ -73,8 +104,7 @@ const Cart = () => {
 
   return (
     <Fragment>
-      {Err && <AlertDisplay msg={Err} type={false} />}
-      {Alert && <AlertDisplay msg={Alert} type={true} />}
+      {Alert.msg && <AlertDisplay msg={Alert.msg} type={true} />}
       <StyledContainer>
         <h1>SHOPPING CART</h1>
         {CartItems?.map((item: CartItem) => (

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const reviewSchema = mongoose.Schema(
   {
@@ -8,7 +8,7 @@ const reviewSchema = mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'User',
+      ref: "User",
     },
   },
   {
@@ -18,12 +18,6 @@ const reviewSchema = mongoose.Schema(
 
 const ProductSchema = mongoose.Schema(
   {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: 'User',
-    },
-
     name: {
       type: String,
       required: true,
@@ -77,4 +71,4 @@ const ProductSchema = mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model('Product', ProductSchema);
+module.exports = mongoose.model("Product", ProductSchema);

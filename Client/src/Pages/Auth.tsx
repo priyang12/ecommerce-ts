@@ -15,27 +15,28 @@ const Auth = () => {
   useEffect(() => {
     StopLoading(dispatch);
   }, [dispatch]);
+
   if (token) {
-    return <Redirect to='/' />;
+    return <Redirect to="/" />;
+  }
+
+  if (loading) {
+    return <Spinner />;
   }
   return (
     <StyledAuthPage>
-      {loading ? (
-        <Spinner />
-      ) : (
-        <div className='container'>
-          {err && <div className='alert'>{err}</div>}
-          <div className='title'>
-            <div className={Toggle ? "Link-border" : ""}>
-              <h1 onClick={toggleValues}>Login</h1>
-            </div>
-            <div className={!Toggle ? "Link-border" : ""}>
-              <h1 onClick={toggleValues}>Register</h1>
-            </div>
+      <div className="container">
+        {err && <div className="alert">{err}</div>}
+        <div className="title">
+          <div className={Toggle ? "Link-border" : ""}>
+            <h1 onClick={toggleValues}>Login</h1>
           </div>
-          {Toggle ? <Login /> : <Register />}
+          <div className={!Toggle ? "Link-border" : ""}>
+            <h1 onClick={toggleValues}>Register</h1>
+          </div>
         </div>
-      )}
+        {Toggle ? <Login /> : <Register />}
+      </div>
     </StyledAuthPage>
   );
 };

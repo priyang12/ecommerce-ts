@@ -20,8 +20,7 @@ const AddressPage = () => {
     if (localStorage.address) {
       SetState(JSON.parse(localStorage.address));
     }
-    // eslint-disable-next-line
-  }, []);
+  }, [SetState]);
 
   const [Valid, setValid] = useState(false);
   if (!localStorage.Cart || localStorage.Cart.length === 0) {

@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/no-unnecessary-act */
 import { render, screen, act, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import axios from "axios";
@@ -7,11 +8,12 @@ import "@testing-library/jest-dom";
 
 // Components
 import Cart from "../Cart";
+import { Wrapper } from "../../TestSetup";
 
 const mock = new MockAdapter(axios);
 
 afterEach(() => {
-  mock.reset();
+  mock.resetHandlers();
 });
 
 const EmptyCart = {
@@ -87,9 +89,11 @@ it("Empty Cart", async () => {
   mock.onGet("/api/cart").reply(200, EmptyCart);
   await act(async () => {
     render(
-      <BrowserRouter>
-        <Cart />
-      </BrowserRouter>
+      <Wrapper>
+        <BrowserRouter>
+          <Cart />
+        </BrowserRouter>
+      </Wrapper>
     );
   });
 });
@@ -98,9 +102,11 @@ it("Mock Get User Cart On Load", async () => {
   mock.onGet("/api/cart").reply(200, LoadUserCart);
   await act(async () => {
     render(
-      <BrowserRouter>
-        <Cart />
-      </BrowserRouter>
+      <Wrapper>
+        <BrowserRouter>
+          <Cart />
+        </BrowserRouter>
+      </Wrapper>
     );
   });
   expect(screen.getByText(/Bluetooth Headphones/)).toBeInTheDocument();
@@ -112,9 +118,11 @@ it("Mock Change Cart Qty", async () => {
   mock.onPost("/api/cart").reply(200, UpdateProduct);
   await act(async () => {
     render(
-      <BrowserRouter>
-        <Cart />
-      </BrowserRouter>
+      <Wrapper>
+        <BrowserRouter>
+          <Cart />
+        </BrowserRouter>
+      </Wrapper>
     );
   });
   const QtySelects = screen.getAllByTestId("selectQty");
@@ -132,9 +140,11 @@ it("Mock Delete Product Form Cart", async () => {
 
   await act(async () => {
     render(
-      <BrowserRouter>
-        <Cart />
-      </BrowserRouter>
+      <Wrapper>
+        <BrowserRouter>
+          <Cart />
+        </BrowserRouter>
+      </Wrapper>
     );
   });
   const DeleteBtn = screen.getAllByTestId("DeleteIcon");

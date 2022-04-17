@@ -21,14 +21,18 @@ const upload = multer({
   },
 });
 //Product
-router.route("/").get(GetAllProducts).post(Admin, AddProduct);
+router.route("/").get(GetAllProducts);
 
 router.route("/top").get(GetTopProducts);
+router.route("/add").post(Admin, upload.single("image"), AddProduct);
 router
   .route("/product/:id")
   .get(GetProductByID)
   .put(Admin, upload.single("image"), UpdateProduct)
   .delete(Admin, deleteProduct);
+
+// Search
+router.route("/Search").get(GetAllProducts);
 
 router.route("/review/:id").post(Auth, AddReview);
 

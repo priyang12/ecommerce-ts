@@ -32,27 +32,19 @@ const AddToCart = asyncHandler(async (req, res) => {
     res.status(404).json({ msg: "UnAuth Or Product not Found" });
   } else {
     //check if the product is in the cart already
-    let isproduct = await user.cart.find((item) => String(item.product) === id);
+    let isProduct = await user.cart.find((item) => String(item.product) === id);
     if (qty <= product.countInStock) {
-      if (isproduct) {
-        isproduct.qty = qty;
+      if (isProduct) {
+        isProduct.qty = qty;
         await user.save();
-        const newuser = await User.findById(req.user.id)
-          .select("cart")
-          .populate("cart.product", ["price", "image", "name", "countInStock"]);
         res.json({
           msg: `${product.name} Qty is Updated to ${qty}`,
-          Cart: newuser.cart,
         });
       } else {
         user.cart.unshift({ product: id, qty: qty });
         await user.save();
-        const NewUser = await User.findById(req.user.id)
-          .select("cart")
-          .populate("cart.product", ["price", "image", "name", "countInStock"]);
         res.json({
           msg: `${product.name} is Added Cart`,
-          Cart: NewUser.cart,
         });
       }
     } else {
@@ -66,17 +58,22 @@ const AddToCart = asyncHandler(async (req, res) => {
 // @access  Private
 const DeleteCartProduct = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id)
-    .select("cart")
+    .select("cart name")
     .populate("cart.product", ["price", "image", "name", "countInStock"]);
   if (user) {
-    const removeIndex = user.cart.map((item) => item.id).indexOf(req.params.id);
-    if (Number(removeIndex) === -1) {
-      res.status(404);
-      throw Error("No Product in the Cart");
-    } else {
-      user.cart.splice(removeIndex, 1);
+    let Product;
+    user.cart.filter((item) => {
+      if (item.id === req.params.id) Product = item;
+      else return item;
+    });
+    if (!Product)
+      return res.status(404).json({ msg: "Product not Found in the Cart" });
+    else {
+      user.cart.pull(Product);
       await user.save();
-      res.json({ Cart: user.cart });
+      res.json({
+        msg: `${Product.product.name} is Deleted from the Cart`,
+      });
     }
   } else {
     res.status(404);

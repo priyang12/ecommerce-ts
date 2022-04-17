@@ -11,7 +11,7 @@ const ProductCard: React.FC<props> = ({ product }) => {
   const { _id, name, image, price, rating, numReviews } = product;
   if (!product) return null;
   return (
-    <StyledProductCard>
+    <StyledProductCard className='product'>
       <Link to={`/product/${_id}`}>
         <h4 className='CardTitle'>{name}</h4>
       </Link>

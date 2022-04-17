@@ -9,7 +9,7 @@ export interface User {
   email: string;
   createdAt: string;
   isAdmin: boolean;
-  id: string;
+  _id: string;
 }
 
 export interface AuthState {

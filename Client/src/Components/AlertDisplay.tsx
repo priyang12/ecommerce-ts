@@ -11,6 +11,7 @@ const AlertDisplay: FC<{ msg: string; type: boolean }> = ({ msg, type }) => {
     <AlertContainer
       theme={{
         position: "sticky",
+        show: true,
       }}
     >
       <Alert theme={theme}>{msg}</Alert>

@@ -1,10 +1,11 @@
 import { Fragment, useContext, useEffect } from "react";
 import { AuthContext } from "./Context/Authentication/AuthContext";
-import { loadUser, StopLoading } from "./Context/Authentication/AuthActions";
+import { loadUser } from "./Context/Authentication/AuthActions";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Navbar from "./Components/Navbar";
 import Auth from "./Pages/Auth";
 import Home from "./Pages/Home";
 import Search from "./Pages/Search";
-import Navbar from "./Components/Navbar";
 import SingleProduct from "./Pages/SingleProduct";
 import Cart from "./Pages/Cart";
 import AddressPage from "./Pages/AddressPage";
@@ -12,7 +13,7 @@ import PaymentMethod from "./Pages/PaymentMethod";
 import PlaceOrder from "./Pages/PlaceOrder";
 import Paypal from "./Pages/PayPal";
 import OrderStatus from "./Pages/OrderStatus";
-import setAuthToken from "./Utils/setAuthToken";
+import Profile from "./Pages/Profile";
 import OrderDetails from "./Pages/OrderDetails";
 import AdminDashboard from "./Pages/AdminDashboard";
 import AdminProducts from "./Pages/AdminProducts";
@@ -20,22 +21,28 @@ import AdminUsers from "./Pages/AdminUsers";
 import StillWorking from "./Pages/StillWorking";
 import AdminUpdateProduct from "./Pages/AdminUpdateProduct";
 
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 // Route for Admin and User
 import PrivateRoute, { AdminRoute } from "./Components/PrivateRoute";
 import { LOG_OUT } from "./Context/Authentication/Authtypes";
+import setAuthToken from "./Utils/setAuthToken";
 
 function App() {
   const { state, dispatch } = useContext(AuthContext);
   const { token, user } = state;
   useEffect(() => {
-    StopLoading(dispatch);
     if (token) {
-      loadUser(token, dispatch);
+      const SessionUser = sessionStorage.getItem("User");
+      if (SessionUser) {
+        setAuthToken(token);
+      } else {
+        loadUser(token, dispatch);
+      }
+    } else {
+      dispatch({
+        type: LOG_OUT,
+        payload: null,
+      });
     }
-    window.addEventListener("storage", () => {
-      if (!localStorage.token) dispatch({ type: LOG_OUT, payload: null });
-    });
   }, [token, dispatch]);
 
   //Set user token in Axios
@@ -57,6 +64,7 @@ function App() {
       <PrivateRoute exact path="/PlaceOrder" component={PlaceOrder} />
       <PrivateRoute exact path="/OrderStatus" component={OrderStatus} />
       <PrivateRoute exact path="/OrderStatus/:id" component={OrderDetails} />
+      <PrivateRoute exact path="/Profile" component={Profile} />
       <AdminRoute exact path="/AdminDashboard" component={AdminDashboard} />
       <AdminRoute exact path="/AdminOrders" component={OrderStatus} />
       <AdminRoute exact path="/AdminProducts" component={AdminProducts} />

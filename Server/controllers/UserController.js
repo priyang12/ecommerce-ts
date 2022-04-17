@@ -159,7 +159,10 @@ const UpdateProfile = asyncHandler(async (req, res) => {
 
   if (user) {
     user.name = req.body.name || user.name;
-    if (req.body.password) {
+    if (
+      req.body.CurrentPassword &&
+      user.matchPassword(req.body.CurrentPassword)
+    ) {
       user.password = req.body.password;
     }
 
@@ -200,7 +203,6 @@ const getUsers = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 const deleteUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
-
   if (user) {
     await user.remove();
     res.json({ message: "User removed" });

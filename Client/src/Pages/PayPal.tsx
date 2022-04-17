@@ -1,20 +1,28 @@
 import { useEffect, useState } from "react";
 import { PayPalButton } from "react-paypal-button-v2";
-import { Redirect } from "react-router";
-import { useAxios } from "../Utils/CustomHooks";
-import AlertDisplay from "../Components/AlertDisplay";
+import { useHistory } from "react-router";
 import axios from "axios";
+
 import {
   StyledContainer,
   FragmentContainer,
 } from "../Components/StyledComponents/Container";
+import { useMutation } from "react-query";
+import Spinner from "../Components/Spinner";
+import AlertDisplay from "../Components/AlertDisplay";
 
 const Paypal = () => {
-  const [Params, setParams] = useState<any>({
-    method: "",
-    url: "",
+  const history = useHistory();
+  const {
+    mutate: CallOrder,
+    isLoading,
+    isSuccess,
+    isIdle,
+    error: OrderError,
+  } = useMutation(async (order) => {
+    const res = await axios.post("/api/orders", order);
+    return res;
   });
-  const { Alert, Err, FetchData, loading } = useAxios(Params);
   const [PaymentErrors, setPaymentErrors] = useState("");
   const Order = localStorage.order && JSON.parse(localStorage.order);
   const [SdkReady, setSdkReady] = useState(false);
@@ -36,43 +44,33 @@ const Paypal = () => {
   }, []);
 
   const successPaymentHandler = (paymentResult: object) => {
-    console.log(typeof paymentResult);
+    console.log(paymentResult);
     Order.payment = paymentResult;
-    console.log(Order);
-    setParams({
-      method: "POST",
-      url: "/api/orders",
-      data: Order,
-    });
-    if (FetchData?.order?._id) {
-      setTimeout(() => {
-        <Redirect to='/OrderStatus' />;
-      }, 1000);
-    }
+    CallOrder(Order);
   };
   const DisplayPaymentError = (err: any) => {
     setPaymentErrors(err);
   };
 
-  if (!Order) return <Redirect to='/' />;
-  if (loading)
-    return (
-      <div className='loading' data-testid='Loading'>
-        Loading
-      </div>
-    );
-  if (PaymentErrors) return <div className='Error'>{PaymentErrors}</div>;
-  if (Err) return <AlertDisplay msg={Err} type={false} />;
+  if (isSuccess) {
+    history.push("/OrderStatus");
+  }
+
+  if (isLoading || !isIdle) return <Spinner />;
+
+  if (!Order) return history.push("/");
+
+  if (PaymentErrors) return <div className="Error">{PaymentErrors}</div>;
+
   return (
     <StyledContainer theme={{ marginTop: "2" }}>
       {!SdkReady ? (
-        <div className='loading' data-testid='Loading'>
-          Loading
-        </div>
+        <Spinner />
       ) : (
         <FragmentContainer>
-          {Alert && <AlertDisplay msg={Alert} type={true} />}
-          <br />
+          {OrderError && (
+            <AlertDisplay msg="Error While Placing Order" type={false} />
+          )}
           <PayPalButton
             amount={Order.totalPrice}
             onSuccess={successPaymentHandler}

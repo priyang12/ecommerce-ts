@@ -8,26 +8,28 @@ import "@testing-library/jest-dom";
 //Component: Search
 import Search from "../Search";
 import { SerachResult } from "../Testdata/Data";
+import { Wrapper } from "../../TestSetup";
 
 const mock = new MockAdapter(axios);
 
-afterEach(() => {
-  mock.reset();
-});
-
 it("Check For Url without Page", async () => {
   const keyword = "Playstation";
-  const route = `/name=${keyword}`;
+  const route = `/search/name=${keyword}`;
   const History = createMemoryHistory({ initialEntries: [route] });
 
-  mock.onGet(`/api/products?keyword=${keyword}`).reply(200, SerachResult);
+  mock
+    .onGet(`/api/products/Search/?keyword=${keyword}`)
+    .reply(200, SerachResult);
   render(
-    <Router history={History}>
-      <Route path='/name=:keyword'>
-        <Search />
-      </Route>
-    </Router>
+    <Wrapper>
+      <Router history={History}>
+        <Route path="/search/name=:keyword">
+          <Search />
+        </Route>
+      </Router>
+    </Wrapper>
   );
+
   await waitFor(() => {
     expect(
       screen.getByText(/Search Results for Playstation/)
@@ -48,22 +50,29 @@ it("Check For Url without Page", async () => {
   //Check Pagination Not Available
   const Pagination = screen.queryByText("Previous");
   expect(Pagination).toBeNull();
+
+  mock.resetHandlers();
 });
 
 it("Pagination next", async () => {
   const keyword = "Playstation";
-  const route = `/name=${keyword}/2`;
+  const route = `/search/name=${keyword}/2`;
   const History = createMemoryHistory({ initialEntries: [route] });
 
   const newResult = { ...SerachResult, pages: 2 };
-  mock.onGet(`/api/products?keyword=${keyword}&page=2`).reply(200, newResult);
+
+  mock
+    .onGet(`/api/products/Search/?keyword=Playstation&page=2`)
+    .reply(200, newResult);
 
   render(
-    <Router history={History}>
-      <Route path='/name=:keyword/:pageNumber'>
-        <Search />
-      </Route>
-    </Router>
+    <Wrapper>
+      <Router history={History}>
+        <Route path="/search/name=:keyword/:pageNumber">
+          <Search />
+        </Route>
+      </Router>
+    </Wrapper>
   );
 
   await waitFor(() => {
