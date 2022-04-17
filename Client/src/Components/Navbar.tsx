@@ -14,6 +14,8 @@ import {
   StyledSecondaryNav,
 } from "./StyledComponents/navbar";
 
+import LogoImage from "../Assets/Logo.png";
+
 const Navbar = () => {
   const { state, dispatch } = useContext(AuthContext);
   const { user } = state;
@@ -72,11 +74,12 @@ const Navbar = () => {
 
   return (
     <StyledNavbar>
-      <Logo>
-        <Link to="/">
+      <Link to="/">
+        <Logo>
           <h1>SHOP IT</h1>
-        </Link>
-      </Logo>
+          <img src={LogoImage} alt="" />
+        </Logo>
+      </Link>
       <SearchBar>
         <SerachInput
           type="text"

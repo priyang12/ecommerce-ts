@@ -12,7 +12,6 @@ export const StyledNavbar = styled.nav`
   }
   @media (min-width: 800px) {
     flex-direction: row;
-    padding: 3rem 0;
   }
 `;
 
@@ -33,11 +32,16 @@ export const StyledSecondaryNav = styled.div`
 `;
 
 export const Logo = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   h1 {
     font-size: 3rem;
     color: white;
   }
-  text-align: center;
+  img {
+    width: 30%;
+  }
 `;
 export const SearchBar = styled.div`
   display: flex;
