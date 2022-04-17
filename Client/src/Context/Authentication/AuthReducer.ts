@@ -63,6 +63,7 @@ export const AuthReducer = (state: AuthState, action: AuthActions) => {
         ...state,
         token: null,
         loading: false,
+        user: null,
         err: null,
       };
   }

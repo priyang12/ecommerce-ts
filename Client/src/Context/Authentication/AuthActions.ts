@@ -117,6 +117,7 @@ export const Logout = (dispatch: React.Dispatch<AuthActions>) => {
   try {
     setLoading(dispatch);
     localStorage.clear();
+    sessionStorage.clear();
     dispatch({
       type: LOG_OUT,
       payload: null,
