@@ -9,6 +9,8 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import "./Style/Globle.css";
 import { queryClient } from "./query";
 
+import * as serviceWorkerRegistration from "./serviceWokerRegister";
+
 ReactDOM.render(
   <QueryClientProvider client={queryClient}>
     <ReactQueryDevtools initialIsOpen={false} />
@@ -22,3 +24,13 @@ ReactDOM.render(
   </QueryClientProvider>,
   document.getElementById("root")
 );
+
+serviceWorkerRegistration.register({
+  onUpdate: (registration: any) => {
+    alert("New version available!  Ready to update?");
+    if (registration && registration.waiting) {
+      registration.waiting.postMessage({ type: "SKIP_WAITING" });
+    }
+    window.location.reload();
+  },
+});
