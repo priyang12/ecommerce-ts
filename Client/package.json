@@ -36,7 +36,8 @@
     "test": "react-scripts test",
     "coverage": "react-scripts test --watchAll --coverage",
     "eject": "react-scripts eject",
-    "FormatePages": "bash FileFormate.sh"
+    "FormatePages": "bash FileFormate.sh",
+    "Component": "bash Component.sh"
   },
   "eslintConfig": {
     "extends": [
