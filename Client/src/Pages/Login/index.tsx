@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import { StyledContainer } from "../Components/StyledComponents/Container";
-import { useForm } from "../Utils/CustomHooks";
-import { LoginUser } from "../Context/Authentication/AuthActions";
-import { AuthContext } from "../Context/Authentication/AuthContext";
-import { ValidateEmail, ValidatePassword } from "../Utils/Validation";
+import { StyledContainer } from "../../Components/StyledComponents/Container";
+import { useForm } from "../../Utils/CustomHooks";
+import { LoginUser } from "../../Context/Authentication/AuthActions";
+import { AuthContext } from "../../Context/Authentication/AuthContext";
+import { ValidateEmail, ValidatePassword } from "../../Utils/Validation";
 import { Link } from "react-router-dom";
 
 const Login = () => {
@@ -39,48 +39,48 @@ const Login = () => {
   return (
     <StyledContainer>
       <form onSubmit={login}>
-        <div className='form-control'>
+        <div className="form-control">
           <input
-            type='text'
-            name='email'
-            id='email'
+            type="text"
+            name="email"
+            id="email"
             value={email}
             onChange={ChangeState}
             required
           />
-          <span className='bar'></span>
-          <label htmlFor='email'>
+          <span className="bar"></span>
+          <label htmlFor="email">
             {FormErrors.email ? (
-              <span className='error'>{FormErrors.email}</span>
+              <span className="error">{FormErrors.email}</span>
             ) : (
               "email"
             )}
           </label>
         </div>
-        <div className='form-control'>
+        <div className="form-control">
           <input
-            type='password'
-            name='password'
-            id='password'
+            type="password"
+            name="password"
+            id="password"
             value={password}
             onChange={ChangeState}
             required
           />
-          <span className='bar'></span>
-          <label htmlFor='password'>
+          <span className="bar"></span>
+          <label htmlFor="password">
             {FormErrors.email ? (
-              <span className='error'>{FormErrors.password}</span>
+              <span className="error">{FormErrors.password}</span>
             ) : (
               "Password"
             )}
           </label>
         </div>
-        <input type='submit' value='login' className='btn' />
+        <input type="submit" value="login" className="btn" />
       </form>
-      <div className='help'>
-        <Link to='/StillWorking'>Forget Password /</Link>
+      <div className="help">
+        <Link to="/StillWorking">Forget Password /</Link>
         <br />
-        <Link to='/StillWorking'> Need Help</Link>
+        <Link to="/StillWorking"> Need Help</Link>
       </div>
     </StyledContainer>
   );

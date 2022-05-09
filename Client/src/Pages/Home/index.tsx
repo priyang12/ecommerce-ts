@@ -1,18 +1,17 @@
 import React from "react";
 import { useQuery } from "react-query";
-import AlertDisplay from "../Components/AlertDisplay";
-import ProductCard from "../Components/ProductCard";
-import Spinner from "../Components/Spinner";
-import { StyledHome } from "./StyledPages/StyledHome";
-import { LoadProducts } from "../API/ProductAPI";
+import AlertDisplay from "../../Components/AlertDisplay";
+import ProductCard from "../../Components/ProductCard";
+import Spinner from "../../Components/Spinner";
+import { LoadProducts } from "../../API/ProductAPI";
 import {
   StyledDisplay,
   StyledProducts,
-} from "../Components/StyledComponents/Products";
-import type { Product } from "../interfaces";
+} from "../../Components/StyledComponents/Products";
+import type { Product } from "../../interfaces";
 import { Helmet } from "react-helmet";
 
-const Carousel = React.lazy(() => import("../Components/Carousel"));
+const Carousel = React.lazy(() => import("../../Components/Carousel"));
 
 const Home = ({ title = "Products Display" }) => {
   const {
@@ -31,7 +30,7 @@ const Home = ({ title = "Products Display" }) => {
   if (!ProductsData) return null;
 
   return (
-    <StyledHome>
+    <>
       <Helmet>
         <title>Products Page</title>
         <meta
@@ -51,7 +50,7 @@ const Home = ({ title = "Products Display" }) => {
             ))}
         </StyledProducts>
       </StyledDisplay>
-    </StyledHome>
+    </>
   );
 };
 

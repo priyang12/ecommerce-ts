@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import { Redirect, useHistory } from "react-router";
-import TimeoutBtn from "../Components/TimeoutBtn";
-import ProductList from "../Components/ProductList";
-import Navigators from "../Components/Navigators";
-import { Address, Cart } from "../interfaces";
-import { AuthContext } from "../Context/Authentication/AuthContext";
-import { StyledPaymentContainer } from "../Components/StyledComponents/StyledPayment";
+import TimeoutBtn from "../../Components/TimeoutBtn";
+import ProductList from "../../Components/ProductList";
+import Navigators from "../../Components/Navigators";
+import { Address, Cart } from "../../interfaces";
+import { AuthContext } from "../../Context/Authentication/AuthContext";
+import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
 
 import {
   StyledHeader,
@@ -13,7 +13,7 @@ import {
   StyledOrderSummaryBody,
   StyledOrderSummaryItem,
   StyledPlaceOrder,
-} from "./StyledPages/StyledPlaceOrder";
+} from "./StyledPlaceOrder";
 
 const PlaceOrder = () => {
   const history = useHistory();

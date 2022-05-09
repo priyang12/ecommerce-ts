@@ -1,17 +1,17 @@
 import { Profiler, useState } from "react";
-import { User } from "../Context/Authentication/interfaces";
-import Spinner from "../Components/Spinner";
+import { User } from "../../Context/Authentication/interfaces";
+import Spinner from "../../Components/Spinner";
 import { useMutation, useQuery } from "react-query";
-import { LoadUsers, RemoveUser } from "../API/AdminAPI";
-import { queryClient } from "../query";
-import AlertDisplay from "../Components/AlertDisplay";
+import { LoadUsers, RemoveUser } from "../../API/AdminAPI";
+import { queryClient } from "../../query";
+import AlertDisplay from "../../Components/AlertDisplay";
 
 import {
   StyledHeaders,
   StyledItems,
   StyledList,
   StyledTableContainer,
-} from "./StyledPages/StyledTableView";
+} from "./../StyledPages/StyledTableView";
 
 const AdminUsers = () => {
   const {

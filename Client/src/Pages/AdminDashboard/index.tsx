@@ -1,5 +1,5 @@
-import { CardBoard, Card } from "../Components/StyledComponents/CardBoard";
-import { StyledContainer } from "../Components/StyledComponents/Container";
+import { CardBoard, Card } from "../../Components/StyledComponents/CardBoard";
+import { StyledContainer } from "../../Components/StyledComponents/Container";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -25,22 +25,22 @@ const AdminDashborad = () => {
     <StyledContainer theme={{ marginTop: "5" }}>
       <CardBoard>
         <StyledCard>
-          <Link to='/AdminUsers'>
-            <img src='./images/User.webp' alt='Users' />
+          <Link to="/AdminUsers">
+            <img src="./images/User.webp" alt="Users" />
           </Link>
-          <h1 className='card-text'>Users</h1>
+          <h1 className="card-text">Users</h1>
         </StyledCard>
         <StyledCard>
-          <Link to='/AdminProducts'>
-            <img src='./images/Product.webp' alt='Product' />
+          <Link to="/AdminProducts">
+            <img src="./images/Product.webp" alt="Product" />
           </Link>
-          <h1 className='card-text'>Product</h1>
+          <h1 className="card-text">Product</h1>
         </StyledCard>
         <StyledCard>
-          <Link to='/AdminOrders'>
-            <img src='./images/Order.webp' alt='Oders' />
+          <Link to="/AdminOrders">
+            <img src="./images/Order.webp" alt="Oders" />
           </Link>
-          <h1 className='card-text'>Oders</h1>
+          <h1 className="card-text">Oders</h1>
         </StyledCard>
       </CardBoard>
     </StyledContainer>

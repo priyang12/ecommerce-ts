@@ -6,10 +6,10 @@ import axios from "axios";
 import {
   StyledContainer,
   FragmentContainer,
-} from "../Components/StyledComponents/Container";
+} from "../../Components/StyledComponents/Container";
 import { useMutation } from "react-query";
-import Spinner from "../Components/Spinner";
-import AlertDisplay from "../Components/AlertDisplay";
+import Spinner from "../../Components/Spinner";
+import AlertDisplay from "../../Components/AlertDisplay";
 
 const Paypal = () => {
   const history = useHistory();

@@ -1,19 +1,19 @@
 import { useContext, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { Link, useParams } from "react-router-dom";
-import { LoadOrderDetails, MarkOrderAsDelivered } from "../API/OrdersAPI";
-import Spinner from "../Components/Spinner";
-import { CartItem } from "../Components/ProductList";
-import AlertDisplay from "../Components/AlertDisplay";
-import { StyledPaymentContainer } from "../Components/StyledComponents/StyledPayment";
-import { AuthContext } from "../Context/Authentication/AuthContext";
+import { LoadOrderDetails, MarkOrderAsDelivered } from "../../API/OrdersAPI";
+import Spinner from "../../Components/Spinner";
+import { CartItem } from "../../Components/ProductList";
+import AlertDisplay from "../../Components/AlertDisplay";
+import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
+import { AuthContext } from "../../Context/Authentication/AuthContext";
 
 import {
   StyledListItems,
   StyledOrderDetails,
   StyledOrderList,
-} from "./StyledPages/StyledOrderDeatails";
-import { queryClient } from "../query";
+} from "./StyledOrderDeatails";
+import { queryClient } from "../../query";
 
 const OrderDetails = () => {
   const { state } = useContext(AuthContext);

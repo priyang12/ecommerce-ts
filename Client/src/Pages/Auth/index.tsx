@@ -1,13 +1,12 @@
 import { useContext, useEffect } from "react";
-import { useToggle } from "../Utils/CustomHooks";
-import { AuthContext } from "../Context/Authentication/AuthContext";
-import { StyledAuthPage } from "./StyledPages/StyledAuth";
+import { useToggle } from "../../Utils/CustomHooks";
+import { AuthContext } from "../../Context/Authentication/AuthContext";
+import { StyledAuthPage } from "./StyledAuth";
 import { Redirect } from "react-router";
-import Login from "./Login";
-import Register from "./Register";
-import Spinner from "../Components/Spinner";
-import { StopLoading } from "../Context/Authentication/AuthActions";
-
+import { StopLoading } from "../../Context/Authentication/AuthActions";
+import Login from "./../Login";
+import Register from "./../Register";
+import Spinner from "../../Components/Spinner";
 const Auth = () => {
   const [Toggle, toggleValues] = useToggle(true);
   const { state, dispatch } = useContext(AuthContext);

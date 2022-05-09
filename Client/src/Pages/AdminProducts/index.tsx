@@ -1,18 +1,14 @@
-import AlertDisplay from "../Components/AlertDisplay";
-import Spinner from "../Components/Spinner";
-import TimeoutBtn from "../Components/TimeoutBtn";
+import AlertDisplay from "../../Components/AlertDisplay";
+import Spinner from "../../Components/Spinner";
+import TimeoutBtn from "../../Components/TimeoutBtn";
 import { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useMutation, useQuery } from "react-query";
-import { DetailedProduct } from "../interfaces";
-
-import {
-  StyledProducts,
-  StyledProductTitle,
-} from "./StyledPages/StyledAdminProducts";
-import { LoadProducts } from "../API/ProductAPI";
-import { DeleteProductCall } from "../API/AdminAPI";
-import { queryClient } from "../query";
+import { DetailedProduct } from "../../interfaces";
+import { StyledProducts, StyledProductTitle } from "./StyledAdminProducts";
+import { LoadProducts } from "../../API/ProductAPI";
+import { DeleteProductCall } from "../../API/AdminAPI";
+import { queryClient } from "../../query";
 
 const AdminProducts = () => {
   const history = useHistory();

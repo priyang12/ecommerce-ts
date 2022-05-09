@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { StyledHome } from "./StyledPages/StyledHome";
-import AlertDisplay from "../Components/AlertDisplay";
-import DisplayProducts from "../Components/DisplayProducts";
-import Spinner from "../Components/Spinner";
 import { useQuery } from "react-query";
-import { SearchProduct } from "../API/ProductAPI";
+import { SearchProduct } from "../../API/ProductAPI";
 import { Helmet } from "react-helmet";
+import AlertDisplay from "../../Components/AlertDisplay";
+import DisplayProducts from "../../Components/DisplayProducts";
+import Spinner from "../../Components/Spinner";
 
 const Home = () => {
   const { keyword, pageNumber }: any = useParams();
@@ -36,7 +35,7 @@ const Home = () => {
   if (Err) return <AlertDisplay msg={"Something Went Wrong"} type={false} />;
 
   return (
-    <StyledHome>
+    <>
       <Helmet>
         <title>{keyword}</title>
         <meta
@@ -78,7 +77,7 @@ const Home = () => {
           </button>
         </div>
       )}
-    </StyledHome>
+    </>
   );
 };
 

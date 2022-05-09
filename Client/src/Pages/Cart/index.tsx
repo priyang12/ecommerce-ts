@@ -1,16 +1,16 @@
 import { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import AlertDisplay from "../Components/AlertDisplay";
-import ProductList, { CartItem } from "../Components/ProductList";
-import { StyledContainer, StyledCheckout } from "./StyledPages/StyledCart";
+import AlertDisplay from "../../Components/AlertDisplay";
+import ProductList, { CartItem } from "../../Components/ProductList";
+import { StyledContainer, StyledCheckout } from "./StyledCart";
 import {
   AddToCartQuery,
   LoadCartQuery,
   RemoveFromCartQuery,
-} from "../API/CartAPI";
+} from "../../API/CartAPI";
 import { useMutation, useQuery } from "react-query";
-import { queryClient } from "../query";
-import Spinner from "../Components/Spinner";
+import { queryClient } from "../../query";
+import Spinner from "../../Components/Spinner";
 
 const Cart = () => {
   const [TotalAmount, setTotalAmount] = useState(0);

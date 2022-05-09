@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useForm } from "../Utils/CustomHooks";
-import AlertDisplay from "../Components/AlertDisplay";
-import Spinner from "../Components/Spinner";
-import { StyledContainer } from "../Components/StyledComponents/Container";
+import { useForm } from "../../Utils/CustomHooks";
+import { StyledContainer } from "../../Components/StyledComponents/Container";
+import { useMutation, useQuery } from "react-query";
+import { SingleProductCall } from "../../API/ProductAPI";
+import { AddProductCall, EditProductCall } from "../../API/AdminAPI";
+import { queryClient } from "../../query";
 import {
   StyledEditProduct,
   StyledImageContainer,
-} from "./StyledPages/StyledAdminUpdateProduct";
-import { useMutation, useQuery } from "react-query";
-import { SingleProductCall } from "../API/ProductAPI";
-import { AddProductCall, EditProductCall } from "../API/AdminAPI";
-import { queryClient } from "../query";
+} from "./StyledAdminUpdateProduct";
+import AlertDisplay from "../../Components/AlertDisplay";
+import Spinner from "../../Components/Spinner";
 
 const initialState = {
   name: "Sample name",

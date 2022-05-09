@@ -1,8 +1,8 @@
 import { useLocation } from "react-router-dom";
-import OrderList from "../Components/OrderList";
-import Spinner from "../Components/Spinner";
 import { useQuery } from "react-query";
-import { LoadOrders } from "../API/OrdersAPI";
+import { LoadOrders } from "../../API/OrdersAPI";
+import OrderList from "../../Components/OrderList";
+import Spinner from "../../Components/Spinner";
 
 const OrderStatus = () => {
   const { pathname } = useLocation();

@@ -1,15 +1,14 @@
 import { useContext } from "react";
-import { AuthContext } from "../Context/Authentication/AuthContext";
-import { useForm } from "../Utils/CustomHooks";
+import { AuthContext } from "../../Context/Authentication/AuthContext";
+import { useForm } from "../../Utils/CustomHooks";
+import { StyledProfile } from "./StyledProfile";
+import { UpdateUser } from "../../Context/Authentication/AuthActions";
 import {
   ConfirmPassword,
   ValidateName,
   ValidatePassword,
-} from "../Utils/Validation";
-import Spinner from "../Components/Spinner";
-import { StyledProfile } from "./StyledPages/StyledProfile";
-import { UpdateUser } from "../Context/Authentication/AuthActions";
-
+} from "../../Utils/Validation";
+import Spinner from "../../Components/Spinner";
 const Profile = () => {
   const { state, dispatch } = useContext(AuthContext);
   const [UserForm, ChangeState, setState, FormErrors, setErrors] = useForm({

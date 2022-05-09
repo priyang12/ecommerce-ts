@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { DetailedProduct } from "../interfaces";
-import Reviews from "../Components/Reviews";
-import Rating from "../Components/Rating";
-import Quantity from "../Components/Quantity";
-import TimeoutBtn from "../Components/TimeoutBtn";
-import AlertDisplay from "../Components/AlertDisplay";
+import { DetailedProduct } from "../../interfaces";
+import Reviews from "../../Components/Reviews";
+import Rating from "../../Components/Rating";
+import Quantity from "../../Components/Quantity";
+import TimeoutBtn from "../../Components/TimeoutBtn";
+import AlertDisplay from "../../Components/AlertDisplay";
 
 //styles
 import {
@@ -13,12 +13,12 @@ import {
   StyledProduct,
   StyledDetails,
   StyledCheckout,
-} from "../Components/StyledComponents/Productdetails";
+} from "../../Components/StyledComponents/Productdetails";
 import axios from "axios";
 import { useQuery, useMutation } from "react-query";
-import { AddToCartQuery } from "../API/CartAPI";
-import { queryClient } from "../query";
-import Spinner from "../Components/Spinner";
+import { AddToCartQuery } from "../../API/CartAPI";
+import { queryClient } from "../../query";
+import Spinner from "../../Components/Spinner";
 import { Helmet } from "react-helmet";
 
 const SingleProduct = () => {
