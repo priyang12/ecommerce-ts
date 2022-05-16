@@ -8,7 +8,7 @@ import {
 } from "./StyledComponents/Review";
 
 const Reviews: React.FC<{ reviews: Review[] }> = ({ reviews }) => {
-  if (!reviews) return null;
+  if (!reviews || reviews.length === 0) return null;
   return (
     <Fragment>
       <ReviewContainer>
@@ -17,9 +17,9 @@ const Reviews: React.FC<{ reviews: Review[] }> = ({ reviews }) => {
           {reviews.map((review) => (
             <ReviewItem key={review._id}>
               <strong>{review.name}</strong>
-              <div className='star-review'>
-                <span className='stars'>
-                  <Rating value={review.rating} text='' />
+              <div className="star-review">
+                <span className="stars">
+                  <Rating value={review.rating} text="" />
                 </span>
               </div>
               <p>{review.createdAt.slice(0, 10)}</p>
