@@ -10,6 +10,7 @@ import {
 } from "../../Components/StyledComponents/Products";
 import type { Product } from "../../interfaces";
 import { Helmet } from "react-helmet";
+import { StyledHeroContainer, StyledHero } from "./StyledHero";
 
 const Carousel = React.lazy(() => import("../../Components/Carousel"));
 
@@ -38,6 +39,16 @@ const Home = ({ title = "Products Display" }) => {
           content="Products Page - Browse our products"
         />
       </Helmet>
+      <StyledHeroContainer>
+        <StyledHero>
+          <h1>Shop at your will</h1>
+          <p>
+            Why not browse our products and see what we have to offer. We have
+            everything you need for your next adventure.
+          </p>
+        </StyledHero>
+        <img src={require("../../Assets/vector.png")} alt="" width={400} />
+      </StyledHeroContainer>
       <React.Suspense fallback={<Spinner />}>
         <Carousel products={ProductsData?.products.slice(0, 4)} />
       </React.Suspense>

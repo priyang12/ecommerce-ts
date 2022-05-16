@@ -25,6 +25,7 @@ import AdminUpdateProduct from "./Pages/AdminUpdateProduct";
 import PrivateRoute, { AdminRoute } from "./Components/PrivateRoute";
 import { LOG_OUT } from "./Context/Authentication/Authtypes";
 import setAuthToken from "./Utils/setAuthToken";
+import Footer from "./Components/Footer";
 
 function App() {
   const { state, dispatch } = useContext(AuthContext);
@@ -74,6 +75,7 @@ function App() {
         component={AdminUpdateProduct}
       />
       <AdminRoute exact path="/AdminUsers" component={AdminUsers} />
+      <Footer />
     </Fragment>
   );
 

@@ -6,7 +6,7 @@ export const StyledSlidesContainer = styled.div`
   justify-content: center;
   align-items: center;
   color: #fff;
-
+  position: relative;
   .active {
     --x: calc(var(--px) - 0.5);
     --y: calc(var(--py) - 0.5);
@@ -44,7 +44,7 @@ export const StyledSlide = styled.div`
     transition: opacity 0.3s;
     opacity: 0.7;
     z-index: 5;
-    top: 30rem;
+    top: 15rem;
     &:hover {
       opacity: 1;
     }
@@ -61,7 +61,10 @@ export const StyledSlide = styled.div`
       display: none;
       width: 3rem;
       height: 3rem;
-      top: 52%;
+      display: none;
+    }
+    @media (max-width: 868px) {
+      top: 10rem;
     }
   }
 `;

@@ -15,15 +15,14 @@ const ProductCard: React.FC<props> = ({ product }) => {
       <Link to={`/product/${_id}`}>
         <h4 className="CardTitle">{name}</h4>
       </Link>
+      {/* Still need to work */}
       <Link to={`/product/${_id}`}>
         <img
           src={image}
           alt={`${name}`}
           srcSet={`${image}?tr=w-225 225w,
         ${image}?tr=w-350 350w,
-        ${image}?tr=w-700 700w,
-        ${image}?tr=w-900 900w`}
-          sizes="(max-width: 900px) 100vw, 900px"
+        ${image}?tr=w-700 700w`}
         />
       </Link>
       <h3 className="card-text">${price}</h3>
