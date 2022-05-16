@@ -61,22 +61,6 @@ registerRoute(
   })
 );
 
-// Cache api requests.
-registerRoute(
-  ({ url }) => url.pathname.startsWith("/api/products"),
-  new StaleWhileRevalidate({
-    cacheName: "api-cache",
-    plugins: [
-      // least-recently used images are removed.
-      new ExpirationPlugin({
-        maxEntries: 50,
-        maxAgeSeconds: 24 * 60 * 60,
-        purgeOnQuotaError: true,
-      }),
-    ],
-  })
-);
-
 // This is the service worker with the combined offline experience (Offline page + Offline copy of pages)
 
 self.addEventListener("message", (event) => {
