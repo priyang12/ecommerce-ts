@@ -21,7 +21,6 @@ export const SingleProductCall = async (id: string) => {
 export const SearchProduct = async (Params: any) => {
   try {
     const response = await axios.get(`/api/products/${Params.queryKey[0]}`);
-    console.log(response.data);
     return response.data;
   } catch (error: any) {
     console.log(error);

@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { Route, Router } from "react-router-dom";
 import axios from "axios";
@@ -9,6 +9,7 @@ import "@testing-library/jest-dom";
 import Search from "../Search";
 import { SerachResult } from "../Testdata/Data";
 import { Wrapper } from "../../TestSetup";
+import userEvent from "@testing-library/user-event";
 
 const mock = new MockAdapter(axios);
 
@@ -54,7 +55,7 @@ it("Check For Url without Page", async () => {
   mock.resetHandlers();
 });
 
-it("Pagination next", async () => {
+it("Pagination not exist", async () => {
   const keyword = "Playstation";
   const route = `/search/name=${keyword}/2`;
   const History = createMemoryHistory({ initialEntries: [route] });
@@ -86,10 +87,52 @@ it("Pagination next", async () => {
 
   // 1 page so not Previous
   expect(Prev).not.toBeInTheDocument();
+  expect(Next).not.toBeInTheDocument();
+});
 
+it("Show Pagination", async () => {
+  const keyword = "Playstation";
+  const route = `/search/name=${keyword}/2`;
+  const History = createMemoryHistory({ initialEntries: [route] });
+
+  let newResult = { ...SerachResult, pages: 3, page: 2 };
+
+  mock
+    .onGet(`/api/products/Search/?keyword=Playstation&page=2`)
+    .reply(200, newResult);
+
+  newResult = { ...SerachResult, pages: 3, page: 3 };
+  mock
+    .onGet(`/api/products/Search/?keyword=Playstation&page=3`)
+    .reply(200, newResult);
+  render(
+    <Wrapper>
+      <Router history={History}>
+        <Route path="/search/name=:keyword/:pageNumber">
+          <Search />
+        </Route>
+      </Router>
+    </Wrapper>
+  );
+
+  await waitFor(() => {
+    expect(
+      screen.getByText(/Search Results for Playstation/)
+    ).toBeInTheDocument();
+  });
+
+  const Prev: any = screen.queryByText("Previous");
+  const Next: any = screen.queryByText("Next");
+
+  expect(Prev).toBeInTheDocument();
   expect(Next).toBeInTheDocument();
 
   Next?.click();
   //Check Location on next click
+  expect(History.location.pathname).toMatch(`/name=${keyword}/3`);
+
+  fireEvent.click(Prev);
+
+  //Check Location on prev click
   expect(History.location.pathname).toMatch(`/name=${keyword}/2`);
 });

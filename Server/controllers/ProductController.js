@@ -13,7 +13,7 @@ const imageKit = require("../config/imageKit");
 // @access  Public
 const GetAllProducts = asyncHandler(async (req, res) => {
   const pageSize = 9;
-  const page = Number(req.query.pageNumber) || 1;
+  const page = Number(req.query.page) || 1;
 
   const keyword = req.query.keyword
     ? {

@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { SearchProduct } from "../../API/ProductAPI";
 import { Helmet } from "react-helmet";
 import AlertDisplay from "../../Components/AlertDisplay";
 import DisplayProducts from "../../Components/DisplayProducts";
 import Spinner from "../../Components/Spinner";
+import { Pagination, PaginationButton } from "./Styled";
 
 const Home = () => {
   const { keyword, pageNumber }: any = useParams();
-  const page = pageNumber ? pageNumber : 1;
+  const page: number = pageNumber ? parseInt(pageNumber) : 1;
 
+  const history = useHistory();
   const [Url, setUrl] = useState(
     pageNumber
       ? `?keyword=${keyword}&page=${pageNumber}`
@@ -33,6 +35,12 @@ const Home = () => {
   if (!ProductData) return null;
 
   if (Err) return <AlertDisplay msg={"Something Went Wrong"} type={false} />;
+  const NextPage = () => {
+    history.push(`/search/name=${keyword}/${page + 1}`);
+  };
+  const PreviousPage = () => {
+    history.push(`/search/name=${keyword}/${page - 1}`);
+  };
 
   return (
     <>
@@ -43,39 +51,24 @@ const Home = () => {
           content={`${keyword} - ${ProductData.products.length} results"`}
         />
       </Helmet>
+
       <DisplayProducts
         Products={ProductData?.products}
         title={`Search Results for ${keyword}`}
       />
       {ProductData.pages > 1 && (
-        <div className="pagination">
-          {ProductData.page !== 1 && (
-            <button
-              className="pagination-button"
-              onClick={() => {
-                if (page > 1) {
-                  <Link
-                    to={`/products?keyword=${keyword}&page=${page - 1}`}
-                    rel={"prev"}
-                  />;
-                }
-              }}
-            >
+        <Pagination>
+          {parseInt(ProductData.page) > 1 && (
+            <PaginationButton active onClick={PreviousPage}>
               Previous
-            </button>
+            </PaginationButton>
           )}
-
-          <button
-            className="pagination-button"
-            onClick={() => {
-              if (page < ProductData.pages) {
-                <Link to={`/products?keyword=${keyword}&page=${page + 1}`} />;
-              }
-            }}
-          >
-            Next
-          </button>
-        </div>
+          {ProductData.pages !== page && (
+            <PaginationButton active onClick={NextPage}>
+              Next
+            </PaginationButton>
+          )}
+        </Pagination>
       )}
     </>
   );
