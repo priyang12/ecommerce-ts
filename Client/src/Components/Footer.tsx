@@ -1,62 +1,70 @@
+import { Link } from "react-router-dom";
 import LogoImage from "../Assets/Logo.png";
-import { Footer as StyledFooter } from "./StyledComponents/StyledFooter";
+import {
+  ContactInfo,
+  ContentInfo,
+  Footer as StyledFooter,
+  FooterContainer,
+} from "./StyledComponents/StyledFooter";
 
 const Footer = () => {
   return (
     <StyledFooter>
-      <div className="col-lg-3 col-md-6 col-sm-6">
+      <FooterContainer>
         <div className="footer-item">
-          <div className="footer-logo">
-            <a href="index.html">
-              <img src={LogoImage} alt="logo" />
-            </a>
-          </div>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
-            nec iaculis mauris.
+            ECommerce, also known as electronic commerce or internet commerce,
+            refers to the buying and selling of goods or services using the
+            internet, and the transfer of money and data to execute these
+            transactions.
             <br />
             <br />
-            Mauris at nulla quam.
+            Whereas e-business refers to all aspects of operating an online
+            business, ecommerce refers specifically to the transaction of goods
+            and services.
           </p>
-          <ul className="contact-info">
+          <ContactInfo>
             <li>
               <i className="fa fa-map-marker" />
-              Address: 20/F Green Road, Dhanmondi, Dhaka
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Beatae,
+              ex!
             </li>
             <li>
               <i className="fa fa-phone" />
-              Phone: +88 01911 854 378
+              Phone: +88 01911 854 xxx
             </li>
             <li>
               <i className="fa fa-envelope" />
               Email:
-              <a href="mailto:patelpriyang95@gmail.com">sad @gmail.com</a>
+              <a href="mailto:patelpriyang95@gmail.com">shopitTeam@gmail.com</a>
             </li>
-          </ul>
+          </ContactInfo>
         </div>
-      </div>
-      <div className="col-lg-3 col-md-6 col-sm-6">
+      </FooterContainer>
+      <FooterContainer>
         <div className="footer-item">
-          <h4>Useful Links</h4>
-          <ul className="links">
+          <h4>Links</h4>
+          <ContentInfo>
             <li>
-              <a href="index.html">Home</a>
+              <Link to={`/StillWorking`}>Home</Link>
             </li>
             <li>
-              <a href="about.html">About</a>
+              <Link to={`/StillWorking`}>About</Link>
             </li>
             <li>
-              <a href="services.html">Services</a>
+              <Link to={`/StillWorking`}>Services</Link>
             </li>
             <li>
-              <a href="contact.html">Contact</a>
+              <Link to={`/StillWorking`}>Contact</Link>
             </li>
-            <li>
-              <a href="elements.html">Elements</a>
-            </li>
-          </ul>
+          </ContentInfo>
+          <div className="footer-logo">
+            <Link to="/home">
+              <img src={LogoImage} alt="logo" />
+            </Link>
+          </div>
         </div>
-      </div>
+      </FooterContainer>
     </StyledFooter>
   );
 };
