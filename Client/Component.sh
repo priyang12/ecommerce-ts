@@ -55,6 +55,7 @@ if [ "$choice" -eq 1 ]; then
         # check if directory exists
         DIRECTORY='/home/data'
         if [ ! -d "$Path/$NAME" ]; then
+            # touch src/components/Form/{Form.js,Form.test.js,Form.css}
 
             touch $Path/$NAME.tsx
             touch $Path/StyledComponents/$NAME.ts
