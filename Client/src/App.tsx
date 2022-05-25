@@ -26,6 +26,7 @@ import PrivateRoute, { AdminRoute } from "./Components/PrivateRoute";
 import { LOG_OUT } from "./Context/Authentication/Authtypes";
 import setAuthToken from "./Utils/setAuthToken";
 import Footer from "./Components/Footer";
+import ScrollToTop from "./Components/ScrollToTop";
 
 function App() {
   const { state, dispatch } = useContext(AuthContext);
@@ -81,6 +82,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <Switch>
         <Route exact path="/Auth" component={Auth} />
         <PrivateRoute exact path="/address" component={AddressPage} />
