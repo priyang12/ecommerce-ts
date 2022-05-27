@@ -5,6 +5,12 @@ const User = require("../modals/User");
 const Product = require("../modals/Product");
 
 const Order = require("../modals/order");
+const sgMail = require("@sendgrid/mail");
+const dotenv = require("dotenv");
+
+dotenv.config();
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -13,7 +19,6 @@ const addOrderItems = asyncHandler(async (req, res) => {
   try {
     const {
       orderItems,
-
       paymentMethod,
       itemsPrice,
       taxPrice,
@@ -57,11 +62,36 @@ const addOrderItems = asyncHandler(async (req, res) => {
       });
 
       const createdOrder = await order.save();
+
+      const mail = {
+        to: `${req.userModal.email}`,
+        from: "patelpriyang95@gmail.com",
+        subject: "Order Confirmation",
+        text: "Thank you for your order",
+        html: `
+        <h1>Thank you for your order</h1>
+        <p>Your order has been placed successfully</p>
+        <p>Order ID: ${order._id}</p>
+        <p>Shipping Address: ${shippingAddress}</p>
+        <p>Payment Method: ${paymentMethod}</p>
+        <p>Items Price: ${itemsPrice}</p>
+        <p>Tax Price: ${taxPrice}</p>
+        <p>Shipping Price: ${shippingPrice}</p>
+        <p>Total Price: ${totalPrice}</p>
+        `,
+      };
+
+      await sgMail.send(mail);
+
       res.status(201);
-      res.json({ msg: "Order has Been Placed", order: createdOrder });
+      res.json({
+        msg: "Order has Been Placed and Mail has been sent with details",
+        order: order,
+      });
     }
   } catch (error) {
     res.status(400);
+
     throw new Error("Order Server error" + error);
   }
 });
@@ -71,7 +101,7 @@ const updateProduct = async (item) => {
     "name countInStock image price"
   );
   newProduct.countInStock = newProduct.countInStock - item.qty;
-  console.log(newProduct);
+
   await newProduct.save();
 };
 
