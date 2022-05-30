@@ -37,6 +37,14 @@ export function register(config: any) {
         // Is not localhost. Just register service worker
         registerValidSW(swUrl, config);
       }
+      navigator.serviceWorker.addEventListener("installed", (event: any) => {
+        if (event.isUpdate) {
+          // eslint-disable-next-line no-restricted-globals
+          if (confirm(`New content is available!. Click OK to refresh`)) {
+            window.location.reload();
+          }
+        }
+      });
     });
   }
 }

@@ -1,33 +1,21 @@
-import { Fragment, useContext, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Fragment, useContext } from "react";
+import { Link } from "react-router-dom";
 import { Logout } from "../Context/Authentication/AuthActions";
 import { AuthContext } from "../Context/Authentication/AuthContext";
 import {
   StyledNavbar,
   Logo,
-  SearchBar,
-  SerachInput,
-  SerchButton as SerachButton,
   StyledLinks,
   DropDown,
   StyledDropDownButton,
   StyledSecondaryNav,
-} from "./StyledComponents/navbar";
+} from "./StyledComponents/StyledNavbar";
 
 import LogoImage from "../Assets/Logo.png";
 
 const Navbar = () => {
   const { state, dispatch } = useContext(AuthContext);
   const { user } = state;
-  const history = useHistory();
-  const [searchValue, setSearchValue] = useState<string>("");
-
-  const search = () => {
-    if (searchValue !== "") {
-      let path = `/search/name=${searchValue}`;
-      history.push(path);
-    }
-  };
 
   const onLogout = () => {
     Logout(dispatch);
@@ -80,20 +68,6 @@ const Navbar = () => {
           <img src={LogoImage} alt="" />
         </Logo>
       </Link>
-      <SearchBar>
-        <SerachInput
-          type="text"
-          placeholder="Search Product"
-          name="search"
-          onKeyUp={(e: any) => {
-            setSearchValue(e.target.value);
-            if (e.key === "Enter") {
-              search();
-            }
-          }}
-        />
-        <SerachButton onClick={search}>Find</SerachButton>
-      </SearchBar>
 
       <StyledSecondaryNav>
         {user && (

@@ -19,7 +19,7 @@ export const StyledItem = styled.li`
     box-shadow: inset 0px 0px 20px 0px #d3d3d3;
   }
   width: ${(props) => props.theme.width};
-  }
+
   a {
     max-width: 80%;
     color: var(--color-primary);

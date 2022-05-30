@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const StyledContainer = styled.section`
   max-width: 120ch;
   width: 100%;
+  min-height: 100vh;
   margin: 2rem auto;
 `;
 
@@ -11,6 +12,7 @@ export const StyledProduct = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
   gap: 1rem;
+
   img {
     width: 100%;
     height: 100%;

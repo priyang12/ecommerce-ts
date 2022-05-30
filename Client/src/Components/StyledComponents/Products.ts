@@ -7,6 +7,7 @@ export const StyledDisplay = styled.section`
   background: url("./images/haikei.svg") repeat center/cover;
   color: #fff;
   margin: 0;
+  min-height: 1000px;
   h1 {
     font-family: cursive;
     margin: 0;
@@ -21,7 +22,7 @@ export const StyledProducts = styled(CardBoard)`
   -webkit-backdrop-filter: blur(8px) saturate(142%);
   background-color: #040202a3;
   border: 1px solid rgba(255, 255, 255, 0.125);
-  max-width: 70%;
+  max-width: 80%;
   width: 100%;
 `;
 

@@ -3,11 +3,16 @@ import { useHistory, useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { SearchProduct } from "../../API/ProductAPI";
 import { Helmet } from "react-helmet";
-import AlertDisplay from "../../Components/AlertDisplay";
-import DisplayProducts from "../../Components/DisplayProducts";
-import Spinner from "../../Components/Spinner";
 import { Pagination, PaginationButton } from "./Styled";
-
+import SearchBar from "../../Components/SearchBar";
+import {
+  StyledDisplay,
+  StyledProducts,
+} from "../../Components/StyledComponents/Products";
+import ProductCard from "../../Components/ProductCard";
+import AlertDisplay from "../../Components/AlertDisplay";
+import Spinner from "../../Components/Spinner";
+import { Product } from "../../interfaces";
 const Home = () => {
   const { keyword, pageNumber }: any = useParams();
   const page: number = pageNumber ? parseInt(pageNumber) : 1;
@@ -42,6 +47,12 @@ const Home = () => {
     history.push(`/search/name=${keyword}/${page - 1}`);
   };
 
+  if (ProductData?.products?.length === 0)
+    return (
+      <StyledDisplay>
+        <h1>No Products Found</h1>
+      </StyledDisplay>
+    );
   return (
     <>
       <Helmet>
@@ -51,11 +62,17 @@ const Home = () => {
           content={`${keyword} - ${ProductData.products.length} results"`}
         />
       </Helmet>
+      <StyledDisplay>
+        <h1>{`Search Results for ${keyword}`}</h1>
+        <SearchBar />
+        <StyledProducts id="Products">
+          {ProductData?.products &&
+            ProductData?.products.map((product: Product) => (
+              <ProductCard product={product} key={product._id} />
+            ))}
+        </StyledProducts>
+      </StyledDisplay>
 
-      <DisplayProducts
-        Products={ProductData?.products}
-        title={`Search Results for ${keyword}`}
-      />
       {ProductData.pages > 1 && (
         <Pagination>
           {parseInt(ProductData.page) > 1 && (

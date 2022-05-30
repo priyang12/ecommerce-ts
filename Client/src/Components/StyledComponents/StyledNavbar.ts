@@ -43,33 +43,6 @@ export const Logo = styled.div`
     width: 30%;
   }
 `;
-export const SearchBar = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-export const SerchButton = styled.button`
-  border: none;
-  cursor: pointer;
-  border-radius: 10px;
-  font-size: 1.5rem;
-  margin-left: 1rem;
-  box-shadow: none;
-  color: var(--assertive-color);
-`;
-export const SerachInput = styled.input`
-  color: white;
-  padding: 0.7em;
-  font-size: 1.1rem;
-  background-color: var(--secondary-color);
-
-  &:hover,
-  &:focus {
-    color: var(--secondary-color);
-    background-color: var(--main-dark-color);
-    outline: none;
-  }
-`;
 
 export const StyledLinks = styled.div`
   text-align: center;
@@ -98,7 +71,7 @@ export const DropDown = styled.div`
     background-color: var(--assertive-color);
     min-width: fit-content;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1;
+    z-index: 2020;
     border-radius: 20px;
     li {
       width: fit-content;
