@@ -1,11 +1,14 @@
 const asyncHandler = require("express-async-handler");
 const generateToken = require("../middleware/generateToken");
-const { google } = require("googleapis");
+
 const dotenv = require("dotenv");
 const User = require("../modals/User");
-const nodemailer = require("nodemailer");
+
+const sgMail = require("@sendgrid/mail");
 
 dotenv.config();
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const test = asyncHandler(async (req, res) => {
   res.json(req.headers.host);
@@ -70,57 +73,6 @@ const getUserProfile = asyncHandler(async (req, res) => {
   } else {
     res.status(404);
     throw new Error("User not found");
-  }
-});
-
-// @router POST api/users/resetpassword
-// @desc  User resetpassword
-// @access public
-const sendToken = asyncHandler(async (req, res) => {
-  try {
-    const { email } = req.body;
-    let user = await User.findOne({ email });
-    if (!user) {
-      res.status(400);
-      throw Error("user does not exists");
-    } else {
-      //SEND MAIL
-      const token = generateToken(user.id);
-      const oAuth = new google.auth.OAuth2(
-        process.env.GOOGLE_CLIENT_ID,
-        process.env.GOOGLE_SECRET,
-        process.env.REDIRECT_URI
-      );
-      oAuth.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
-
-      const access_token = await oAuth.getAccessToken();
-
-      const smtpConfig = {
-        service: "gmail",
-        auth: {
-          type: "OAuth2",
-          user: "dk18gamer@gmail.com",
-          clientId: process.env.GOOGLE_CLIENT_ID,
-          clientSecret: process.env.GOOGLE_SECRET,
-          refreshToken: process.env.REFRESH_TOKEN,
-          accessToken: access_token,
-        },
-      };
-      const transporter = nodemailer.createTransport(smtpConfig);
-
-      await transporter.sendMail({
-        from: "E-commerce HelpLine",
-        to: "patelpriyang95@gmail.com",
-        subject: "Hello From E-commerce Website",
-        html: `<h1>For Reset the Password<h1><div>The token link is <a href="https://${req.headers.host}/token/${token}">click here</a>
-          click on the link</div>`,
-      });
-      res.json({ msg: "The token has been send to you Email" });
-    }
-  } catch (err) {
-    console.log(err);
-    res.status(400);
-    throw Error(err);
   }
 });
 
@@ -251,6 +203,30 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 });
 
+const recoverMail = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  let user = await User.findOne({ email });
+  if (!user) {
+    res.status(400);
+    throw Error("user does not exists");
+  } else {
+    //SEND MAIL
+    const token = generateToken(user._id);
+
+    const mail = {
+      from: "patelpriyang95@gmail.com",
+      to: "dk18gamer@gmail.com",
+      subject: "Password Recover",
+      html: `<h1>For Reset the Password<h1><div>The token link is <a href="https://${req.headers.host}/token/${token}">click here</a>
+          click on the link</div>`,
+    };
+
+    await sgMail.send(mail);
+
+    res.json({ message: "Mail has been check your inbox, might be in Spam" });
+  }
+});
+
 module.exports = {
   test,
   registerUser,
@@ -262,6 +238,6 @@ module.exports = {
   getUserById,
   getUserProfile,
   getUsers,
-  sendToken,
   resetpassword,
+  recoverMail,
 };
