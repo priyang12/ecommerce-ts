@@ -215,7 +215,7 @@ const recoverMail = asyncHandler(async (req, res) => {
 
     const mail = {
       from: "patelpriyang95@gmail.com",
-      to: "dk18gamer@gmail.com",
+      to: email,
       subject: "Password Recover",
       html: `<h1>For Reset the Password<h1><div>The token link is <a href="https://${req.headers.host}/token/${token}">click here</a>
           click on the link</div>`,

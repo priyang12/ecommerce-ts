@@ -3,7 +3,7 @@ import { Alert, AlertContainer } from "./StyledComponents/AlertDisplayStyled";
 
 const AlertDisplay: FC<{ msg: string; type: boolean }> = ({ msg, type }) => {
   const theme = {
-    alertTextColor: type ? "#00b500" : "#ddadad",
+    alertTextColor: type ? "#00b500" : "#eacece",
     bg: type ? "#afdbaf" : "#ef251b",
     radius: "0px",
   };

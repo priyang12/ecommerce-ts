@@ -5,6 +5,7 @@ import {
   SET_LOADING,
   LOG_OUT,
   UPDATE_USER,
+  MailSEND_SUCCESS,
 } from "./Authtypes";
 
 import axios, { AxiosError } from "axios";
@@ -105,6 +106,30 @@ export const UpdateUser = async (
     console.log(err);
     if (err as AxiosError) {
       ErrorMessage = err.response.data.message;
+    }
+    dispatch({
+      type: AUTH_ERROR,
+      payload: ErrorMessage,
+    });
+  }
+};
+
+export const RecoverPassword = async (
+  dispatch: React.Dispatch<AuthActions>,
+  email: string
+) => {
+  try {
+    setLoading(dispatch);
+    const { data }: any = await axios.post("/api/users/recoverMail", { email });
+    dispatch({
+      type: MailSEND_SUCCESS,
+      payload: data.message,
+    });
+  } catch (err: any | AxiosError) {
+    let ErrorMessage = "Server Error Try Again Later";
+
+    if (err as AxiosError) {
+      ErrorMessage = err.response.data?.msg;
     }
     dispatch({
       type: AUTH_ERROR,

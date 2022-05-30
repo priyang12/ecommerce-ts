@@ -5,6 +5,7 @@ import {
   SET_LOADING,
   LOG_OUT,
   UPDATE_USER,
+  MailSEND_SUCCESS,
 } from "./Authtypes";
 
 import { AuthState, User } from "./interfaces";
@@ -16,6 +17,7 @@ type AuthPayload = {
   [UPDATE_USER]: User;
   [SET_LOADING]: boolean;
   [LOG_OUT]: null;
+  [MailSEND_SUCCESS]: string;
 };
 
 type ActionMap<M extends { [index: string]: any }> = {
@@ -46,7 +48,16 @@ export const AuthReducer = (state: AuthState, action: AuthActions) => {
         user: action.payload,
         loading: false,
       };
-
+    case MailSEND_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        alert: {
+          show: true,
+          message: action.payload,
+          type: "success",
+        },
+      };
     case SET_LOADING:
       return {
         ...state,
@@ -58,6 +69,7 @@ export const AuthReducer = (state: AuthState, action: AuthActions) => {
         loading: false,
         err: action.payload,
       };
+
     case LOG_OUT:
       return {
         ...state,

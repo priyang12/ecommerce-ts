@@ -12,11 +12,17 @@ export interface User {
   _id: string;
 }
 
+export interface alert {
+  show: boolean;
+  message: string;
+  type: string;
+}
 export interface AuthState {
   loading: boolean;
   err: string | null;
   token: string | null;
   user: User | null;
+  alert: alert | null;
 }
 
 export interface IContextModel {

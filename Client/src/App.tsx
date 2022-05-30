@@ -27,6 +27,7 @@ import { LOG_OUT } from "./Context/Authentication/Authtypes";
 import setAuthToken from "./Utils/setAuthToken";
 import Footer from "./Components/Footer";
 import ScrollToTop from "./Components/ScrollToTop";
+import ForgotPassword from "./Pages/ForgotPassword";
 
 function App() {
   const { state, dispatch } = useContext(AuthContext);
@@ -88,6 +89,7 @@ function App() {
         <PrivateRoute exact path="/address" component={AddressPage} />
         <PrivateRoute exact path="/payment" component={PaymentMethod} />
         <PrivateRoute exact path="/PayPal" component={Paypal} />
+        <Route exact path="/ForgotPassword" component={ForgotPassword} />
         <Route exact path="/StillWorking" component={StillWorking} />
         <Route component={DefaultContainer} />
       </Switch>

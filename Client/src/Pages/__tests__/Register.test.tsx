@@ -21,6 +21,7 @@ const setup = () => {
           err: null,
           token: null,
           user: null,
+          alert: null,
         },
         dispatch: () => {},
       }}

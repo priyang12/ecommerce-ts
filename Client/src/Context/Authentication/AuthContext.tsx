@@ -8,10 +8,11 @@ if (localStorage.token) Token = localStorage.token;
 const user = sessionStorage.getItem("User");
 
 const initialState: AuthState = {
-  loading: true,
+  loading: false,
   err: null,
   token: Token,
   user: user && JSON.parse(user),
+  alert: null,
 };
 
 export const AuthContext = createContext({} as IContextModel);
