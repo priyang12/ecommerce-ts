@@ -40,9 +40,8 @@ export function register(config: any) {
       navigator.serviceWorker.addEventListener("installed", (event: any) => {
         if (event.isUpdate) {
           // eslint-disable-next-line no-restricted-globals
-          if (confirm(`New content is available!. Click OK to refresh`)) {
-            window.location.reload();
-          }
+
+          window.location.reload();
         }
       });
     });
