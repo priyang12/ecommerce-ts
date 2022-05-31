@@ -35,15 +35,13 @@
 - Admin Update product
 - Private and Protected Routes
 - deployment to Vercel
+- User account management
+- Forget password
 
 ## Features Still In Development
 
 - Product Sorting
-- User account management
-- Forget password
 - Demo Usage
-
-## Usage
 
 ### Env Variables
 
@@ -55,6 +53,9 @@ PORT = 5000
 MONGO_URI = your mongodb uri
 JWT_SECRET = 'abc123'
 PAYPAL_CLIENT_ID = your paypal client id
+END_POINT = imagekit url
+SENDGRID_API_KEY = your sendgrid api key
+
 ```
 
 ### Install Dependencies (frontend & backend)

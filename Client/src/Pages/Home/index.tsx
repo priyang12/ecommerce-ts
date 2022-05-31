@@ -29,7 +29,7 @@ const Home = ({ title = "Products Display" }) => {
 
   if (Err) return <AlertDisplay msg={Err} type={false} />;
 
-  if (!ProductsData) return null;
+  if (!ProductsData.products) return null;
 
   return (
     <>

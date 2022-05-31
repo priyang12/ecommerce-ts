@@ -36,8 +36,7 @@ function App() {
   const { token, user } = state;
   useEffect(() => {
     if (token) {
-      const SessionUser = sessionStorage.getItem("User");
-      if (SessionUser) {
+      if (user) {
         setAuthToken(token);
       } else {
         loadUser(token, dispatch);
@@ -48,7 +47,7 @@ function App() {
         payload: null,
       });
     }
-  }, [token, dispatch]);
+  }, [token, dispatch, user]);
 
   //Set user token in Axios
   if (token && !user) setAuthToken(token);
