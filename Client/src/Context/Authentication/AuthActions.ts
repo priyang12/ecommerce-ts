@@ -117,12 +117,14 @@ export const UpdateUser = async (
 
 export const UpdatePassword = async (
   dispatch: React.Dispatch<AuthActions>,
-  user: any
+  password: any,
+  password2: any
 ) => {
   try {
     setLoading(dispatch);
     const { data }: any = await axios.patch("/api/users/resetpassword", {
-      user,
+      password,
+      password2,
     });
     dispatch({
       type: RESET_PASSWORD_SUCCESS,

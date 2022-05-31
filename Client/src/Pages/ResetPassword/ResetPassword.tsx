@@ -45,10 +45,7 @@ function ResetPassword() {
       validate = false;
     }
     if (validate) {
-      UpdatePassword(dispatch, {
-        Password,
-        Password2,
-      });
+      UpdatePassword(dispatch, Password, Password2);
       setErrors(Errors);
       setState({
         Password: "",

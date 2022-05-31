@@ -21,7 +21,6 @@ const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
-
   if (user && (await user.matchPassword(password))) {
     res.json({ token: generateToken(user._id) });
   } else {
@@ -81,15 +80,23 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @access Private
 const resetpassword = asyncHandler(async (req, res) => {
   const { password, password2 } = req.body;
-  if (password !== password2) {
+
+  if (password !== password2 || password.length < 6 || password2.length < 6) {
     res.status(400);
-    throw Error("Password Does not match");
+    throw Error("Invalid passwords");
   }
 
-  await User.findByIdAndUpdate(req.user.id, {
-    password: password,
-  });
-  res.json({ message: "Password Changed" });
+  await User.updateOne(
+    {
+      _id: req.user.id,
+    },
+    {
+      $set: {
+        password,
+      },
+    }
+  );
+  res.json({ message: "Password reset successfully" });
 });
 
 // @desc    Update user profile
