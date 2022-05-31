@@ -6,6 +6,7 @@ import {
   LOG_OUT,
   UPDATE_USER,
   MailSEND_SUCCESS,
+  RESET_PASSWORD_SUCCESS,
 } from "./Authtypes";
 
 import { AuthState, User } from "./interfaces";
@@ -18,6 +19,7 @@ type AuthPayload = {
   [SET_LOADING]: boolean;
   [LOG_OUT]: null;
   [MailSEND_SUCCESS]: string;
+  [RESET_PASSWORD_SUCCESS]: string;
 };
 
 type ActionMap<M extends { [index: string]: any }> = {
@@ -49,6 +51,7 @@ export const AuthReducer = (state: AuthState, action: AuthActions) => {
         loading: false,
       };
     case MailSEND_SUCCESS:
+    case RESET_PASSWORD_SUCCESS:
       return {
         ...state,
         loading: false,

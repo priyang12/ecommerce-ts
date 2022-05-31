@@ -21,7 +21,7 @@ router.route("/test").get(test);
 
 router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
-router.route("/resetpassword").put(Auth, resetpassword);
+router.route("/resetpassword").patch(Auth, resetpassword);
 router.route("/recoverMail").post(recoverMail);
 
 router

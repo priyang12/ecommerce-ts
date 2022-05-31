@@ -28,6 +28,8 @@ import setAuthToken from "./Utils/setAuthToken";
 import Footer from "./Components/Footer";
 import ScrollToTop from "./Components/ScrollToTop";
 import ForgotPassword from "./Pages/ForgotPassword";
+import ResetPassword from "./Pages/ResetPassword";
+import NotFound from "./Pages/NotFound";
 
 function App() {
   const { state, dispatch } = useContext(AuthContext);
@@ -77,6 +79,7 @@ function App() {
         component={AdminUpdateProduct}
       />
       <AdminRoute exact path="/AdminUsers" component={AdminUsers} />
+      <Route component={NotFound} />
       <Footer />
     </Fragment>
   );
@@ -90,6 +93,7 @@ function App() {
         <PrivateRoute exact path="/payment" component={PaymentMethod} />
         <PrivateRoute exact path="/PayPal" component={Paypal} />
         <Route exact path="/ForgotPassword" component={ForgotPassword} />
+        <Route exact path="/ResetPassword/:id" component={ResetPassword} />
         <Route exact path="/StillWorking" component={StillWorking} />
         <Route component={DefaultContainer} />
       </Switch>

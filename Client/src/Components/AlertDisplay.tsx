@@ -1,7 +1,11 @@
-import { FC } from "react";
+import { ReactNode, FC } from "react";
 import { Alert, AlertContainer } from "./StyledComponents/AlertDisplayStyled";
 
-const AlertDisplay: FC<{ msg: string; type: boolean }> = ({ msg, type }) => {
+const AlertDisplay: FC<{
+  msg: string;
+  type: boolean;
+  children?: ReactNode;
+}> = ({ msg, type, children }) => {
   const theme = {
     alertTextColor: type ? "#00b500" : "#eacece",
     bg: type ? "#afdbaf" : "#ef251b",
@@ -15,6 +19,7 @@ const AlertDisplay: FC<{ msg: string; type: boolean }> = ({ msg, type }) => {
       }}
     >
       <Alert theme={theme}>{msg}</Alert>
+      {children}
     </AlertContainer>
   );
 };

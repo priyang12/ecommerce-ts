@@ -80,27 +80,16 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @desc  User resetpassword
 // @access Private
 const resetpassword = asyncHandler(async (req, res) => {
-  try {
-    const { password, password2 } = req.body;
-    if (password !== password2) {
-      res.status(400);
-      throw Error("Password Does not match");
-    }
-
-    let user = await User.findById(req.user.id);
-    if (!user) {
-      res.status(400);
-      throw Error("user does not exists");
-    } else {
-      user.password = password;
-      user.save();
-      res.json({ msg: "Password Reseted" });
-    }
-  } catch (err) {
-    console.log(err);
+  const { password, password2 } = req.body;
+  if (password !== password2) {
     res.status(400);
-    throw Error(err);
+    throw Error("Password Does not match");
   }
+
+  await User.findByIdAndUpdate(req.user.id, {
+    password: password,
+  });
+  res.json({ message: "Password Changed" });
 });
 
 // @desc    Update user profile
@@ -217,7 +206,7 @@ const recoverMail = asyncHandler(async (req, res) => {
       from: "patelpriyang95@gmail.com",
       to: email,
       subject: "Password Recover",
-      html: `<h1>For Reset the Password<h1><div>The token link is <a href="https://${req.headers.host}/token/${token}">click here</a>
+      html: `<h1>For Reset the Password<h1><div>The token link is <a href="https://${req.headers.host}/ResetPassword/${token}">click here</a>
           click on the link</div>`,
     };
 
