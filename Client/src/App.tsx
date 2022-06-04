@@ -50,7 +50,7 @@ function App() {
   }, [token, dispatch, user]);
 
   //Set user token in Axios
-  if (token && !user) setAuthToken(token);
+  if (token) setAuthToken(token);
 
   const DefaultContainer = () => (
     <Fragment>
@@ -78,7 +78,7 @@ function App() {
         component={AdminUpdateProduct}
       />
       <AdminRoute exact path="/AdminUsers" component={AdminUsers} />
-      <Route component={NotFound} />
+      {/* <Route component={NotFound} /> */}
       <Footer />
     </Fragment>
   );

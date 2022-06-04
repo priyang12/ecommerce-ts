@@ -21,6 +21,7 @@ module.exports = () => {
   app.use("/api/products", require("./routes/products"));
   app.use("/api/cart", require("./routes/cart"));
   app.use("/api/orders", require("./routes/order"));
+  app.use("/api/wishlist", require("./routes/WishList.routes"));
   app.use("/api/PhotoUpload", require("./routes/upload"));
 
   app.get("/api/config/paypal", (req, res) => {

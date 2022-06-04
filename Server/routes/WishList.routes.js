@@ -10,7 +10,10 @@ const {
 const Auth = require("../middleware/auth");
 
 //Cart
-router.route("/").post(Auth, AddToWishlist).get(Auth, GetWishlist);
-router.route("/:id").delete(Auth, DeleteWishlistProduct);
+router.route("/").get(Auth, GetWishlist);
+router
+  .route("/:id")
+  .patch(Auth, AddToWishlist)
+  .delete(Auth, DeleteWishlistProduct);
 
 module.exports = router;

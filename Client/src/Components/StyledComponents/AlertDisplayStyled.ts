@@ -6,10 +6,12 @@ export const Alert = styled.div`
   border-radius: ${(props) =>
     props.theme.radius ? props.theme.radius : "5px"}; /* border radius */
   font-size: 1.6rem;
-  width: 100%;
-  font-weight: bold;
   padding: 1em;
+  font-weight: bold;
   text-align: center;
+  margin-bottom: 1em;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const AlertContainer = styled.div`

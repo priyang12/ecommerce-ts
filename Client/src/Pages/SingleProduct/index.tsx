@@ -20,6 +20,8 @@ import { AddToCartQuery } from "../../API/CartAPI";
 import { queryClient } from "../../query";
 import Spinner from "../../Components/Spinner";
 import { Helmet } from "react-helmet";
+import { SingleProductCall } from "../../API/ProductAPI";
+import { AddWishlistQuery } from "../../API/WishListAPI";
 
 const SingleProduct = () => {
   const { id } = useParams<{ id: string }>();
@@ -29,23 +31,23 @@ const SingleProduct = () => {
     error: ProductError,
     isLoading: loading,
   }: { data: any; error: any; isLoading: boolean } = useQuery(
-    ["products", { id: id }],
+    [`product/${id}`, id],
+    () => SingleProductCall(id)
+  );
 
-    async () => {
-      const url = `/api/products/product/${id}`;
-      try {
-        const res = await axios.get(url);
-
-        return res.data;
-      } catch (error) {
-        throw new Error("Something went wrong.");
-      }
+  const { mutate: AddToWishlist, isLoading: WishListLoading } = useMutation(
+    AddWishlistQuery,
+    {
+      onSuccess: (data: any) => {
+        setAlert(data.msg);
+      },
     }
   );
+
   const { isLoading: ChangingQty, mutate: PostQty } = useMutation(
     AddToCartQuery,
     {
-      onSuccess: (data) => {
+      onSuccess: (data: any) => {
         queryClient.invalidateQueries(["Cart"]);
         data.msg && setAlert(data.msg); // if data.msg is not null
       },
@@ -54,16 +56,31 @@ const SingleProduct = () => {
           setAlert("");
         }, 3000);
       },
-      onError: (err: any) => {
-        console.log(err);
+      onError: (error: any) => {
+        setAlert(error.msg);
       },
     }
   );
+
+  const {
+    data: WishListResult,
+    isLoading: AddingWishList,
+  }: {
+    data: any;
+    isLoading: boolean;
+  } = useMutation(AddWishlistQuery, {
+    onSuccess: (data: any) => {
+      data.msg && setAlert(data.msg); // if data.msg is not null
+    },
+    onError: (error: any) => {
+      setAlert(error.msg);
+    },
+  });
   const [Qty, setQty] = useState("1");
 
   const AddToCart = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(Product._id);
+
     PostQty({
       id: Product._id,
       qty: parseInt(Qty),
@@ -86,6 +103,7 @@ const SingleProduct = () => {
       </Helmet>
       {FetchData && (
         <StyledContainer>
+          {Alert && <AlertDisplay msg={Alert} type={true} />}
           <StyledProduct>
             <img src={Product.image} alt={Product.name} />
             <StyledDetails>
@@ -114,8 +132,8 @@ const SingleProduct = () => {
 
               {Product.countInStock > 0 && (
                 <form onSubmit={AddToCart}>
-                  <label>Qty</label>
-                  <select onChange={(e) => setQty(e.target.value)}>
+                  <label htmlFor="Qty">Qty</label>
+                  <select id="Qty" onChange={(e) => setQty(e.target.value)}>
                     <Quantity countInStock={Product.countInStock} />
                   </select>
                   <br />
@@ -131,8 +149,21 @@ const SingleProduct = () => {
                   )}
                 </form>
               )}
+              <button
+                className="btn btn-gray"
+                onClick={() => {
+                  AddToWishlist(Product._id);
+                }}
+              >
+                WISHLIST
+              </button>
               {ChangingQty && <AlertDisplay msg="Adding to cart" type={true} />}
-              {Alert && <AlertDisplay msg={Alert} type={true} />}
+              {WishListLoading && (
+                <AlertDisplay msg="Adding to wishlist" type={true} />
+              )}
+              {AddingWishList && (
+                <AlertDisplay msg={WishListResult.msg} type={true} />
+              )}
             </StyledCheckout>
           </StyledProduct>
         </StyledContainer>

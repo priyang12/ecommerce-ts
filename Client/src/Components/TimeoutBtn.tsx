@@ -22,7 +22,7 @@ const TimeoutBtn = ({ className, FormValue, Time }: prop) => {
       className={className}
       disabled={Dis}
       onClick={DisableBtn}
-      type='submit'
+      type="submit"
     >
       {FormValue}
     </button>

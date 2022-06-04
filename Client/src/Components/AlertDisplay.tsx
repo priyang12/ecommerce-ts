@@ -9,7 +9,7 @@ const AlertDisplay: FC<{
   const theme = {
     alertTextColor: type ? "#00b500" : "#eacece",
     bg: type ? "#afdbaf" : "#ef251b",
-    radius: "0px",
+    radius: "10px",
   };
   return (
     <AlertContainer
