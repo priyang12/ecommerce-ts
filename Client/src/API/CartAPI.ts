@@ -14,16 +14,15 @@ export const AddToCartQuery = async (data: { id: string; qty: number }) => {
     const response = await axios.post("/api/cart", data);
     return response.data;
   } catch (error: any) {
-    return error.response;
+    throw error.response.data;
   }
 };
 
 export const RemoveFromCartQuery = async (id: any) => {
   try {
-    console.log(id);
     const response = await axios.delete(`/api/cart/${id}`);
     return response.data;
   } catch (error: any) {
-    return error.response;
+    throw error.response;
   }
 };

@@ -42,7 +42,7 @@ const ProductList: FC<PropType> = ({
           <label>{UpdateQty ? "Qty :" : "Total"}</label>
           {UpdateQty ? (
             <select
-              data-testid='selectQty'
+              data-testid="selectQty"
               value={qty}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                 UpdateQty(product._id, parseInt(e.target.value))
@@ -56,11 +56,11 @@ const ProductList: FC<PropType> = ({
         </StyledQuantity>
         {DeleteFromCart && (
           <button
-            data-testid='DeleteIcon'
-            className='btn'
-            onClick={() => DeleteFromCart(_id)}
+            data-testid="DeleteIcon"
+            className="btn"
+            onClick={() => DeleteFromCart(product._id)}
           >
-            <i className='fas fa-trash'></i>
+            <i className="fas fa-trash"></i>
           </button>
         )}
       </StyledItem>

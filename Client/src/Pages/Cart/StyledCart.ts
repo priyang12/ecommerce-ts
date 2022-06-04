@@ -4,9 +4,10 @@ export const StyledContainer = styled.div`
   max-width: 100ch;
   margin: 0 auto;
   width: 100%;
+  min-height: 80vh;
   h1 {
     text-align: center;
-    font-size: 3.5rem;
+    font-size: 4.5rem;
   }
 `;
 
