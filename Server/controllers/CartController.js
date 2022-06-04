@@ -1,23 +1,26 @@
 const asyncHandler = require("express-async-handler");
 
 // User Modal
-const User = require("../modals/User");
 
+const Cart = require("../modals/Cart");
 const Products = require("../modals/Product");
 
 // @desc    Get All Cart Products
 // @route   Get /api/cart
 // @access  Private
 const GetCartProducts = asyncHandler(async (req, res) => {
-  console.log(req.user.id);
-  const user = await User.findById(req.user.id)
-    .select("cart name")
-    .populate("cart.product", ["price", "image", "name", "countInStock"]);
-  if (user) {
-    res.status(200).json({ Cart: user.cart });
-  } else {
-    res.status(404).json({ msg: "No Product in the Cart" });
+  const cart = await Cart.findOne({ user: req.user.id })
+    .populate({
+      path: "products.product",
+      model: "Product",
+      select: "name price _id image countInStock",
+    })
+    .lean();
+  if (!cart) {
+    return res.status(400).json({ msg: "Cart is empty" });
   }
+
+  res.status(200).json(cart);
 });
 
 // @desc    Add Product to Cart or Update Product Qty in Cart
@@ -25,59 +28,60 @@ const GetCartProducts = asyncHandler(async (req, res) => {
 // @access  Private
 const AddToCart = asyncHandler(async (req, res) => {
   const { id, qty } = req.body;
-  const user = await User.findById(req.user.id).select("cart name");
+  const UserCart = await Cart.findOne({ user: req.user.id });
   const product = await Products.findById(id);
-  console.log(qty);
-  if (!user || !product) {
-    res.status(404).json({ msg: "UnAuth Or Product not Found" });
+
+  if (!UserCart) {
+    return res.status(400).json({ msg: "Cart is Not Found" });
+  }
+  if (!product) {
+    return res.status(404).json({ msg: "UnAuth Or Product not Found" });
+  }
+
+  if (qty > product.countInStock) {
+    return res.status(404).json({ msg: "Sorry Out Of stock" });
+  }
+  //check if the product is in the cart already
+
+  let isProduct = await UserCart.products.find(
+    (productItem) => productItem.product === id
+  );
+
+  if (isProduct) {
+    isProduct.qty = qty;
+    await UserCart.save();
+    res.json({
+      msg: `${product.name} Qty is Updated to ${qty}`,
+    });
   } else {
-    //check if the product is in the cart already
-    let isProduct = await user.cart.find((item) => String(item.product) === id);
-    if (qty <= product.countInStock) {
-      if (isProduct) {
-        isProduct.qty = qty;
-        await user.save();
-        res.json({
-          msg: `${product.name} Qty is Updated to ${qty}`,
-        });
-      } else {
-        user.cart.unshift({ product: id, qty: qty });
-        await user.save();
-        res.json({
-          msg: `${product.name} is Added Cart`,
-        });
-      }
-    } else {
-      res.status(404).json({ msg: "Sorry Out Of stock" });
-    }
+    await UserCart.products.push({ product: id, qty });
+    await UserCart.save();
+    res.json({
+      msg: `${product.name} is Added Cart`,
+    });
   }
 });
 
 // @desc    Get Delete Cart Products
-// @route   Get /api/cart/:id
+// @route   DELETE /api/cart/:id
 // @access  Private
 const DeleteCartProduct = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user.id)
-    .select("cart name")
-    .populate("cart.product", ["price", "image", "name", "countInStock"]);
-  if (user) {
-    let Product;
-    user.cart.filter((item) => {
-      if (item.id === req.params.id) Product = item;
-      else return item;
-    });
-    if (!Product)
-      return res.status(404).json({ msg: "Product not Found in the Cart" });
-    else {
-      user.cart.pull(Product);
-      await user.save();
-      res.json({
-        msg: `${Product.product.name} is Deleted from the Cart`,
-      });
+  const session = await Cart.startSession();
+  try {
+    session.startTransaction();
+    const cart = await Cart.findOneAndUpdate(
+      { user: req.user.id },
+      { $pull: { products: { product: req.params.id } } },
+      { new: true }
+    );
+    if (!cart) {
+      return res.status(400).json({ msg: "Cart is Empty" });
     }
-  } else {
-    res.status(404);
-    throw Error("User Does not Exist");
+    session.commitTransaction();
+    res.status(200).json({ msg: "Product Deleted" });
+  } catch (err) {
+    session.abortTransaction();
+    res.status(400).json({ msg: "Error" });
   }
 });
 
