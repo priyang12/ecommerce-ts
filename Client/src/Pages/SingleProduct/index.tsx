@@ -71,6 +71,7 @@ const SingleProduct = () => {
   } = useMutation(AddWishlistQuery, {
     onSuccess: (data: any) => {
       data.msg && setAlert(data.msg); // if data.msg is not null
+      queryClient.invalidateQueries(["wishList"]);
     },
     onError: (error: any) => {
       setAlert(error.msg);

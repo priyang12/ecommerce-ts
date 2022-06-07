@@ -50,6 +50,11 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
+              <Link to="/Wishlist">
+                <span className="hide-sm">Wishlist</span>
+              </Link>
+            </li>
+            <li>
               <Link to="/Auth" onClick={onLogout}>
                 <span className="hide-sm">Logout</span>
               </Link>

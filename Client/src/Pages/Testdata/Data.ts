@@ -101,13 +101,12 @@ export const Products = [
   {
     rating: 2.3333333333333335,
     numReviews: 3,
-    price: 399.99,
+    price: 323.99,
     countInStock: 0,
     _id: "60d5e622e5179e2bb44bd839",
     name: "iPhone",
     image: "/Photos/image-1628092416984.webp",
-    description:
-      "The ultimate home entertainment center starts with PlayStation. Whether you are into gaming, HD movies, television, music",
+    description: "Iphone is a good apple product",
     brand: "Sony",
     category: "Electronics",
     user: "60d5e622e5179e2bb44bd835",

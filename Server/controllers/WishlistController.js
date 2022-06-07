@@ -14,7 +14,7 @@ const GetWishlist = asyncHandler(async (req, res) => {
     .populate({
       path: "products",
       model: "Product",
-      select: "name price _id image countInStock",
+      select: "name price _id image countInStock description",
     })
     .lean();
   if (!list) {

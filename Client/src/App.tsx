@@ -30,6 +30,7 @@ import ScrollToTop from "./Components/ScrollToTop";
 import ForgotPassword from "./Pages/ForgotPassword";
 import ResetPassword from "./Pages/ResetPassword";
 import NotFound from "./Pages/NotFound";
+import Wishlist from "./Pages/WishList";
 
 function App() {
   const { state, dispatch } = useContext(AuthContext);
@@ -65,6 +66,7 @@ function App() {
       />
       <Route exact path="/product/:id" component={SingleProduct} />
       <PrivateRoute exact path="/cart" component={Cart} />
+      <PrivateRoute exact path="/Wishlist" component={Wishlist} />
       <PrivateRoute exact path="/PlaceOrder" component={PlaceOrder} />
       <PrivateRoute exact path="/OrderStatus" component={OrderStatus} />
       <PrivateRoute exact path="/OrderStatus/:id" component={OrderDetails} />

@@ -3,8 +3,6 @@ const http = require("http");
 const numCPUs = require("os").cpus().length;
 const server = require("./server");
 
-// server();
-
 console.log(`Number of CPUs: ${numCPUs}`);
 
 if (cluster.isMaster) {
@@ -19,7 +17,7 @@ if (cluster.isMaster) {
   server();
 }
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV === "development") {
   server();
 }
 
