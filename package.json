@@ -4,8 +4,8 @@
   "description": "Ecommerce shoping FullStack",
   "main": "Server/server.js",
   "scripts": {
-    "start": "node Server",
-    "server": "nodemon Server",
+    "start": "node Server/server.js",
+    "server": "nodemon Server/server.js",
     "client": "npm start --prefix Client",
     "install": "cd Client && npm install",
     "clientBuild": "cd Client && yarn build Client",
