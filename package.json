@@ -8,7 +8,7 @@
     "server": "nodemon Server/server.js",
     "client": "npm start --prefix Client",
     "install": "cd Client && npm install",
-    "clientBuild": "cd Client && yarn build Client",
+    "build": "npm run build --prefix Client",
     "dev": "concurrently \"yarn run server\" \"yarn run client\"",
     "test": "cd Client && CI=true yarn run test --coverage && cd ..",
     "data:import": "node Server/seeder",
