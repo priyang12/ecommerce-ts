@@ -27,11 +27,7 @@ const Cart = () => {
     error: Err,
     isFetching,
     isLoading: loading,
-  } = useQuery(["Cart"], LoadCartQuery, {
-    onSuccess: (data) => {
-      setCart(data.products);
-    },
-  });
+  } = useQuery(["Cart"], LoadCartQuery);
 
   const { mutate: DeleteCart, isLoading: Deleting } = useMutation(
     RemoveFromCartQuery,
@@ -68,6 +64,23 @@ const Cart = () => {
     }
   );
 
+  const UpdateQuantity = (_id: string, quantity: number) => {
+    UpdateCart({
+      id: _id,
+      qty: quantity,
+    });
+  };
+
+  const RemoveFromCart = (id: string) => {
+    DeleteCart(id);
+  };
+
+  useEffect(() => {
+    if (data) {
+      setCart(data.products);
+    }
+  }, [data]);
+
   useEffect(() => {
     if (CartItems?.length !== 0) {
       let TotalProducts = 0;
@@ -84,22 +97,9 @@ const Cart = () => {
     }
   }, [CartItems]);
 
-  const UpdateQuantity = (_id: string, quantity: number) => {
-    UpdateCart({
-      id: _id,
-      qty: quantity,
-    });
-  };
-
-  const RemoveFromCart = (id: string) => {
-    DeleteCart(id);
-  };
-
   if (loading || isFetching || Updating || Deleting) return <Spinner />;
 
   if (Err) return <div>Server Error</div>;
-
-  if (!data) return null;
 
   if (CartItems?.length === 0 || !CartItems)
     return (

@@ -43,8 +43,8 @@ const AddToCart = asyncHandler(async (req, res) => {
   }
   //check if the product is in the cart already
 
-  let isProduct = await UserCart.products.find(
-    (productItem) => productItem.product === id
+  let isProduct = UserCart.products.find(
+    (product) => product.product.toString() === id
   );
 
   if (isProduct) {

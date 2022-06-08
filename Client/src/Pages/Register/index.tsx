@@ -12,6 +12,7 @@ import {
 
 import { StyledContainer } from "../../Components/StyledComponents/Container";
 import Spinner from "../../Components/Spinner";
+import { Helmet } from "react-helmet";
 
 const init = {
   name: "",
@@ -67,6 +68,9 @@ const Register = () => {
   }
   return (
     <StyledContainer>
+      <Helmet>
+        <title>Register</title>
+      </Helmet>
       <form onSubmit={onSubmit}>
         <div className="form-control">
           <input

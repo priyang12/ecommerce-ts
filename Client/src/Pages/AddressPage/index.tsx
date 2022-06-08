@@ -82,7 +82,7 @@ const AddressPage = () => {
         </div>
         <div className="form-control">
           <input
-            type="text"
+            type="number"
             name="postalCode"
             id="PostalCode"
             onChange={ChangeShippingAddress}
