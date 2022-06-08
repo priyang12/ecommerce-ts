@@ -4,6 +4,7 @@ const path = require("path");
 const morgan = require("morgan");
 const app = express();
 const { notFound, errorHandler } = require("./middleware/error");
+const CustomRateLimiter = require("./middleware/Ratelimiter");
 const connectDB = require("./config/db");
 
 dotenv.config();
@@ -16,7 +17,7 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-app.use("/api/users", require("./routes/user"));
+app.use("/api/users", CustomRateLimiter(), require("./routes/user"));
 app.use("/api/products", require("./routes/products"));
 app.use("/api/cart", require("./routes/cart"));
 app.use("/api/orders", require("./routes/order"));
