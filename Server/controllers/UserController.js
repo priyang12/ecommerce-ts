@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const User = require("../modals/User");
 
 const sgMail = require("@sendgrid/mail");
+const agenda = require("../config/agenda");
 
 dotenv.config();
 
@@ -209,15 +210,15 @@ const recoverMail = asyncHandler(async (req, res) => {
     //SEND MAIL
     const token = generateToken(user._id);
 
-    const mail = {
-      from: "patelpriyang95@gmail.com",
-      to: email,
-      subject: "Password Recover",
-      html: `<h1>For Reset the Password<h1><div>The token link is <a href="https://${req.headers.host}/ResetPassword/${token}">click here</a>
-          click on the link</div>`,
-    };
+    const ag = await agenda;
 
-    await sgMail.send(mail);
+    ag.start();
+
+    ag.schedule(new Date(Date.now() + 1000), "reset password", {
+      email,
+      token,
+      host: req.headers.host,
+    });
 
     res.json({ message: "Mail has been check your inbox, might be in Spam" });
   }

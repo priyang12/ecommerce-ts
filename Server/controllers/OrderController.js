@@ -7,6 +7,7 @@ const Product = require("../modals/Product");
 const Order = require("../modals/order");
 const sgMail = require("@sendgrid/mail");
 const dotenv = require("dotenv");
+const agenda = require("../config/agenda");
 
 dotenv.config();
 
@@ -63,30 +64,19 @@ const addOrderItems = asyncHandler(async (req, res) => {
 
       const createdOrder = await order.save();
 
-      const mail = {
-        to: `${req.userModal.email}`,
-        from: "patelpriyang95@gmail.com",
-        subject: "Order Confirmation",
-        text: "Thank you for your order",
-        html: `
-        <h1>Thank you for your order</h1>
-        <p>Your order has been placed successfully</p>
-        <p>Order ID: ${order._id}</p>
-        <p>Shipping Address: ${shippingAddress}</p>
-        <p>Payment Method: ${paymentMethod}</p>
-        <p>Items Price: ${itemsPrice}</p>
-        <p>Tax Price: ${taxPrice}</p>
-        <p>Shipping Price: ${shippingPrice}</p>
-        <p>Total Price: ${totalPrice}</p>
-        `,
-      };
+      const ag = await agenda;
 
-      await sgMail.send(mail);
+      ag.start();
+
+      ag.schedule(new Date(Date.now() + 1000), "place order", {
+        order: createdOrder,
+        email: req.userModal.email,
+      });
 
       res.status(201);
       res.json({
         msg: "Order has Been Placed and Mail has been sent with details",
-        order: order,
+        order: createdOrder,
       });
     }
   } catch (error) {

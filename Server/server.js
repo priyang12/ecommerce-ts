@@ -6,11 +6,16 @@ const app = express();
 const { notFound, errorHandler } = require("./middleware/error");
 const CustomRateLimiter = require("./middleware/Ratelimiter");
 const connectDB = require("./config/db");
+const Jobs = require("./Jobs");
+
+connectDB();
+
+Jobs();
 
 dotenv.config();
 
 //init middleware
-connectDB();
+
 app.use(express.json({ extented: false }));
 
 if (process.env.NODE_ENV === "development") {
