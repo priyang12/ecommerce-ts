@@ -8,6 +8,8 @@
 # testing
 /coverage
 
+build
+
 cypress.env.json
 
 # misc
