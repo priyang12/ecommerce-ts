@@ -7,6 +7,7 @@ const Products = require("../modals/Product");
 
 const Orders = require("../modals/order");
 const imageKit = require("../config/imageKit");
+const myCache = require("../utils/cache");
 
 // @desc    Get All Products
 // @route   Get /api/products
@@ -23,27 +24,42 @@ const GetAllProducts = asyncHandler(async (req, res) => {
         },
       }
     : {};
-
   const count = await Products.countDocuments({ ...keyword });
-  const products = await Products.find({ ...keyword })
-    .limit(pageSize)
-    .skip(pageSize * (page - 1));
+  let products = myCache.get("products" + keyword + page + count);
 
-  res.json({ products, page, pages: Math.ceil(count / pageSize) });
+  if (!products) {
+    products = await Products.find({ ...keyword })
+      .limit(pageSize)
+      .skip(pageSize * (page - 1));
 
-  // const products = await Products.find({});
-  // res.json(products);
+    myCache.set("products" + keyword + page + count, products, 3600 / 2);
+
+    res.json({ products, page, pages: Math.ceil(count / pageSize) });
+  } else {
+    console.log("from cache");
+    res.json({
+      products,
+      page,
+      pages: Math.ceil(count / pageSize),
+    });
+  }
 });
 
 // @desc    Get top rated products
 // @route   GET /api/products/top
 // @access  Public
 const GetTopProducts = asyncHandler(async (req, res) => {
-  const products = await Products.find({})
-    .sort({ rating: -1 })
-    .limit(5)
-    .select("name image description");
-  res.json(products);
+  let TopProducts = myCache.get("TopProducts");
+  if (!TopProducts) {
+    TopProducts = await Products.find({})
+      .sort({ rating: -1 })
+      .limit(5)
+      .select("name image description");
+    myCache.set("TopProducts", TopProducts, 3600 / 2);
+    res.json(products);
+  } else {
+    res.json(TopProducts);
+  }
 });
 
 // @desc    Get All Products

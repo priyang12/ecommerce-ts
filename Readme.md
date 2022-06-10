@@ -26,7 +26,6 @@
 - Product search feature
 - Save the Cart in User
 - Order Placement
-- end-to-end testing/cypress
 - Admin product management
 - Admin Order details page
 - Checkout process (shipping, payment method, etc)
@@ -34,12 +33,16 @@
 - Database seeder (products & users)
 - Admin Update product
 - Private and Protected Routes
-- deployment to Vercel
 - User account management
+- Products Search
 - Forget password
+- Backend API Cache
+- Backend Rate Limiter
+- deployment to Vercel
 
 ## Features Still In Development
 
+- end-to-end testing/cypress
 - Product Sorting
 - Demo Usage
 
