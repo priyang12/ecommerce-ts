@@ -61,8 +61,6 @@ registerRoute(
   })
 );
 
-// This is the service worker with the combined offline experience (Offline page + Offline copy of pages)
-
 self.addEventListener("message", (event) => {
   if (event.data && event.data.type === "SKIP_WAITING") {
     self.skipWaiting();

@@ -29,7 +29,7 @@ import Footer from "./Components/Footer";
 import ScrollToTop from "./Components/ScrollToTop";
 import ForgotPassword from "./Pages/ForgotPassword";
 import ResetPassword from "./Pages/ResetPassword";
-import NotFound from "./Pages/NotFound";
+// import NotFound from "./Pages/NotFound";
 import Wishlist from "./Pages/WishList";
 
 function App() {
