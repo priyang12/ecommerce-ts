@@ -107,6 +107,7 @@ const AddProduct = asyncHandler(async (req, res) => {
 // @access  Admin
 const UpdateProduct = asyncHandler(async (req, res) => {
   const product = await Products.findById(req.params.id);
+
   if (!product) throw Error("No Product Found");
 
   // upload product image

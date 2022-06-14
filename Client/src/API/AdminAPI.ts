@@ -1,4 +1,5 @@
 import axios from "axios";
+import { queryClient } from "../query";
 
 export const LoadUsers = async () => {
   try {
@@ -50,6 +51,7 @@ export const EditProductCall = async (product: any) => {
       product,
       config
     );
+    queryClient.invalidateQueries([`product/${id}`, id]);
     return response.data;
   } catch (error: any) {
     return error.response;

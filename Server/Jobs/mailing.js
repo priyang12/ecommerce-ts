@@ -40,31 +40,5 @@ function MailJob() {
     sgMail.send(mail);
     done();
   });
-
-  // Place Order
-  agenda.define("place order", async (job, done) => {
-    const { order, email } = job.attrs.data;
-
-    const mail = {
-      to: `${email}`,
-      from: "patelpriyang95@gmail.com",
-      subject: "Order Confirmation",
-      text: "Thank you for your order",
-      html: `
-        <h1>Thank you for your order</h1>
-        <p>Your order has been placed successfully</p>
-        <p>Order ID: ${order._id}</p>
-        <p>Shipping Address: ${order.shippingAddress}</p>
-        <p>Payment Method: ${order.paymentMethod}</p>
-        <p>Items Price: ${order.itemsPrice}</p>
-        <p>Tax Price: ${order.taxPrice}</p>
-        <p>Shipping Price: ${order.shippingPrice}</p>
-        <p>Total Price: ${order.totalPrice}</p>
-        `,
-    };
-
-    await sgMail.send(mail);
-    done();
-  });
 }
 module.exports = MailJob;

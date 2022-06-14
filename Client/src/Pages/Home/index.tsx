@@ -12,6 +12,8 @@ import type { Product } from "../../interfaces";
 import { Helmet } from "react-helmet";
 import { StyledHeroContainer, StyledHero } from "./StyledHero";
 import SearchBar from "../../Components/SearchBar";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorCatch from "../../Components/ErrorCatch";
 
 const Carousel = React.lazy(() => import("../../Components/Carousel"));
 
@@ -51,9 +53,11 @@ const Home = ({ title = "Products Display" }) => {
         </StyledHero>
         <img src={require("../../Assets/vector.png")} alt="" width={400} />
       </StyledHeroContainer>
-      <React.Suspense fallback={<Spinner />}>
-        <Carousel />
-      </React.Suspense>
+      <ErrorCatch>
+        <React.Suspense fallback={<Spinner />}>
+          <Carousel />
+        </React.Suspense>
+      </ErrorCatch>
       <StyledDisplay>
         <h1>{title}</h1>
         <StyledProducts>

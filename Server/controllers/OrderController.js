@@ -2,8 +2,6 @@ const asyncHandler = require("express-async-handler");
 
 const User = require("../modals/User");
 
-const Product = require("../modals/Product");
-
 const Order = require("../modals/order");
 const sgMail = require("@sendgrid/mail");
 const dotenv = require("dotenv");
@@ -17,6 +15,8 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 // @route   POST /api/orders
 // @access  Private
 const addOrderItems = asyncHandler(async (req, res) => {
+  const ag = await agenda;
+  ag.start();
   try {
     const {
       orderItems,
@@ -64,13 +64,12 @@ const addOrderItems = asyncHandler(async (req, res) => {
 
       const createdOrder = await order.save();
 
-      const ag = await agenda;
-
-      ag.start();
-
       ag.schedule(new Date(Date.now() + 1000), "place order", {
         order: createdOrder,
         email: req.userModal.email,
+      });
+      ag.schedule(new Date(Date.now() + 1000), "update product", {
+        order: order,
       });
 
       res.status(201);
@@ -80,20 +79,19 @@ const addOrderItems = asyncHandler(async (req, res) => {
       });
     }
   } catch (error) {
+    if (error.message === "Product out of stock") {
+      ag.schedule(
+        new Date(Date.now() + 1000),
+        "remove out of stock from cart",
+        {
+          orderItems: req.body.orderItems,
+        }
+      );
+    }
     res.status(400);
-
     throw new Error("Order Server error" + error);
   }
 });
-
-const updateProduct = async (item) => {
-  const newProduct = await Product.findById(item.product._id).select(
-    "name countInStock image price"
-  );
-  newProduct.countInStock = newProduct.countInStock - item.qty;
-
-  await newProduct.save();
-};
 
 // @desc    Get order by ID
 // @route   GET /api/order
