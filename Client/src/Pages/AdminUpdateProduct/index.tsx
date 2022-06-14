@@ -50,6 +50,10 @@ const AdminUpdateProduct = () => {
     data: Product,
     error: Err,
     isLoading,
+  }: {
+    data: any;
+    error: any;
+    isLoading: boolean;
   } = useQuery([`product/${id}`, id], () => SingleProductCall(id), {
     enabled: !Type,
   });

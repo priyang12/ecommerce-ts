@@ -8,6 +8,8 @@
 # testing
 /coverage
 
+.mp4
+
 build
 
 cypress.env.json

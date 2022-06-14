@@ -52,7 +52,7 @@ const Home = ({ title = "Products Display" }) => {
         <img src={require("../../Assets/vector.png")} alt="" width={400} />
       </StyledHeroContainer>
       <React.Suspense fallback={<Spinner />}>
-        <Carousel products={ProductsData?.products?.slice(0, 4)} />
+        <Carousel />
       </React.Suspense>
       <StyledDisplay>
         <h1>{title}</h1>

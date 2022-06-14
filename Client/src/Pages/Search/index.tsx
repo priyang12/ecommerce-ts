@@ -33,6 +33,10 @@ const Home = () => {
     data: ProductData,
     isLoading,
     error: Err,
+  }: {
+    data: any;
+    isLoading: boolean;
+    error: any;
   } = useQuery([`Search/${Url}`, { Url }], SearchProduct, {});
 
   if (isLoading) return <Spinner />;

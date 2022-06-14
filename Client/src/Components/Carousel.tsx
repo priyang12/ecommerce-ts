@@ -1,4 +1,5 @@
 import { FC, useEffect, useReducer } from "react";
+import { LoadTopProducts } from "../API/ProductAPI";
 import Slide from "./Slide";
 import {
   StyledSlide,
@@ -9,7 +10,9 @@ const initialState = {
   slideIndex: 0,
 };
 
-const Carousel: FC<{ products: any }> = ({ products: Products }: any) => {
+const Carousel: FC = () => {
+  const { data: Products } = LoadTopProducts();
+
   const slidesReducer = (state: any, event: any) => {
     if (event.type === "NEXT") {
       return {
@@ -33,6 +36,8 @@ const Carousel: FC<{ products: any }> = ({ products: Products }: any) => {
     }, 3000);
     return () => clearInterval(interval);
   }, []);
+
+  if (!Products) return null;
 
   return (
     <StyledSlidesContainer>
