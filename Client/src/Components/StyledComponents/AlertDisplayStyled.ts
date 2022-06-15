@@ -10,6 +10,7 @@ export const Alert = styled.div`
   font-weight: bold;
   text-align: center;
   margin-bottom: 1em;
+  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
 `;

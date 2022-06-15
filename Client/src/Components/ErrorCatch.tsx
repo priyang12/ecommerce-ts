@@ -1,21 +1,28 @@
 import { ErrorBoundary } from "react-error-boundary";
 import AlertDisplay from "./AlertDisplay";
-import { FragmentContainer } from "./StyledComponents/Container";
+import {
+  StyledButton,
+  StyledErrorCatch,
+} from "./StyledComponents/StyledErrorCatch";
 
 const FallbackUI = ({ error, componentStack }: any) => {
   const resetErrorBoundary = () => {
     window.location.reload();
   };
+  let message =
+    process.env.NODE_ENV === "production" ? "Server Error" : error.message;
   return (
-    <FragmentContainer>
+    <StyledErrorCatch>
       <h1>Something went wrong</h1>
       <p>
-        <AlertDisplay msg={error.message} type={false} />
+        <AlertDisplay msg={message} type={false} />
         <br />
         {componentStack}
       </p>
-      <button onClick={resetErrorBoundary}>Try again</button>
-    </FragmentContainer>
+      <StyledButton onClick={resetErrorBoundary} className="btn">
+        Try again
+      </StyledButton>
+    </StyledErrorCatch>
   );
 };
 

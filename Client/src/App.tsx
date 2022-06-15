@@ -31,6 +31,7 @@ import ForgotPassword from "./Pages/ForgotPassword";
 import ResetPassword from "./Pages/ResetPassword";
 // import NotFound from "./Pages/NotFound";
 import Wishlist from "./Pages/WishList";
+import AlertDisplay from "./Components/AlertDisplay";
 
 function App() {
   const { state, dispatch } = useContext(AuthContext);
@@ -88,6 +89,7 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
+      {!window.navigator.onLine && <AlertDisplay msg="Offline" type={false} />}
       <Switch>
         <Route exact path="/Auth" component={Auth} />
         <PrivateRoute exact path="/address" component={AddressPage} />

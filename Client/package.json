@@ -26,6 +26,7 @@
     "workbox-core": "^6.5.1",
     "workbox-expiration": "^6.5.1",
     "workbox-precaching": "^6.5.1",
+    "workbox-recipes": "^6.5.3",
     "workbox-routing": "^6.5.1",
     "workbox-strategies": "^6.5.1",
     "workbox-sw": "^6.5.1",

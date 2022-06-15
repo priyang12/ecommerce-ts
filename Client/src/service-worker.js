@@ -1,10 +1,10 @@
 /* eslint-disable no-restricted-globals */
-
+import { warmStrategyCache } from "workbox-recipes";
 import { clientsClaim } from "workbox-core";
 import { ExpirationPlugin } from "workbox-expiration";
 import { precacheAndRoute, createHandlerBoundToURL } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
-import { StaleWhileRevalidate } from "workbox-strategies";
+import { StaleWhileRevalidate, CacheFirst } from "workbox-strategies";
 
 clientsClaim();
 
@@ -31,8 +31,8 @@ registerRoute(({ request, url }) => {
 registerRoute(
   // Add in any other file extensions or routing criteria as needed.
   ({ request }) => request.destination === "script",
-  new StaleWhileRevalidate({
-    cacheName: "static-resources",
+  new CacheFirst({
+    cacheName: "scripts",
   })
 );
 
@@ -66,3 +66,9 @@ self.addEventListener("message", (event) => {
     self.skipWaiting();
   }
 });
+
+// This can be any strategy, CacheFirst used as an example.
+const strategy = new CacheFirst();
+const urls = ["/offline.html"];
+
+warmStrategyCache({ urls, strategy });

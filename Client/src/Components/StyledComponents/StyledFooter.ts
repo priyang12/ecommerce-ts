@@ -34,6 +34,7 @@ export const FooterContainer = styled.div`
   gap: 1rem;
   @media (max-width: 768px) {
     flex-direction: row;
+    padding: 0;
   }
 `;
 
