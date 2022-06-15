@@ -28,7 +28,7 @@ const ProductList: FC<PropType> = ({
   UpdateQty,
   styledWidth,
 }) => {
-  const { _id, product, qty } = Cart;
+  const { product, qty } = Cart;
 
   return (
     <StyledProductList>

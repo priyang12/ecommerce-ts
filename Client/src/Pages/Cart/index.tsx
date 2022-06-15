@@ -4,12 +4,11 @@ import AlertDisplay from "../../Components/AlertDisplay";
 import ProductList, { CartItem } from "../../Components/ProductList";
 import { StyledContainer, StyledCheckout } from "./StyledCart";
 import {
-  AddToCartQuery,
+  AddOrUpdateCartQuery,
+  DeleteCartApi,
   LoadCartQuery,
-  RemoveFromCartQuery,
 } from "../../API/CartAPI";
-import { useMutation, useQuery } from "react-query";
-import { queryClient } from "../../query";
+import { useQuery } from "react-query";
 import Spinner from "../../Components/Spinner";
 
 const Cart = () => {
@@ -29,40 +28,25 @@ const Cart = () => {
     isLoading: loading,
   } = useQuery(["Cart"], LoadCartQuery);
 
-  const { mutate: DeleteCart, isLoading: Deleting } = useMutation(
-    RemoveFromCartQuery,
-    {
-      onSuccess: (data: any) => {
-        queryClient.invalidateQueries(["Cart"]);
-      },
-      onSettled: (data) => {
-        setTimeout(() => {
-          setAlert({ msg: "", type: false });
-        }, 3000);
-      },
-      onError: (err: any) => {
-        setAlert(err.data.msg);
-      },
-    }
-  );
+  // const { mutate: DeleteCart, isLoading: Deleting } = useMutation(
+  //   RemoveFromCartQuery,
+  //   {
+  //     onSuccess: (data: any) => {
+  //       queryClient.invalidateQueries(["Cart"]);
+  //     },
+  //     onSettled: (data) => {
+  //       setTimeout(() => {
+  //         setAlert({ msg: "", type: false });
+  //       }, 3000);
+  //     },
+  //     onError: (err: any) => {
+  //       setAlert(err.data.msg);
+  //     },
+  //   }
+  // );
+  const { mutate: DeleteCart, isLoading: Deleting } = DeleteCartApi(setAlert);
 
-  const { mutate: UpdateCart, isLoading: Updating } = useMutation(
-    AddToCartQuery,
-    {
-      onSuccess: (data: any) => {
-        setAlert({ msg: data.msg, type: true });
-        queryClient.invalidateQueries(["Cart"]);
-      },
-      onSettled: () => {
-        setTimeout(() => {
-          setAlert({ msg: "", type: false });
-        }, 3000);
-      },
-      onError: (err: any) => {
-        setAlert(err.data.msg);
-      },
-    }
-  );
+  const { mutate: UpdateCart } = AddOrUpdateCartQuery(setAlert);
 
   const UpdateQuantity = (_id: string, quantity: number) => {
     UpdateCart({
@@ -97,7 +81,7 @@ const Cart = () => {
     }
   }, [CartItems]);
 
-  if (loading || isFetching || Updating || Deleting) return <Spinner />;
+  if (loading || isFetching || Deleting) return <Spinner />;
 
   if (Err) return <div>Server Error</div>;
 
@@ -110,7 +94,7 @@ const Cart = () => {
 
   return (
     <Fragment>
-      {Alert.msg && <AlertDisplay msg={Alert.msg} type={true} />}
+      {Alert.msg && <AlertDisplay msg={Alert.msg} type={Alert.type} />}
       <StyledContainer>
         <h1>SHOPPING CART</h1>
         {CartItems?.map((item: CartItem) => (

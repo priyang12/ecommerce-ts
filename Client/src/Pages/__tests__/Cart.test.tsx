@@ -1,7 +1,6 @@
 import {
   render,
   screen,
-  act,
   waitForElementToBeRemoved,
   waitFor,
 } from "@testing-library/react";
@@ -122,4 +121,6 @@ it("Mock Delete Product Form Cart", async () => {
   const DeleteBtn = screen.getAllByTestId("DeleteIcon");
 
   userEvent.click(DeleteBtn[0]);
+
+  await waitFor(() => screen.findByText(/Deleted From the Cart/));
 });

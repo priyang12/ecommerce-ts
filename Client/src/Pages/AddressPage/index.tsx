@@ -13,19 +13,18 @@ let init: Address = {
 
 const AddressPage = () => {
   const history = useHistory();
-  const [ShippingAddress, ChangeShippingAddress, SetState] = useForm(init);
+  const [ShippingAddress, ChangeShippingAddress, SetState] = useForm(
+    localStorage.address ? JSON.parse(localStorage.address) : init
+  );
   const { homeAddress, city, postalCode, country } = ShippingAddress;
 
-  useEffect(() => {
-    if (localStorage.address) {
-      SetState(JSON.parse(localStorage.address));
-    }
-  }, [SetState]);
-
   const [Valid, setValid] = useState(false);
-  if (!localStorage.Cart || localStorage.Cart.length === 0) {
-    history.push("/cart");
-  }
+
+  useEffect(() => {
+    if (!localStorage.Cart || localStorage.Cart.length === 0) {
+      history.push("/cart");
+    }
+  });
   const validate = () => {
     if (
       homeAddress === "" ||

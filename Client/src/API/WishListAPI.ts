@@ -29,13 +29,31 @@ export const LoadWishListQuery = () => {
   };
 };
 
-export const AddWishlistQuery = async (id: string) => {
-  try {
-    const response = await axios.patch(`/api/wishlist/${id}`);
-    return response.data;
-  } catch (error: any) {
-    throw error.response.data;
-  }
+export const AddWishlistQuery = (setAlert: any) => {
+  const { data, isLoading } = useMutation(
+    async (id: string) => {
+      return await axios.patch(`/api/wishlist/${id}`);
+    },
+    {
+      onSuccess: (res: any) => {
+        setAlert({
+          msg: res.response.data.msg,
+          type: true,
+        });
+        queryClient.invalidateQueries(["wishList"]);
+      },
+      onError: (error: any) => {
+        setAlert({
+          msg: error.response.data.msg,
+          type: false,
+        });
+      },
+    }
+  );
+  return {
+    data,
+    isLoading,
+  };
 };
 
 export const RemoveWishlistQuery = (): any => {
