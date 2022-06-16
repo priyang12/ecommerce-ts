@@ -75,7 +75,7 @@ const DeleteCartProduct = asyncHandler(async (req, res) => {
       { new: true }
     );
     if (!cart) {
-      return res.status(400).json({ msg: "Cart is Empty" });
+      return res.status(501).json({ msg: "Server Error Cart is Empty" });
     }
 
     session.commitTransaction();

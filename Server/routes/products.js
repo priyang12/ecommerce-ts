@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {
+  GetAllDetailsProducts,
   GetAllProducts,
   GetProductByID,
   AddProduct,
@@ -22,6 +23,7 @@ const upload = multer({
 });
 //Product
 router.route("/").get(GetAllProducts);
+router.route("/all").get(Admin, GetAllDetailsProducts);
 
 router.route("/top").get(GetTopProducts);
 router.route("/add").post(Admin, upload.single("image"), AddProduct);

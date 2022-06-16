@@ -49,7 +49,9 @@ const AddToWishlist = asyncHandler(async (req, res) => {
   } else {
     List.products.push(req.params.id);
     await List.save();
-    res.status(200).json(List);
+    res.status(200).json({
+      msg: `${product.name} is Added to wishlist`,
+    });
   }
 });
 
@@ -67,7 +69,7 @@ const DeleteWishlistProduct = asyncHandler(async (req, res) => {
     );
 
     if (!List) {
-      return res.status(400).json({ msg: "Wishlist is empty" });
+      return res.status(400).json({ msg: "Server Error" });
     }
 
     session.commitTransaction();

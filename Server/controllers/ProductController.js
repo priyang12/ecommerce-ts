@@ -10,9 +10,9 @@ const imageKit = require("../config/imageKit");
 const myCache = require("../utils/cache");
 
 // @desc    Get All Products
-// @route   Get /api/products
+// @route   Get /api/products/all
 // @access  Public
-const GetAllProducts = asyncHandler(async (req, res) => {
+const GetAllDetailsProducts = asyncHandler(async (req, res) => {
   const pageSize = 9;
   const page = Number(req.query.page) || 1;
 
@@ -36,7 +36,44 @@ const GetAllProducts = asyncHandler(async (req, res) => {
 
     res.json({ products, page, pages: Math.ceil(count / pageSize) });
   } else {
-    console.log("from cache");
+    res.json({
+      products,
+      page,
+      pages: Math.ceil(count / pageSize),
+    });
+  }
+});
+
+// @desc    Get Previous Products
+// @route   Get /api/products
+// @access  Public
+const GetAllProducts = asyncHandler(async (req, res) => {
+  const pageSize = 9;
+  const page = Number(req.query.page) || 1;
+
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword,
+          $options: "i",
+        },
+      }
+    : {};
+  const count = await Products.countDocuments({ ...keyword });
+  let products = myCache.get("products" + keyword + page + count);
+
+  if (!products) {
+    products = await Products.find({ ...keyword })
+      .limit(pageSize)
+      .skip(pageSize * (page - 1))
+      .select(
+        "rating numReviews price countInStock _id name brand image category Date"
+      );
+
+    myCache.set("products" + keyword + page + count, products, 3600 / 2);
+
+    res.json({ products, page, pages: Math.ceil(count / pageSize) });
+  } else {
     res.json({
       products,
       page,
@@ -56,7 +93,7 @@ const GetTopProducts = asyncHandler(async (req, res) => {
       .limit(5)
       .select("name image description");
     myCache.set("TopProducts", TopProducts, 3600 / 2);
-    res.json(products);
+    res.json(TopProducts);
   } else {
     res.json(TopProducts);
   }
@@ -198,6 +235,7 @@ const AddReview = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
+  GetAllDetailsProducts,
   GetAllProducts,
   GetProductByID,
   UpdateProduct,
