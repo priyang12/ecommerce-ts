@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { useQuery } from "react-query";
-import { SearchProduct } from "../../API/ProductAPI";
+import { useSearchProduct } from "../../API/ProductAPI";
 import { Helmet } from "react-helmet";
 import { Pagination, PaginationButton } from "./Styled";
 import SearchBar from "../../Components/SearchBar";
@@ -37,7 +36,7 @@ const Home = () => {
     data: any;
     isLoading: boolean;
     error: any;
-  } = useQuery([`Search/${Url}`, { Url }], SearchProduct, {});
+  } = useSearchProduct(Url);
 
   if (isLoading) return <Spinner />;
 

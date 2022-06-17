@@ -30,27 +30,28 @@ export const LoadWishListQuery = () => {
 };
 
 export const AddWishlistQuery = (setAlert: any) => {
-  const { data, isLoading } = useMutation(
+  const { data, isLoading, mutate } = useMutation(
     async (id: string) => {
       return await axios.patch(`/api/wishlist/${id}`);
     },
     {
       onSuccess: (res: any) => {
         setAlert({
-          msg: res.response.data.msg,
+          msg: res?.data.msg || "Added to wishlist",
           type: true,
         });
         queryClient.invalidateQueries(["wishList"]);
       },
       onError: (error: any) => {
         setAlert({
-          msg: error.response.data.msg,
+          msg: error.data.msg,
           type: false,
         });
       },
     }
   );
   return {
+    mutate,
     data,
     isLoading,
   };
@@ -60,19 +61,27 @@ export const RemoveWishlistQuery = (): any => {
   const { mutate, isLoading, isError, isSuccess, data, error } = useMutation(
     "removeWishlist",
     async (id: string) => {
-      try {
-        const response = await axios.delete(`/api/wishlist/${id}`);
-        return response.data;
-      } catch (error: any) {
-        throw error.response.data;
-      }
+      const response = await axios.delete(`/api/wishlist/${id}`);
+      return response.data;
     },
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["wishList"]);
+      onMutate: async (id: string) => {
+        await queryClient.cancelQueries("wishList");
+        const snapshotOfPreviousWishlist = queryClient.getQueryData("wishList");
+
+        queryClient.setQueryData("wishList", (oldData: any) => {
+          return oldData.products.filter((item: any) => item._id !== id);
+        });
+
+        return {
+          snapshotOfPreviousWishlist,
+        };
       },
-      onError: () => {
-        queryClient.invalidateQueries(["wishList"]);
+      onError: (err, newTodo, context) => {
+        queryClient.setQueryData(
+          "wishList",
+          context?.snapshotOfPreviousWishlist
+        );
       },
     }
   );

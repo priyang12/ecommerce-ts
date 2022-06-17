@@ -122,5 +122,7 @@ it("Mock Delete Product Form Cart", async () => {
 
   userEvent.click(DeleteBtn[0]);
 
-  await waitFor(() => screen.findByText(/Deleted From the Cart/));
+  await waitFor(() => screen.findByText(/Deleting/));
+
+  // screen.debug();
 });

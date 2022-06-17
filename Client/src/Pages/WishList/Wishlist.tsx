@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { LoadWishListQuery, RemoveWishlistQuery } from "../../API/WishListAPI";
 import AlertDisplay from "../../Components/AlertDisplay";
 import Spinner from "../../Components/Spinner";
@@ -13,42 +12,35 @@ import {
 } from "./StyledWishList";
 
 function Wishlist() {
-  const [Products, setProducts] = useState([]);
-
   const { WishList, isFetched, isLoading } = LoadWishListQuery();
   const {
-    data: deleteResult,
-    isError,
+    isError: DeleteError,
     isLoading: Deleting,
     isSuccess,
     mutate: DeleteProduct,
     error,
   } = RemoveWishlistQuery();
-  useEffect(() => {
-    setProducts(WishList);
-  }, [WishList]);
 
   if (isLoading || !isFetched) {
     return <Spinner />;
   }
 
-  if (Products?.length === 0) {
+  if (WishList?.length === 0 && isFetched) {
     return <div>No Products in WishList</div>;
   }
-  if (isError) {
-    return (
-      <AlertDisplay msg={error.msg} type={false}>
-        <div>Server Problem Please try again later</div>
-      </AlertDisplay>
-    );
-  }
+
   return (
     <div>
+      {DeleteError && (
+        <AlertDisplay msg={error.msg} type={false}>
+          <div>Server Problem Please try again later</div>
+        </AlertDisplay>
+      )}
       <StyledHeading>Wishlist</StyledHeading>
-      {isSuccess && <AlertDisplay msg={deleteResult.msg} type={false} />}
+      {isSuccess && <AlertDisplay msg={"Product Deleted"} type={false} />}
       {Deleting && <AlertDisplay msg="Deleting...." type={true} />}
       <StyledProducts>
-        {Products.map((product: Product) => (
+        {WishList.map((product: Product) => (
           <StyledProduct key={product._id}>
             <StyledProductTitle>{product.name}</StyledProductTitle>
             <StyledProductDescription>

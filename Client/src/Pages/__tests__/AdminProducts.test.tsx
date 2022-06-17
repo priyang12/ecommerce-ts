@@ -26,7 +26,7 @@ it("Load Products", async () => {
   const data = {
     products: Products,
   };
-  mock.onGet("/api/products").reply(200, data);
+  mock.onGet("/api/products/all").reply(200, data);
 
   Setup();
   //wait for loading
@@ -49,7 +49,7 @@ it("Load Products", async () => {
 });
 
 it("No Products", async () => {
-  mock.onGet("/api/products").reply(200, []);
+  mock.onGet("/api/products/all").reply(200, []);
   Setup();
 
   //wait for loading to finish
@@ -63,7 +63,7 @@ it("No Products", async () => {
 });
 
 it("Delete Product", async () => {
-  mock.onGet("/api/products").reply(200, {
+  mock.onGet("/api/products/all").reply(200, {
     products: Products,
   });
 
@@ -103,7 +103,7 @@ it("Delete Product", async () => {
 });
 
 it("Redirect to Update Product Page on Success of New Product", async () => {
-  mock.onGet("/api/products").reply(200, Products);
+  mock.onGet("/api/products/all").reply(200, Products);
 
   mock.onPost("/api/products").reply(200, {
     msg: "Product added successfully",

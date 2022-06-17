@@ -3,12 +3,9 @@ import Spinner from "../../Components/Spinner";
 import TimeoutBtn from "../../Components/TimeoutBtn";
 import { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { useMutation, useQuery } from "react-query";
 import { DetailedProduct } from "../../interfaces";
 import { StyledProducts, StyledProductTitle } from "./StyledAdminProducts";
-import { LoadProducts } from "../../API/ProductAPI";
-import { DeleteProductCall } from "../../API/AdminAPI";
-import { queryClient } from "../../query";
+import { useDeleteProduct, useDetailProducts } from "../../API/AdminAPI";
 
 const AdminProducts = () => {
   const history = useHistory();
@@ -18,33 +15,9 @@ const AdminProducts = () => {
     type: false,
   });
 
-  const {
-    data: FetchData,
-    isLoading,
-    isError,
-    error,
-  }: {
-    data: any;
-    isLoading: boolean;
-    isError: boolean;
-    error: any;
-  } = useQuery(["products"], LoadProducts);
+  const { data: FetchData, isLoading, isError, error } = useDetailProducts();
 
-  const { mutateAsync, isLoading: Deleting } = useMutation(DeleteProductCall, {
-    onSuccess: (data) => {
-      setAlert({ msg: data.msg, type: true });
-      queryClient.invalidateQueries(["products"]);
-    },
-    onSettled: (data) => {
-      setTimeout(() => {
-        setAlert({ msg: "", type: false });
-      }, 3000);
-    },
-    onError: (err: any) => {
-      setAlert(err.data.msg);
-    },
-  });
-  const Products: DetailedProduct[] = FetchData?.products;
+  const { mutateAsync, isLoading: Deleting } = useDeleteProduct(setAlert);
 
   const DeleteProduct = (id: string) => {
     mutateAsync(id);
@@ -60,7 +33,10 @@ const AdminProducts = () => {
   };
 
   if (isLoading || Deleting) return <Spinner />;
-  if (isError) return <AlertDisplay msg={error.msg} type={false} />;
+  if (isError)
+    return <AlertDisplay msg={error?.message || "Server Error"} type={false} />;
+
+  if (!FetchData) return <Spinner />;
 
   if (Redirect)
     return <AlertDisplay msg={Alert.msg + " Redirecting"} type={true} />;
@@ -74,9 +50,9 @@ const AdminProducts = () => {
           <TimeoutBtn FormValue="Add New Product" Time={3000} className="btn" />
         </form>
       )}
-      {Products?.length > 0 ? (
+      {FetchData.products?.length > 0 ? (
         <ul>
-          {Products.map((product: DetailedProduct, index: number) => (
+          {FetchData.products.map((product: DetailedProduct, index: number) => (
             <StyledProducts className="Product-list" key={index}>
               <div className="right">
                 <img src={product.image} alt={product.name} />

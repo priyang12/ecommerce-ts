@@ -1,5 +1,5 @@
 import { FC, useEffect, useReducer } from "react";
-import { LoadTopProducts } from "../API/ProductAPI";
+import { useLoadTopProducts } from "../API/ProductAPI";
 import Slide from "./Slide";
 import {
   StyledSlide,
@@ -11,20 +11,24 @@ const initialState = {
 };
 
 const Carousel: FC = () => {
-  const { data: Products } = LoadTopProducts();
+  const { data: Products } = useLoadTopProducts();
+
+  const DisplayProducts = Products || [];
 
   const slidesReducer = (state: any, event: any) => {
     if (event.type === "NEXT") {
       return {
         ...state,
         slideIndex:
-          state.slideIndex === 0 ? Products.length - 1 : state.slideIndex - 1,
+          state.slideIndex === 0
+            ? DisplayProducts.length - 1
+            : state.slideIndex - 1,
       };
     }
     if (event.type === "PREV") {
       return {
         ...state,
-        slideIndex: (state.slideIndex + 1) % Products.length,
+        slideIndex: (state.slideIndex + 1) % DisplayProducts.length,
       };
     }
   };
@@ -37,8 +41,6 @@ const Carousel: FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  if (!Products) return null;
-
   return (
     <StyledSlidesContainer>
       <StyledSlide>
@@ -46,16 +48,23 @@ const Carousel: FC = () => {
           <i className="fas fa-chevron-left"></i>
         </button>
 
-        {[...Products, ...Products, ...Products].map((slide, i) => {
-          let offset = Products.length + (state.slideIndex - i);
-          // Products.map((slide: any, i: number) => {
-          //   let offset = state.slideIndex - i;
-          //   // New Effect
-          //   // if (offset < 0) offset += Products.length;
-          return (
-            <Slide slide={slide} offset={offset} key={i} dispatch={dispatch} />
-          );
-        })}
+        {[...DisplayProducts, ...DisplayProducts, ...DisplayProducts].map(
+          (slide, i) => {
+            let offset = DisplayProducts.length + (state.slideIndex - i);
+            // Products.map((slide: any, i: number) => {
+            //   let offset = state.slideIndex - i;
+            //   // New Effect
+            //   // if (offset < 0) offset += Products.length;
+            return (
+              <Slide
+                slide={slide}
+                offset={offset}
+                key={i}
+                dispatch={dispatch}
+              />
+            );
+          }
+        )}
         <button onClick={() => dispatch({ type: "NEXT" })}>
           <i className="fas fa-chevron-right"></i>
         </button>

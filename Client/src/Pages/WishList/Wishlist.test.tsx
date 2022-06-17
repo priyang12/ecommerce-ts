@@ -11,8 +11,12 @@ import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 
 import Wishlist from "./Wishlist";
+import { queryClient } from "../../query";
 
 const mock = new MockAdapter(axios);
+queryClient.setQueryData("wishList", {
+  products: Products,
+});
 
 const setup = () => {
   mock.onGet("/api/wishlist").reply(200, {
@@ -44,6 +48,7 @@ it("Delete Product from WishList", async () => {
   mock.onDelete(`/api/wishlist/${Products[0]._id}`).reply(200, {
     msg: "Product Deleted",
   });
+
   setup();
   await waitFor(() => screen.findByAltText(Products[0].name));
 
@@ -66,5 +71,7 @@ it("Delete Error", async () => {
   userEvent.click(deleteButton);
   await waitFor(() => screen.findByText(/Deleting/));
 
-  expect(screen.getByText(/Server Error/)).toBeInTheDocument();
+  expect(
+    screen.getByText(/Server Problem Please try again later/)
+  ).toBeInTheDocument();
 });

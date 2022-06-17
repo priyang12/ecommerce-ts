@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useForm } from "../../Utils/CustomHooks";
 import { StyledContainer } from "../../Components/StyledComponents/Container";
-import { useMutation, useQuery } from "react-query";
-import { SingleProductCall } from "../../API/ProductAPI";
-import { AddProductCall, EditProductCall } from "../../API/AdminAPI";
+import { useSingleProduct } from "../../API/ProductAPI";
+import { useAddProduct, useEditProduct } from "../../API/AdminAPI";
 import { queryClient } from "../../query";
 import {
   StyledEditProduct,
@@ -54,40 +53,16 @@ const AdminUpdateProduct = () => {
     data: any;
     error: any;
     isLoading: boolean;
-  } = useQuery([`product/${id}`, id], () => SingleProductCall(id), {
-    enabled: !Type,
-  });
-  const { mutate: AddMutation, isLoading: LoadAdding } = useMutation(
-    "addProduct" as any,
-    AddProductCall,
-    {
-      onSuccess: () => {
-        setAlert({ msg: "Product added successfully", type: true });
-        queryClient.invalidateQueries(["products"]);
-        setTimeout(() => {
-          setAlert({ msg: "", type: false });
-          // Redirect to the product page
-          window.location.href = "/AdminProducts";
-        }, 3000);
-      },
-      onError: (err: any) => {
-        setAlert(err.data.msg);
-      },
-    }
-  );
-  const { mutate: UpdateMutate, isLoading: Updating } = useMutation(
-    "updateProduct",
-    EditProductCall,
-    {
-      onSuccess: (data) => {
-        setAlert({ msg: data.msg, type: true });
-        queryClient.invalidateQueries(["products"]);
-      },
-      onError: (err: any) => {
-        setAlert(err.data.msg);
-      },
-    }
-  );
+  } = useSingleProduct(id, Type);
+
+  const {
+    mutate: AddMutation,
+    isLoading: LoadAdding,
+    isSuccess,
+  } = useAddProduct();
+
+  const { mutate: UpdateMutate, isLoading: Updating } =
+    useEditProduct(setAlert);
 
   useEffect(() => {
     if (Product) {
@@ -102,12 +77,19 @@ const AdminUpdateProduct = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [Product]);
 
-  const changeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setProductData({ ...ProductData, [name]: value });
-  };
+  useEffect(() => {
+    if (isSuccess) {
+      setAlert({ msg: "Product Created and Redirecting", type: true });
+      queryClient.invalidateQueries(["products"]);
+      setTimeout(() => {
+        setAlert({ msg: "", type: false });
+        // Redirect to the product page
+        window.location.href = "/AdminProducts";
+      }, 3000);
+    }
+  }, [isSuccess]);
 
-  const changeTextarea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const changeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setProductData({ ...ProductData, [name]: value });
   };
@@ -135,7 +117,7 @@ const AdminUpdateProduct = () => {
     return formData;
   }
   const AddProduct = async () => {
-    const formData = Formate();
+    const formData: any = Formate();
     AddMutation(formData);
   };
   const UpdateProduct = () => {
@@ -143,12 +125,14 @@ const AdminUpdateProduct = () => {
     UpdateMutate(formData);
   };
 
-  if (isLoading || Updating || LoadAdding) return <Spinner />;
+  if (isLoading || Updating) return <Spinner />;
+
   if (Err) return <div>Server Error</div>;
 
   return (
     <StyledContainer theme={{ marginTop: 2 }}>
       {Alert.msg && <AlertDisplay msg={Alert.msg} type={true} />}
+      {LoadAdding && <AlertDisplay msg={"Creating New Product"} type={true} />}
       <h1 className="display">
         {Type ? "Add New Product" : "Admin Update Product"}
       </h1>
@@ -178,9 +162,9 @@ const AdminUpdateProduct = () => {
               id="description"
               rows={5}
               value={ProductData.description}
-              onChange={changeTextarea}
+              onChange={changeProductData}
               required
-            ></textarea>
+            />
 
             <span className="bar"></span>
             <label htmlFor="description">
@@ -228,8 +212,9 @@ const AdminUpdateProduct = () => {
             </label>
           </div>
           <div className="form-control">
-            <div>Category</div>
+            <label htmlFor="category">Product Category</label>
             <select
+              id="category"
               name="category"
               onChange={changeSelect}
               defaultValue={ProductData.category}
@@ -276,7 +261,7 @@ const AdminUpdateProduct = () => {
           />
 
           <button className="btn" onClick={Type ? AddProduct : UpdateProduct}>
-            {Type ? "Add Product" : "Update Product"}
+            {Type ? "Create New Product" : "Update Product"}
           </button>
         </StyledImageContainer>
       </StyledEditProduct>

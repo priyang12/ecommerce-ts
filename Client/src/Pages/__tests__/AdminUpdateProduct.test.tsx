@@ -38,14 +38,12 @@ const Setup = (history: MemoryHistory<unknown>) =>
 
 describe("New Product", () => {
   // run before each test
-  beforeEach(() => {
-    const history = createMemoryHistory();
-    history.push("/AdminProducts/add");
-    // eslint-disable-next-line testing-library/no-render-in-setup
-    Setup(history);
-  });
 
   it("Render Add Product Page", async () => {
+    const history = createMemoryHistory();
+    history.push("/AdminProducts/add");
+    Setup(history);
+
     expect(screen.getByText(/Add New Product/)).toBeInTheDocument();
     expect(screen.getByText(/Product Name/i)).toBeInTheDocument();
     expect(screen.getByText(/brand/i)).toBeInTheDocument();
@@ -71,16 +69,27 @@ describe("New Product", () => {
 
   it("Add New Product", async () => {
     // check for title
+    const history = createMemoryHistory();
+    history.push("/AdminProducts/add");
     mock.onPost("/api/products/add").reply(200, {
       msg: "Added Successfully",
     });
+    Setup(history);
+
     expect(screen.getByText(/Add New Product/)).toBeInTheDocument();
     const ProductName = "Product Name";
     userEvent.type(screen.getByLabelText(/Product Name/), ProductName);
+    userEvent.type(screen.getByLabelText(/Product Description/), "Description");
+    userEvent.selectOptions(
+      screen.getByLabelText(/Product Category/),
+      "Electronics"
+    );
 
-    // Click Add New Product
-    userEvent.click(screen.getByText(/Add Product/i));
-    await waitFor(() => screen.findByText(/added successfully/));
+    userEvent.click(screen.getByText(/Create New Product/));
+
+    await waitFor(() => screen.findByText(/Creating New Product/));
+
+    expect(screen.getByText(/Product Created/)).toBeInTheDocument();
   });
 });
 

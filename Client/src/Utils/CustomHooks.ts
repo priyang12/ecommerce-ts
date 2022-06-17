@@ -4,7 +4,7 @@ export const useForm = (
   initialState: any
 ): [
   any,
-  (e: React.ChangeEvent<HTMLInputElement>) => void,
+  (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
   (NewState: any) => void,
   any,
   (ErrorState: any) => void
@@ -14,7 +14,9 @@ export const useForm = (
   const SetState = (NewState: unknown) => {
     setState(NewState);
   };
-  const ChangeState = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const ChangeState = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     if (value === "")
       setErrorsState({

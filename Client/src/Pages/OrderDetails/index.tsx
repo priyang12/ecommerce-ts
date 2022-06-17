@@ -1,26 +1,19 @@
-import { useContext, useState } from "react";
-import { useMutation, useQuery } from "react-query";
+import { useContext } from "react";
 import { Link, useParams } from "react-router-dom";
-import { LoadOrderDetails, MarkOrderAsDelivered } from "../../API/OrdersAPI";
-import Spinner from "../../Components/Spinner";
+import { useOrderDelivered, useOrderDetails } from "../../API/OrdersAPI";
 import { CartItem } from "../../Components/ProductList";
-import AlertDisplay from "../../Components/AlertDisplay";
 import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
 import { AuthContext } from "../../Context/Authentication/AuthContext";
-
+import AlertDisplay from "../../Components/AlertDisplay";
+import Spinner from "../../Components/Spinner";
 import {
   StyledListItems,
   StyledOrderDetails,
   StyledOrderList,
 } from "./StyledOrderDeatails";
-import { queryClient } from "../../query";
 
 const OrderDetails = () => {
   const { state } = useContext(AuthContext);
-  const [Alert, setAlert] = useState({
-    msg: "",
-    result: false,
-  });
   const { id } = useParams<{ id: string }>();
 
   const {
@@ -33,17 +26,13 @@ const OrderDetails = () => {
     isLoading: boolean;
     error: any;
     isError: boolean;
-  } = useQuery([`OrderDetails/${id}`], () => LoadOrderDetails(id));
+  } = useOrderDetails(id);
 
-  const { mutate: MarkAsDeliver, isLoading: Mutating } = useMutation(
-    MarkOrderAsDelivered,
-    {
-      onSuccess: (data) => {
-        setAlert({ msg: data.msg, result: true });
-        queryClient.invalidateQueries([`OrderDetails/${id}`]);
-      },
-    }
-  );
+  const {
+    mutate: MarkAsDeliver,
+    isLoading: Mutating,
+    isSuccess,
+  } = useOrderDelivered();
 
   const SubmitReview = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -56,7 +45,7 @@ const OrderDetails = () => {
   return (
     <>
       <StyledPaymentContainer theme={{ maxWidth: "70vw" }}>
-        {Alert.msg && <AlertDisplay msg={Alert.msg} type={Alert.result} />}
+        {isSuccess && <AlertDisplay msg="Order Delivered" type={true} />}
         <div className="left">
           <StyledOrderDetails>
             <h1>SHIPPING</h1>

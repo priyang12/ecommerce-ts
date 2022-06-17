@@ -18,9 +18,7 @@ it("Check For Url without Page", async () => {
   const route = `/search/name=${keyword}`;
   const History = createMemoryHistory({ initialEntries: [route] });
 
-  mock
-    .onGet(`/api/products/Search/?keyword=${keyword}`)
-    .reply(200, SerachResult);
+  mock.onGet(`/api/products/?keyword=${keyword}`).reply(200, SerachResult);
   render(
     <Wrapper>
       <Router history={History}>
@@ -62,9 +60,7 @@ it("Pagination not exist", async () => {
 
   const newResult = { ...SerachResult, pages: 2 };
 
-  mock
-    .onGet(`/api/products/Search/?keyword=Playstation&page=2`)
-    .reply(200, newResult);
+  mock.onGet(`/api/products/?keyword=Playstation&page=2`).reply(200, newResult);
 
   render(
     <Wrapper>
@@ -97,14 +93,10 @@ it("Show Pagination", async () => {
 
   let newResult = { ...SerachResult, pages: 3, page: 2 };
 
-  mock
-    .onGet(`/api/products/Search/?keyword=Playstation&page=2`)
-    .reply(200, newResult);
+  mock.onGet(`/api/products/?keyword=Playstation&page=2`).reply(200, newResult);
 
   newResult = { ...SerachResult, pages: 3, page: 3 };
-  mock
-    .onGet(`/api/products/Search/?keyword=Playstation&page=3`)
-    .reply(200, newResult);
+  mock.onGet(`/api/products/?keyword=Playstation&page=3`).reply(200, newResult);
   render(
     <Wrapper>
       <Router history={History}>

@@ -14,69 +14,30 @@ import {
   StyledDetails,
   StyledCheckout,
 } from "../../Components/StyledComponents/Productdetails";
-import axios from "axios";
-import { useQuery, useMutation } from "react-query";
-import { AddToCartQuery } from "../../API/CartAPI";
-import { queryClient } from "../../query";
-import Spinner from "../../Components/Spinner";
+import { AddOrUpdateCartQuery } from "../../API/CartAPI";
 import { Helmet } from "react-helmet";
-import { SingleProductCall } from "../../API/ProductAPI";
+import { useSingleProduct } from "../../API/ProductAPI";
 import { AddWishlistQuery } from "../../API/WishListAPI";
+import Spinner from "../../Components/Spinner";
 
 const SingleProduct = () => {
   const { id } = useParams<{ id: string }>();
-  const [Alert, setAlert] = useState("");
+  const [Alert, setAlert] = useState({
+    msg: "",
+    type: false,
+  });
+
   const {
     data: FetchData,
     error: ProductError,
     isLoading: loading,
-  }: { data: any; error: any; isLoading: boolean } = useQuery(
-    [`product/${id}`, id],
-    () => SingleProductCall(id)
-  );
+  } = useSingleProduct(id, false);
 
-  const { mutate: AddToWishlist, isLoading: WishListLoading } = useMutation(
-    AddWishlistQuery,
-    {
-      onSuccess: (data: any) => {
-        setAlert(data.msg);
-      },
-    }
-  );
+  const { mutate: AddToWishlist, isLoading: AddingWishList } =
+    AddWishlistQuery(setAlert);
 
-  const { isLoading: ChangingQty, mutate: PostQty } = useMutation(
-    AddToCartQuery,
-    {
-      onSuccess: (data: any) => {
-        queryClient.invalidateQueries(["Cart"]);
-        data.msg && setAlert(data.msg); // if data.msg is not null
-      },
-      onSettled: () => {
-        setTimeout(() => {
-          setAlert("");
-        }, 3000);
-      },
-      onError: (error: any) => {
-        setAlert(error.msg);
-      },
-    }
-  );
-
-  const {
-    data: WishListResult,
-    isLoading: AddingWishList,
-  }: {
-    data: any;
-    isLoading: boolean;
-  } = useMutation(AddWishlistQuery, {
-    onSuccess: (data: any) => {
-      data.msg && setAlert(data.msg); // if data.msg is not null
-      queryClient.invalidateQueries(["wishList"]);
-    },
-    onError: (error: any) => {
-      setAlert(error.msg);
-    },
-  });
+  const { isLoading: ChangingQty, mutate: PostQty } =
+    AddOrUpdateCartQuery(setAlert);
   const [Qty, setQty] = useState("1");
 
   const AddToCart = (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -104,7 +65,7 @@ const SingleProduct = () => {
       </Helmet>
       {FetchData && (
         <StyledContainer>
-          {Alert && <AlertDisplay msg={Alert} type={true} />}
+          {Alert.msg && <AlertDisplay msg={Alert.msg} type={Alert.type} />}
           <StyledProduct>
             <img src={Product.image} alt={Product.name} />
             <StyledDetails>
@@ -159,11 +120,8 @@ const SingleProduct = () => {
                 WISHLIST
               </button>
               {ChangingQty && <AlertDisplay msg="Adding to cart" type={true} />}
-              {WishListLoading && (
-                <AlertDisplay msg="Adding to wishlist" type={true} />
-              )}
               {AddingWishList && (
-                <AlertDisplay msg={WishListResult.msg} type={true} />
+                <AlertDisplay msg="Adding to wishlist" type={true} />
               )}
             </StyledCheckout>
           </StyledProduct>

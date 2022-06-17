@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Order } from "../interfaces";
-import { StyledContainer } from "./StyledComponents/Container";
+import { Order } from "../../interfaces";
+import { StyledContainer } from "../../Components/StyledComponents/Container";
 
 type Props = {
   Orders: [];
@@ -29,8 +29,8 @@ const OrderList = ({ Orders }: Props) => {
   if (!Orders) return null;
   if (Orders.length === 0) {
     return (
-      <ul className='list'>
-        <li className='list-item'>
+      <ul className="list">
+        <li className="list-item">
           <h1> No Order Are In Place</h1>
         </li>
       </ul>
@@ -51,9 +51,9 @@ const OrderList = ({ Orders }: Props) => {
           <p>Method: {order.paymentMethod}</p>
           <p>Total:${order.totalPrice}</p>
           {order.isDelivered ? (
-            <p className='success'>Delivered</p>
+            <p className="success">Delivered</p>
           ) : (
-            <p className='alert'>Not Delivered</p>
+            <p className="alert">Not Delivered</p>
           )}
 
           <Link to={`./OrderStatus/${order._id}`}>Details</Link>

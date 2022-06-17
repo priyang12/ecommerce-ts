@@ -1,9 +1,8 @@
 import React from "react";
-import { useQuery } from "react-query";
 import AlertDisplay from "../../Components/AlertDisplay";
 import ProductCard from "../../Components/ProductCard";
 import Spinner from "../../Components/Spinner";
-import { LoadProducts } from "../../API/ProductAPI";
+import { useProducts } from "../../API/ProductAPI";
 import {
   StyledDisplay,
   StyledProducts,
@@ -12,26 +11,18 @@ import type { Product } from "../../interfaces";
 import { Helmet } from "react-helmet";
 import { StyledHeroContainer, StyledHero } from "./StyledHero";
 import SearchBar from "../../Components/SearchBar";
-import { ErrorBoundary } from "react-error-boundary";
 import ErrorCatch from "../../Components/ErrorCatch";
 
 const Carousel = React.lazy(() => import("../../Components/Carousel"));
 
 const Home = ({ title = "Products Display" }) => {
-  const {
-    data: ProductsData,
-    error: Err,
-    isLoading,
-  }: { data: any; error: any; isLoading: boolean } = useQuery(
-    ["products"],
-    LoadProducts
-  );
+  const { data: ProductsData, error: Err, isLoading } = useProducts();
 
   if (isLoading) return <Spinner />;
 
-  if (Err) return <AlertDisplay msg={Err} type={false} />;
+  if (Err) return <AlertDisplay msg={Err.message} type={false} />;
 
-  if (!ProductsData.products) return null;
+  if (!ProductsData) return null;
 
   return (
     <>
@@ -61,10 +52,13 @@ const Home = ({ title = "Products Display" }) => {
       <StyledDisplay>
         <h1>{title}</h1>
         <StyledProducts>
-          {ProductsData?.products &&
+          {ProductsData?.products.length > 0 ? (
             ProductsData?.products.map((product: Product) => (
               <ProductCard product={product} key={product._id} />
-            ))}
+            ))
+          ) : (
+            <p>No Products Found</p>
+          )}
         </StyledProducts>
       </StyledDisplay>
     </>

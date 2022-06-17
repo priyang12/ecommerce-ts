@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useQuery } from "react-query";
 import { LoadOrders } from "../../API/OrdersAPI";
-import OrderList from "../../Components/OrderList";
+import OrderList from "./OrderList";
 import Spinner from "../../Components/Spinner";
 
 const OrderStatus = () => {

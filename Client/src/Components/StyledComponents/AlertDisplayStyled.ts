@@ -22,6 +22,7 @@ export const AlertContainer = styled.div`
   width: 100%;
   z-index: 100;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   transition: all 0.5s ease-in-out;

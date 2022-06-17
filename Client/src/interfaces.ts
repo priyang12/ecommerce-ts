@@ -1,3 +1,12 @@
+export interface User {
+  _id: string;
+  name: string;
+  email: string;
+  isAdmin: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export type Product = {
   _id: string;
   name: string;

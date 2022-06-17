@@ -26,24 +26,8 @@ const Cart = () => {
     error: Err,
     isFetching,
     isLoading: loading,
-  } = useQuery(["Cart"], LoadCartQuery);
+  } = useQuery("Cart", LoadCartQuery);
 
-  // const { mutate: DeleteCart, isLoading: Deleting } = useMutation(
-  //   RemoveFromCartQuery,
-  //   {
-  //     onSuccess: (data: any) => {
-  //       queryClient.invalidateQueries(["Cart"]);
-  //     },
-  //     onSettled: (data) => {
-  //       setTimeout(() => {
-  //         setAlert({ msg: "", type: false });
-  //       }, 3000);
-  //     },
-  //     onError: (err: any) => {
-  //       setAlert(err.data.msg);
-  //     },
-  //   }
-  // );
   const { mutate: DeleteCart, isLoading: Deleting } = DeleteCartApi(setAlert);
 
   const { mutate: UpdateCart } = AddOrUpdateCartQuery(setAlert);
@@ -81,7 +65,7 @@ const Cart = () => {
     }
   }, [CartItems]);
 
-  if (loading || isFetching || Deleting) return <Spinner />;
+  if (loading || isFetching) return <Spinner />;
 
   if (Err) return <div>Server Error</div>;
 
@@ -95,6 +79,7 @@ const Cart = () => {
   return (
     <Fragment>
       {Alert.msg && <AlertDisplay msg={Alert.msg} type={Alert.type} />}
+      {Deleting && <div>Deleting</div>}
       <StyledContainer>
         <h1>SHOPPING CART</h1>
         {CartItems?.map((item: CartItem) => (

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useMutation } from "react-query";
+import { CartItem } from "../Components/ProductList";
 import { queryClient } from "../query";
 
 export const LoadCartQuery = async () => {
@@ -11,29 +12,15 @@ export const LoadCartQuery = async () => {
   }
 };
 
-export const AddToCartQuery = async (data: { id: string; qty: number }) => {
-  try {
-    const response = await axios.post("/api/cart", data);
-    return response.data;
-  } catch (error: any) {
-    throw error.response.data;
-  }
-};
-
 export const AddOrUpdateCartQuery = (setAlert: any) => {
-  const { mutate, isLoading, isSuccess } = useMutation(
+  const { mutate, isLoading, isSuccess, error } = useMutation(
     async (data: { id: string; qty: number }) => {
       return await axios.post("/api/cart", data);
     },
     {
       onSuccess: (res: any) => {
         setAlert({ msg: res.data.msg, type: true });
-        queryClient.invalidateQueries(["Cart"]);
-      },
-      onSettled: () => {
-        setTimeout(() => {
-          setAlert({ msg: "", type: false });
-        }, 3000);
+        queryClient.invalidateQueries("Cart");
       },
       onError: (err: any) => {
         setAlert({
@@ -43,6 +30,7 @@ export const AddOrUpdateCartQuery = (setAlert: any) => {
       },
     }
   );
+
   return {
     mutate,
     isLoading,
@@ -55,20 +43,33 @@ export const DeleteCartApi = (setAlert: any) => {
     (id: string) => {
       return axios.delete(`/api/cart/${id}`);
     },
+
     {
+      onMutate: async (id: string) => {
+        await queryClient.cancelQueries("Cart");
+
+        const snapshotOfPreviousCart = queryClient.getQueryData("Cart");
+
+        queryClient.setQueryData("Cart", (oldData: any) => {
+          const data = oldData.products.filter(
+            (item: CartItem) => item.product._id !== id
+          );
+          return { ...oldData, products: data };
+        });
+
+        return {
+          snapshotOfPreviousCart,
+        };
+      },
       onSuccess: (res: any) => {
         setAlert({
           msg: res.data.msg,
           type: true,
         });
-        queryClient.invalidateQueries(["Cart"]);
       },
-      onSettled: () => {
-        setTimeout(() => {
-          setAlert({ msg: "", type: false });
-        }, 3000);
-      },
-      onError: (err: any) => {
+
+      onError: (err: any, id, context) => {
+        queryClient.setQueryData("Cart", context?.snapshotOfPreviousCart);
         setAlert({
           msg: err.response.data.msg,
           type: false,
