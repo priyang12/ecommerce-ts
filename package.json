@@ -7,7 +7,6 @@
     "start": "node Server/server.js",
     "server": "nodemon Server/server.js",
     "client": "npm start --prefix Client",
-    "install": "cd Client && npm install",
     "build": "npm run build --prefix Client",
     "dev": "concurrently \"yarn run server\" \"yarn run client\"",
     "test": "cd Client && CI=true yarn run test --coverage && cd ..",

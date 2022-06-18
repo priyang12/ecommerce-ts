@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useRouteMatch, useLocation } from "react-router-dom";
 import LogoImage from "../Assets/Logo.png";
 import {
   ContactInfo,
@@ -8,6 +8,11 @@ import {
 } from "./StyledComponents/StyledFooter";
 
 const Footer = () => {
+  const location = useLocation();
+  const isAuth = location.pathname === "/Auth";
+  const isPlaceOrder = location.pathname === "/PlaceOrder";
+  const isPaypal = location.pathname === "/PayPal";
+  if (isAuth || isPlaceOrder || isPaypal) return null;
   return (
     <StyledFooter>
       <FooterContainer>

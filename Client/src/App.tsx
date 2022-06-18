@@ -32,6 +32,7 @@ import ResetPassword from "./Pages/ResetPassword";
 // import NotFound from "./Pages/NotFound";
 import Wishlist from "./Pages/WishList";
 import AlertDisplay from "./Components/AlertDisplay";
+import NotFound from "./Pages/NotFound";
 
 function App() {
   const { state, dispatch } = useContext(AuthContext);
@@ -54,43 +55,36 @@ function App() {
   //Set user token in Axios
   if (token) setAuthToken(token);
 
-  const DefaultContainer = () => (
-    <Fragment>
-      <Navbar />
-      <Route exact path="/" component={Home} />
-      <Route exact path="/Home" component={Home} />
-      <Route exact path="/search/name=:keyword" component={Search} />
-      <Route
-        exact
-        path="/search/name=:keyword/:pageNumber"
-        component={Search}
-      />
-      <Route exact path="/product/:id" component={SingleProduct} />
-      <PrivateRoute exact path="/cart" component={Cart} />
-      <PrivateRoute exact path="/Wishlist" component={Wishlist} />
-      <PrivateRoute exact path="/PlaceOrder" component={PlaceOrder} />
-      <PrivateRoute exact path="/OrderStatus" component={OrderStatus} />
-      <PrivateRoute exact path="/OrderStatus/:id" component={OrderDetails} />
-      <PrivateRoute exact path="/Profile" component={Profile} />
-      <AdminRoute exact path="/AdminDashboard" component={AdminDashboard} />
-      <AdminRoute exact path="/AdminOrders" component={OrderStatus} />
-      <AdminRoute exact path="/AdminProducts" component={AdminProducts} />
-      <AdminRoute
-        exact
-        path="/AdminProducts/:id"
-        component={AdminUpdateProduct}
-      />
-      <AdminRoute exact path="/AdminUsers" component={AdminUsers} />
-      {/* <Route component={NotFound} /> */}
-      <Footer />
-    </Fragment>
-  );
-
   return (
     <Router>
       <ScrollToTop />
       {!window.navigator.onLine && <AlertDisplay msg="Offline" type={false} />}
+      <Navbar />
       <Switch>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/Home" component={Home} />
+        <Route exact path="/search/name=:keyword" component={Search} />
+        <Route
+          exact
+          path="/search/name=:keyword/:pageNumber"
+          component={Search}
+        />
+        <Route exact path="/product/:id" component={SingleProduct} />
+        <PrivateRoute exact path="/cart" component={Cart} />
+        <PrivateRoute exact path="/Wishlist" component={Wishlist} />
+        <PrivateRoute exact path="/PlaceOrder" component={PlaceOrder} />
+        <PrivateRoute exact path="/OrderStatus" component={OrderStatus} />
+        <PrivateRoute exact path="/OrderStatus/:id" component={OrderDetails} />
+        <PrivateRoute exact path="/Profile" component={Profile} />
+        <AdminRoute exact path="/AdminDashboard" component={AdminDashboard} />
+        <AdminRoute exact path="/AdminOrders" component={OrderStatus} />
+        <AdminRoute exact path="/AdminProducts" component={AdminProducts} />
+        <AdminRoute
+          exact
+          path="/AdminProducts/:id"
+          component={AdminUpdateProduct}
+        />
+        <AdminRoute exact path="/AdminUsers" component={AdminUsers} />
         <Route exact path="/Auth" component={Auth} />
         <PrivateRoute exact path="/address" component={AddressPage} />
         <PrivateRoute exact path="/payment" component={PaymentMethod} />
@@ -98,8 +92,9 @@ function App() {
         <Route exact path="/ForgotPassword" component={ForgotPassword} />
         <Route exact path="/ResetPassword/:id" component={ResetPassword} />
         <Route exact path="/StillWorking" component={StillWorking} />
-        <Route component={DefaultContainer} />
+        <Route component={NotFound} />
       </Switch>
+      <Footer />
     </Router>
   );
 }
