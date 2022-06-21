@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "./Context/Authentication/AuthContext";
 import { loadUser } from "./Context/Authentication/AuthActions";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
