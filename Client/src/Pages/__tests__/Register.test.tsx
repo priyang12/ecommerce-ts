@@ -6,6 +6,7 @@ import "@testing-library/jest-dom";
 //Components: Register,Context
 import Register from "../Register";
 import { AuthContext } from "../../Context/Authentication/AuthContext";
+import { Wrapper } from "../../TestSetup";
 
 let name: HTMLElement;
 let email: HTMLElement;
@@ -14,22 +15,24 @@ let password2: HTMLElement;
 
 const setup = () => {
   render(
-    <AuthContext.Provider
-      value={{
-        state: {
-          loading: false,
-          err: null,
-          token: null,
-          user: null,
-          alert: null,
-        },
-        dispatch: () => {},
-      }}
-    >
-      <Router>
-        <Register />
-      </Router>
-    </AuthContext.Provider>
+    <Wrapper>
+      <AuthContext.Provider
+        value={{
+          state: {
+            loading: false,
+            err: null,
+            token: null,
+            user: null,
+            alert: null,
+          },
+          dispatch: () => {},
+        }}
+      >
+        <Router>
+          <Register />
+        </Router>
+      </AuthContext.Provider>
+    </Wrapper>
   );
 
   name = screen.getByLabelText(/name/i);

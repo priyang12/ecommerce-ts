@@ -9,7 +9,6 @@ import "@testing-library/jest-dom";
 import Search from "../Search";
 import { SerachResult } from "../Testdata/Data";
 import { Wrapper } from "../../TestSetup";
-import userEvent from "@testing-library/user-event";
 
 const mock = new MockAdapter(axios);
 

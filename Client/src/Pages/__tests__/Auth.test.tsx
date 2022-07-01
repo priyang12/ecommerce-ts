@@ -15,17 +15,20 @@ import { Router } from "react-router-dom";
 import Auth from "../Auth";
 import { AuthProvider } from "../../Context/Authentication/AuthContext";
 import "@testing-library/jest-dom";
+import { Wrapper } from "../../TestSetup";
 
 const mock = new MockAdapter(axios);
 const History = createMemoryHistory();
 
 const setup = () =>
   render(
-    <AuthProvider>
-      <Router history={createMemoryHistory()}>
-        <Auth />
-      </Router>
-    </AuthProvider>
+    <Wrapper>
+      <AuthProvider>
+        <Router history={createMemoryHistory()}>
+          <Auth />
+        </Router>
+      </AuthProvider>
+    </Wrapper>
   );
 
 afterEach(() => {

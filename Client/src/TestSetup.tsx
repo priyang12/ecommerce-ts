@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+import { HelmetProvider } from "react-helmet-async";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { setLogger } from "react-query";
 
@@ -18,5 +19,9 @@ export const client = new QueryClient({
 });
 
 export const Wrapper = ({ children }: any) => {
-  return <QueryClientProvider client={client}>{children}</QueryClientProvider>;
+  return (
+    <QueryClientProvider client={client}>
+      <HelmetProvider>{children}</HelmetProvider>
+    </QueryClientProvider>
+  );
 };

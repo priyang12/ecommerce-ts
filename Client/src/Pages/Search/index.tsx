@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useSearchProduct } from "../../API/ProductAPI";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { Pagination, PaginationButton } from "./Styled";
 import SearchBar from "../../Components/SearchBar";
 import {

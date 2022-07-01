@@ -1,18 +1,17 @@
 import React from "react";
+import { Helmet } from "react-helmet-async";
+import { useProducts } from "../../API/ProductAPI";
 import AlertDisplay from "../../Components/AlertDisplay";
 import ProductCard from "../../Components/ProductCard";
 import Spinner from "../../Components/Spinner";
-import { useProducts } from "../../API/ProductAPI";
+import SearchBar from "../../Components/SearchBar";
+import ErrorCatch from "../../Components/ErrorCatch";
+import { StyledHeroContainer, StyledHero } from "./StyledHero";
 import {
   StyledDisplay,
   StyledProducts,
 } from "../../Components/StyledComponents/Products";
 import type { Product } from "../../interfaces";
-import { Helmet } from "react-helmet";
-import { StyledHeroContainer, StyledHero } from "./StyledHero";
-import SearchBar from "../../Components/SearchBar";
-import ErrorCatch from "../../Components/ErrorCatch";
-
 const Carousel = React.lazy(() => import("../../Components/Carousel"));
 
 const Home = ({ title = "Products Display" }) => {
