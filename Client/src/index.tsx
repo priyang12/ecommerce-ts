@@ -10,18 +10,37 @@ import { queryClient } from "./query";
 import "./Style/Globle.css";
 import { serviceWorkerRegister } from "./serviceWokerRegister";
 
-const disableReactDevTools = (): void => {
-  const noop = (): void => undefined;
-  const DEV_TOOLS = (window as any).__REACT_DEVTOOLS_GLOBAL_HOOK__;
+declare global {
+  interface Window {
+    __REACT_DEVTOOLS_GLOBAL_HOOK__: any;
+  }
+}
 
-  if (typeof DEV_TOOLS === "object") {
-    for (const [key, value] of Object.entries(DEV_TOOLS)) {
-      DEV_TOOLS[key] = typeof value === "function" ? noop : null;
+// Disable React devtools for production
+const disableReactDevTools = () => {
+  if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ !== "object") {
+    return;
+  }
+
+  for (const prop in window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
+    if (prop === "renderers") {
+      // this line will remove that one console error
+
+      window.__REACT_DEVTOOLS_GLOBAL_HOOK__[prop] = new Map();
+    } else {
+      // Replace all of its properties with a no-op function or a null value
+      // depending on their types
+
+      window.__REACT_DEVTOOLS_GLOBAL_HOOK__[prop] =
+        typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__[prop] === "function"
+          ? () => {}
+          : null;
     }
   }
 };
 
 if (process.env.NODE_ENV === "production") {
+  console.log("In PRoduction");
   disableReactDevTools();
 }
 
