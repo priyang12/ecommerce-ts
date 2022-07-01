@@ -3,12 +3,15 @@ import userEvent from "@testing-library/user-event";
 import { BrowserRouter as Router } from "react-router-dom";
 import Login from "../Login";
 import "@testing-library/jest-dom";
+import { Wrapper } from "../../TestSetup";
 
 const setup = () =>
   render(
-    <Router>
-      <Login />
-    </Router>
+    <Wrapper>
+      <Router>
+        <Login />
+      </Router>
+    </Wrapper>
   );
 
 it("Check For onchange Input Empty Validate", () => {

@@ -15,7 +15,7 @@ import {
   StyledCheckout,
 } from "../../Components/StyledComponents/Productdetails";
 import { AddOrUpdateCartQuery } from "../../API/CartAPI";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { useSingleProduct } from "../../API/ProductAPI";
 import { AddWishlistQuery } from "../../API/WishListAPI";
 import Spinner from "../../Components/Spinner";

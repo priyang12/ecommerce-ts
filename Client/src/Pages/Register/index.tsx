@@ -12,7 +12,7 @@ import {
 
 import { StyledContainer } from "../../Components/StyledComponents/Container";
 import Spinner from "../../Components/Spinner";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 const init = {
   name: "",

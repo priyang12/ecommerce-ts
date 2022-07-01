@@ -5,7 +5,7 @@ import { LoginUser } from "../../Context/Authentication/AuthActions";
 import { AuthContext } from "../../Context/Authentication/AuthContext";
 import { ValidateEmail, ValidatePassword } from "../../Utils/Validation";
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 const Login = () => {
   const { dispatch } = useContext(AuthContext);
