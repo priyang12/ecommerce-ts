@@ -5,9 +5,13 @@ const asyncHandler = require("express-async-handler");
 const Products = require("../modals/Product");
 const Wishlist = require("../modals/Wishlist");
 
-// @desc    Get All Wishlist Products
-// @route   Get /api/wishlist
-// @access  Private
+/**
+ * @desc    Get All Wishlist Products
+ * @route   Get /api/wishlist
+ * @access  Private
+ * @param   {object} req.user.id
+ */
+
 const GetWishlist = asyncHandler(async (req, res) => {
   const list = await Wishlist.findOne({ user: req.user.id })
     .select("-__v -updatedAt -createdAt")
@@ -24,9 +28,13 @@ const GetWishlist = asyncHandler(async (req, res) => {
   res.status(200).json(list);
 });
 
-// @desc    Add Product to Wishlist
-// @route   PUT /api/Wishlist
-// @access  Private
+/**
+ * @desc    Add Product to Wishlist
+ * @route   PUT /api/Wishlist
+ * @access  Private
+ * @param   {object} req.user.id
+ */
+
 const AddToWishlist = asyncHandler(async (req, res) => {
   const List = await Wishlist.findOne({ user: req.user.id }).select(
     "-__v -updatedAt -createdAt"
@@ -55,9 +63,13 @@ const AddToWishlist = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    DELETE  Product from Wishlist
-// @route   Delete /api/cart/:id
-// @access  Private
+/**
+ * @desc    DELETE  Product from Wishlist
+ * @route   Delete /api/cart/:id
+ * @access  Private
+ * @param   {object} req.user.id
+ */
+
 const DeleteWishlistProduct = asyncHandler(async (req, res) => {
   const session = await Wishlist.startSession();
   try {

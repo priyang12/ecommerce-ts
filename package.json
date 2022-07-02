@@ -8,6 +8,7 @@
     "server": "nodemon Server/server.js",
     "client": "npm start --prefix Client",
     "build": "npm install --prefix Client && npm run build --prefix Client",
+    "build:client": "npm run build --prefix Client",
     "dev": "concurrently \"yarn run server\" \"yarn run client\"",
     "test": "cd Client && CI=true yarn run test --coverage && cd ..",
     "data:import": "node Server/seeder",
@@ -28,11 +29,9 @@
     "agenda": "^4.3.0",
     "bcryptjs": "^2.4.3",
     "concurrently": "^6.2.0",
-    "dotenv": "^9.0.2",
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
     "express-rate-limit": "^6.4.0",
-    "googleapis": "^78.0.0",
     "imagekit": "^3.2.5",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.8",
@@ -44,6 +43,7 @@
   "devDependencies": {
     "@faker-js/faker": "^6.3.1",
     "cypress": "^9.6.0",
+    "dotenv": "^16.0.1",
     "husky": "^7.0.0",
     "nodemon": "^2.0.15"
   }

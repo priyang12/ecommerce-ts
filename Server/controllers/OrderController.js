@@ -11,9 +11,15 @@ dotenv.config();
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-// @desc    Create new order
-// @route   POST /api/orders
-// @access  Private
+/**
+ * @desc    Create new order
+ * @route   POST /api/orders
+ * @access  Private
+ * @param   {object} req.query
+ * @param   {object} res
+ * @returns {object} { msg ,order}
+ */
+
 const addOrderItems = asyncHandler(async (req, res) => {
   const ag = await agenda;
   ag.start();
@@ -43,7 +49,8 @@ const addOrderItems = asyncHandler(async (req, res) => {
         city: req.body.shippingAddress.city,
         postalcode: req.body.shippingAddress.postalCode,
       };
-      const order = new Order({
+
+      const order = await Order.create({
         user: user,
         orderItems,
         shippingAddress,
@@ -56,7 +63,11 @@ const addOrderItems = asyncHandler(async (req, res) => {
         paidAt: Date.now(),
       });
 
-      await User.findOneAndUpdate({ _id: user }, { cart: [] }, { new: true });
+      await User.findOneAndUpdate(
+        { _id: user },
+        { cart: [] },
+        { new: true }
+      ).lean();
 
       orderItems.forEach((item) => {
         updateProduct(item);
@@ -93,14 +104,19 @@ const addOrderItems = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Get order by ID
-// @route   GET /api/order
-// @access  Private
+/**
+ * @desc    Get order by ID
+ * @route   GET /api/order
+ * @access  Private
+ * @param   {object} req.params.id
+ * @param   {object} res
+ */
+
 const getOrder = asyncHandler(async (req, res) => {
-  const order = await Order.findById(req.params.id).populate(
-    "user",
-    "name email"
-  );
+  const order = await Order.findById(req.params.id)
+    .populate("user", "name email")
+    .lean();
+
   if (order) {
     res.json(order);
   } else {
@@ -109,13 +125,18 @@ const getOrder = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Get order by ID
-// @route   GET /api/orders
-// @access  Private
+/**
+ * @desc    Get order by ID
+ * @route   GET /api/orders
+ * @access  Private
+ * @param   {object} req.user.id
+ * @param   {object} res
+ */
+
 const getUserOrders = asyncHandler(async (req, res) => {
-  const order = await Order.find({ user: req.user.id }).select(
-    "paymentMethod totalPrice isDelivered"
-  );
+  const order = await Order.find({ user: req.user.id })
+    .select("paymentMethod totalPrice isDelivered")
+    .lean();
 
   if (order) {
     res.json(order);
@@ -125,13 +146,18 @@ const getUserOrders = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Get All orders
-// @route   GET /api/orders
-// @access  Admin
+/**
+ * @desc    Get All orders
+ * @route   GET /api/orders
+ * @access  Admin
+ * @param   {object} res
+ */
+
 const getAllOrders = asyncHandler(async (req, res) => {
   const order = await Order.find({})
     .select("paymentMethod totalPrice isDelivered ")
-    .populate("user", ["name", "email"]);
+    .populate("user", ["name", "email"])
+    .lean();
   if (order) {
     res.json(order);
   } else {
@@ -140,9 +166,14 @@ const getAllOrders = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Update Order to delivered
-// @route   Put /api/orders
-// @access  Admin
+/**
+ * @desc    Update Order to delivered
+ * @route   Put /api/orders
+ * @access  Admin
+ * @param   {object} req.params.id
+ * @param   {object} res
+ */
+
 const UpdateOrder = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id);
   try {
@@ -158,11 +189,16 @@ const UpdateOrder = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Update Order to delivered
-// @route   Put /api/orders
-// @access  Admin
+/**
+ * @desc    Update Order to delivered
+ * @route   Put /api/orders
+ * @access  Admin
+ * @param   {object} req.params.id
+ * @param   {object} res
+ */
+
 const DeleteOrder = asyncHandler(async (req, res) => {
-  const order = await Order.findByIdAndDelete(req.params.id);
+  const order = await Order.findByIdAndDelete(req.params.id).lean();
   if (order) {
     res.json(order);
   } else {

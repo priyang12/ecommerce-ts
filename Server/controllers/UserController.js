@@ -3,6 +3,7 @@ const generateToken = require("../middleware/generateToken");
 
 const dotenv = require("dotenv");
 const User = require("../modals/User");
+const Cart = require("../modals/Cart");
 
 const sgMail = require("@sendgrid/mail");
 const agenda = require("../config/agenda");
@@ -15,13 +16,18 @@ const test = asyncHandler(async (req, res) => {
   res.json(req.headers.host);
 });
 
-// @desc    Auth user & get token
-// @route   POST /api/users/login
-// @access  Public
+/**
+ * @desc    Auth user & get token
+ * @route   POST /api/users/login
+ * @access  Public
+ * @body    {email: "", password: ""}
+ */
+
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
+
   if (user && (await user.matchPassword(password))) {
     res.json({ token: generateToken(user._id) });
   } else {
@@ -30,9 +36,13 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Register a new user
-// @route   POST /api/users
-// @access  Public
+/**
+ * @desc    Register a new user
+ * @route   POST /api/users
+ * @access  Public
+ * @body   {name: string, email: string, password: string}
+ */
+
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -49,6 +59,8 @@ const registerUser = asyncHandler(async (req, res) => {
     password,
   });
 
+  await Cart.create({ user: user._id });
+
   if (user) {
     res.status(201).json({ token: generateToken(user._id) });
   } else {
@@ -57,11 +69,14 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Get user profile
-// @route   GET /api/users/profile
-// @access  Private
+/**
+ * @desc    Get user profile
+ * @route   GET /api/users/profile
+ * @access  Private
+ */
+
 const getUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user.id);
+  const user = await User.findById(req.user.id).lean();
 
   if (user) {
     res.json({
@@ -76,9 +91,12 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-// @router PUT api/users/resetpassword
-// @desc  User resetpassword
-// @access Private
+/**
+ * @router PUT api/users/resetpassword
+ * @desc  User resetpassword
+ * @access Private
+ * @body {password: string, password2: string}
+ */
 const resetpassword = asyncHandler(async (req, res) => {
   const { password, password2 } = req.body;
 
@@ -100,9 +118,13 @@ const resetpassword = asyncHandler(async (req, res) => {
   res.json({ message: "Password reset successfully" });
 });
 
-// @desc    Update user profile
-// @route   PUT /api/users/profile
-// @access  Private
+/**
+ * @desc    Update user profile
+ * @route   PUT /api/users/profile
+ * @access  Private
+ * @body    {name: string, email: string, password: string}
+ */
+
 const UpdateProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
 
@@ -124,14 +146,15 @@ const UpdateProfile = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Delete user
-// @route   DELETE /api/users/:id
-// @access  Private/Admin
-const deleteAccount = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user.id);
+/**
+ * @desc    Delete user
+ * @route   DELETE /api/users/:id
+ * @access  Private/Admin
+ */
 
-  if (user) {
-    await user.remove();
+const deleteAccount = asyncHandler(async (req, res) => {
+  const user = await User.deleteOne({ _id: req.params.id });
+  if (user.ok === 1) {
     res.json({ message: "User removed" });
   } else {
     res.status(404);
@@ -139,17 +162,24 @@ const deleteAccount = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Get all users
-// @route   GET /api/users
-// @access  Private/Admin
+/**
+ * @desc    Get all users
+ * @route   GET /api/users
+ * @access  Private/Admin
+ */
+
 const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({}).select("-password -cart -__v");
+  const users = await User.find({}).select("-password -cart -__v").lean();
   res.json(users);
 });
 
-// @desc    Delete user
-// @route   DELETE /api/users/:id
-// @access  Private/Admin
+/**
+ * @desc    Delete user
+ * @route   DELETE /api/users/:id
+ * @access  Private/Admin
+ * @params  {id: string}
+ */
+
 const deleteUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
   if (user) {
@@ -161,11 +191,15 @@ const deleteUser = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Get user by ID
-// @route   GET /api/users/:id
-// @access  Private/Admin
+/**
+ * @desc    Get user by ID
+ * @route   GET /api/users/:id
+ * @access  Private/Admin
+ * @params  {id: string}
+ */
+
 const getUserById = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id).select("-password");
+  const user = await User.findById(req.params.id).select("-password").lean();
 
   if (user) {
     res.json(user);
@@ -175,9 +209,13 @@ const getUserById = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Update user
-// @route   PUT /api/users/:id
-// @access  Private/Admin
+/**
+ * @desc    Update user
+ * @route   PUT /api/users/:id
+ * @access  Private/Admin
+ * @params  {id: string}
+ */
+
 const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
 
@@ -200,9 +238,16 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 });
 
+/**
+ * @desc    Send email for reset password
+ * @route   PUT /api/users/:id
+ * @access  Private/User
+ * @body    {email: string}
+ */
+
 const recoverMail = asyncHandler(async (req, res) => {
   const { email } = req.body;
-  let user = await User.findOne({ email });
+  let user = await User.findOne({ email }).lean();
   if (!user) {
     res.status(400);
     throw Error("user does not exists");

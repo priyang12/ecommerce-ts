@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-const users = require('./data/user');
-const products = require('./data/products');
-const User = require('./modals/User');
-const Product = require('./modals/Product');
-const Order = require('./modals/order');
-const connectDB = require('./config/db');
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const users = require("./data/user");
+const products = require("./data/products");
+const User = require("./modals/User");
+const Product = require("./modals/Product");
+const Order = require("./modals/order");
+const connectDB = require("./config/db");
 
 dotenv.config();
 
@@ -25,7 +25,13 @@ const importdata = async () => {
       return { ...item, user: adminUser };
     });
     await Product.insertMany(sampleProducts);
-    console.log('DATA IMPORTED');
+    await Products.createIndexes({
+      name: "text",
+      description: "text",
+      brand: "text",
+      category: "text",
+    });
+    console.log("DATA IMPORTED");
     process.exit();
   } catch (error) {
     console.log(error);
@@ -38,7 +44,7 @@ const destroyData = async () => {
     await Product.deleteMany();
     await Order.deleteMany();
 
-    console.log('DATA DESTROYED');
+    console.log("DATA DESTROYED");
     process.exit();
   } catch (error) {
     console.log(error);
@@ -46,7 +52,7 @@ const destroyData = async () => {
   }
 };
 
-if (process.argv[2] === '-d') {
+if (process.argv[2] === "-d") {
   destroyData();
 } else {
   importdata();
