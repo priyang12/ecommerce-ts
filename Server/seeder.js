@@ -1,10 +1,7 @@
-const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const users = require("./data/user");
 const products = require("./data/products");
-const User = require("./modals/User");
-const Product = require("./modals/Product");
-const Order = require("./modals/order");
+const { CreateModels, models } = require("./utils/Models");
 const connectDB = require("./config/db");
 
 dotenv.config();
@@ -13,9 +10,13 @@ connectDB();
 
 const importdata = async () => {
   try {
+    const { User, Product, Order } = models;
+
     await User.deleteMany();
     await Product.deleteMany();
     await Order.deleteMany();
+
+    CreateModels();
 
     const createdUser = await User.insertMany(users);
 
@@ -24,8 +25,9 @@ const importdata = async () => {
     const sampleProducts = products.map((item) => {
       return { ...item, user: adminUser };
     });
+
     await Product.insertMany(sampleProducts);
-    await Products.createIndexes({
+    await Product.createIndexes({
       name: "text",
       description: "text",
       brand: "text",
@@ -40,6 +42,8 @@ const importdata = async () => {
 };
 const destroyData = async () => {
   try {
+    const { User, Product, Order } = models;
+
     await User.deleteMany();
     await Product.deleteMany();
     await Order.deleteMany();

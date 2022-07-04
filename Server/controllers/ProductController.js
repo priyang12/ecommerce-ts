@@ -9,6 +9,8 @@ const Orders = require("../modals/order");
 const imageKit = require("../config/imageKit");
 const myCache = require("../utils/cache");
 
+const { runInTransaction } = require("../utils/Transactions");
+
 /**
  * @desc    Get All Products
  * @route   Get /api/products/all
@@ -142,26 +144,37 @@ const GetProductByID = asyncHandler(async (req, res) => {
 const AddProduct = asyncHandler(async (req, res) => {
   const EndPoint = process.env.END_POINT;
 
-  const product = await Products.create({
-    name: req.body.name,
-    description: req.body.description,
-    price: req.body.price,
-    brand: req.body.brand,
-    image: `${EndPoint}/sample_a81IvE0ug.webp`,
-    category: req.body.category,
-    stock: req.body.stock,
-    countInStock: req.body.countInStock,
+  await runInTransaction(async (session) => {
+    const product = await Products.create(
+      [
+        {
+          name: req.body.name,
+          description: req.body.description,
+          price: req.body.price,
+          brand: req.body.brand,
+          image: `${EndPoint}/sample_a81IvE0ug.webp`,
+          category: req.body.category,
+          stock: req.body.stock,
+          countInStock: req.body.countInStock,
+        },
+      ],
+      {
+        session,
+      }
+    );
+
+    if (req.file) {
+      const image = await imageKit.upload({
+        file: req.file.buffer,
+        fileName: req.file.originalname,
+        tags: ["test", "image"],
+      });
+      product.image = image.url;
+      product.save();
+    }
+
+    res.status(201).json({ msg: `${product.name} is Added` });
   });
-  console.log(product);
-  if (req.file) {
-    const image = await imageKit.upload({
-      file: req.file.buffer,
-      fileName: req.file.originalname,
-      tags: ["test", "image"],
-    });
-    product.image = image.url;
-  }
-  res.status(201).json({ msg: `${product.name} is Added` });
 });
 
 /**
@@ -173,24 +186,28 @@ const AddProduct = asyncHandler(async (req, res) => {
  */
 
 const UpdateProduct = asyncHandler(async (req, res) => {
-  const product = await Products.findByIdAndUpdate(req.params.id, {
-    name: req.body.name,
-    description: req.body.description,
-    price: req.body.price,
-    brand: req.body.brand,
-    category: req.body.category,
-    stock: req.body.stock,
-    countInStock: req.body.countInStock,
+  await runInTransaction(async (session) => {
+    const product = await Products.findByIdAndUpdate(req.params.id, {
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      brand: req.body.brand,
+      category: req.body.category,
+      stock: req.body.stock,
+      countInStock: req.body.countInStock,
+    }).session(session);
+
+    if (req.file) {
+      const image = await imageKit.upload({
+        file: req.file.buffer,
+        fileName: req.file.originalname,
+        tags: ["test", "image"],
+      });
+      product.image = image.url;
+      product.save();
+    }
+    res.status(200).json({ msg: `${product.name} is Updated` });
   });
-  if (req.file) {
-    const image = await imageKit.upload({
-      file: req.file.buffer,
-      fileName: req.file.originalname,
-      tags: ["test", "image"],
-    });
-    product.image = image.url;
-  }
-  res.status(200).json({ msg: `${product.name} is Updated` });
 });
 
 /**
@@ -202,9 +219,7 @@ const UpdateProduct = asyncHandler(async (req, res) => {
 
 const deleteProduct = asyncHandler(async (req, res) => {
   try {
-    const product = await Products.findById(req.params.id).lean();
-    if (!product) throw Error("No Product Found");
-    await product.remove();
+    const product = await Products.findByIdAndDelete(req.params.id);
     res.status(200).json({ msg: product.name + " Deleted Successfully" });
   } catch (error) {
     res.status(404);

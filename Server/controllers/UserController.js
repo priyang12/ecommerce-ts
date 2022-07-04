@@ -7,6 +7,7 @@ const Cart = require("../modals/Cart");
 
 const sgMail = require("@sendgrid/mail");
 const agenda = require("../config/agenda");
+const { runInTransaction } = require("../utils/Transactions");
 
 dotenv.config();
 
@@ -44,29 +45,40 @@ const loginUser = asyncHandler(async (req, res) => {
  */
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+  await runInTransaction(async (session) => {
+    const { name, email, password } = req.body;
 
-  const userExists = await User.findOne({ email });
+    const userExists = await User.findOne({ email });
 
-  if (userExists) {
-    res.status(400);
-    throw new Error("User already exists");
-  }
+    if (userExists) {
+      res.status(400);
+      throw new Error("User already exists");
+    }
 
-  const user = await User.create({
-    name,
-    email,
-    password,
+    const user = await User.create(
+      [
+        {
+          name,
+          email,
+          password,
+        },
+      ],
+      {
+        session,
+      }
+    );
+
+    await Cart.create({
+      user: user[0]._id,
+    });
+
+    if (user) {
+      res.status(201).json({ token: generateToken(user._id) });
+    } else {
+      res.status(400);
+      throw new Error("Invalid user data");
+    }
   });
-
-  await Cart.create({ user: user._id });
-
-  if (user) {
-    res.status(201).json({ token: generateToken(user._id) });
-  } else {
-    res.status(400);
-    throw new Error("Invalid user data");
-  }
 });
 
 /**

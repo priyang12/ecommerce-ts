@@ -4,6 +4,7 @@ const asyncHandler = require("express-async-handler");
 
 const Cart = require("../modals/Cart");
 const Products = require("../modals/Product");
+const { runInTransaction } = require("../utils/Transactions");
 
 /**
  * @desc    Get All Cart Products
@@ -35,29 +36,27 @@ const GetCartProducts = asyncHandler(async (req, res) => {
  */
 
 const AddToCart = asyncHandler(async (req, res) => {
-  const { id, qty } = req.body;
+  await runInTransaction(async (session) => {
+    const { id, qty } = req.body;
 
-  const session = await Cart.startSession();
-  session.startTransaction();
-  const [UserCart, product] = await Promise.all([
-    Cart.findOne({ user: req.user.id }),
-    Products.findById(id).lean(),
-  ]);
+    const [UserCart, product] = await Promise.all([
+      Cart.findOne({ user: req.user.id }).session(session),
+      Products.findById(id).lean(),
+    ]);
 
-  if (!UserCart) {
-    return res.status(400).json({ msg: "Cart is Not Found" });
-  }
-  if (!product) {
-    return res.status(404).json({ msg: "UnAuth Or Product not Found" });
-  }
+    if (!UserCart) {
+      return res.status(400).json({ msg: "Cart is Not Found" });
+    }
+    if (!product) {
+      return res.status(404).json({ msg: "UnAuth Or Product not Found" });
+    }
 
-  if (qty > product.countInStock) {
-    return res.status(404).json({ msg: "Sorry Out Of stock" });
-  }
+    if (qty > product.countInStock) {
+      return res.status(404).json({ msg: "Sorry Out Of stock" });
+    }
 
-  //check if the product is in the cart already
+    //check if the product is in the cart already
 
-  try {
     let isProduct = UserCart.products.find(
       (product) => product.product.toString() === id
     );
@@ -75,11 +74,7 @@ const AddToCart = asyncHandler(async (req, res) => {
         msg: `${product.name} is Added Cart`,
       });
     }
-  } catch (error) {
-    session.abortTransaction();
-    session.endSession();
-    throw error;
-  }
+  });
 });
 
 /**
@@ -90,24 +85,15 @@ const AddToCart = asyncHandler(async (req, res) => {
  */
 
 const DeleteCartProduct = asyncHandler(async (req, res) => {
-  const session = await Cart.startSession();
-  try {
-    session.startTransaction();
-    const cart = await Cart.findOneAndUpdate(
-      { user: req.user.id },
-      { $pull: { products: { product: req.params.id } } },
-      { new: true }
-    );
-    if (!cart) {
-      return res.status(501).json({ msg: "Server Error Cart is Empty" });
-    }
-
-    session.commitTransaction();
-    res.status(200).json({ msg: "Product Deleted" });
-  } catch (err) {
-    session.abortTransaction();
-    res.status(400).json({ msg: "Error" });
+  const cart = await Cart.findOneAndUpdate(
+    { user: req.user.id },
+    { $pull: { products: { product: req.params.id } } },
+    { new: true }
+  );
+  if (!cart) {
+    return res.status(501).json({ msg: "Server Error Cart is Empty" });
   }
+  res.status(200).json({ msg: "Product Deleted" });
 });
 
 module.exports = {

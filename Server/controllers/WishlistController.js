@@ -43,7 +43,8 @@ const AddToWishlist = asyncHandler(async (req, res) => {
   if (!List) {
     return res.status(400).json({ msg: "Wishlist is not found" });
   }
-  const product = await Products.findById(req.params.id);
+  const product = await Products.findById(req.params.id).lean();
+
   if (!product) {
     return res.status(404).json({ msg: "Product not Found" });
   }
@@ -71,25 +72,17 @@ const AddToWishlist = asyncHandler(async (req, res) => {
  */
 
 const DeleteWishlistProduct = asyncHandler(async (req, res) => {
-  const session = await Wishlist.startSession();
-  try {
-    session.startTransaction();
-    const List = await Wishlist.findOneAndUpdate(
-      { user: req.user.id },
-      { $pull: { products: req.params.id } },
-      { new: true }
-    );
+  const List = await Wishlist.findOneAndUpdate(
+    { user: req.user.id },
+    { $pull: { products: req.params.id } },
+    { new: true }
+  ).exec();
 
-    if (!List) {
-      return res.status(400).json({ msg: "Server Error" });
-    }
-
-    session.commitTransaction();
-    res.status(200).json({ msg: "Product Deleted" });
-  } catch (err) {
-    session.abortTransaction();
-    res.status(400).json({ msg: "Error" });
+  if (!List) {
+    return res.status(400).json({ msg: "Server Error" });
   }
+
+  res.status(200).json({ msg: "Product Deleted" });
 });
 
 module.exports = {
