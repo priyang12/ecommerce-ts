@@ -5,9 +5,13 @@ const asyncHandler = require("express-async-handler");
 const Products = require("../modals/Product");
 const Wishlist = require("../modals/Wishlist");
 
-// @desc    Get All Wishlist Products
-// @route   Get /api/wishlist
-// @access  Private
+/**
+ * @desc    Get All Wishlist Products
+ * @route   Get /api/wishlist
+ * @access  Private
+ * @param   {object} req.user.id
+ */
+
 const GetWishlist = asyncHandler(async (req, res) => {
   const list = await Wishlist.findOne({ user: req.user.id })
     .select("-__v -updatedAt -createdAt")
@@ -24,9 +28,13 @@ const GetWishlist = asyncHandler(async (req, res) => {
   res.status(200).json(list);
 });
 
-// @desc    Add Product to Wishlist
-// @route   PUT /api/Wishlist
-// @access  Private
+/**
+ * @desc    Add Product to Wishlist
+ * @route   PUT /api/Wishlist
+ * @access  Private
+ * @param   {object} req.user.id
+ */
+
 const AddToWishlist = asyncHandler(async (req, res) => {
   const List = await Wishlist.findOne({ user: req.user.id }).select(
     "-__v -updatedAt -createdAt"
@@ -35,7 +43,8 @@ const AddToWishlist = asyncHandler(async (req, res) => {
   if (!List) {
     return res.status(400).json({ msg: "Wishlist is not found" });
   }
-  const product = await Products.findById(req.params.id);
+  const product = await Products.findById(req.params.id).lean();
+
   if (!product) {
     return res.status(404).json({ msg: "Product not Found" });
   }
@@ -55,29 +64,25 @@ const AddToWishlist = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    DELETE  Product from Wishlist
-// @route   Delete /api/cart/:id
-// @access  Private
+/**
+ * @desc    DELETE  Product from Wishlist
+ * @route   Delete /api/cart/:id
+ * @access  Private
+ * @param   {object} req.user.id
+ */
+
 const DeleteWishlistProduct = asyncHandler(async (req, res) => {
-  const session = await Wishlist.startSession();
-  try {
-    session.startTransaction();
-    const List = await Wishlist.findOneAndUpdate(
-      { user: req.user.id },
-      { $pull: { products: req.params.id } },
-      { new: true }
-    );
+  const List = await Wishlist.findOneAndUpdate(
+    { user: req.user.id },
+    { $pull: { products: req.params.id } },
+    { new: true }
+  ).exec();
 
-    if (!List) {
-      return res.status(400).json({ msg: "Server Error" });
-    }
-
-    session.commitTransaction();
-    res.status(200).json({ msg: "Product Deleted" });
-  } catch (err) {
-    session.abortTransaction();
-    res.status(400).json({ msg: "Error" });
+  if (!List) {
+    return res.status(400).json({ msg: "Server Error" });
   }
+
+  res.status(200).json({ msg: "Product Deleted" });
 });
 
 module.exports = {

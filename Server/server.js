@@ -22,12 +22,12 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-app.use("/api/users", CustomRateLimiter(), require("./routes/user"));
-app.use("/api/products", require("./routes/products"));
-app.use("/api/cart", require("./routes/cart"));
-app.use("/api/orders", require("./routes/order"));
+app.use("/api/users", CustomRateLimiter(), require("./routes/User.routes.js"));
+app.use("/api/products", require("./routes/Products.routes.js"));
+app.use("/api/cart", require("./routes/Cart.routes"));
+app.use("/api/orders", require("./routes/Order.routes"));
 app.use("/api/wishlist", require("./routes/WishList.routes"));
-app.use("/api/PhotoUpload", require("./routes/upload"));
+app.use("/api/PhotoUpload", require("./routes/Upload.routes"));
 
 app.get("/api/config/paypal", (req, res) => {
   res.send(process.env.PAYPAL_CLIENT_ID);
