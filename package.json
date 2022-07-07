@@ -11,7 +11,7 @@
     "build": "npm install --prefix Client && npm run build --prefix Client",
     "build:client": "npm run build --prefix Client",
     "dev": "concurrently \"yarn run server\" \"yarn run client\"",
-    "test": "cd Client && CI=true yarn run test && cd ..",
+    "test": "cd Client && CI=true yarn run test --passWithNoTests && cd ..",
     "data:import": "node Server/seeder",
     "data:destroy": "node Server/seeder -d",
     "prepare": "husky install",

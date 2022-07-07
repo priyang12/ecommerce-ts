@@ -35,7 +35,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "CI=false && react-scripts build",
-    "test": "react-scripts test --watchAll --coverage",
+    "test": "react-scripts test  --coverage",
     "test:one": "react-scripts test",
     "eject": "react-scripts eject",
     "FormatePages": "bash FileFormate.sh",
