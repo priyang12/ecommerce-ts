@@ -23,7 +23,7 @@ function ResetPassword() {
 
   useEffect(() => {
     setAuthToken(id);
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     loadUser(id, dispatch);

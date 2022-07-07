@@ -11,7 +11,7 @@
     "build": "npm install --prefix Client && npm run build --prefix Client",
     "build:client": "npm run build --prefix Client",
     "dev": "concurrently \"yarn run server\" \"yarn run client\"",
-    "test": "cd Client && CI=true yarn run test --coverage && cd ..",
+    "test": "cd Client && CI=true yarn run test && cd ..",
     "data:import": "node Server/seeder",
     "data:destroy": "node Server/seeder -d",
     "prepare": "husky install",
@@ -23,6 +23,11 @@
       "pre-commit": "echo ”[Husky] pre-commit”"
     }
   },
+  "workspaces": [
+    "packages/*",
+    "Client",
+    "Server"
+  ],
   "author": "Priyang",
   "license": "ISC",
   "dependencies": {
@@ -49,6 +54,7 @@
     "husky": "^7.0.0",
     "nodemon": "^2.0.15",
     "ts-node": "^10.8.2",
+    "turbo": "^1.3.1",
     "typescript": "^4.7.4"
   }
 }
