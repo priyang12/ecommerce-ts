@@ -25,8 +25,8 @@ const CartSchema = new mongoose.Schema(
   }
 );
 
-export type IOrder = InferSchemaType<typeof CartSchema>;
+export type ICart = InferSchemaType<typeof CartSchema>;
 
-const OrderModel: Model<IOrder> = mongoose.model("Product", CartSchema);
+const CartModel: Model<ICart> = mongoose.model("Cart", CartSchema);
 
-export default OrderModel;
+export default CartModel;

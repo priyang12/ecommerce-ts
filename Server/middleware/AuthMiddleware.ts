@@ -1,10 +1,10 @@
-const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
-const User = require("../modals/User");
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import User from "../modals/User";
 
 dotenv.config();
 
-module.exports = async function (req, res, next) {
+export default async function (req, res, next) {
   const token = req.header("x-auth-token");
   //check token
   if (!token) {
@@ -21,4 +21,4 @@ module.exports = async function (req, res, next) {
   } catch (error) {
     res.status(401).json({ msg: "token is not valid" });
   }
-};
+}

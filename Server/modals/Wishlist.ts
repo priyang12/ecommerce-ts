@@ -1,6 +1,7 @@
-import * as mongoose from "mongoose";
+import mongoose from "mongoose";
+import type { Model, InferSchemaType } from "mongoose";
 
-const WishSchema = mongoose.Schema(
+const WishSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -21,4 +22,8 @@ const WishSchema = mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Wishlist", WishSchema);
+export type IWishList = InferSchemaType<typeof WishSchema>;
+
+const WishListModel: Model<IWishList> = mongoose.model("WishList", WishSchema);
+
+export default WishListModel;

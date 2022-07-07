@@ -1,14 +1,12 @@
-const express = require("express");
-const router = express.Router();
-
-const {
+import express from "express";
+import {
   GetWishlist,
   DeleteWishlistProduct,
   AddToWishlist,
-} = require("../controllers/WishlistController");
+} from "../controllers/WishlistController";
+import Auth from "../middleware/AuthMiddleware";
 
-const Auth = require("../middleware/auth");
-
+const router = express.Router();
 //Cart
 router.route("/").get(Auth, GetWishlist);
 router
@@ -16,4 +14,4 @@ router
   .patch(Auth, AddToWishlist)
   .delete(Auth, DeleteWishlistProduct);
 
-module.exports = router;
+export default router;

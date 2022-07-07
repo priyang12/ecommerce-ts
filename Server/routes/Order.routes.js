@@ -1,16 +1,17 @@
-const express = require("express");
-const router = express.Router();
-const {
+import express from "express";
+
+import {
   addOrderItems,
   getUserOrders,
   getOrder,
   getAllOrders,
   UpdateOrder,
   DeleteOrder,
-} = require("../controllers/OrderController");
-const Auth = require("../middleware/auth");
-const Admin = require("../middleware/admin");
+} from "../controllers/OrderController";
+import Auth from "../middleware/AuthMiddleware";
+import Admin from "../middleware/AdminMiddleware";
 
+const router = express.Router();
 router.route("/").post(Auth, addOrderItems).get(Auth, getUserOrders);
 
 router
@@ -21,4 +22,4 @@ router
 
 //Admin
 router.route("/all").get(Admin, getAllOrders);
-module.exports = router;
+export default router;

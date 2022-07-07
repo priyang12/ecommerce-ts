@@ -70,7 +70,13 @@ UserSchema.pre("updateOne", async function (next) {
 });
 
 export type IUser = InferSchemaType<typeof UserSchema>;
+type IUserMethods = {
+  matchPassword: (enteredPassword: string) => Promise<boolean>;
+  BcryptPassword(password: string): Promise<void>;
+};
 
-const UserModel: Model<IUser> = mongoose.model("User", UserSchema);
+type IUserModel = Model<IUser, {}, IUserMethods>;
+
+const UserModel = mongoose.model("User", UserSchema) as IUserModel;
 
 export default UserModel;

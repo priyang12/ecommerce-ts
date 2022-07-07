@@ -1,10 +1,9 @@
-const asyncHandler = require("express-async-handler");
+import asyncHandler from "express-async-handler";
+import Cart from "../modals/Cart";
+import Products from "../modals/Product";
+import { runInTransaction } from "../utils/Transactions";
 
-// User Modal
-
-const Cart = require("../modals/Cart");
-const Products = require("../modals/Product");
-const { runInTransaction } = require("../utils/Transactions");
+import type { Request, Response } from "express";
 
 /**
  * @desc    Get All Cart Products
@@ -12,7 +11,7 @@ const { runInTransaction } = require("../utils/Transactions");
  * @access  Private
  */
 
-const GetCartProducts = asyncHandler(async (req, res) => {
+const GetCartProducts = asyncHandler(async (req: Request, res: Response) => {
   const cart = await Cart.findOne({ user: req.user.id })
     .populate({
       path: "products.product",
@@ -35,7 +34,7 @@ const GetCartProducts = asyncHandler(async (req, res) => {
  * @params  {id: string, qty: number}
  */
 
-const AddToCart = asyncHandler(async (req, res) => {
+const AddToCart = asyncHandler(async (req: Request, res: Response) => {
   await runInTransaction(async (session) => {
     const { id, qty } = req.body;
 
@@ -84,7 +83,7 @@ const AddToCart = asyncHandler(async (req, res) => {
  * @params  {id: string}
  */
 
-const DeleteCartProduct = asyncHandler(async (req, res) => {
+const DeleteCartProduct = asyncHandler(async (req: Request, res: Response) => {
   const cart = await Cart.findOneAndUpdate(
     { user: req.user.id },
     { $pull: { products: { product: req.params.id } } },
@@ -96,8 +95,4 @@ const DeleteCartProduct = asyncHandler(async (req, res) => {
   res.status(200).json({ msg: "Product Deleted" });
 });
 
-module.exports = {
-  AddToCart,
-  GetCartProducts,
-  DeleteCartProduct,
-};
+export { AddToCart, GetCartProducts, DeleteCartProduct };

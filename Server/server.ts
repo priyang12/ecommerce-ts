@@ -1,12 +1,19 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const path = require("path");
-const morgan = require("morgan");
+import express from "express";
+import dotenv from "dotenv";
+import path from "path";
+import morgan from "morgan";
+import CustomRateLimiter from "./middleware/Ratelimiter";
+import connectDB from "./config/db";
+import Jobs from "./Jobs";
+import { notFound, errorHandler } from "./middleware/ErrorMiddleWare";
+import UserRoute from "./routes/User.routes.js";
+import ProductsRoute from "./routes/Products.routes.js";
+import CartRoute from "./routes/Cart.routes";
+import OrderRoute from "./routes/Order.routes";
+import WishListRoute from "./routes/WishList.routes";
+import UploadRoute from "./routes/Upload.routes";
+
 const app = express();
-const { notFound, errorHandler } = require("./middleware/error");
-const CustomRateLimiter = require("./middleware/Ratelimiter");
-const connectDB = require("./config/db");
-const Jobs = require("./Jobs");
 
 connectDB();
 
@@ -22,12 +29,12 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-app.use("/api/users", CustomRateLimiter(), require("./routes/User.routes.js"));
-app.use("/api/products", require("./routes/Products.routes.js"));
-app.use("/api/cart", require("./routes/Cart.routes"));
-app.use("/api/orders", require("./routes/Order.routes"));
-app.use("/api/wishlist", require("./routes/WishList.routes"));
-app.use("/api/PhotoUpload", require("./routes/Upload.routes"));
+app.use("/api/users", CustomRateLimiter(), UserRoute);
+app.use("/api/products", ProductsRoute);
+app.use("/api/cart", CartRoute);
+app.use("/api/orders", OrderRoute);
+app.use("/api/wishlist", WishListRoute);
+app.use("/api/PhotoUpload", UploadRoute);
 
 app.get("/api/config/paypal", (req, res) => {
   res.send(process.env.PAYPAL_CLIENT_ID);

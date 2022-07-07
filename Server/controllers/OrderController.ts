@@ -1,15 +1,18 @@
-const asyncHandler = require("express-async-handler");
+import asyncHandler from "express-async-handler";
 
-const User = require("../modals/User");
+import User from "../modals/User";
 
-const Order = require("../modals/order");
-const sgMail = require("@sendgrid/mail");
-const dotenv = require("dotenv");
-const agenda = require("../config/agenda");
+import Order from "../modals/Order";
+import sgMail from "@sendgrid/mail";
+import dotenv from "dotenv";
+import agenda from "../config/agenda";
+
+import type { Request, Response } from "express";
 
 dotenv.config();
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+if (process.env.SENDGRID_API_KEY)
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 /**
  * @desc    Create new order
@@ -20,7 +23,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
  * @returns {object} { msg ,order}
  */
 
-const addOrderItems = asyncHandler(async (req, res) => {
+const addOrderItems = asyncHandler(async (req: Request, res: Response) => {
   const ag = await agenda;
   ag.start();
   try {
@@ -69,10 +72,6 @@ const addOrderItems = asyncHandler(async (req, res) => {
         { new: true }
       ).lean();
 
-      orderItems.forEach((item) => {
-        updateProduct(item);
-      });
-
       const createdOrder = await order.save();
 
       ag.schedule(new Date(Date.now() + 1000), "place order", {
@@ -112,7 +111,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
  * @param   {object} res
  */
 
-const getOrder = asyncHandler(async (req, res) => {
+const getOrder = asyncHandler(async (req: Request, res: Response) => {
   const order = await Order.findById(req.params.id)
     .populate("user", "name email")
     .lean();
@@ -133,7 +132,7 @@ const getOrder = asyncHandler(async (req, res) => {
  * @param   {object} res
  */
 
-const getUserOrders = asyncHandler(async (req, res) => {
+const getUserOrders = asyncHandler(async (req: Request, res: Response) => {
   const order = await Order.find({ user: req.user.id })
     .select("paymentMethod totalPrice isDelivered")
     .lean();
@@ -153,7 +152,7 @@ const getUserOrders = asyncHandler(async (req, res) => {
  * @param   {object} res
  */
 
-const getAllOrders = asyncHandler(async (req, res) => {
+const getAllOrders = asyncHandler(async (req: Request, res: Response) => {
   const order = await Order.find({})
     .select("paymentMethod totalPrice isDelivered ")
     .populate("user", ["name", "email"])
@@ -174,19 +173,18 @@ const getAllOrders = asyncHandler(async (req, res) => {
  * @param   {object} res
  */
 
-const UpdateOrder = asyncHandler(async (req, res) => {
+const UpdateOrder = asyncHandler(async (req: Request, res: Response) => {
   const order = await Order.findById(req.params.id);
-  try {
-    const Del = req.body.isDelivered;
-    order.isDelivered = Del;
-    order.save();
-    res.json({
-      msg: "Order is Delivered",
-    });
-  } catch {
+  if (!order) {
     res.status(404);
-    throw new Error("Orders not found");
+    throw new Error("Order not found");
   }
+  const Del = req.body.isDelivered;
+  order.isDelivered = Del;
+  order.save();
+  res.json({
+    msg: "Order is Delivered",
+  });
 });
 
 /**
@@ -197,7 +195,7 @@ const UpdateOrder = asyncHandler(async (req, res) => {
  * @param   {object} res
  */
 
-const DeleteOrder = asyncHandler(async (req, res) => {
+const DeleteOrder = asyncHandler(async (req: Request, res: Response) => {
   const order = await Order.findByIdAndDelete(req.params.id).lean();
   if (order) {
     res.json(order);
@@ -207,7 +205,7 @@ const DeleteOrder = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = {
+export {
   addOrderItems,
   getUserOrders,
   getOrder,

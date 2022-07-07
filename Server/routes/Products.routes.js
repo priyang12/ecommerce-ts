@@ -1,6 +1,6 @@
-const express = require("express");
-const router = express.Router();
-const {
+import express from "express";
+
+import {
   GetAllDetailsProducts,
   GetAllProducts,
   GetProductByID,
@@ -9,12 +9,14 @@ const {
   UpdateProduct,
   deleteProduct,
   GetTopProducts,
-} = require("../controllers/ProductController");
+} from "../controllers/ProductController";
 
-const checkFileType = require("../utils/CheckFile");
-const multer = require("multer");
-const Auth = require("../middleware/auth");
-const Admin = require("../middleware/admin");
+import checkFileType from "../utils/CheckFile";
+import multer from "multer";
+import Auth from "../middleware/AuthMiddleware";
+import Admin from "../middleware/AdminMiddleware";
+
+const router = express.Router();
 
 const upload = multer({
   fileFilter: function (req, file, cb) {
@@ -35,4 +37,4 @@ router
 
 router.route("/review/:id").post(Auth, AddReview);
 
-module.exports = router;
+export default router;

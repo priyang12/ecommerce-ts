@@ -1,8 +1,8 @@
-const dotenv = require("dotenv");
-const users = require("./data/user");
-const products = require("./data/products");
-const { CreateModels, models } = require("./utils/Models");
-const connectDB = require("./config/db");
+import dotenv from "dotenv";
+import users from "./data/userData";
+import products from "./data/productsData";
+import { CreateModels, models } from "./utils/Models";
+import connectDB from "./config/db";
 
 dotenv.config();
 
@@ -27,11 +27,8 @@ const importdata = async () => {
     });
 
     await Product.insertMany(sampleProducts);
-    await Product.createIndexes({
+    Product.createIndexes({
       name: "text",
-      description: "text",
-      brand: "text",
-      category: "text",
     });
     console.log("DATA IMPORTED");
     process.exit();

@@ -1,9 +1,11 @@
-const express = require("express");
-const multer = require("multer");
+import express from "express";
+import multer from "multer";
+
+import Admin from "../middleware/AdminMiddleware";
+import imageKit from "../config/imageKit";
+import checkFileType from "../utils/CheckFile";
+
 const router = express.Router();
-const Admin = require("../middleware/admin");
-const imageKit = require("../config/imageKit");
-const checkFileType = require("../utils/CheckFile");
 
 const upload = multer({
   fileFilter: function (req, file, cb) {
@@ -17,6 +19,7 @@ router.post("/kit", Admin, upload.single("image"), (req, res) => {
       .upload({
         file: req.file.buffer,
         fileName: req.file.originalname,
+        // @ts-ignore
         tags: ["test", "image"],
       })
       .then((uploadedImage) => {
@@ -35,4 +38,4 @@ router.post("/kit", Admin, upload.single("image"), (req, res) => {
     throw Error(error);
   }
 });
-module.exports = router;
+export default router;

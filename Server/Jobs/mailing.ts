@@ -1,9 +1,9 @@
-const agenda = require("../config/agenda");
-const sgMail = require("@sendgrid/mail");
-const UserModal = require("../modals/User");
+import agenda from "../config/agenda";
+import sgMail from "@sendgrid/mail";
+import UserModal from "../modals/User";
 
 function MailJob() {
-  agenda.define("send greeting email", async (job, done) => {
+  agenda.define("send greeting email", async (job: any, done) => {
     const { userId } = job.attrs.data;
     const user = await UserModal.findById(userId);
     if (!user) {
@@ -26,7 +26,7 @@ function MailJob() {
   });
 
   // Reset the password
-  agenda.define("reset password", async (job, done) => {
+  agenda.define("reset password", async (job: any, done) => {
     const { email, token, host } = job.attrs.data;
     console.log("reset password");
     const mail = {
@@ -41,4 +41,4 @@ function MailJob() {
     done();
   });
 }
-module.exports = MailJob;
+export default MailJob;

@@ -1,19 +1,23 @@
-const asyncHandler = require("express-async-handler");
-const generateToken = require("../middleware/generateToken");
+import asyncHandler from "express-async-handler";
+import generateToken from "../utils/generateToken";
 
-const dotenv = require("dotenv");
-const User = require("../modals/User");
-const Cart = require("../modals/Cart");
+import dotenv from "dotenv";
+import User from "../modals/User";
+import Cart from "../modals/Cart";
 
-const sgMail = require("@sendgrid/mail");
-const agenda = require("../config/agenda");
-const { runInTransaction } = require("../utils/Transactions");
+import sgMail from "@sendgrid/mail";
+import agenda from "../config/agenda";
+
+import { runInTransaction } from "../utils/Transactions";
+
+import type { Request, Response } from "express";
 
 dotenv.config();
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+if (process.env.SENDGRID_API_KEY)
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const test = asyncHandler(async (req, res) => {
+const test = asyncHandler(async (req: Request, res: Response) => {
   res.json(req.headers.host);
 });
 
@@ -24,7 +28,7 @@ const test = asyncHandler(async (req, res) => {
  * @body    {email: "", password: ""}
  */
 
-const loginUser = asyncHandler(async (req, res) => {
+const loginUser = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
@@ -44,7 +48,7 @@ const loginUser = asyncHandler(async (req, res) => {
  * @body   {name: string, email: string, password: string}
  */
 
-const registerUser = asyncHandler(async (req, res) => {
+const registerUser = asyncHandler(async (req: Request, res: Response) => {
   await runInTransaction(async (session) => {
     const { name, email, password } = req.body;
 
@@ -73,7 +77,7 @@ const registerUser = asyncHandler(async (req, res) => {
     });
 
     if (user) {
-      res.status(201).json({ token: generateToken(user._id) });
+      res.status(201).json({ token: generateToken(user[0]._id) });
     } else {
       res.status(400);
       throw new Error("Invalid user data");
@@ -87,7 +91,7 @@ const registerUser = asyncHandler(async (req, res) => {
  * @access  Private
  */
 
-const getUserProfile = asyncHandler(async (req, res) => {
+const getUserProfile = asyncHandler(async (req: Request, res: Response) => {
   const user = await User.findById(req.user.id).lean();
 
   if (user) {
@@ -109,7 +113,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
  * @access Private
  * @body {password: string, password2: string}
  */
-const resetpassword = asyncHandler(async (req, res) => {
+const resetpassword = asyncHandler(async (req: Request, res: Response) => {
   const { password, password2 } = req.body;
 
   if (password !== password2 || password.length < 6 || password2.length < 6) {
@@ -137,14 +141,14 @@ const resetpassword = asyncHandler(async (req, res) => {
  * @body    {name: string, email: string, password: string}
  */
 
-const UpdateProfile = asyncHandler(async (req, res) => {
+const UpdateProfile = asyncHandler(async (req: Request, res: Response) => {
   const user = await User.findById(req.user.id);
 
   if (user) {
     user.name = req.body.name || user.name;
     if (
       req.body.CurrentPassword &&
-      user.matchPassword(req.body.CurrentPassword)
+      (await user.matchPassword(req.body.CurrentPassword))
     ) {
       user.password = req.body.password;
     }
@@ -164,9 +168,9 @@ const UpdateProfile = asyncHandler(async (req, res) => {
  * @access  Private/Admin
  */
 
-const deleteAccount = asyncHandler(async (req, res) => {
+const deleteAccount = asyncHandler(async (req: Request, res: Response) => {
   const user = await User.deleteOne({ _id: req.params.id });
-  if (user.ok === 1) {
+  if (user.acknowledged) {
     res.json({ message: "User removed" });
   } else {
     res.status(404);
@@ -180,7 +184,7 @@ const deleteAccount = asyncHandler(async (req, res) => {
  * @access  Private/Admin
  */
 
-const getUsers = asyncHandler(async (req, res) => {
+const getUsers = asyncHandler(async (req: Request, res: Response) => {
   const users = await User.find({}).select("-password -cart -__v").lean();
   res.json(users);
 });
@@ -192,7 +196,7 @@ const getUsers = asyncHandler(async (req, res) => {
  * @params  {id: string}
  */
 
-const deleteUser = asyncHandler(async (req, res) => {
+const deleteUser = asyncHandler(async (req: Request, res: Response) => {
   const user = await User.findById(req.params.id);
   if (user) {
     await user.remove();
@@ -210,7 +214,7 @@ const deleteUser = asyncHandler(async (req, res) => {
  * @params  {id: string}
  */
 
-const getUserById = asyncHandler(async (req, res) => {
+const getUserById = asyncHandler(async (req: Request, res: Response) => {
   const user = await User.findById(req.params.id).select("-password").lean();
 
   if (user) {
@@ -228,7 +232,7 @@ const getUserById = asyncHandler(async (req, res) => {
  * @params  {id: string}
  */
 
-const updateUser = asyncHandler(async (req, res) => {
+const updateUser = asyncHandler(async (req: Request, res: Response) => {
   const user = await User.findById(req.params.id);
 
   if (user) {
@@ -242,7 +246,7 @@ const updateUser = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
-      isAdmin: updatedUser.is,
+      isAdmin: updatedUser.isAdmin,
     });
   } else {
     res.status(404);
@@ -257,7 +261,7 @@ const updateUser = asyncHandler(async (req, res) => {
  * @body    {email: string}
  */
 
-const recoverMail = asyncHandler(async (req, res) => {
+const recoverMail = asyncHandler(async (req: Request, res: Response) => {
   const { email } = req.body;
   let user = await User.findOne({ email }).lean();
   if (!user) {
@@ -281,7 +285,7 @@ const recoverMail = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = {
+export {
   test,
   registerUser,
   loginUser,

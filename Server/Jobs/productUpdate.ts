@@ -1,7 +1,8 @@
-const agenda = require("../config/agenda");
-const sgMail = require("@sendgrid/mail");
-const Product = require("../modals/Product");
-const Cart = require("../modals/Cart");
+// @ts-nocheck
+import agenda from "../config/agenda";
+import sgMail from "@sendgrid/mail";
+import Product from "../modals/Product";
+import Cart from "../modals/Cart";
 
 function productUpdate() {
   // Place Order
@@ -65,4 +66,4 @@ function productUpdate() {
     });
   });
 }
-module.exports = productUpdate;
+export default productUpdate;

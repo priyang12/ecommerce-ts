@@ -78,6 +78,6 @@ const OrderSchema = new mongoose.Schema(
 
 export type IOrder = InferSchemaType<typeof OrderSchema>;
 
-const ProductModel: Model<IOrder> = mongoose.model("Product", OrderSchema);
+const OrderModel: Model<IOrder> = mongoose.model("Order", OrderSchema);
 
-export default ProductModel;
+export default OrderModel;

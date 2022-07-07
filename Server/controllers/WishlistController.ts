@@ -1,9 +1,9 @@
-const asyncHandler = require("express-async-handler");
-
+import asyncHandler from "express-async-handler";
+import type { Request, Response } from "express";
 // User Modal
 
-const Products = require("../modals/Product");
-const Wishlist = require("../modals/Wishlist");
+import Products from "../modals/Product";
+import Wishlist from "../modals/Wishlist";
 
 /**
  * @desc    Get All Wishlist Products
@@ -12,7 +12,7 @@ const Wishlist = require("../modals/Wishlist");
  * @param   {object} req.user.id
  */
 
-const GetWishlist = asyncHandler(async (req, res) => {
+const GetWishlist = asyncHandler(async (req: Request, res: Response) => {
   const list = await Wishlist.findOne({ user: req.user.id })
     .select("-__v -updatedAt -createdAt")
     .populate({
@@ -35,7 +35,7 @@ const GetWishlist = asyncHandler(async (req, res) => {
  * @param   {object} req.user.id
  */
 
-const AddToWishlist = asyncHandler(async (req, res) => {
+const AddToWishlist = asyncHandler(async (req: Request, res: Response) => {
   const List = await Wishlist.findOne({ user: req.user.id }).select(
     "-__v -updatedAt -createdAt"
   );
@@ -71,22 +71,20 @@ const AddToWishlist = asyncHandler(async (req, res) => {
  * @param   {object} req.user.id
  */
 
-const DeleteWishlistProduct = asyncHandler(async (req, res) => {
-  const List = await Wishlist.findOneAndUpdate(
-    { user: req.user.id },
-    { $pull: { products: req.params.id } },
-    { new: true }
-  ).exec();
+const DeleteWishlistProduct = asyncHandler(
+  async (req: Request, res: Response) => {
+    const List = await Wishlist.findOneAndUpdate(
+      { user: req.user.id },
+      { $pull: { products: req.params.id } },
+      { new: true }
+    ).exec();
 
-  if (!List) {
-    return res.status(400).json({ msg: "Server Error" });
+    if (!List) {
+      return res.status(400).json({ msg: "Server Error" });
+    }
+
+    res.status(200).json({ msg: "Product Deleted" });
   }
+);
 
-  res.status(200).json({ msg: "Product Deleted" });
-});
-
-module.exports = {
-  AddToWishlist,
-  DeleteWishlistProduct,
-  GetWishlist,
-};
+export { AddToWishlist, DeleteWishlistProduct, GetWishlist };

@@ -1,4 +1,4 @@
-const RateLimit = require("express-rate-limit");
+import RateLimit from "express-rate-limit";
 
 const limitReached = (req, res) => {
   console.log({ ip: req.ip }, "Rate limiter triggered");
@@ -29,4 +29,4 @@ const CustomRateLimiter = (
   return rateLimiter;
 };
 
-module.exports = CustomRateLimiter;
+export default CustomRateLimiter;

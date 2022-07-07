@@ -1,4 +1,5 @@
-const path = require("path");
+import path from "path";
+
 function checkFileType(file, cb) {
   const filetypes = /jpg|jpeg|png|webp/;
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
@@ -11,4 +12,4 @@ function checkFileType(file, cb) {
   }
 }
 
-module.exports = checkFileType;
+export default checkFileType;

@@ -1,15 +1,17 @@
-const asyncHandler = require("express-async-handler");
-const dotenv = require("dotenv");
+import asyncHandler from "express-async-handler";
+import dotenv from "dotenv";
 
 dotenv.config();
 //modal
-const Products = require("../modals/Product");
+import Products from "../modals/Product";
 
-const Orders = require("../modals/order");
-const imageKit = require("../config/imageKit");
-const myCache = require("../utils/cache");
+import Orders from "../modals/Order";
+import imageKit from "../config/imageKit";
+import myCache from "../utils/cache";
 
-const { runInTransaction } = require("../utils/Transactions");
+import { runInTransaction } from "../utils/Transactions";
+
+import type { Request, Response } from "express";
 
 /**
  * @desc    Get All Products
@@ -20,38 +22,40 @@ const { runInTransaction } = require("../utils/Transactions");
  * @returns {object} products
  */
 
-const GetAllDetailsProducts = asyncHandler(async (req, res) => {
-  const pageSize = 9;
-  const page = Number(req.query.page) || 1;
+const GetAllDetailsProducts = asyncHandler(
+  async (req: Request, res: Response) => {
+    const pageSize = 9;
+    const page = Number(req.query.page) || 1;
 
-  const keyword = req.query.keyword
-    ? {
-        name: {
-          $regex: req.query.keyword,
-          $options: "i",
-        },
-      }
-    : {};
-  const count = await Products.countDocuments({ ...keyword });
-  let products = myCache.get("products" + keyword + page + count);
+    const keyword = req.query.keyword
+      ? {
+          name: {
+            $regex: req.query.keyword,
+            $options: "i",
+          },
+        }
+      : {};
+    const count = await Products.countDocuments({ ...keyword });
+    let products = myCache.get("products" + keyword + page + count);
 
-  if (!products) {
-    products = await Products.find({ ...keyword })
-      .limit(pageSize)
-      .skip(pageSize * (page - 1))
-      .lean();
+    if (!products) {
+      products = await Products.find({ ...keyword })
+        .limit(pageSize)
+        .skip(pageSize * (page - 1))
+        .lean();
 
-    myCache.set("products" + keyword + page + count, products, 3600 / 2);
+      myCache.set("products" + keyword + page + count, products, 3600 / 2);
 
-    res.json({ products, page, pages: Math.ceil(count / pageSize) });
-  } else {
-    res.json({
-      products,
-      page,
-      pages: Math.ceil(count / pageSize),
-    });
+      res.json({ products, page, pages: Math.ceil(count / pageSize) });
+    } else {
+      res.json({
+        products,
+        page,
+        pages: Math.ceil(count / pageSize),
+      });
+    }
   }
-});
+);
 
 /**
  * @desc    Get Previous Products
@@ -62,7 +66,7 @@ const GetAllDetailsProducts = asyncHandler(async (req, res) => {
  * @returns {object} products
  */
 
-const GetAllProducts = asyncHandler(async (req, res) => {
+const GetAllProducts = asyncHandler(async (req: Request, res: Response) => {
   const pageSize = 9;
   const page = Number(req.query.page) || 1;
 
@@ -103,7 +107,7 @@ const GetAllProducts = asyncHandler(async (req, res) => {
  * @access  Public
  */
 
-const GetTopProducts = asyncHandler(async (req, res) => {
+const GetTopProducts = asyncHandler(async (req: Request, res: Response) => {
   let TopProducts = myCache.get("TopProducts");
   if (!TopProducts) {
     TopProducts = await Products.find({})
@@ -124,7 +128,7 @@ const GetTopProducts = asyncHandler(async (req, res) => {
  * @access  Public
  */
 
-const GetProductByID = asyncHandler(async (req, res) => {
+const GetProductByID = asyncHandler(async (req: Request, res: Response) => {
   const product = await Products.findById(req.params.id).lean();
   if (product) {
     res.json(product);
@@ -141,11 +145,11 @@ const GetProductByID = asyncHandler(async (req, res) => {
  * @param   {object} res
  */
 
-const AddProduct = asyncHandler(async (req, res) => {
+const AddProduct = asyncHandler(async (req: Request, res: Response) => {
   const EndPoint = process.env.END_POINT;
 
   await runInTransaction(async (session) => {
-    const product = await Products.create(
+    const product = await new Products(
       [
         {
           name: req.body.name,
@@ -164,9 +168,10 @@ const AddProduct = asyncHandler(async (req, res) => {
     );
 
     if (req.file) {
-      const image = await imageKit.upload({
+      const image: any = await imageKit.upload({
         file: req.file.buffer,
         fileName: req.file.originalname,
+        // @ts-ignore
         tags: ["test", "image"],
       });
       product.image = image.url;
@@ -185,22 +190,19 @@ const AddProduct = asyncHandler(async (req, res) => {
  * @param   {object} res
  */
 
-const UpdateProduct = asyncHandler(async (req, res) => {
+const UpdateProduct = asyncHandler(async (req: Request, res: Response) => {
   await runInTransaction(async (session) => {
-    const product = await Products.findByIdAndUpdate(req.params.id, {
-      name: req.body.name,
-      description: req.body.description,
-      price: req.body.price,
-      brand: req.body.brand,
-      category: req.body.category,
-      stock: req.body.stock,
-      countInStock: req.body.countInStock,
-    }).session(session);
+    const product = await Products.findById(req.params.id).session(session);
+    if (!product) {
+      return res.status(404).json({ msg: "Product not Found" });
+    }
+    product.update(req.body);
 
     if (req.file) {
-      const image = await imageKit.upload({
+      const image: any = imageKit.upload({
         file: req.file.buffer,
         fileName: req.file.originalname,
+        // @ts-ignore
         tags: ["test", "image"],
       });
       product.image = image.url;
@@ -217,14 +219,12 @@ const UpdateProduct = asyncHandler(async (req, res) => {
  * @param   {object} req.params.id
  */
 
-const deleteProduct = asyncHandler(async (req, res) => {
-  try {
-    const product = await Products.findByIdAndDelete(req.params.id);
-    res.status(200).json({ msg: product.name + " Deleted Successfully" });
-  } catch (error) {
-    res.status(404);
-    throw new Error("Deleting Error In Server : " + error.message);
+const deleteProduct = asyncHandler(async (req: Request, res: Response) => {
+  const product = await Products.findByIdAndDelete(req.params.id);
+  if (!product) {
+    return res.status(404).json({ msg: "Product not Found" });
   }
+  res.status(200).json({ msg: product.name + " Deleted Successfully" });
 });
 
 /**
@@ -234,7 +234,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
  * @param   {object} req.body {rating, comment}
  */
 
-const AddReview = asyncHandler(async (req, res) => {
+const AddReview = asyncHandler(async (req: Request, res: Response) => {
   const { name, rating, comment, order_id } = req.body;
   const order = await Orders.findById(order_id).select("_id");
   const product = await Products.findById(req.params.id);
@@ -267,7 +267,7 @@ const AddReview = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = {
+export {
   GetAllDetailsProducts,
   GetAllProducts,
   GetProductByID,

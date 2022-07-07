@@ -1,8 +1,8 @@
-const User = require("../modals/User");
-const Product = require("../modals/Product");
-const Order = require("../modals/order");
-const Cart = require("../modals/Cart");
-const Wishlist = require("../modals/Wishlist");
+import User from "../modals/User";
+import Product from "../modals/Product";
+import Order from "../modals/Order";
+import Cart from "../modals/Cart";
+import Wishlist from "../modals/Wishlist";
 
 const models = {
   User,
@@ -21,4 +21,4 @@ function CreateModels() {
   });
 }
 
-module.exports = { CreateModels, models };
+export { CreateModels, models };

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 async function runInTransaction(mutations) {
   const session = await mongoose.startSession();
@@ -23,6 +23,4 @@ async function runInTransaction(mutations) {
   }
 }
 
-module.exports = {
-  runInTransaction,
-};
+export { runInTransaction };
