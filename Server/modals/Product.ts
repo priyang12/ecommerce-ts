@@ -1,6 +1,7 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
+import type { Model, InferSchemaType } from "mongoose";
 
-const reviewSchema = mongoose.Schema(
+const reviewSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     rating: { type: Number, required: true },
@@ -16,7 +17,7 @@ const reviewSchema = mongoose.Schema(
   }
 );
 
-const ProductSchema = mongoose.Schema(
+const ProductSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -71,4 +72,7 @@ const ProductSchema = mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Product", ProductSchema);
+export type IProduct = InferSchemaType<typeof ProductSchema>;
+
+const ProductModel: Model<IProduct> = mongoose.model("Product", ProductSchema);
+export default ProductModel;

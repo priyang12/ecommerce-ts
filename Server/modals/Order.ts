@@ -1,6 +1,7 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
+import type { Model, InferSchemaType } from "mongoose";
 
-const OrderSchema = mongoose.Schema(
+const OrderSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -75,4 +76,8 @@ const OrderSchema = mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Order", OrderSchema);
+export type IOrder = InferSchemaType<typeof OrderSchema>;
+
+const ProductModel: Model<IOrder> = mongoose.model("Product", OrderSchema);
+
+export default ProductModel;

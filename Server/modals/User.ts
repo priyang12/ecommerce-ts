@@ -1,6 +1,8 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-const UserSchema = mongoose.Schema(
+import mongoose from "mongoose";
+import type { Model, InferSchemaType } from "mongoose";
+import bcrypt from "bcryptjs";
+
+const UserSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -54,14 +56,21 @@ UserSchema.pre("save", async function (next) {
 });
 
 UserSchema.pre("updateOne", async function (next) {
+  // @ts-ignore
   const password = this.getUpdate().$set.password;
+  // @ts-ignore
   console.log(this.getUpdate());
   if (!password) {
     return next();
   }
 
   const salt = await bcrypt.genSalt(10);
+  // @ts-ignore
   this.getUpdate().$set.password = await bcrypt.hash(password, salt);
 });
 
-module.exports = mongoose.model("User", UserSchema);
+export type IUser = InferSchemaType<typeof UserSchema>;
+
+const UserModel: Model<IUser> = mongoose.model("User", UserSchema);
+
+export default UserModel;
