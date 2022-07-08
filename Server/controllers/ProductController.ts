@@ -219,13 +219,15 @@ const UpdateProduct = asyncHandler(async (req: Request, res: Response) => {
  * @param   {object} req.params.id
  */
 
-const deleteProduct = asyncHandler(async (req: Request, res: Response) => {
-  const product = await Products.findByIdAndDelete(req.params.id);
-  if (!product) {
-    return res.status(404).json({ msg: "Product not Found" });
+const deleteProduct = asyncHandler(
+  async (req: Request, res: Response): Promise<any> => {
+    const product = await Products.findByIdAndDelete(req.params.id);
+    if (!product) {
+      return res.status(404).json({ msg: "Product not Found" });
+    }
+    res.status(200).json({ msg: product.name + " Deleted Successfully" });
   }
-  res.status(200).json({ msg: product.name + " Deleted Successfully" });
-});
+);
 
 /**
  * @desc    Add Review
@@ -250,7 +252,7 @@ const AddReview = asyncHandler(async (req: Request, res: Response) => {
       res.status(404);
       throw new Error("Already Reviewed");
     } else {
-      const review = {
+      const review: any = {
         name: name,
         rating: Number(rating),
         comment,

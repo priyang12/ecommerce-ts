@@ -11,21 +11,23 @@ import type { Request, Response } from "express";
  * @access  Private
  */
 
-const GetCartProducts = asyncHandler(async (req: Request, res: Response) => {
-  const cart = await Cart.findOne({ user: req.user.id })
-    .populate({
-      path: "products.product",
-      model: "Product",
-      select: "name price _id image countInStock",
-    })
-    .lean();
+const GetCartProducts = asyncHandler(
+  async (req: Request, res: Response): Promise<any> => {
+    const cart = await Cart.findOne({ user: req.user.id })
+      .populate({
+        path: "products.product",
+        model: "Product",
+        select: "name price _id image countInStock",
+      })
+      .lean();
 
-  if (!cart) {
-    return res.status(400).json({ msg: "Cart is empty" });
+    if (!cart) {
+      return res.status(400).json({ msg: "Cart is empty" });
+    }
+
+    res.status(200).json(cart);
   }
-
-  res.status(200).json(cart);
-});
+);
 
 /**
  * @desc    Add Product to Cart or Update Product Qty in Cart
@@ -83,16 +85,18 @@ const AddToCart = asyncHandler(async (req: Request, res: Response) => {
  * @params  {id: string}
  */
 
-const DeleteCartProduct = asyncHandler(async (req: Request, res: Response) => {
-  const cart = await Cart.findOneAndUpdate(
-    { user: req.user.id },
-    { $pull: { products: { product: req.params.id } } },
-    { new: true }
-  );
-  if (!cart) {
-    return res.status(501).json({ msg: "Server Error Cart is Empty" });
+const DeleteCartProduct = asyncHandler(
+  async (req: Request, res: Response): Promise<any> => {
+    const cart = await Cart.findOneAndUpdate(
+      { user: req.user.id },
+      { $pull: { products: { product: req.params.id } } },
+      { new: true }
+    );
+    if (!cart) {
+      return res.status(501).json({ msg: "Server Error Cart is Empty" });
+    }
+    res.status(200).json({ msg: "Product Deleted" });
   }
-  res.status(200).json({ msg: "Product Deleted" });
-});
+);
 
 export { AddToCart, GetCartProducts, DeleteCartProduct };

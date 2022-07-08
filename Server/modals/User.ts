@@ -70,6 +70,7 @@ UserSchema.pre("updateOne", async function (next) {
 });
 
 export type IUser = InferSchemaType<typeof UserSchema>;
+
 type IUserMethods = {
   matchPassword: (enteredPassword: string) => Promise<boolean>;
   BcryptPassword(password: string): Promise<void>;

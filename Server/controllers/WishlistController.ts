@@ -12,21 +12,23 @@ import Wishlist from "../modals/Wishlist";
  * @param   {object} req.user.id
  */
 
-const GetWishlist = asyncHandler(async (req: Request, res: Response) => {
-  const list = await Wishlist.findOne({ user: req.user.id })
-    .select("-__v -updatedAt -createdAt")
-    .populate({
-      path: "products",
-      model: "Product",
-      select: "name price _id image countInStock description",
-    })
-    .lean();
-  if (!list) {
-    return res.status(400).json({ msg: "Wishlist is empty" });
-  }
+const GetWishlist = asyncHandler(
+  async (req: Request, res: Response): Promise<any> => {
+    const list = await Wishlist.findOne({ user: req.user.id })
+      .select("-__v -updatedAt -createdAt")
+      .populate({
+        path: "products",
+        model: "Product",
+        select: "name price _id image countInStock description",
+      })
+      .lean();
+    if (!list) {
+      return res.status(400).json({ msg: "Wishlist is empty" });
+    }
 
-  res.status(200).json(list);
-});
+    res.status(200).json(list);
+  }
+);
 
 /**
  * @desc    Add Product to Wishlist
@@ -35,34 +37,37 @@ const GetWishlist = asyncHandler(async (req: Request, res: Response) => {
  * @param   {object} req.user.id
  */
 
-const AddToWishlist = asyncHandler(async (req: Request, res: Response) => {
-  const List = await Wishlist.findOne({ user: req.user.id }).select(
-    "-__v -updatedAt -createdAt"
-  );
+const AddToWishlist = asyncHandler(
+  async (req: Request, res: Response): Promise<any> => {
+    const List = await Wishlist.findOne({ user: req.user.id }).select(
+      "-__v -updatedAt -createdAt"
+    );
 
-  if (!List) {
-    return res.status(400).json({ msg: "Wishlist is not found" });
-  }
-  const product = await Products.findById(req.params.id).lean();
+    if (!List) {
+      return res.status(400).json({ msg: "Wishlist is not found" });
+    }
+    const product = await Products.findById(req.params.id).lean();
 
-  if (!product) {
-    return res.status(404).json({ msg: "Product not Found" });
-  }
-  //check if the product is in the already in the wishlist
-  let isProduct = List.products.find(
-    (product) => product.toString() === req.params.id
-  );
+    if (!product) {
+      return res.status(404).json({ msg: "Product not Found" });
+    }
+    //check if the product is in the already in the wishlist
+    let isProduct = List.products.find(
+      (product) => product.toString() === req.params.id
+    );
 
-  if (isProduct) {
-    return res.status(400).json({ msg: "Product already in wishlist" });
-  } else {
-    List.products.push(req.params.id);
-    await List.save();
-    res.status(200).json({
-      msg: `${product.name} is Added to wishlist`,
-    });
+    if (isProduct) {
+      return res.status(400).json({ msg: "Product already in wishlist" });
+    } else {
+      const ProjectId = req.params.id as any;
+      List.products.push(ProjectId);
+      await List.save();
+      res.status(200).json({
+        msg: `${product.name} is Added to wishlist`,
+      });
+    }
   }
-});
+);
 
 /**
  * @desc    DELETE  Product from Wishlist
@@ -72,9 +77,10 @@ const AddToWishlist = asyncHandler(async (req: Request, res: Response) => {
  */
 
 const DeleteWishlistProduct = asyncHandler(
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response): Promise<any> => {
     const List = await Wishlist.findOneAndUpdate(
       { user: req.user.id },
+      // @ts-ignore
       { $pull: { products: req.params.id } },
       { new: true }
     ).exec();

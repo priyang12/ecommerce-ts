@@ -1,23 +1,19 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "es6",
     "module": "commonjs",
     "outDir": "./build",
-    "rootDir": "./Server",
     "strict": true,
     "noImplicitAny": false,
     "strictNullChecks": true,
     "checkJs": true,
     "allowJs": true,
-    "moduleResolution": "node",
-    "types": ["node"],
-    "lib": ["es6"],
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "allowUnreachableCode": true,
     "useUnknownInCatchVariables": false
   },
-  "include": ["Server/**/*.ts", "Server/**/*.js", "Server/**/*.d.ts"],
+  "include": ["/**/*.ts", "/**/*.d.ts"],
   "exclude": ["node_modules", "<node_internals>/**"]
 }

@@ -23,10 +23,11 @@ dotenv.config();
 
 //init middleware
 
-app.use(express.json({ extented: false }));
+app.use(express.json({}));
 
 if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
+  const Morgan = morgan("dev") as any;
+  app.use(Morgan);
 }
 
 app.use("/api/users", CustomRateLimiter(), UserRoute);
@@ -42,8 +43,6 @@ app.get("/api/config/paypal", (req, res) => {
 
 //static for Browser
 const _dirname = path.resolve();
-
-app.use("/Photos", express.static(path.join(__dirname, "/Photos")));
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(_dirname, "/Client/build")));
@@ -61,4 +60,5 @@ app.use(notFound);
 app.use(errorHandler);
 
 const port = process.env.PORT || 5000;
+// @ts-ignore
 app.listen(port, console.log(`server is running on ${port}`));
