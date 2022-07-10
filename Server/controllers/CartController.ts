@@ -38,11 +38,11 @@ const GetCartProducts = asyncHandler(
 
 const AddToCart = asyncHandler(async (req: Request, res: Response) => {
   await runInTransaction(async (session) => {
-    const { id, qty } = req.body;
+    const { ProductId, qty } = req.body;
 
     const [UserCart, product] = await Promise.all([
       Cart.findOne({ user: req.user.id }).session(session),
-      Products.findById(id).lean(),
+      Products.findById(ProductId).lean(),
     ]);
 
     if (!UserCart) {
@@ -59,7 +59,7 @@ const AddToCart = asyncHandler(async (req: Request, res: Response) => {
     //check if the product is in the cart already
 
     let isProduct = UserCart.products.find(
-      (product) => product.product.toString() === id
+      (product) => product.product.toString() === ProductId
     );
 
     if (isProduct) {
@@ -69,7 +69,7 @@ const AddToCart = asyncHandler(async (req: Request, res: Response) => {
         msg: `${product.name} Qty is Updated to ${qty}`,
       });
     } else {
-      await UserCart.products.push({ product: id, qty });
+      await UserCart.products.push({ product: ProductId, qty });
       await UserCart.save();
       res.json({
         msg: `${product.name} is Added Cart`,

@@ -34,7 +34,7 @@ const Cart = () => {
 
   const UpdateQuantity = (_id: string, quantity: number) => {
     UpdateCart({
-      id: _id,
+      ProductId: _id,
       qty: quantity,
     });
   };

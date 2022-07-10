@@ -3,7 +3,6 @@ import type { Model, InferSchemaType } from "mongoose";
 
 const reviewSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
     rating: { type: Number, required: true },
     comment: { type: String, required: true },
     user: {
@@ -60,11 +59,6 @@ const ProductSchema = new mongoose.Schema(
       type: Number,
       required: true,
       default: 0,
-    },
-
-    Date: {
-      type: Date,
-      default: Date.now,
     },
   },
   {
