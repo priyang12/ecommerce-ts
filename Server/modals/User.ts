@@ -22,16 +22,6 @@ const UserSchema = new mongoose.Schema(
       required: true,
       default: false,
     },
-    cart: [
-      {
-        product: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
-          required: true,
-        },
-        qty: { type: Number },
-      },
-    ],
   },
   {
     timestamps: true,
@@ -70,6 +60,7 @@ UserSchema.pre("updateOne", async function (next) {
 });
 
 export type IUser = InferSchemaType<typeof UserSchema>;
+
 type IUserMethods = {
   matchPassword: (enteredPassword: string) => Promise<boolean>;
   BcryptPassword(password: string): Promise<void>;

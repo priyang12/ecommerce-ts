@@ -10,9 +10,16 @@ import {
 } from "../controllers/OrderController";
 import Auth from "../middleware/AuthMiddleware";
 import Admin from "../middleware/AdminMiddleware";
+import ZodMiddleware from "../middleware/ZodMiddleware";
+import { OrderValidation } from "@ecommerce/validation";
+
+const { CreateOrder } = OrderValidation;
 
 const router = express.Router();
-router.route("/").post(Auth, addOrderItems).get(Auth, getUserOrders);
+router
+  .route("/")
+  .post(Auth, ZodMiddleware(CreateOrder), addOrderItems)
+  .get(Auth, getUserOrders);
 
 router
   .route("/order/:id")

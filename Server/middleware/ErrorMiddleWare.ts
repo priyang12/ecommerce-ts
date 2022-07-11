@@ -5,12 +5,16 @@ const notFound = (req, res, next) => {
 };
 
 const errorHandler = (err, req, res, next) => {
+  let ErrorMessage = err.message;
+  if ("issues" in err) {
+    ErrorMessage = err.flatten();
+  }
   if (process.env.NODE_ENV !== "production") {
-    console.log(err);
+    console.log(ErrorMessage);
   }
   res.status(res.statusCode === 200 ? 500 : res.statusCode);
   res.json({
-    msg: err.message,
+    msg: ErrorMessage,
     stack: process.env.NODE_ENV === "production" ? null : err.stack,
   });
 };

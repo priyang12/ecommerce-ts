@@ -44,7 +44,10 @@ app.get("/api/config/paypal", (req, res) => {
 //static for Browser
 const _dirname = path.resolve();
 
-if (process.env.NODE_ENV === "production") {
+if (
+  process.env.NODE_ENV === "production" ||
+  process.env.NODE_ENV === "development"
+) {
   app.use(express.static(path.join(_dirname, "/Client/build")));
 
   app.get("*", (req, res) =>

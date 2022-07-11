@@ -106,7 +106,7 @@ const AdminUpdateProduct = () => {
     const formData = new FormData();
 
     formData.append("id", id);
-    formData.append("image", ImageFile);
+    formData.append("imageFile", ImageFile);
     formData.append("name", ProductData.name);
     formData.append("price", ProductData.price);
     formData.append("countInStock", ProductData.countInStock);

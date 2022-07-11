@@ -4,13 +4,6 @@
   "private": true,
   "proxy": "http://localhost:5001",
   "dependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "@types/jest": "^26.0.15",
-    "@types/node": "^12.0.0",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
     "axios": "^0.23.0",
     "install": "^0.13.0",
     "react": "^17.0.2",
@@ -30,13 +23,14 @@
     "workbox-routing": "^6.5.1",
     "workbox-strategies": "^6.5.1",
     "workbox-sw": "^6.5.1",
-    "workbox-window": "^6.5.3"
+    "workbox-window": "^6.5.3",
+    "@ecommerce/validation": "*"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "CI=false && react-scripts build",
-    "test": "react-scripts test",
-    "coverage": "react-scripts test --watchAll --coverage",
+    "test": "react-scripts test --watchAll --coverage",
+    "test:watch": "react-scripts test --coverage",
     "eject": "react-scripts eject",
     "FormatePages": "bash FileFormate.sh",
     "Component": "bash Component.sh"
@@ -60,12 +54,20 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
     "@testing-library/react-hooks": "^7.0.2",
     "@types/react-helmet": "^6.1.5",
     "@types/react-router-dom": "^5.3.1",
     "@types/react-test-renderer": "^17.0.1",
     "@types/styled-components": "^5.1.15",
     "axios-mock-adapter": "^1.20.0",
+    "eslint-config-custom": "*",
     "react-scripts": "^5.0.0",
     "react-test-renderer": "^17.0.2"
   }

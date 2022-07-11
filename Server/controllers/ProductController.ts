@@ -41,6 +41,7 @@ const GetAllDetailsProducts = asyncHandler(
     if (!products) {
       products = await Products.find({ ...keyword })
         .limit(pageSize)
+        .select("-__v -createdAt")
         .skip(pageSize * (page - 1))
         .lean();
 
@@ -168,6 +169,7 @@ const AddProduct = asyncHandler(async (req: Request, res: Response) => {
     );
 
     if (req.file) {
+      throw new Error("Image is not allowed");
       const image: any = await imageKit.upload({
         file: req.file.buffer,
         fileName: req.file.originalname,
@@ -177,7 +179,7 @@ const AddProduct = asyncHandler(async (req: Request, res: Response) => {
       product.image = image.url;
       product.save();
     }
-
+    throw new Error("Image is not allowed");
     res.status(201).json({ msg: `${product.name} is Added` });
   });
 });
@@ -199,14 +201,17 @@ const UpdateProduct = asyncHandler(async (req: Request, res: Response) => {
     product.update(req.body);
 
     if (req.file) {
-      const image: any = imageKit.upload({
-        file: req.file.buffer,
-        fileName: req.file.originalname,
-        // @ts-ignore
-        tags: ["test", "image"],
-      });
-      product.image = image.url;
-      product.save();
+      imageKit
+        .upload({
+          file: req.file.buffer,
+          fileName: req.file.originalname,
+          // @ts-ignore
+          tags: ["test", "image"],
+        })
+        .then((image) => {
+          product.image = image.url;
+          product.save();
+        });
     }
     res.status(200).json({ msg: `${product.name} is Updated` });
   });

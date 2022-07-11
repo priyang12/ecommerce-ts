@@ -7,7 +7,6 @@ import Cart from "../modals/Cart";
 
 import sgMail from "@sendgrid/mail";
 import agenda from "../config/agenda";
-
 import { runInTransaction } from "../utils/Transactions";
 
 import type { Request, Response } from "express";
@@ -52,7 +51,7 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
   await runInTransaction(async (session) => {
     const { name, email, password } = req.body;
 
-    const userExists = await User.findOne({ email });
+    const userExists = await User.findOne({ email }).lean();
 
     if (userExists) {
       res.status(400);
@@ -92,15 +91,12 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
  */
 
 const getUserProfile = asyncHandler(async (req: Request, res: Response) => {
-  const user = await User.findById(req.user.id).lean();
+  const user = await User.findById(req.user.id)
+    .select("-password -__v -cart")
+    .lean();
 
   if (user) {
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-    });
+    res.json(user);
   } else {
     res.status(404);
     throw new Error("User not found");
@@ -114,12 +110,7 @@ const getUserProfile = asyncHandler(async (req: Request, res: Response) => {
  * @body {password: string, password2: string}
  */
 const resetpassword = asyncHandler(async (req: Request, res: Response) => {
-  const { password, password2 } = req.body;
-
-  if (password !== password2 || password.length < 6 || password2.length < 6) {
-    res.status(400);
-    throw Error("Invalid passwords");
-  }
+  const { password } = req.body;
 
   await User.updateOne(
     {
@@ -142,24 +133,25 @@ const resetpassword = asyncHandler(async (req: Request, res: Response) => {
  */
 
 const UpdateProfile = asyncHandler(async (req: Request, res: Response) => {
-  const user = await User.findById(req.user.id);
+  const { email } = req.body;
+  const IfEmailExists = await User.findOne({ email });
+  if (IfEmailExists) {
+    res.status(400);
+    throw new Error("Email already exists");
+  }
+  const UserUpdate = await User.findByIdAndUpdate(req.user.id, {
+    $set: {
+      name: req.body.name,
+      email: req.body.email,
+    },
+  });
 
-  if (user) {
-    user.name = req.body.name || user.name;
-    if (
-      req.body.CurrentPassword &&
-      (await user.matchPassword(req.body.CurrentPassword))
-    ) {
-      user.password = req.body.password;
-    }
-
-    const updatedUser = await user.save();
-
-    res.status(200).json(updatedUser);
-  } else {
+  if (!UserUpdate) {
     res.status(404);
     throw new Error("User not found");
   }
+
+  res.json({ msg: "User updated successfully", user: UserUpdate });
 });
 
 /**
@@ -285,6 +277,28 @@ const recoverMail = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * @desc    Only For Development
+ * @route   PUT /api/users/
+ * @access  Private
+ * @body    {role: string}
+ */
+
+const ChangeRole = asyncHandler(async (req: Request, res: Response) => {
+  if (process.env.NODE_ENV !== "development") {
+    res.status(403);
+    throw new Error("Forbidden");
+  }
+  console.log(req.user);
+
+  const UserUpdate = await User.findByIdAndUpdate(req.user.id, {
+    $set: {
+      isAdmin: req.body.admin,
+    },
+  });
+  res.json({ msg: "User role Updated successfully", user: UserUpdate });
+});
+
 export {
   test,
   registerUser,
@@ -298,4 +312,5 @@ export {
   getUsers,
   resetpassword,
   recoverMail,
+  ChangeRole,
 };

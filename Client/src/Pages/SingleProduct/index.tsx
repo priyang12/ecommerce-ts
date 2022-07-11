@@ -44,7 +44,7 @@ const SingleProduct = () => {
     e.preventDefault();
 
     PostQty({
-      id: Product._id,
+      ProductId: Product._id,
       qty: parseInt(Qty),
     });
   };

@@ -14,7 +14,7 @@ export const LoadCartQuery = async () => {
 
 export const AddOrUpdateCartQuery = (setAlert: any) => {
   const { mutate, isLoading, isSuccess } = useMutation(
-    async (data: { id: string; qty: number }) => {
+    async (data: { ProductId: string; qty: number }) => {
       return await axios.post("/api/cart", data);
     },
     {

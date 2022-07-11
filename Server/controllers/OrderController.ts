@@ -35,24 +35,13 @@ const addOrderItems = asyncHandler(async (req: Request, res: Response) => {
       shippingPrice,
       totalPrice,
       payment,
+      shippingAddress,
     } = req.body;
     const user = req.user.id;
     if (orderItems && orderItems.length === 0) {
       res.status(400);
       throw new Error("No order items");
     } else {
-      const paymentResult = {
-        id: payment.id,
-        status: payment.status,
-        update_time: payment.update_time,
-        email_address: payment.payer.email_address,
-      };
-      const shippingAddress = {
-        address: req.body.shippingAddress.homeAddress,
-        city: req.body.shippingAddress.city,
-        postalcode: req.body.shippingAddress.postalCode,
-      };
-
       const order = await Order.create({
         user: user,
         orderItems,
@@ -62,7 +51,7 @@ const addOrderItems = asyncHandler(async (req: Request, res: Response) => {
         taxPrice,
         shippingPrice,
         totalPrice,
-        paymentResult,
+        paymentResult: payment,
         paidAt: Date.now(),
       });
 
