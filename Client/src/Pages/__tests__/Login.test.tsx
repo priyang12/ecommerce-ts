@@ -42,8 +42,8 @@ it("Input Validation on Submit", () => {
 
   userEvent.click(screen.getByText(/login/));
 
-  expect(screen.getByText("Email is not Valid")).toBeInTheDocument();
+  expect(screen.getByText("Invalid email")).toBeInTheDocument();
   expect(
-    screen.getByText("Password Should be more than 6 Characters")
+    screen.getByText("Password must be at least 6 characters")
   ).toBeInTheDocument();
 });

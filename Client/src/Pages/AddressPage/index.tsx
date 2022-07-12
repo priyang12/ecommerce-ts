@@ -13,9 +13,8 @@ let init: Address = {
 
 const AddressPage = () => {
   const history = useHistory();
-  const [ShippingAddress, ChangeShippingAddress, SetState] = useForm(
-    localStorage.address ? JSON.parse(localStorage.address) : init
-  );
+  const { state: ShippingAddress, ChangeState: ChangeShippingAddress } =
+    useForm(localStorage.address ? JSON.parse(localStorage.address) : init);
   const { homeAddress, city, postalCode, country } = ShippingAddress;
 
   const [Valid, setValid] = useState(false);

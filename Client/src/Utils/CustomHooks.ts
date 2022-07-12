@@ -1,14 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-export const useForm = (
-  initialState: any
-): [
-  any,
-  (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
-  (NewState: any) => void,
-  any,
-  (ErrorState: any) => void
-] => {
+export const useForm = (initialState: any) => {
   const [state, setState] = useState(initialState);
   const [ErrorsState, setErrorsState] = useState(initialState);
   const SetState = (NewState: unknown) => {
@@ -36,7 +28,7 @@ export const useForm = (
   // Pass SetErrorState for set error state
   // Pass Set State for set state to null of init
 
-  return [state, ChangeState, SetState, ErrorsState, setErrors];
+  return { state, ChangeState, SetState, ErrorsState, setErrors };
 };
 
 export const useToggle = (

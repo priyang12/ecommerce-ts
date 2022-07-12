@@ -9,6 +9,7 @@ import {
   LoadCartQuery,
 } from "../../API/CartAPI";
 import { useQuery } from "react-query";
+import { CartValidation } from "@ecommerce/validation";
 import Spinner from "../../Components/Spinner";
 
 const Cart = () => {
@@ -33,10 +34,12 @@ const Cart = () => {
   const { mutate: UpdateCart } = AddOrUpdateCartQuery(setAlert);
 
   const UpdateQuantity = (_id: string, quantity: number) => {
-    UpdateCart({
-      ProductId: _id,
-      qty: quantity,
-    });
+    UpdateCart(
+      CartValidation.CartPost.parse({
+        ProductId: _id,
+        qty: quantity,
+      })
+    );
   };
 
   const RemoveFromCart = (id: string) => {
@@ -82,9 +85,9 @@ const Cart = () => {
       {Deleting && <div>Deleting</div>}
       <StyledContainer>
         <h1>SHOPPING CART</h1>
-        {CartItems?.map((item: CartItem) => (
+        {CartItems.map((item: CartItem, index) => (
           <ProductList
-            key={item._id}
+            key={index}
             styledWidth="auto"
             Cart={item}
             DeleteFromCart={RemoveFromCart}

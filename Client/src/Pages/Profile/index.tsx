@@ -11,7 +11,13 @@ import {
 import Spinner from "../../Components/Spinner";
 const Profile = () => {
   const { state, dispatch } = useContext(AuthContext);
-  const [UserForm, ChangeState, setState, FormErrors, setErrors] = useForm({
+  const {
+    state: UserForm,
+    ChangeState,
+    SetState,
+    ErrorsState: FormErrors,
+    setErrors,
+  } = useForm({
     name: "",
     currentPassword: "",
     Password: "",
@@ -20,7 +26,7 @@ const Profile = () => {
   const { name, currentPassword, Password, Password2 } = UserForm;
 
   if (state.user && name !== state.user.name) {
-    setState({
+    SetState({
       name: state.user.name,
       currentPassword: "",
       Password: "",

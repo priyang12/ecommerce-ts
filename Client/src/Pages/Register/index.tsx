@@ -3,17 +3,11 @@ import { Link, Redirect } from "react-router-dom";
 import { RegisterUser } from "../../Context/Authentication/AuthActions";
 import { AuthContext } from "../../Context/Authentication/AuthContext";
 import { useForm } from "../../Utils/CustomHooks";
-import {
-  ConfirmPassword,
-  ValidateEmail,
-  ValidateName,
-  ValidatePassword,
-} from "../../Utils/Validation";
-
 import { StyledContainer } from "../../Components/StyledComponents/Container";
-import Spinner from "../../Components/Spinner";
 import { Helmet } from "react-helmet-async";
-
+import { FormControl, Input, Label } from "../../StyledComponents/FormControl";
+import { UserValidation } from "@ecommerce/validation";
+import Spinner from "../../Components/Spinner";
 const init = {
   name: "",
   email: "",
@@ -23,41 +17,23 @@ const init = {
 
 const Register = () => {
   const { state, dispatch } = useContext(AuthContext);
-  /* eslint-disable */
-  const [User, ChangeState, setState, FormErrors, setErrors] = useForm(init);
+  const {
+    state: User,
+    ChangeState,
+    ErrorsState: FormErrors,
+    setErrors,
+  } = useForm(init);
   const { name, email, password, password2 } = User;
 
   const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let validate = true;
-    let Errors = {
-      name: "",
-      email: "",
-      password: "",
-      password2: "",
-    };
 
-    if (!ValidateName(name)) {
-      Errors.name = "Name Should be 5-10 Characters";
-      validate = false;
-    }
-    if (!ValidateEmail(email)) {
-      Errors.email = "Email is not Valid";
-      validate = false;
-    }
-    if (!ValidatePassword(password)) {
-      Errors.password = "Password Should be more than 6 Characters";
-      validate = false;
-    }
-    if (!ConfirmPassword(password, password2)) {
-      Errors.password2 = "Passwords Does not Match";
-      validate = false;
-    }
-    if (validate) {
-      RegisterUser(User, dispatch);
-      setErrors(Errors);
-    } else {
-      setErrors(Errors);
+    try {
+      RegisterUser(UserValidation.RegisterSchema.parse(User), dispatch);
+    } catch (error: any) {
+      console.log(error.flatten().fieldErrors);
+
+      setErrors(error.flatten().fieldErrors);
     }
   };
   if (state.token) {
@@ -72,8 +48,8 @@ const Register = () => {
         <title>Register</title>
       </Helmet>
       <form onSubmit={onSubmit}>
-        <div className="form-control">
-          <input
+        <FormControl>
+          <Input
             type="text"
             name="name"
             id="name"
@@ -82,16 +58,16 @@ const Register = () => {
             required
           />
           <span className="bar"></span>
-          <label htmlFor="name">
+          <Label htmlFor="name">
             {FormErrors.name ? (
               <span className="error">{FormErrors.name}</span>
             ) : (
               "name"
             )}
-          </label>
-        </div>
-        <div className="form-control">
-          <input
+          </Label>
+        </FormControl>
+        <FormControl>
+          <Input
             type="text"
             name="email"
             id="email"
@@ -100,16 +76,16 @@ const Register = () => {
             required
           />
           <span className="bar"></span>
-          <label htmlFor="email">
+          <Label htmlFor="email">
             {FormErrors.email ? (
               <span className="error">{FormErrors.email}</span>
             ) : (
               "email"
             )}
-          </label>
-        </div>
-        <div className="form-control">
-          <input
+          </Label>
+        </FormControl>
+        <FormControl>
+          <Input
             type="password"
             name="password"
             id="password"
@@ -118,16 +94,16 @@ const Register = () => {
             required
           />
           <span className="bar"></span>
-          <label htmlFor="password">
+          <Label htmlFor="password">
             {FormErrors.password ? (
               <span className="error">{FormErrors.password}</span>
             ) : (
               "password"
             )}
-          </label>
-        </div>
-        <div className="form-control">
-          <input
+          </Label>
+        </FormControl>
+        <FormControl>
+          <Input
             type="password"
             name="password2"
             id="password2"
@@ -136,15 +112,15 @@ const Register = () => {
             required
           />
           <span className="bar"></span>
-          <label htmlFor="password2">
+          <Label htmlFor="password2">
             {FormErrors.password2 ? (
               <span className="error">{FormErrors.password2}</span>
             ) : (
               "confirm password"
             )}
-          </label>
-        </div>
-        <input type="submit" className="btn" value="Register" />
+          </Label>
+        </FormControl>
+        <Input type="submit" className="btn" value="Register" />
       </form>
       <div className="help">
         <Link to="#"> Need Help</Link>

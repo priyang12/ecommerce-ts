@@ -8,6 +8,8 @@ import { BrowserRouter } from "react-router-dom";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import userEvent from "@testing-library/user-event";
+import MockedData from "./FakeData/CartData.json";
+
 import "@testing-library/jest-dom";
 
 // Components
@@ -26,65 +28,18 @@ const setup = () => {
   );
 };
 
-const EmptyCart = {
-  _id: "616721ac6a6b1647b02c6ed9",
-  Cart: [],
-};
+const UpdateProduct = MockedData.UpdateProduct;
 
-const LoadUserCart = {
-  _id: "616721ac6a6b1647b02c6ed9",
-  products: [
-    {
-      _id: "617028b4ae931d0004f7d964",
-      product: {
-        price: 89.99,
-        countInStock: 2,
-        _id: "60d5e622e5179e2bb44bd838",
-        name: "Airpods Wireless Bluetooth Headphones",
-        image: "/Photos/image-1627384388351.webp",
-      },
-      qty: 2,
-    },
-    {
-      _id: "61705624b54854000494b5ce",
-      product: {
-        price: 929.99,
-        countInStock: 5,
-        _id: "60d5e622e5179e2bb44bd83c",
-        name: "Logtech mouse",
-        image: "/Photos/image-1627385386692.webp",
-      },
-      qty: 1,
-    },
-  ],
-};
+const AfterDeleteCart = MockedData.AfterDeleteCart;
 
-const UpdateProduct = {
-  _id: "616721ac6a6b1647b02c6ed9",
-  msg: "XyZ Qty Updated in Cart",
-  Cart: [
-    {
-      _id: "61705624b54854000494b5ce",
-      product: {
-        price: 929.99,
-        countInStock: 5,
-        _id: "60d5e622e5179e2bb44bd83c",
-        name: "Logtech mouse",
-        image: "/Photos/image-1627385386692.webp",
-      },
-      qty: 3,
-    },
-  ],
-};
-
-const AfterDeleteCart = {
-  _id: "616721ac6a6b1647b02c6ed9",
-  msg: "XyZ is Deleted From the Cart",
-};
+const LoadUserCart = MockedData.LoadUserCart;
 
 it("Empty Cart", async () => {
   client.clear();
-  mock.onGet("/api/cart").reply(200, EmptyCart);
+  mock.onGet("/api/cart").reply(200, {
+    _id: "616721ac6a6b1647b02c6ed9",
+    products: [],
+  });
   setup();
   await waitForElementToBeRemoved(screen.queryByAltText(/Loading/));
   expect(screen.getByText(/Your Cart is Empty/)).toBeInTheDocument();
@@ -95,19 +50,18 @@ it("Mock Get User Cart On Load", async () => {
 
   setup();
   await waitForElementToBeRemoved(screen.queryByAltText(/Loading/));
-  expect(screen.getByText(/Bluetooth Headphones/)).toBeInTheDocument();
-  expect(screen.getByText(/Logtech mouse/)).toBeInTheDocument();
+  LoadUserCart.products.forEach((item) => {
+    expect(screen.getByText(item.product.name)).toBeInTheDocument();
+  });
 });
 
 it("Mock Change Cart Qty", async () => {
-  mock.onGet("/api/cart").reply(200, LoadUserCart);
   mock.onPost("/api/cart").reply(200, UpdateProduct);
-
   setup();
   await waitForElementToBeRemoved(screen.queryByAltText(/Loading/));
   const QtySelects = screen.getAllByTestId("selectQty");
   userEvent.selectOptions(QtySelects[1], "1");
-  await waitFor(() => screen.findByText(/Updated in Cart/));
+  await waitFor(() => screen.findByText(UpdateProduct.msg));
 });
 
 it("Mock Delete Product Form Cart", async () => {
@@ -123,6 +77,4 @@ it("Mock Delete Product Form Cart", async () => {
   userEvent.click(DeleteBtn[0]);
 
   await waitFor(() => screen.findByText(/Deleting/));
-
-  // screen.debug();
 });

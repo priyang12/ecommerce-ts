@@ -15,7 +15,13 @@ import { StyledResetPasswordPage } from "./StyledResetPasswordPage";
 function ResetPassword() {
   const { id } = useParams<{ id: string }>();
   const { state, dispatch } = useContext(AuthContext);
-  const [UserForm, ChangeState, setState, FormErrors, setErrors] = useForm({
+  const {
+    state: UserForm,
+    ChangeState,
+    SetState,
+    ErrorsState: FormErrors,
+    setErrors,
+  } = useForm({
     Password: "",
     Password2: "",
   });
@@ -47,7 +53,7 @@ function ResetPassword() {
     if (validate) {
       UpdatePassword(dispatch, Password, Password2);
       setErrors(Errors);
-      setState({
+      SetState({
         Password: "",
         Password2: "",
       });

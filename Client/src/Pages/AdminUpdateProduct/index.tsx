@@ -32,18 +32,21 @@ const AdminUpdateProduct = () => {
   });
   const [UploadedImage, setUploadedImage] = useState<any>(null);
   const [ImageFile, setImageFile] = useState<any>(null);
-  const [ProductData, changeProductData, setProductData, ErrorsState] = useForm(
-    {
-      name: "",
-      price: 0,
-      image: "",
-      brand: "",
-      category: "",
-      countInStock: 0,
-      numReviews: 0,
-      description: "",
-    }
-  );
+  const {
+    state: ProductData,
+    ChangeState: changeProductData,
+    SetState: setProductData,
+    ErrorsState,
+  } = useForm({
+    name: "",
+    price: 0,
+    image: "",
+    brand: "",
+    category: "",
+    countInStock: 0,
+    numReviews: 0,
+    description: "",
+  });
 
   const {
     data: Product,

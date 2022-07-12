@@ -1,16 +1,21 @@
 import React, { useContext } from "react";
+import { UserValidation } from "@ecommerce/validation";
 import { StyledContainer } from "../../Components/StyledComponents/Container";
 import { useForm } from "../../Utils/CustomHooks";
 import { LoginUser } from "../../Context/Authentication/AuthActions";
 import { AuthContext } from "../../Context/Authentication/AuthContext";
-import { ValidateEmail, ValidatePassword } from "../../Utils/Validation";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { FormControl, Input, Label } from "../../StyledComponents/FormControl";
 
 const Login = () => {
   const { dispatch } = useContext(AuthContext);
-  /* eslint-disable */
-  const [User, ChangeState, setState, FormErrors, setErrors] = useForm({
+  const {
+    state: User,
+    ChangeState,
+    ErrorsState: FormErrors,
+    setErrors,
+  } = useForm({
     email: "",
     password: "",
   });
@@ -18,23 +23,13 @@ const Login = () => {
 
   const login = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let validate = true;
-    let Errors = {
-      email: "",
-      password: "",
-    };
-    if (!ValidateEmail(email)) {
-      Errors.email = "Email is not Valid";
-      validate = false;
-    }
-    if (!ValidatePassword(password)) {
-      Errors.password = "Password Should be more than 6 Characters";
-      validate = false;
-    }
-    if (validate) {
-      LoginUser(User, dispatch);
-    } else {
-      setErrors(Errors);
+    try {
+      LoginUser(
+        UserValidation.LoginSchema.parse({ email, password }),
+        dispatch
+      );
+    } catch (error: any) {
+      setErrors(error.flatten().fieldErrors);
     }
   };
   return (
@@ -43,8 +38,8 @@ const Login = () => {
         <title>Login</title>
       </Helmet>
       <form onSubmit={login}>
-        <div className="form-control">
-          <input
+        <FormControl>
+          <Input
             type="text"
             name="email"
             id="email"
@@ -53,16 +48,16 @@ const Login = () => {
             required
           />
           <span className="bar"></span>
-          <label htmlFor="email">
+          <Label htmlFor="email">
             {FormErrors.email ? (
               <span className="error">{FormErrors.email}</span>
             ) : (
               "email"
             )}
-          </label>
-        </div>
-        <div className="form-control">
-          <input
+          </Label>
+        </FormControl>
+        <FormControl>
+          <Input
             type="password"
             name="password"
             id="password"
@@ -71,15 +66,15 @@ const Login = () => {
             required
           />
           <span className="bar"></span>
-          <label htmlFor="password">
-            {FormErrors.email ? (
+          <Label htmlFor="password">
+            {FormErrors.password ? (
               <span className="error">{FormErrors.password}</span>
             ) : (
               "Password"
             )}
-          </label>
-        </div>
-        <input type="submit" value="login" className="btn" />
+          </Label>
+        </FormControl>
+        <Input type="submit" value="login" className="btn" />
       </form>
       <div className="help">
         <Link to="/ForgotPassword">Forget Password /</Link>
