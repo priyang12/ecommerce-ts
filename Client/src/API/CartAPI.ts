@@ -1,3 +1,4 @@
+import { CartValidation } from "@ecommerce/validation";
 import axios from "axios";
 import { useMutation } from "react-query";
 import { CartItem } from "../Components/ProductList";
@@ -6,7 +7,7 @@ import { queryClient } from "../query";
 export const LoadCartQuery = async () => {
   try {
     const response = await axios.get("/api/cart");
-    return response.data;
+    return CartValidation.CartSchema.parse(response.data);
   } catch (error: any) {
     return error.response;
   }

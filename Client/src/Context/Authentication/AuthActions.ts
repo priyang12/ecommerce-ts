@@ -21,7 +21,9 @@ export const loadUser = async (
     try {
       setLoading(dispatch);
       const { data }: any = await axios.get("/api/users");
+
       sessionStorage.setItem("User", JSON.stringify(data));
+
       dispatch({
         type: LOAD_USER,
         payload: data,

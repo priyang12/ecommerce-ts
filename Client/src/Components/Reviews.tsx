@@ -16,7 +16,9 @@ const Reviews: React.FC<{ reviews: Review[] }> = ({ reviews }) => {
         <ReviewList>
           {reviews.map((review) => (
             <ReviewItem key={review._id}>
-              <strong>{review.name}</strong>
+              <strong>
+                {typeof review.user !== "string" && review.user.name}
+              </strong>
               <div className="star-review">
                 <span className="stars">
                   <Rating value={review.rating} text="" />

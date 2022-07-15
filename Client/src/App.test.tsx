@@ -2,24 +2,32 @@ import { render, screen } from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import App from "./App";
-import { User } from "./Context/Authentication/interfaces";
 import { Wrapper } from "./TestSetup";
 
 import {
   AuthContext,
   AuthProvider,
+  AuthUser,
 } from "./Context/Authentication/AuthContext";
+import { Products } from "./Pages/Testdata/Data";
+
 const mock = new MockAdapter(axios);
 window.scrollTo = jest.fn();
 
+const User: AuthUser = {
+  name: "test",
+  email: "test@gmail.com",
+  _id: "5f4b8f9f9c9d440000c0c8f9",
+  isAdmin: true,
+};
+
+mock.onGet("/api/users").reply(200, User);
+
+mock.onGet("/api/products").reply(200, {
+  products: Products,
+});
+
 it("render App with login", () => {
-  const User: User = {
-    name: "test",
-    email: "test@gmail.com",
-    _id: "5f4b8f9f9c9d440000c0c8f9",
-    createdAt: "2020-05-06T13:52:56.859Z",
-    isAdmin: true,
-  };
   render(
     <Wrapper>
       <AuthContext.Provider
@@ -43,14 +51,8 @@ it("render App with login", () => {
 });
 
 it("render App with loadUser", async () => {
-  mock.onGet("/api/users").reply(200, {
-    user: {
-      name: "test",
-      email: "test@gmail.com",
-      _id: "5f4b8f9f9c9d440000c0c8f9",
-    },
-  });
-  localStorage.setItem("token", "asdaaasdasasdsdasdasd");
+  localStorage.setItem("token", "asdasdasdasd");
+
   const dispatch = jest.fn();
   render(
     <Wrapper>

@@ -1,11 +1,20 @@
 import { ReactNode, FC } from "react";
+import { CustomAxiosError } from "../API/interface";
 import { Alert, AlertContainer } from "./StyledComponents/AlertDisplayStyled";
 
-const AlertDisplay: FC<{
-  msg: string;
-  type: boolean;
+type AlertDisplayProps = {
+  msg?: string;
+  AxiosErrorState?: CustomAxiosError;
+  type?: boolean;
   children?: ReactNode;
-}> = ({ msg, type, children }) => {
+};
+
+const AlertDisplay: FC<AlertDisplayProps> = ({
+  AxiosErrorState,
+  msg,
+  type,
+  children,
+}) => {
   const theme = {
     alertTextColor: type ? "#00b500" : "#eacece",
     bg: type ? "#afdbaf" : "#ef251b",
@@ -18,7 +27,13 @@ const AlertDisplay: FC<{
         show: true,
       }}
     >
-      <Alert theme={theme}>{msg}</Alert>
+      {AxiosErrorState ? (
+        <Alert theme={theme}>
+          <p>{AxiosErrorState.response?.data.msg}</p>
+        </Alert>
+      ) : (
+        <Alert theme={theme}>{msg}</Alert>
+      )}
       {children}
     </AlertContainer>
   );

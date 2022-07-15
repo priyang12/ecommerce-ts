@@ -18,8 +18,8 @@ const OrderSchema = z.object({
   ),
   shippingAddress: z.object({
     address: z.string(),
-    city: z.string(),
-    postalcode: z.string(),
+    city: z.string().refine((city) => city.length > 1),
+    postalcode: z.string().refine((postalcode) => postalcode.length === 6),
   }),
   paymentMethod: z.string(),
   paymentResult: z.object({

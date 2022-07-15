@@ -5,16 +5,17 @@ const notFound = (req, res, next) => {
 };
 
 const errorHandler = (err, req, res, next) => {
-  let ErrorMessage = err.message;
+  let ZodError = {};
   if ("issues" in err) {
-    ErrorMessage = err.flatten();
+    ZodError = err.flatten();
   }
   if (process.env.NODE_ENV !== "production") {
-    console.log(ErrorMessage);
+    console.log(ZodError);
   }
   res.status(res.statusCode === 200 ? 500 : res.statusCode);
   res.json({
-    msg: ErrorMessage,
+    msg: err.message,
+    MessageStack: ZodError,
     stack: process.env.NODE_ENV === "production" ? null : err.stack,
   });
 };

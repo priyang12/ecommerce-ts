@@ -130,7 +130,9 @@ const GetTopProducts = asyncHandler(async (req: Request, res: Response) => {
  */
 
 const GetProductByID = asyncHandler(async (req: Request, res: Response) => {
-  const product = await Products.findById(req.params.id).lean();
+  const product = await Products.findById(req.params.id)
+    .populate("user")
+    .lean();
   if (product) {
     res.json(product);
   } else {

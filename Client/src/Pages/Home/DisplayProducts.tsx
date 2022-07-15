@@ -13,7 +13,7 @@ function DisplayProducts({ title = "Products Display" }) {
 
   if (isLoading) return <Spinner />;
 
-  if (Err) return <AlertDisplay msg={Err.message} type={false} />;
+  if (Err) return <AlertDisplay AxiosErrorState={Err} type={false} />;
 
   if (!ProductsData) return null;
   return (

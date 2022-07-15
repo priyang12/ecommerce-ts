@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import { ListProduct } from "../interfaces";
+import { CartProducts, ListProduct } from "../interfaces";
 import Quantity from "./Quantity";
 import {
   StyledItem,
@@ -16,7 +16,7 @@ export type CartItem = {
 };
 
 type PropType = {
-  Cart: CartItem;
+  Cart: CartProducts;
   styledWidth: string;
   DeleteFromCart?: (id: string) => void;
   UpdateQty?: (_id: string, quantity: number) => void;

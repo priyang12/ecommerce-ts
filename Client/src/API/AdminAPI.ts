@@ -7,10 +7,11 @@ import {
   LoadUsersAPI,
   AdminProductMutationAPI,
   RemoveUSerAPI,
+  CustomAxiosError,
 } from "./interface";
 
 export const useLoadUsers = () => {
-  return useQuery<LoadUsersAPI[], Error>("Users", async () => {
+  return useQuery<LoadUsersAPI[], CustomAxiosError>("Users", async () => {
     const response: AxiosResponse<LoadUsersAPI[]> = await axios.get(
       "/api/users/admin/all"
     );
@@ -48,7 +49,7 @@ export const useAddProduct = () => {
 };
 
 export const useDetailProducts = () => {
-  return useQuery<AdminProductAPI, Error>("products", async () => {
+  return useQuery<AdminProductAPI, CustomAxiosError>("products", async () => {
     const response: AxiosResponse<AdminProductAPI> = await axios.get(
       "/api/products/all"
     );

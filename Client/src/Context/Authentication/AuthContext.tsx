@@ -1,6 +1,26 @@
-import { AuthState, IContextModel } from "./interfaces";
 import { createContext, useReducer } from "react";
-import { AuthReducer } from "./AuthReducer";
+import { AuthActions, AuthReducer } from "./AuthReducer";
+import { User } from "../../interfaces";
+
+export interface IContextModel {
+  state: AuthState;
+  dispatch: React.Dispatch<AuthActions>;
+}
+interface alert {
+  show: boolean;
+  message: string;
+  type: string;
+}
+
+export type AuthUser = Omit<User, "password" | "updatedAt" | "createdAt">;
+
+export interface AuthState {
+  loading: boolean;
+  err: string | null;
+  token: string | null;
+  user: AuthUser | null;
+  alert: alert | null;
+}
 
 let Token = null;
 if (localStorage.token) Token = localStorage.token;

@@ -3,7 +3,7 @@ import { Redirect, useHistory } from "react-router";
 import TimeoutBtn from "../../Components/TimeoutBtn";
 import ProductList from "../../Components/ProductList";
 import Navigators from "../../Components/Navigators";
-import { Address, Cart } from "../../interfaces";
+import { Address, CartProducts } from "../../interfaces";
 import { AuthContext } from "../../Context/Authentication/AuthContext";
 import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
 
@@ -20,7 +20,8 @@ const PlaceOrder = () => {
   const { state } = useContext(AuthContext);
   const { token } = state;
 
-  const Cart: Cart[] = localStorage.Cart && JSON.parse(localStorage.Cart);
+  const Cart: CartProducts[] =
+    localStorage.Cart && JSON.parse(localStorage.Cart);
   const Address: Address =
     localStorage.address && JSON.parse(localStorage.address);
   const PayMethod = localStorage.payMethod;
@@ -70,8 +71,7 @@ const PlaceOrder = () => {
           <div className="detail">
             <StyledHeader>SHIPPING </StyledHeader>
             <p>
-              Address: {Address.homeAddress} , {Address.city} ,
-              {Address.postalCode},
+              Address: {Address.address} , {Address.city} ,{Address.postalcode},
             </p>
           </div>
           <div className="detail">

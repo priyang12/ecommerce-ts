@@ -1,75 +1,46 @@
-export interface User {
-  _id: string;
-  name: string;
-  email: string;
-  isAdmin: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
+import {
+  z,
+  ProductValidation,
+  UserValidation,
+  OrderValidation,
+  CartValidation,
+} from "@ecommerce/validation";
 
-export type Product = {
-  _id: string;
-  name: string;
-  description?: string;
-  image: string;
-  price: number;
-  rating: number;
-  numReviews: number;
-};
+const UserSchema = UserValidation.UserSchema;
 
-export interface DetailedProduct extends Product {
-  countInStock: number;
-  description: string;
-  brand: string;
-  category: string;
-  user: string;
-  reviews: Review[];
-  Date: string;
-  __v: number;
-  createdAt: string;
-  updatedAt: string;
-}
+export type User = z.infer<typeof UserSchema>;
 
-export interface Review {
-  _id: string;
-  name: string;
-  rating: number;
-  comment: string;
-  user: string;
-  createdAt: string;
-  updatedAt: string;
-}
+// Generate Types from
+const ProductSchema = ProductValidation.ProductsSchema.pick({
+  _id: true,
+  name: true,
+  price: true,
+  description: true,
+  image: true,
+  rating: true,
+  numReviews: true,
+});
 
-export interface Address {
-  homeAddress: string;
-  city: string;
-  postalCode: string;
-}
+export type Product = z.infer<typeof ProductSchema>;
 
-export interface Cart {
-  _id: string;
-  product: ListProduct;
-  qty: number;
-}
+export type DetailedProduct = z.infer<typeof ProductValidation.ProductsSchema>;
 
-export interface ListProduct {
-  price: number;
-  countInStock: number;
-  _id: string;
-  name: string;
-  image: string;
-}
+export type ListProduct = Pick<
+  DetailedProduct,
+  "_id" | "countInStock" | "name" | "price" | "image"
+>;
 
-export interface OrderItems {
-  _id: string;
-  product: {
-    price: string;
-    _id: string;
-    name: string;
-    image: string;
-  };
-  qty: string;
-}
+export type Review = z.infer<typeof ProductValidation.ReviewSchema>;
+
+export type OrderSchema = z.infer<typeof OrderValidation.OrderSchema>;
+
+export type Address = OrderSchema["shippingAddress"];
+
+export type Cart = z.infer<typeof CartValidation.CartSchema>;
+
+export type CartProducts = Cart["products"][0];
+
+export type OrderItems = Pick<CartProducts, "product" | "qty" | "_id">;
 
 export interface Order {
   _id: string;
@@ -80,23 +51,4 @@ export interface Order {
   paymentMethod: string;
   totalPrice: number;
   isDelivered: boolean;
-}
-
-export interface FullOrder {
-  id: string;
-  itemsPrice: string;
-  taxPrice: string;
-  shippingPrice: string;
-  totalPrice: string;
-  isDelivered: boolean;
-  user: string;
-  orderItems: OrderItems[];
-  shippingAddress: Address;
-  paymentMethod: string;
-  paymentResult: {
-    id: string;
-    status: string;
-    update_time: string;
-    email_address: string;
-  };
 }

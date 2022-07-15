@@ -2,6 +2,7 @@ import { z } from "zod";
 import { UserSchema } from "./UserValidation";
 
 const ReviewSchema = z.object({
+  _id: z.string(),
   rating: z.number(),
   comment: z.string(),
   user: z.string().or(
@@ -17,6 +18,7 @@ const ReviewSchema = z.object({
 
 const ProductsSchema = z.object({
   _id: z.string(),
+  name: z.string(),
   user: z.string().or(
     UserSchema.pick({
       _id: true,
@@ -36,8 +38,8 @@ const ProductsSchema = z.object({
   numReviews: z.number(),
   price: z.number().min(0),
   countInStock: z.number().min(0),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  createdAt: z.date().or(z.string()),
+  updatedAt: z.date().or(z.string()),
 });
 
 const AddProjectValidation = ProductsSchema.omit({
@@ -54,4 +56,9 @@ const AddProjectValidation = ProductsSchema.omit({
 
 const UpdateProductValidation = AddProjectValidation.optional();
 
-export { ProductsSchema, AddProjectValidation, UpdateProductValidation };
+export {
+  ReviewSchema,
+  ProductsSchema,
+  AddProjectValidation,
+  UpdateProductValidation,
+};

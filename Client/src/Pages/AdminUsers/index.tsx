@@ -1,5 +1,5 @@
 import { Profiler } from "react";
-import { User } from "../../Context/Authentication/interfaces";
+import { User } from "../../interfaces";
 import { useLoadUsers, useRemoveUser } from "../../API/AdminAPI";
 import Spinner from "../../Components/Spinner";
 import AlertDisplay from "../../Components/AlertDisplay";

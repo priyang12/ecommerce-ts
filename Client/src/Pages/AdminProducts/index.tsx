@@ -67,7 +67,10 @@ const AdminProducts = () => {
                   <h3>countInStock : {product.countInStock}</h3>
                   <strong>category : {product.category}</strong>
                   <strong>
-                    Last Updated : {product.updatedAt.slice(0, 10)}
+                    Last Updated :{" "}
+                    {typeof product.updatedAt === "string"
+                      ? product.updatedAt.slice(0, 10)
+                      : product.updatedAt.toDateString()}
                   </strong>
                 </div>
               </div>

@@ -1,3 +1,5 @@
+import { User } from "../../interfaces";
+import { AuthState } from "./AuthContext";
 import {
   LOGIN_SUCCESS,
   AUTH_ERROR,
@@ -8,8 +10,6 @@ import {
   MailSEND_SUCCESS,
   RESET_PASSWORD_SUCCESS,
 } from "./Authtypes";
-
-import { AuthState, User } from "./interfaces";
 
 type AuthPayload = {
   [LOGIN_SUCCESS]: string | null;

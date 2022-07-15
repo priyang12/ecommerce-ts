@@ -6,7 +6,8 @@ const CartSchema = z.object({
   user: z.string(),
   products: z.array(
     z.object({
-      product: z.string(),
+      _id: z.string().regex(/^[0-9a-fA-F]{24}$/),
+      product: z.string().or(z.any()),
       qty: z.number(),
     })
   ),

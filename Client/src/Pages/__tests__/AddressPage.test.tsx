@@ -6,6 +6,7 @@ import "@testing-library/jest-dom";
 
 //components
 import AddressPage from "../AddressPage";
+import { Address } from "../../interfaces";
 
 it("Do not Submit on inValid", () => {
   const history = createMemoryHistory();
@@ -21,33 +22,30 @@ it("Do not Submit on inValid", () => {
     </Router>
   );
   userEvent.click(screen.getByText(/Continue/i));
-  expect(
-    screen.getByText("Please Enter All the Fields Properly")
-  ).toBeInTheDocument();
 });
 
-// it("Store Address in Local Storage", () => {
-//   const history = createMemoryHistory();
-//   const cart: any = [
-//     {
-//       name: "Test",
-//     },
-//   ];
-//   localStorage.setItem("cart", cart);
-//   render(
-//     <Router history={history}>
-//       <AddressPage />
-//     </Router>
-//   );
-//   const address = {
-//     homeAddress: "202,Pipload",
-//     city: "Surat",
-//     postalCode: "456123",
-//   };
-//   userEvent.type(screen.getByLabelText(/homeAddress/i), address.homeAddress);
-//   userEvent.type(screen.getByLabelText(/city/i), address.city);
-//   userEvent.type(screen.getByLabelText(/postal Code/i), address.postalCode);
+it("Store Address in Local Storage", () => {
+  const history = createMemoryHistory();
+  const cart: any = [
+    {
+      name: "Test",
+    },
+  ];
+  localStorage.setItem("cart", cart);
+  render(
+    <Router history={history}>
+      <AddressPage />
+    </Router>
+  );
+  const address: Address = {
+    address: "Pipload",
+    city: "Surat",
+    postalcode: "456123",
+  };
+  userEvent.type(screen.getByLabelText(/address/i), address.address);
+  userEvent.type(screen.getByLabelText(/city/i), address.city);
+  userEvent.type(screen.getByLabelText(/Postal Code/i), address.postalcode);
 
-//   userEvent.click(screen.getByText(/Continue/i));
-//   expect(JSON.parse(localStorage.address)).toStrictEqual(address);
-// });
+  userEvent.click(screen.getByText(/Continue/i));
+  expect(JSON.parse(localStorage.address)).toStrictEqual(address);
+});

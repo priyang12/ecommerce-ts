@@ -1,50 +1,45 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useForm } from "../../Utils/CustomHooks";
 import { Address } from "../../interfaces";
 import Navigators from "../../Components/Navigators";
 import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
+import { OrderValidation } from "@ecommerce/validation";
+import { FormControl, Input, Label } from "../../StyledComponents/FormControl";
 
 let init: Address = {
-  homeAddress: "",
+  address: "",
   city: "",
-  postalCode: "",
+  postalcode: "",
 };
 
 const AddressPage = () => {
   const history = useHistory();
-  const { state: ShippingAddress, ChangeState: ChangeShippingAddress } =
-    useForm(localStorage.address ? JSON.parse(localStorage.address) : init);
-  const { homeAddress, city, postalCode, country } = ShippingAddress;
-
-  const [Valid, setValid] = useState(false);
+  const { state: ShippingAddress, ChangeState } = useForm(
+    localStorage.address ? JSON.parse(localStorage.address) : init
+  );
+  const { address, city, postalcode } = ShippingAddress;
 
   useEffect(() => {
     if (!localStorage.Cart || localStorage.Cart.length === 0) {
       history.push("/cart");
     }
   });
-  const validate = () => {
-    if (
-      homeAddress === "" ||
-      city === "" ||
-      postalCode === "" ||
-      country === ""
-    ) {
-      return false;
-    } else if (postalCode.length !== 6) return false;
-    return true;
-  };
   const SubmitAddress = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (validate()) {
+    console.log(ShippingAddress);
+
+    try {
+      OrderValidation.OrderSchema.pick({
+        shippingAddress: true,
+      }).parse({ shippingAddress: ShippingAddress });
       localStorage.setItem(
         "address",
-        JSON.stringify({ homeAddress, city, postalCode, country })
+        JSON.stringify({ address, city, postalcode })
       );
       history.push("/payment");
-    } else {
-      setValid(true);
+    } catch (error: any) {
+      // Need To Handle Error
     }
   };
   return (
@@ -52,50 +47,47 @@ const AddressPage = () => {
       <Navigators />
       <form onSubmit={SubmitAddress}>
         <h1>SHIPPING</h1>
-        <div className="form-control">
-          <input
+        <FormControl>
+          <Input
             type="text"
-            name="homeAddress"
-            id="Address"
-            onChange={ChangeShippingAddress}
-            value={homeAddress}
+            name="address"
+            id="address"
+            onChange={ChangeState}
+            value={address}
             required
           />
           <span className="highlight"></span>
           <span className="bar"></span>
-          <label htmlFor="Address">homeAddress</label>
-        </div>
-        <div className="form-control">
-          <input
+          <Label htmlFor="address">address</Label>
+        </FormControl>
+        <FormControl>
+          <Input
             type="text"
             name="city"
             id="City"
-            onChange={ChangeShippingAddress}
+            onChange={ChangeState}
             value={city}
             required
           />
           <span className="highlight"></span>
           <span className="bar"></span>
-          <label htmlFor="City">City</label>
-        </div>
-        <div className="form-control">
-          <input
+          <Label htmlFor="City">City</Label>
+        </FormControl>
+        <FormControl>
+          <Input
             type="number"
-            name="postalCode"
-            id="PostalCode"
-            onChange={ChangeShippingAddress}
-            value={postalCode}
+            name="postalcode"
+            id="postalcode"
+            onChange={ChangeState}
+            value={postalcode}
             required
           />
           <span className="highlight"></span>
           <span className="bar"></span>
-          <label htmlFor="PostalCode">Postal Code</label>
-        </div>
+          <Label htmlFor="postalcode">Postal Code</Label>
+        </FormControl>
 
         <input type="submit" className="btn" value="Continue" />
-        {Valid && (
-          <div className="alert">Please Enter All the Fields Properly</div>
-        )}
       </form>
     </StyledPaymentContainer>
   );

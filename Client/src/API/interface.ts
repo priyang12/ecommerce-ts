@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { DetailedProduct, Product, User } from "../interfaces";
 
 export interface ProductAPI {
@@ -25,3 +26,7 @@ export interface LoadUsersAPI extends User {}
 export interface RemoveUSerAPI {
   message: string;
 }
+
+export type CustomAxiosError = AxiosError<{
+  msg: string;
+}>;

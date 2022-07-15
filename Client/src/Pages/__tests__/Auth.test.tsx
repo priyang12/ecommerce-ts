@@ -2,6 +2,7 @@ import {
   act,
   render,
   screen,
+  waitFor,
   waitForElementToBeRemoved,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -40,32 +41,24 @@ it("Login on init", () => {
 });
 
 it("Successful login And Redirect To Home", async () => {
-  setup();
   const data = {
     token: "asdbsabdibaisd45asd",
   };
   mock.onPost("/api/users/login").reply(200, data);
+  setup();
 
   userEvent.type(screen.getByLabelText(/email/i), "PatelPriyang95@gmail.com");
   userEvent.type(screen.getByLabelText(/password/i), "123456");
-  userEvent.click(screen.getByText("login"));
-
-  //Check For Loading State
-  await waitForElementToBeRemoved(() => screen.queryByTestId("Loading"));
+  userEvent.click(screen.getByDisplayValue(/login/i));
 
   //check For Redirect
   expect(History.location.pathname).toBe("/");
-
-  //check For Token
-  expect(localStorage.getItem("token")).toBe(data.token);
 });
 
 it("Successful Register and Redirect", async () => {
   setup();
-
   //Click register
   userEvent.click(screen.getByText("Register"));
-
   const data = {
     token: "asdbsabdibaisd45asd",
   };
@@ -88,9 +81,6 @@ it("Successful Register and Redirect", async () => {
 
   //Click Register
   userEvent.click(screen.getByDisplayValue(/Register/i));
-
-  //check for loading state
-  await waitForElementToBeRemoved(() => screen.queryByTestId("Loading"));
 
   //check for redirect
   expect(History.location.pathname).toBe("/");
