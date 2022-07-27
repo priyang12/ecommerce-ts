@@ -1,8 +1,9 @@
 import asyncHandler from "express-async-handler";
 
 import User from "../modals/User";
-
 import Order from "../modals/Order";
+import Product from "../modals/Product";
+
 import sgMail from "@sendgrid/mail";
 import dotenv from "dotenv";
 import agenda from "../config/agenda";
@@ -42,6 +43,14 @@ const addOrderItems = asyncHandler(async (req: Request, res: Response) => {
       res.status(400);
       throw new Error("No order items");
     } else {
+      orderItems.forEach(async (item) => {
+        const product = await Product.findById(item.product);
+        if (!product || product.countInStock < item.qty) {
+          res.status(400);
+          throw new Error("Product not found");
+        }
+      });
+
       const order = await Order.create({
         user: user,
         orderItems,
