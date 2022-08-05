@@ -34,7 +34,6 @@ const Paypal = () => {
       script.type = "text/javascript";
       script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
       script.async = true;
-      console.log(document.body);
       document.body.appendChild(script);
       script.onload = () => {
         setSdkReady(true);
@@ -44,7 +43,6 @@ const Paypal = () => {
   }, []);
 
   const successPaymentHandler = (paymentResult: object) => {
-    console.log(paymentResult);
     Order.payment = paymentResult;
     CallOrder(Order);
   };

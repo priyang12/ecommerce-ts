@@ -63,7 +63,6 @@ describe("New Product", () => {
   //   const imagePreview = screen.getByAltText(/Product/);
   //   await userEvent.upload(imageInput, file);
   //   const Link = window.URL.createObjectURL(file);
-  //   console.log(Link);
   //   expect(imagePreview).toHaveAttribute("src", "./src/Images/product.jpg");
   // });
 

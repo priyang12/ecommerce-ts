@@ -17,11 +17,11 @@ export interface AdminProductMutationAPI {
   msg: string;
 }
 
-export interface SingleProductAPI extends DetailedProduct {}
+export type SingleProductAPI = DetailedProduct
 
-export interface SearchProductAPI extends Product {}
+export type SearchProductAPI = Product
 
-export interface LoadUsersAPI extends User {}
+export type LoadUsersAPI = User
 
 export interface RemoveUSerAPI {
   message: string;

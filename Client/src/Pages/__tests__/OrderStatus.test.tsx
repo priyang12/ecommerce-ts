@@ -78,11 +78,7 @@ describe("User Orders", () => {
     );
 
     //check if the loading is true
-    await waitForElementToBeRemoved(screen.queryByTestId("Loading")).then(
-      () => {
-        // expect(screen.queryByTestId("Loading")).toBeNull(); //check if the loading is false
-      }
-    );
+    await waitForElementToBeRemoved(screen.queryByTestId("Loading"));
 
     // Check if the Order is Empty.
     expect(screen.getByText("No Order Are In Place")).toBeInTheDocument();
@@ -139,9 +135,7 @@ describe("Admin Orders", () => {
     );
 
     //check if the loading is true
-    await waitForElementToBeRemoved(screen.queryByTestId("Loading")).then(
-      () => {}
-    );
+    await waitForElementToBeRemoved(screen.queryByTestId("Loading"));
     //check if the loading is true
     expect(screen.getByText(/John Doe/)).toBeInTheDocument();
   });

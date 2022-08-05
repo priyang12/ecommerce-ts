@@ -37,7 +37,7 @@ const Profile = () => {
   const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     let validate = true;
-    let Errors = {
+    const Errors = {
       name: "",
       currentPassword: "",
       password: "",
@@ -60,7 +60,6 @@ const Profile = () => {
       UpdateUser(dispatch, UserForm);
       setErrors(Errors);
     } else {
-      console.log(UserForm);
       setErrors(Errors);
     }
   };

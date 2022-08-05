@@ -38,7 +38,7 @@ function ResetPassword() {
   const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     let validate = true;
-    let Errors = {
+    const Errors = {
       password: "",
       password2: "",
     };

@@ -12,7 +12,7 @@ function SearchBar() {
 
   const search = () => {
     if (searchValue !== "") {
-      let path = `/search/name=${searchValue}`;
+      const path = `/search/name=${searchValue}`;
       history.push(path);
     }
   };

@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import type { Product } from "../interfaces";
 import Rating from "./Rating";
 
-type props = {
+type CardProps = {
   product: Product;
 };
 
-const ProductCard: React.FC<props> = ({ product }) => {
-  const { _id, name, image, price, rating, numReviews } = product;
-  if (!product) return null;
+const ProductCard: React.FC<CardProps> = ({
+  product: { _id, name, image, price, rating, numReviews },
+}: CardProps) => {
   return (
     <StyledProductCard className="product">
       <Link to={`/product/${_id}`}>

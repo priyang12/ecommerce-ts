@@ -50,11 +50,7 @@ const Carousel: FC = () => {
 
         {[...DisplayProducts, ...DisplayProducts, ...DisplayProducts].map(
           (slide, i) => {
-            let offset = DisplayProducts.length + (state.slideIndex - i);
-            // Products.map((slide: any, i: number) => {
-            //   let offset = state.slideIndex - i;
-            //   // New Effect
-            //   // if (offset < 0) offset += Products.length;
+            const offset = DisplayProducts.length + (state.slideIndex - i);
             return (
               <Slide
                 slide={slide}

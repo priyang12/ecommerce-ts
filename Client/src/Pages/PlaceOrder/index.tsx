@@ -28,7 +28,7 @@ const PlaceOrder = () => {
   const ProductsAmount =
     localStorage.ProductsAmount && JSON.parse(localStorage.ProductsAmount);
 
-  let ExtraAmount: number = 0;
+  let ExtraAmount = 0;
 
   useEffect(() => {
     if (!token) {

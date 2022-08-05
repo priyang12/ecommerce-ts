@@ -30,9 +30,11 @@
     "start": "react-scripts start",
     "build": "CI=false && react-scripts build",
     "test": "react-scripts test --watchAll=false  --coverage --forceExit",
-    "test:watch": "react-scripts test --coverage",
+    "test:watch": "react-scripts test --watch",
+    "test:coverage": "react-scripts test --coverage",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "eject": "react-scripts eject",
+    "lint": "eslint 'src/**/*.{ts,tsx}'",
     "FormatePages": "bash FileFormate.sh",
     "Component": "bash Component.sh"
   },

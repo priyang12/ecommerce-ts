@@ -12,6 +12,7 @@ import { serviceWorkerRegister } from "./serviceWokerRegister";
 
 declare global {
   interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     __REACT_DEVTOOLS_GLOBAL_HOOK__: any;
   }
 }
@@ -33,14 +34,14 @@ const disableReactDevTools = () => {
 
       window.__REACT_DEVTOOLS_GLOBAL_HOOK__[prop] =
         typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__[prop] === "function"
-          ? () => {}
+          ? // eslint-disable-next-line @typescript-eslint/no-empty-function
+            () => {}
           : null;
     }
   }
 };
 
 if (process.env.NODE_ENV === "production") {
-  console.log("In PRoduction");
   disableReactDevTools();
 }
 

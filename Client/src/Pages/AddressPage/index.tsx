@@ -7,7 +7,7 @@ import { StyledPaymentContainer } from "../../Components/StyledComponents/Styled
 import { OrderValidation } from "@ecommerce/validation";
 import { FormControl, Input, Label } from "../../StyledComponents/FormControl";
 
-let init: Address = {
+const init: Address = {
   address: "",
   city: "",
   postalcode: "",
@@ -27,7 +27,6 @@ const AddressPage = () => {
   });
   const SubmitAddress = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(ShippingAddress);
 
     try {
       OrderValidation.OrderSchema.pick({

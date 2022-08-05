@@ -9,7 +9,7 @@ const FallbackUI = ({ error, componentStack }: any) => {
   const resetErrorBoundary = () => {
     window.location.reload();
   };
-  let message =
+  const message =
     process.env.NODE_ENV === "production" ? "Server Error" : error.message;
   return (
     <StyledErrorCatch>

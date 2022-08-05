@@ -17,7 +17,7 @@ export const ValidatePassword = (password: string) => {
   return true;
 };
 
-export const ConfirmPassword = (password: string, password2: String) => {
+export const ConfirmPassword = (password: string, password2: string) => {
   if (password !== password2) return false;
   return true;
 };

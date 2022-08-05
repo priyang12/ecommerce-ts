@@ -106,7 +106,6 @@ export const UpdateUser = async (
     });
   } catch (err: any | AxiosError) {
     let ErrorMessage = "Server Error Try Again Later";
-    console.log(err);
     if (err as AxiosError) {
       ErrorMessage = err.response.data.message;
     }

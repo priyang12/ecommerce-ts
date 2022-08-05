@@ -47,6 +47,7 @@ const Setup = () =>
               createdAt: "2020-05-06T13:41:00.000Z",
             },
           },
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
           dispatch: () => {},
         }}
       >

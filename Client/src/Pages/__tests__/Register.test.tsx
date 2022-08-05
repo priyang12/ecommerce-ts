@@ -8,11 +8,6 @@ import Register from "../Register";
 import { AuthContext } from "../../Context/Authentication/AuthContext";
 import { Wrapper } from "../../TestSetup";
 
-let name: HTMLElement;
-let email: HTMLElement;
-let password: HTMLElement;
-let password2: HTMLElement;
-
 const setup = () => {
   render(
     <Wrapper>
@@ -35,14 +30,17 @@ const setup = () => {
     </Wrapper>
   );
 
-  name = screen.getByLabelText(/name/i);
-  email = screen.getByLabelText(/email/i);
-  password = screen.getByLabelText("password");
-  password2 = screen.getByLabelText(/confirm password/i);
+  const name = screen.getByLabelText(/name/i);
+  const email = screen.getByLabelText(/email/i);
+  const password = screen.getByLabelText("password");
+  const password2 = screen.getByLabelText(/confirm password/i);
+
+  return { name, email, password, password2 };
 };
 
 it("Check For User Validation on Invalid Submit", () => {
-  setup();
+  const { email } = setup();
+  userEvent.type(email, "asdasd");
   userEvent.click(screen.getByText(/Register/i));
   expect(screen.getByText(/Invalid email/i)).toBeInTheDocument();
   expect(
@@ -54,7 +52,7 @@ it("Check For User Validation on Invalid Submit", () => {
 });
 
 it("Check For empty value onChange", () => {
-  setup();
+  const { email, name } = setup();
   userEvent.type(name, "asdas");
   userEvent.clear(name);
   expect(screen.getByText(/NAME is required/)).toBeInTheDocument();
@@ -64,7 +62,7 @@ it("Check For empty value onChange", () => {
 });
 
 it("Check For User's Matching Passwords", () => {
-  setup();
+  const { password, password2 } = setup();
   userEvent.type(password, "123456sd");
   userEvent.type(password2, "1566");
 

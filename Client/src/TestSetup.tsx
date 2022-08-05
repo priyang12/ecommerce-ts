@@ -7,6 +7,7 @@ setLogger({
   log: console.log,
   warn: console.warn,
   // ✅ no more errors on the console
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   error: () => {},
 });
 
@@ -18,7 +19,7 @@ export const client = new QueryClient({
   },
 });
 
-export const Wrapper = ({ children }: any) => {
+export const Wrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <QueryClientProvider client={client}>
       <HelmetProvider>{children}</HelmetProvider>

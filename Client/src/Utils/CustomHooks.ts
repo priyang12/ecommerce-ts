@@ -82,7 +82,7 @@ export function useTilt(active: any) {
       mouseY: 0,
     };
 
-    let el = ref.current as HTMLElement;
+    const el = ref.current as HTMLElement;
 
     const handleMouseMove = (e: any) => {
       if (!el) {

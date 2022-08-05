@@ -29,12 +29,8 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      console.log(UserValidation.RegisterSchema.parse(User));
-
-      // RegisterUser(UserValidation.RegisterSchema.parse(User), dispatch);
+      RegisterUser(UserValidation.RegisterSchema.parse(User), dispatch);
     } catch (error: any) {
-      console.log(error.flatten().fieldErrors);
-
       setErrors(error.flatten().fieldErrors);
     }
   };
