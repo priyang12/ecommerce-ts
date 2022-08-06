@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import ErrorCatch from "./Components/ErrorCatch";
 import { AuthProvider } from "./Context/Authentication/AuthContext";
+import { Normalize } from "styled-normalize";
 import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { HelmetProvider } from "react-helmet-async";
@@ -51,6 +52,7 @@ ReactDOM.render(
     <ErrorCatch>
       <AuthProvider>
         <React.StrictMode>
+          <Normalize />
           <HelmetProvider>
             <App />
           </HelmetProvider>
