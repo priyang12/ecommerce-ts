@@ -24,7 +24,8 @@
   "workspaces": [
     "packages/*",
     "Client",
-    "Server"
+    "Server",
+    "admin"
   ],
   "author": "Priyang",
   "license": "ISC",
