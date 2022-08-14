@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-export const StyledResetPasswordPage = styled.section`
-  font-size: 5rem;
+export const StyledPage = styled.section`
+  font-size: 2rem;
   min-height: 100vh;
   text-align: center;
   a {

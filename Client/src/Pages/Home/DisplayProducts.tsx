@@ -8,14 +8,14 @@ import AlertDisplay from "../../Components/AlertDisplay";
 import ProductCard from "../../Components/ProductCard";
 import Spinner from "../../Components/Spinner";
 
-function DisplayProducts({ title = "Products Display" }) {
+function DisplayProducts({ title = "Products Display" }: { title?: string }) {
   const { data: ProductsData, error: Err, isLoading } = useProducts();
 
   if (isLoading) return <Spinner />;
-
   if (Err) return <AlertDisplay AxiosErrorState={Err} type={false} />;
 
-  if (!ProductsData) return null;
+  if (!ProductsData) throw Error("No Products Data");
+
   return (
     <StyledDisplay>
       <h1>{title}</h1>

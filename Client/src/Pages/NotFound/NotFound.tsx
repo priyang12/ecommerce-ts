@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { StyledResetPasswordPage } from "./StyledNotFoundPage";
+import { StyledPage } from "./StyledNotFoundPage";
 
 interface Props {
   data: {
@@ -8,20 +8,20 @@ interface Props {
     link: string;
   };
 }
-function ResetPassword({ data }: Props) {
+function NotFound({ data }: Props) {
   return (
-    <StyledResetPasswordPage>
+    <StyledPage>
       <h1>{data.heading}</h1>
       <p>{data.message}</p>
 
       <p>
         <Link to="/">{data.link}</Link>
       </p>
-    </StyledResetPasswordPage>
+    </StyledPage>
   );
 }
 
-ResetPassword.defaultProps = {
+NotFound.defaultProps = {
   data: {
     heading: "404 Not Found",
     message: "The page you are looking for does not exist.",
@@ -29,4 +29,4 @@ ResetPassword.defaultProps = {
   },
 };
 
-export default ResetPassword;
+export default NotFound;

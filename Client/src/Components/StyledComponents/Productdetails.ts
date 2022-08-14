@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const StyledContainer = styled.section`
   max-width: 120ch;
   width: 100%;
-  min-height: 100vh;
   margin: 2rem auto;
 `;
 
@@ -15,14 +14,15 @@ export const StyledProduct = styled.div`
 
   img {
     width: 100%;
-    height: 100%;
   }
-  @media (min-width: 100px) and (max-width: 500px) and (orientation: portrait) {
+  @media (min-width: 100px) and (max-width: 600px) and (orientation: portrait) {
     width: 90%;
     margin: auto;
     grid-template-columns: 1fr;
   }
-  @media (min-width: 500px) and (max-width: 799px) {
+
+  @media (min-width: 600px) and (max-width: 799px) {
+    margin: 1em;
     grid-template-columns: 1fr 2fr;
   }
 `;

@@ -1,8 +1,8 @@
 import { ErrorBoundary } from "react-error-boundary";
-import AlertDisplay from "./AlertDisplay";
 import {
   StyledButton,
   StyledErrorCatch,
+  StyledErrorCatchMessage,
 } from "./StyledComponents/StyledErrorCatch";
 
 const FallbackUI = ({ error, componentStack }: any) => {
@@ -13,12 +13,11 @@ const FallbackUI = ({ error, componentStack }: any) => {
     process.env.NODE_ENV === "production" ? "Server Error" : error.message;
   return (
     <StyledErrorCatch>
-      <h1>Something went wrong</h1>
-      <p>
-        <AlertDisplay msg={message} type={false} />
+      <StyledErrorCatchMessage>
+        {message ? message : "Something went wrong"}
         <br />
         {componentStack}
-      </p>
+      </StyledErrorCatchMessage>
       <StyledButton onClick={resetErrorBoundary} className="btn">
         Try again
       </StyledButton>
