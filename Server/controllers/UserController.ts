@@ -182,6 +182,13 @@ const getUsers = asyncHandler(async (req: Request, res: Response) => {
     typeof req.query.page === "string" ? parseInt(req.query.page) : 1;
   const Limit =
     typeof req.query.range === "string" ? parseInt(req.query.range) : 10;
+  // const mapPonyToResponse = (pony) =>
+  // ({
+  //   name: pony.name,
+  //   gender: pony.gender || 'female',
+  //   type: types[pony.type].human_readable,
+  //   // And so on.
+  // })
 
   const users = await User.find({})
     .select(Select)
