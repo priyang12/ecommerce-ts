@@ -177,7 +177,19 @@ const deleteAccount = asyncHandler(async (req: Request, res: Response) => {
  */
 
 const getUsers = asyncHandler(async (req: Request, res: Response) => {
-  const users = await User.find({}).select("-password -cart -__v").lean();
+  const Select = req.query.select ? req.query.select : "-password -cart -__v";
+  const Page =
+    typeof req.query.page === "string" ? parseInt(req.query.page) : 1;
+  const Limit =
+    typeof req.query.range === "string" ? parseInt(req.query.range) : 10;
+
+  const users = await User.find({})
+    .select(Select)
+    .skip((Page - 1) * Limit)
+    .limit(Limit)
+    .lean();
+  const count = await User.countDocuments();
+  res.set("x-total-count", JSON.stringify(count));
   res.json(users);
 });
 

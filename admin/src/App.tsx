@@ -1,37 +1,67 @@
 import {
   Admin,
   Resource,
-  UrlField,
   Datagrid,
   EmailField,
   List,
   TextField,
+  BooleanField,
+  EditButton,
+  EditGuesser,
+  ArrayInput,
+  BooleanInput,
+  DateInput,
+  Edit,
+  NumberInput,
+  ReferenceInput,
+  SelectInput,
+  SimpleForm,
+  SimpleFormIterator,
+  TextInput,
 } from "react-admin";
-
-import jsonServerProvider from "ra-data-json-server";
 import authProvider from "./AuthProvider";
+import { dataProvider } from "./dataProvide";
 
-const dataProvider = jsonServerProvider("https://jsonplaceholder.typicode.com");
 const UserList = () => (
   <List>
-    <Datagrid rowClick="edit">
-      <TextField source="id" />
+    <Datagrid>
+      <TextField source="_id" />
       <TextField source="name" />
-      <TextField source="username" />
       <EmailField source="email" />
-      <TextField source="address.street" />
-      <TextField source="phone" />
-      <UrlField source="website" />
-      <TextField source="company.name" />
+      <TextField source="createdAt" />
+      <BooleanField source="isAdmin" />
+      <EditButton />
     </Datagrid>
   </List>
+);
+
+export const EditUsers = () => (
+  <Edit>
+    <SimpleForm>
+      <BooleanInput source="isAdmin" />
+      <TextInput source="name" />
+      <TextInput source="email" />
+      <ArrayInput source="cart">
+        <SimpleFormIterator>
+          {/* <ReferenceInput source="_id" reference="s">
+            <SelectInput optionText="_id" />
+          </ReferenceInput> */}
+          <TextInput source="product" />
+          <NumberInput source="qty" />
+        </SimpleFormIterator>
+      </ArrayInput>
+      <DateInput source="createdAt" />
+      <DateInput source="updatedAt" />
+      <TextInput source="id" />
+    </SimpleForm>
+  </Edit>
 );
 
 function App() {
   return (
     <div className="App">
       <Admin dataProvider={dataProvider} authProvider={authProvider}>
-        <Resource name="users" list={UserList} />
+        <Resource name="admin/users" list={UserList} edit={EditUsers} />
       </Admin>
       ;
     </div>
