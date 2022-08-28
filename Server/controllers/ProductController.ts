@@ -81,7 +81,7 @@ const GetAllProducts = asyncHandler(async (req: Request, res: Response) => {
     : {};
   const count = await Products.countDocuments({ ...keyword });
   let products = myCache.get("products" + keyword + page + count);
-
+  res.set("x-total-count", JSON.stringify(count));
   if (!products) {
     products = await Products.find({ ...keyword })
       .limit(pageSize)
@@ -181,6 +181,7 @@ const AddProduct = asyncHandler(async (req: Request, res: Response) => {
     }
     throw new Error("Image is not allowed");
     res.status(201).json({ msg: `${product.name} is Added` });
+    myCache.del("AdminProducts");
   });
 });
 
@@ -214,6 +215,7 @@ const UpdateProduct = asyncHandler(async (req: Request, res: Response) => {
         });
     }
     res.status(200).json({ msg: `${product.name} is Updated` });
+    myCache.del("AdminProducts");
   });
 });
 
@@ -227,10 +229,12 @@ const UpdateProduct = asyncHandler(async (req: Request, res: Response) => {
 const deleteProduct = asyncHandler(
   async (req: Request, res: Response): Promise<any> => {
     const product = await Products.findByIdAndDelete(req.params.id);
+
     if (!product) {
       return res.status(404).json({ msg: "Product not Found" });
     }
     res.status(200).json({ msg: product.name + " Deleted Successfully" });
+    myCache.del("AdminProducts");
   }
 );
 
@@ -274,6 +278,46 @@ const AddReview = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * @desc    Get AdminProducts
+ * @route   Get /api/admin/products
+ * @access  Public
+ * @param   {object} req.query
+ * @param   {object} res
+ * @returns {object} products
+ */
+
+const AdminProducts = asyncHandler(async (req: Request, res: Response) => {
+  const pageSize = 9;
+  const page = Number(req.query.page) || 1;
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword,
+          $options: "i",
+        },
+      }
+    : {};
+  const count = await Products.countDocuments({ ...keyword });
+  let products = myCache.get("AdminProducts");
+  res.set("x-total-count", JSON.stringify(count));
+
+  if (!products) {
+    products = await Products.find({ ...keyword })
+      .limit(pageSize)
+      .skip(pageSize * (page - 1))
+      .select(
+        "rating numReviews price countInStock _id name brand image category Date"
+      );
+
+    myCache.set("AdminProducts", products, 3600 / 2);
+
+    res.json(products);
+  } else {
+    res.json(products);
+  }
+});
+
 export {
   GetAllDetailsProducts,
   GetAllProducts,
@@ -282,5 +326,6 @@ export {
   AddProduct,
   AddReview,
   deleteProduct,
+  AdminProducts,
   GetTopProducts,
 };

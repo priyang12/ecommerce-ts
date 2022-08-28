@@ -13,10 +13,18 @@ import Admin from "../middleware/AdminMiddleware";
 import ZodMiddleware from "../middleware/ZodMiddleware";
 import {
   AddProduct,
+  AdminProducts,
   deleteProduct,
-  GetAllProducts,
   UpdateProduct,
+  GetProductByID,
 } from "../controllers/ProductController";
+import {
+  DeleteMany,
+  DeleteOrder,
+  getAllOrders,
+  getOrder,
+  UpdateOrder,
+} from "../controllers/OrderController";
 
 const { UpdateProductValidation, AddProjectValidation } = ProductValidation;
 
@@ -37,13 +45,17 @@ router
 
 router
   .route("/product")
-  .get(GetAllProducts)
+  .get(AdminProducts)
   .post(
     Admin,
     ZodMiddleware(AddProjectValidation),
     upload.single("imageFile"),
     AddProduct
-  )
+  );
+
+router
+  .route("/product/:id")
+  .get(GetProductByID)
   .put(
     Admin,
     ZodMiddleware(UpdateProductValidation),
@@ -51,5 +63,12 @@ router
     UpdateProduct
   )
   .delete(Admin, deleteProduct);
+
+router.route("/orders").get(Admin, getAllOrders).delete(Admin, DeleteMany);
+router
+  .route("/orders/:id")
+  .get(Admin, getOrder)
+  .put(Admin, UpdateOrder)
+  .delete(Admin, DeleteOrder);
 
 export default router;
