@@ -23,7 +23,7 @@ export const dataProvider = {
     const filter = Object.keys(params.filter).length !== 0 ? params.filter : "";
     const url = `${apiUrl}/${resource}?sort=${sort}&page=${page}&range=${range}&filter=${filter}`;
     return httpClient(url).then(({ headers, json }) => ({
-      data: json.map((resource: { _id: any }) => ({
+      data: json.map((resource: { _id: string }) => ({
         ...resource,
         id: resource._id,
       })),
@@ -127,18 +127,12 @@ export const dataProvider = {
     }));
   },
   deleteMany: (resource: any, params: { ids: any }) => {
-    const query = {
-      filter: JSON.stringify({ id: params.ids }),
-    };
-    const url = `${apiUrl}/${resource}?${JSON.stringify(query)}`;
+    const url = `${apiUrl}/${resource}?ids=${params.ids}`;
     console.log(url);
     return httpClient(url, {
       method: "DELETE",
     }).then(({ json }) => ({
-      data: json.map((resource: { _id: any }) => ({
-        ...resource,
-        id: resource._id,
-      })),
+      data: json.ids,
     }));
   },
 };
