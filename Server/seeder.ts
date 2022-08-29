@@ -27,9 +27,7 @@ const importdata = async () => {
     });
 
     await Product.insertMany(sampleProducts);
-    Product.createIndexes({
-      name: "text",
-    });
+
     console.log("DATA IMPORTED");
     process.exit();
   } catch (error) {
