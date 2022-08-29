@@ -22,7 +22,7 @@ const EditProduct = () => {
         <TextInput source="image" />
         <TextInput source="brand" />
         <TextInput source="category" />
-        <DateInput source="Date" />
+        <DateInput source="updatedAt" />
       </SimpleForm>
     </Edit>
   );

@@ -18,7 +18,6 @@ const ProductList = () => (
       <NumberField source="numReviews" />
       <NumberField source="countInStock" />
       <ImageField source="image" title="name" />
-      <DateField source="Date" />
     </Datagrid>
   </List>
 );
