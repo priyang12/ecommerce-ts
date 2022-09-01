@@ -9,7 +9,7 @@ import {
   LoadCartQuery,
 } from "../../API/CartAPI";
 import { useQuery } from "react-query";
-import { CartValidation } from "@ecommerce/validation";
+import { CartPost } from "@ecommerce/validation";
 import Spinner from "../../Components/Spinner";
 
 const Cart = () => {
@@ -35,7 +35,7 @@ const Cart = () => {
 
   const UpdateQuantity = (_id: string, quantity: number) => {
     UpdateCart(
-      CartValidation.CartPost.parse({
+      CartPost.parse({
         ProductId: _id,
         qty: quantity,
       })

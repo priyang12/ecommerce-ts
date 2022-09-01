@@ -2,8 +2,8 @@ import { z } from "zod";
 
 export const UserSchema = z.object({
   _id: z.string(),
-  name: z.string().refine((name) => name.length > 2 && name.length < 10, {
-    message: "Name must be between 2 and 10 characters",
+  name: z.string().refine((name) => name.length > 2 && name.length < 5, {
+    message: "Name must be between 2 and 30 characters",
   }),
   email: z.string().email(),
   password: z.string().refine((password) => password.length > 5, {
@@ -43,11 +43,4 @@ export const UpdateUserProfileSchema = UserSchema.pick({
 
 export const recoverMailSchema = UserSchema.pick({
   email: true,
-});
-
-export const CreateUserValidation = UserSchema.pick({
-  name: true,
-  email: true,
-  password: true,
-  isAdmin: true,
 });

@@ -11,9 +11,7 @@ import {
 import Auth from "../middleware/AuthMiddleware";
 import Admin from "../middleware/AdminMiddleware";
 import ZodMiddleware from "../middleware/ZodMiddleware";
-import { OrderValidation } from "@ecommerce/validation";
-
-const { CreateOrder } = OrderValidation;
+import { CreateOrder } from "@ecommerce/validation";
 
 const router = express.Router();
 router

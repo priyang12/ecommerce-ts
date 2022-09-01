@@ -1,4 +1,3 @@
-import { WishlistValidation } from "@ecommerce/validation";
 import express from "express";
 import {
   GetWishlist,

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const CartSchema = z.object({
+export const CartSchema = z.object({
   // Look into RegEx for validation more
   _id: z.string().regex(/^[0-9a-fA-F]{24}$/),
   user: z.string(),
@@ -15,11 +15,9 @@ const CartSchema = z.object({
   updatedAt: z.string(),
 });
 
-const CartPost = z.object({
+export const CartPost = z.object({
   ProductId: z.string().regex(/^[0-9a-fA-F]{24}$/),
   qty: z.number().min(1, {
     message: "Qty must be greater than 0",
   }),
 });
-
-export { CartSchema, CartPost };
