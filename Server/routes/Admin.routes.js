@@ -1,4 +1,4 @@
-import { ProductValidation } from "@ecommerce/validation";
+import { ProductValidation, UserValidation } from "@ecommerce/validation";
 import express from "express";
 
 import {
@@ -6,6 +6,7 @@ import {
   deleteUser,
   getUserById,
   updateUser,
+  CreateUser,
 } from "../controllers/UserController";
 import checkFileType from "../utils/CheckFile";
 import multer from "multer";
@@ -26,6 +27,7 @@ import {
   UpdateOrder,
 } from "../controllers/OrderController";
 
+const { CreateUserValidation } = UserValidation;
 const { UpdateProductValidation, AddProjectValidation } = ProductValidation;
 
 const upload = multer({
@@ -36,7 +38,10 @@ const upload = multer({
 
 const router = express.Router();
 
-router.route("/users").get(Admin, getUsers);
+router
+  .route("/users")
+  .get(Admin, getUsers)
+  .post(Admin, ZodMiddleware(CreateUserValidation), CreateUser);
 router
   .route("/users/:id")
   .get(Admin, getUserById)

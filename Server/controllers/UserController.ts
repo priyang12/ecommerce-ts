@@ -182,13 +182,6 @@ const getUsers = asyncHandler(async (req: Request, res: Response) => {
     typeof req.query.page === "string" ? parseInt(req.query.page) : 1;
   const Limit =
     typeof req.query.range === "string" ? parseInt(req.query.range) : 10;
-  // const mapPonyToResponse = (pony) =>
-  // ({
-  //   name: pony.name,
-  //   gender: pony.gender || 'female',
-  //   type: types[pony.type].human_readable,
-  //   // And so on.
-  // })
 
   const users = await User.find({})
     .select(Select)
@@ -318,6 +311,37 @@ const ChangeRole = asyncHandler(async (req: Request, res: Response) => {
   res.json({ msg: "User role Updated successfully", user: UserUpdate });
 });
 
+/**
+ * @desc    CreateUser For admin
+ * @route   PUT /api/admin
+ * @access  Admin
+ * @body    User
+ */
+
+const CreateUser = asyncHandler(async (req: Request, res: Response) => {
+  const { name, email, password, isAdmin } = req.body;
+  const userExists = await User.findOne({ email });
+  if (userExists) {
+    res.status(400);
+    throw new Error("User already exists");
+  }
+  const user = await User.create({
+    name,
+    email,
+    password,
+    isAdmin,
+  });
+
+  if (user) {
+    res.status(201).json({
+      msg: "User created successfully",
+    });
+  } else {
+    res.status(405);
+    throw new Error("Invalid user data");
+  }
+});
+
 export {
   test,
   registerUser,
@@ -332,4 +356,5 @@ export {
   resetpassword,
   recoverMail,
   ChangeRole,
+  CreateUser,
 };

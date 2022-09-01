@@ -1503,6 +1503,11 @@
     "minimatch" "^3.1.2"
     "strip-json-comments" "^3.1.1"
 
+"@hookform/resolvers@^2.9.7":
+  "integrity" "sha512-BloehX3MOLwuFEwT4yZnmolPjVmqyn8VsSuodLfazbCIqxBHsQ4qUZsi+bvNNCduRli1AGWFrkDLGD5QoNzsoA=="
+  "resolved" "https://registry.npmjs.org/@hookform/resolvers/-/resolvers-2.9.7.tgz"
+  "version" "2.9.7"
+
 "@humanwhocodes/config-array@^0.9.2":
   "integrity" "sha512-ObyMyWxZiCu/yTisA7uzx81s40xR2fD5Cg/2Kq7G02ajkNubJf6BopgDTmDyc3U7sXpNKM8cYOw7s7Tyr+DnCw=="
   "resolved" "https://registry.npmjs.org/@humanwhocodes/config-array/-/config-array-0.9.5.tgz"
@@ -3208,8 +3213,8 @@
   "resolved" "file:admin"
   "version" "0.1.0"
   dependencies:
+    "@hookform/resolvers" "^2.9.7"
     "prop-types" "^15.8.1"
-    "ra-data-json-server" "^4.2.6"
     "react" "^18.2.0"
     "react-admin" "^4.2.6"
     "react-dom" "^18.2.0"
@@ -3596,6 +3601,14 @@
   "version" "0.26.1"
   dependencies:
     "follow-redirects" "^1.14.8"
+
+"axios@^0.27.2":
+  "integrity" "sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ=="
+  "resolved" "https://registry.npmjs.org/axios/-/axios-0.27.2.tgz"
+  "version" "0.27.2"
+  dependencies:
+    "follow-redirects" "^1.14.9"
+    "form-data" "^4.0.0"
 
 "axobject-query@^2.2.0":
   "integrity" "sha512-Td525n+iPOOyUQIeBfcASuG6uJsDOITl7Mds5gFyerkWiX7qhUTdYUBlSgNMyVqtSJqwpt1kXGLdUt6SykLMRA=="
@@ -6077,7 +6090,7 @@
   "resolved" "https://registry.npmjs.org/flatted/-/flatted-3.2.6.tgz"
   "version" "3.2.6"
 
-"follow-redirects@^1.0.0", "follow-redirects@^1.14.4", "follow-redirects@^1.14.8":
+"follow-redirects@^1.0.0", "follow-redirects@^1.14.4", "follow-redirects@^1.14.8", "follow-redirects@^1.14.9":
   "integrity" "sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA=="
   "resolved" "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.15.1.tgz"
   "version" "1.15.1"
@@ -6116,6 +6129,8 @@
     "mime-types" "^2.1.12"
 
 "form-data@^4.0.0":
+  "integrity" "sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww=="
+  "resolved" "https://registry.npmjs.org/form-data/-/form-data-4.0.0.tgz"
   "version" "4.0.0"
   dependencies:
     "asynckit" "^0.4.0"
@@ -10051,14 +10066,6 @@
     "react-is" "^17.0.2"
     "react-query" "^3.32.1"
 
-"ra-data-json-server@^4.2.6":
-  "integrity" "sha512-RlErlluusfFpDsNdcSY0EA3c+EZ67gGKD0dW9hXBjxpZARUJC9x36cMDWP5KQx5RLrsPRn7ujVFLIRZOQ/iqAQ=="
-  "resolved" "https://registry.npmjs.org/ra-data-json-server/-/ra-data-json-server-4.2.7.tgz"
-  "version" "4.2.7"
-  dependencies:
-    "query-string" "^7.1.1"
-    "ra-core" "^4.2.7"
-
 "ra-i18n-polyglot@^4.2.7":
   "integrity" "sha512-jCoGcMFCh6HZJ4PtGcFRtF80V+w6h8O3NIxXAyLAmAQWvmczyvA8ARFO3wR/PzbCbSRhlJSprL02poeFfC+fGQ=="
   "resolved" "https://registry.npmjs.org/ra-i18n-polyglot/-/ra-i18n-polyglot-4.2.7.tgz"
@@ -10235,7 +10242,7 @@
     "react-fast-compare" "^3.2.0"
     "shallowequal" "^1.1.0"
 
-"react-hook-form@*", "react-hook-form@^7.31.0":
+"react-hook-form@*", "react-hook-form@^7.0.0", "react-hook-form@^7.31.0":
   "integrity" "sha512-tH7TaZgAURMhjzVE2M/EFmxHz2HdaPMAVs9FXTweNW551VlhXSuVcpcYlkiMZf2zHQiTztupVFpBHJFTma+N7w=="
   "resolved" "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.34.1.tgz"
   "version" "7.34.1"
