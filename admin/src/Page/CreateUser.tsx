@@ -1,10 +1,8 @@
 import { Create, SimpleForm, TextInput, BooleanInput } from "react-admin";
-import { UserValidation } from "@ecommerce/validation";
+import { CreateUserValidation } from "@ecommerce/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 function CreateUser(props: any) {
-  const { CreateUserValidation } = UserValidation;
-
   return (
     <div>
       <Create {...props}>

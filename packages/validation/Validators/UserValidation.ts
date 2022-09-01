@@ -44,3 +44,10 @@ export const UpdateUserProfileSchema = UserSchema.pick({
 export const recoverMailSchema = UserSchema.pick({
   email: true,
 });
+
+export const CreateUserValidation = UserSchema.pick({
+  name: true,
+  email: true,
+  password: true,
+  isAdmin: true,
+});

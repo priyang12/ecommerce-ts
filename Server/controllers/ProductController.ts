@@ -148,41 +148,27 @@ const GetProductByID = asyncHandler(async (req: Request, res: Response) => {
 
 const AddProduct = asyncHandler(async (req: Request, res: Response) => {
   const EndPoint = process.env.END_POINT;
+  let Image = req.body.image;
 
-  await runInTransaction(async (session) => {
-    const product = await new Products(
-      [
-        {
-          name: req.body.name,
-          description: req.body.description,
-          price: req.body.price,
-          brand: req.body.brand,
-          image: `${EndPoint}/sample_a81IvE0ug.webp`,
-          category: req.body.category,
-          stock: req.body.stock,
-          countInStock: req.body.countInStock,
-        },
-      ],
-      {
-        session,
-      }
-    );
+  if (!Image && req.file) {
+    const UploadedImage = await imageKit.upload({
+      file: req.file.buffer,
+      fileName: req.file.originalname,
+    });
+    Image = UploadedImage.url;
+  }
 
-    if (req.file) {
-      throw new Error("Image is not allowed");
-      const image: any = await imageKit.upload({
-        file: req.file.buffer,
-        fileName: req.file.originalname,
-        // @ts-ignore
-        tags: ["test", "image"],
-      });
-      product.image = image.url;
-      product.save();
-    }
-    throw new Error("Image is not allowed");
-    res.status(201).json({ msg: `${product.name} is Added` });
-    myCache.del("AdminProducts");
+  const product = await Products.create({
+    ...req.body,
+    image: Image || `${EndPoint}/sample_a81IvE0ug.webp`,
   });
+
+  console.log(product);
+
+  if (!product) {
+    res.status(400).json({ msg: "Product not added" });
+  }
+  res.status(201).json({ msg: "Product Added Successfully", product });
 });
 
 /**
@@ -200,7 +186,6 @@ const UpdateProduct = asyncHandler(async (req: Request, res: Response) => {
       return res.status(404).json({ msg: "Product not Found" });
     }
     await product.update(req.body);
-
     if (req.file) {
       imageKit
         .upload({
@@ -214,8 +199,13 @@ const UpdateProduct = asyncHandler(async (req: Request, res: Response) => {
           product.save();
         });
     }
-    res.status(200).json({ msg: `${product.name} is Updated` });
+    if (!product) {
+      res.status(400).json({ msg: "Product not added" });
+    }
     myCache.del("AdminProducts");
+    res
+      .status(200)
+      .json({ msg: `${product.name} is Updated`, UpdatedImage: product.image });
   });
 });
 
@@ -229,12 +219,11 @@ const UpdateProduct = asyncHandler(async (req: Request, res: Response) => {
 const deleteProduct = asyncHandler(
   async (req: Request, res: Response): Promise<any> => {
     const product = await Products.findByIdAndDelete(req.params.id);
-
     if (!product) {
       return res.status(404).json({ msg: "Product not Found" });
     }
-    res.status(200).json({ msg: product.name + " Deleted Successfully" });
     myCache.del("AdminProducts");
+    res.status(200).json({ msg: product.name + " Deleted Successfully" });
   }
 );
 
@@ -300,8 +289,8 @@ const AdminProducts = asyncHandler(async (req: Request, res: Response) => {
     : {};
   const count = await Products.countDocuments({ ...keyword });
   let products = myCache.get("AdminProducts");
-  res.set("x-total-count", JSON.stringify(count));
 
+  res.set("x-total-count", JSON.stringify(count));
   if (!products) {
     products = await Products.find({ ...keyword })
       .limit(pageSize)
@@ -309,7 +298,6 @@ const AdminProducts = asyncHandler(async (req: Request, res: Response) => {
       .select(
         "rating numReviews price countInStock _id name brand image category Date"
       );
-
     myCache.set("AdminProducts", products, 3600 / 2);
 
     res.json(products);

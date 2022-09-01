@@ -31,7 +31,7 @@ export const ProductsSchema = z.object({
   brand: z.string(),
   category: z.string(),
   description: z.string().refine((str) => str.length > 30 || str.length < 500, {
-    message: " description must be between 30 and 500 characters",
+    message: "description must be between 30 and 500 characters",
   }),
   reviews: z.array(ReviewSchema),
   rating: z.number(),
@@ -42,16 +42,16 @@ export const ProductsSchema = z.object({
   updatedAt: z.date().or(z.string()),
 });
 
-export const AddProjectValidation = ProductsSchema.omit({
+export const CreateProductValidation = ProductsSchema.omit({
   _id: true,
   user: true,
-  image: true,
   reviews: true,
   createdAt: true,
   updatedAt: true,
   numReviews: true,
+  image: true,
 }).extend({
   imageFile: z.any(),
 });
 
-export const UpdateProductValidation = AddProjectValidation.optional();
+export const UpdateProductValidation = CreateProductValidation.optional();

@@ -1,4 +1,4 @@
-import { ProductValidation, UserValidation } from "@ecommerce/validation";
+import { CreateUserValidation } from "@ecommerce/validation";
 import express from "express";
 
 import {
@@ -27,9 +27,6 @@ import {
   UpdateOrder,
 } from "../controllers/OrderController";
 
-const { CreateUserValidation } = UserValidation;
-const { UpdateProductValidation, AddProjectValidation } = ProductValidation;
-
 const upload = multer({
   fileFilter: function (req, file, cb) {
     checkFileType(file, cb);
@@ -51,22 +48,12 @@ router
 router
   .route("/product")
   .get(AdminProducts)
-  .post(
-    Admin,
-    ZodMiddleware(AddProjectValidation),
-    upload.single("imageFile"),
-    AddProduct
-  );
+  .post(Admin, upload.single("imageFile"), AddProduct);
 
 router
   .route("/product/:id")
   .get(GetProductByID)
-  .put(
-    Admin,
-    ZodMiddleware(UpdateProductValidation),
-    upload.single("imageFile"),
-    UpdateProduct
-  )
+  .put(Admin, upload.single("imageFile"), UpdateProduct)
   .delete(Admin, deleteProduct);
 
 router.route("/orders").get(Admin, getAllOrders).delete(Admin, DeleteMany);

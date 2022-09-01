@@ -32,20 +32,16 @@ export const dataProvider = {
     }));
   },
   getOne: (resource: any, params: { id: any }) => {
-    console.log("getOne");
     const url = `${apiUrl}/${resource}/${params.id}`;
-    console.log(params.id);
     return httpClient(url).then(({ json }) => ({
       data: { ...json, id: json._id },
     }));
   },
   getMany: (resource: any, params: { ids: any }) => {
-    console.log("getMany");
     const query = {
       filter: JSON.stringify({ id: params.ids }),
     };
     const url = `${apiUrl}/${resource}?${JSON.stringify(query)}`;
-    console.log(url);
     return httpClient(url).then(({ json }) => ({
       data: json.map((resource: { _id: any }) => ({
         ...resource,
@@ -87,7 +83,6 @@ export const dataProvider = {
 
   update: (resource: any, params: { id: any; data: any }) => {
     const url = `${apiUrl}/${resource}/${params.id}`;
-    console.log("here");
     const body = JSON.stringify(params.data);
     return httpClient(url, { method: "PUT", body }).then(({ json }) => ({
       data: { ...json, id: json._id },
@@ -119,16 +114,12 @@ export const dataProvider = {
 
   delete: (resource: any, params: { id: any }) => {
     const url = `${apiUrl}/${resource}/${params.id}`;
-
-    console.log(resource);
-
     return httpClient(url, { method: "DELETE" }).then(({ json }) => ({
       data: { ...json, id: json._id },
     }));
   },
   deleteMany: (resource: any, params: { ids: any }) => {
     const url = `${apiUrl}/${resource}?ids=${params.ids}`;
-    console.log(url);
     return httpClient(url, {
       method: "DELETE",
     }).then(({ json }) => ({
@@ -136,3 +127,43 @@ export const dataProvider = {
     }));
   },
 };
+
+export const DataProviderWithFormData = {
+  ...dataProvider,
+  create: (resource: any, params: { data: any }) => {
+    if (resource !== "resource-with-file" || !params.data.theFile) {
+      return dataProvider.create(resource, params);
+    }
+    const data = new FormData();
+    Object.keys(params.data).forEach((key) => {
+      data.append(key, params.data[key]);
+    });
+    return dataProvider.create(resource, { data });
+  },
+  update: (resource: any, params: { id: any; data: any }) => {
+    if (resource !== "admin/product" || !params.data.imageFile) {
+      return dataProvider.update(resource, params);
+    }
+    const formData = GetFormData(params.id, params.data);
+    return httpClient(`${apiUrl}/${resource}/${params.id}`, {
+      method: "PUT",
+      body: formData,
+    }).then(({ json }) => ({
+      data: { ...params.data, id: json._id, image: json.UpdatedImage },
+    }));
+  },
+};
+
+function GetFormData(id: string, Data: any) {
+  const formData = new FormData();
+  formData.append("id", id);
+  formData.append("imageFile", Data.imageFile.rawFile);
+  formData.append("name", Data.name);
+  formData.append("price", Data.price);
+  formData.append("countInStock", Data.countInStock);
+  formData.append("description", Data.description);
+  formData.append("brand", Data.brand);
+  formData.append("category", Data.category);
+  formData.append("numReviews", Data.numReviews);
+  return formData;
+}

@@ -8,7 +8,7 @@ import AlertDisplay from "../../Components/AlertDisplay";
 import ProductCard from "../../Components/ProductCard";
 import Spinner from "../../Components/Spinner";
 
-function DisplayProducts({ title = "Products Display" }) {
+function DisplayProducts({ title }: { title?: string }) {
   const { data: ProductsData, error: Err, isLoading } = useProducts();
 
   if (isLoading) return <Spinner />;

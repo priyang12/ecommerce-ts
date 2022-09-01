@@ -2,6 +2,7 @@ import {
   DateInput,
   Edit,
   ImageField,
+  ImageInput,
   NumberInput,
   SimpleForm,
   TextField,
@@ -19,10 +20,12 @@ const EditProduct = () => {
         <NumberInput source="price" min={0} />
         <NumberInput source="countInStock" min={0} />
         <ImageField source="image" title="name" />
+        <ImageInput source="imageFile" accept="image/*">
+          <ImageField source="imageFile" title="name" />
+        </ImageInput>
         <TextInput source="image" />
         <TextInput source="brand" />
         <TextInput source="category" />
-        <DateInput source="updatedAt" />
       </SimpleForm>
     </Edit>
   );

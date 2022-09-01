@@ -1,5 +1,5 @@
-import { Admin, Resource } from "react-admin";
-import { dataProvider } from "./dataProvide";
+import { Admin, Resource, ShowGuesser } from "react-admin";
+import { DataProviderWithFormData, dataProvider } from "./dataProvide";
 import authProvider from "./AuthProvider";
 import { EditUsers } from "./Page/EditList";
 import EditProduct from "./Page/EditProduct";
@@ -8,17 +8,24 @@ import OrderList from "./Page/OrderList";
 import UserList from "./Page/UserList";
 import EditOrder from "./Page/EditOrder";
 import CreateUser from "./Page/CreateUser";
+import CreateProduct from "./Page/CreateProduct";
 
 function App() {
   return (
-    <Admin dataProvider={dataProvider} authProvider={authProvider}>
+    <Admin dataProvider={DataProviderWithFormData} authProvider={authProvider}>
       <Resource
         name="admin/users"
         list={UserList}
         edit={EditUsers}
         create={CreateUser}
       />
-      <Resource name="admin/product" list={ProductList} edit={EditProduct} />
+
+      <Resource
+        name="admin/product"
+        list={ProductList}
+        edit={EditProduct}
+        create={CreateProduct}
+      />
       <Resource name="admin/orders" list={OrderList} edit={EditOrder} />
     </Admin>
   );
