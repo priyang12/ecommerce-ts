@@ -4,7 +4,7 @@ import { useForm } from "../../Utils/CustomHooks";
 import { Address } from "../../interfaces";
 import Navigators from "../../Components/Navigators";
 import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
-import { OrderValidation } from "@ecommerce/validation";
+import { OrderSchema } from "@ecommerce/validation";
 import { FormControl, Input, Label } from "../../StyledComponents/FormControl";
 
 const init: Address = {
@@ -29,7 +29,7 @@ const AddressPage = () => {
     e.preventDefault();
 
     try {
-      OrderValidation.OrderSchema.pick({
+      OrderSchema.pick({
         shippingAddress: true,
       }).parse({ shippingAddress: ShippingAddress });
       localStorage.setItem(

@@ -1,5 +1,4 @@
 import express from "express";
-
 import {
   test,
   loginUser,
@@ -18,15 +17,13 @@ import {
 import Auth from "../middleware/AuthMiddleware";
 import Admin from "../middleware/AdminMiddleware";
 import ZodMiddleware from "../middleware/ZodMiddleware";
-import { UserValidation } from "@ecommerce/validation";
-
-const {
+import {
   LoginSchema,
   RegisterSchema,
   ResetpasswordSchema,
   UpdateUserProfileSchema,
   recoverMailSchema,
-} = UserValidation;
+} from "@ecommerce/validation";
 
 const router = express.Router();
 router.route("/test").get(test);

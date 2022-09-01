@@ -6,7 +6,7 @@ import { useForm } from "../../Utils/CustomHooks";
 import { StyledContainer } from "../../Components/StyledComponents/Container";
 import { Helmet } from "react-helmet-async";
 import { FormControl, Input, Label } from "../../StyledComponents/FormControl";
-import { UserValidation } from "@ecommerce/validation";
+import { RegisterSchema } from "@ecommerce/validation";
 import Spinner from "../../Components/Spinner";
 const init = {
   name: "",
@@ -29,7 +29,7 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      RegisterUser(UserValidation.RegisterSchema.parse(User), dispatch);
+      RegisterUser(RegisterSchema.parse(User), dispatch);
     } catch (error: any) {
       setErrors(error.flatten().fieldErrors);
     }

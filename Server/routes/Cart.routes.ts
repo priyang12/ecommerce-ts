@@ -1,22 +1,18 @@
 import express from "express";
-const router = express.Router();
-
+import { CartPost } from "@ecommerce/validation";
+import Auth from "../middleware/AuthMiddleware";
+import ZodMiddleware from "../middleware/ZodMiddleware";
 const {
   AddToCart,
   GetCartProducts,
   DeleteCartProduct,
 } = require("../controllers/CartController");
 
-import Auth from "../middleware/AuthMiddleware";
-import ZodMiddlware from "../middleware/ZodMiddleware";
-import { CartValidation } from "@ecommerce/validation";
-
-const { CartPost } = CartValidation;
-
+const router = express.Router();
 //Cart
 router
   .route("/")
-  .post(Auth, ZodMiddlware(CartPost), AddToCart)
+  .post(Auth, ZodMiddleware(CartPost), AddToCart)
   .get(Auth, GetCartProducts);
 router.route("/:id").delete(Auth, DeleteCartProduct);
 

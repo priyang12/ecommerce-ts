@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { UserValidation } from "@ecommerce/validation";
+import { LoginSchema } from "@ecommerce/validation";
 import { StyledContainer } from "../../Components/StyledComponents/Container";
 import { useForm } from "../../Utils/CustomHooks";
 import { LoginUser } from "../../Context/Authentication/AuthActions";
@@ -24,10 +24,7 @@ const Login = () => {
   const login = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      LoginUser(
-        UserValidation.LoginSchema.parse({ email, password }),
-        dispatch
-      );
+      LoginUser(LoginSchema.parse({ email, password }), dispatch);
     } catch (error: any) {
       setErrors(error.flatten().fieldErrors);
     }

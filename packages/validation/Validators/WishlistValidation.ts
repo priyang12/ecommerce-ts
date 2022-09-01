@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const WishlistSchema = z.object({
+export const WishlistSchema = z.object({
   // Look into RegEx for validation more
   _id: z.string().regex(/^[0-9a-fA-F]{24}$/),
   user: z.string(),
@@ -13,5 +13,3 @@ const WishlistSchema = z.object({
   createdAt: z.string(),
   updatedAt: z.string(),
 });
-
-export { WishlistSchema };

@@ -16,9 +16,10 @@ import multer from "multer";
 import Auth from "../middleware/AuthMiddleware";
 import Admin from "../middleware/AdminMiddleware";
 import ZodMiddleware from "../middleware/ZodMiddleware";
-import { ProductValidation } from "@ecommerce/validation";
-
-const { AddProjectValidation, UpdateProductValidation } = ProductValidation;
+import {
+  AddProjectValidation,
+  UpdateProductValidation,
+} from "@ecommerce/validation";
 
 const router = express.Router();
 

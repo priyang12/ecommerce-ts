@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const OrderSchema = z.object({
+export const OrderSchema = z.object({
   // Look into RegEx for validation more
   _id: z.string().regex(/^[0-9a-fA-F]{24}$/),
   user: z.string(),
@@ -39,11 +39,9 @@ const OrderSchema = z.object({
   updatedAt: z.string(),
 });
 
-const CreateOrder = OrderSchema.omit({
+export const CreateOrder = OrderSchema.omit({
   _id: true,
   user: true,
   createdAt: true,
   updatedAt: true,
 });
-
-export { OrderSchema, CreateOrder };

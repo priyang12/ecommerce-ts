@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { UserSchema } from "./UserValidation";
 
-const ReviewSchema = z.object({
+export const ReviewSchema = z.object({
   _id: z.string(),
   rating: z.number(),
   comment: z.string(),
@@ -16,7 +16,7 @@ const ReviewSchema = z.object({
   updatedAt: z.string(),
 });
 
-const ProductsSchema = z.object({
+export const ProductsSchema = z.object({
   _id: z.string(),
   name: z.string(),
   user: z.string().or(
@@ -42,7 +42,7 @@ const ProductsSchema = z.object({
   updatedAt: z.date().or(z.string()),
 });
 
-const AddProjectValidation = ProductsSchema.omit({
+export const AddProjectValidation = ProductsSchema.omit({
   _id: true,
   user: true,
   image: true,
@@ -54,11 +54,4 @@ const AddProjectValidation = ProductsSchema.omit({
   imageFile: z.any(),
 });
 
-const UpdateProductValidation = AddProjectValidation.optional();
-
-export {
-  ReviewSchema,
-  ProductsSchema,
-  AddProjectValidation,
-  UpdateProductValidation,
-};
+export const UpdateProductValidation = AddProjectValidation.optional();

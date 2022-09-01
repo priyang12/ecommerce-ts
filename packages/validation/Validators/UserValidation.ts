@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const UserSchema = z.object({
+export const UserSchema = z.object({
   _id: z.string(),
   name: z.string().refine((name) => name.length > 2 && name.length < 5, {
     message: "Name must be between 2 and 30 characters",
@@ -14,9 +14,9 @@ const UserSchema = z.object({
   updatedAt: z.string(),
 });
 
-const LoginSchema = UserSchema.pick({ email: true, password: true });
+export const LoginSchema = UserSchema.pick({ email: true, password: true });
 
-const RegisterSchema = UserSchema.pick({
+export const RegisterSchema = UserSchema.pick({
   name: true,
   email: true,
   password: true,
@@ -26,7 +26,7 @@ const RegisterSchema = UserSchema.pick({
     message: "Passwords do not match",
   });
 
-const ResetpasswordSchema = UserSchema.pick({
+export const ResetpasswordSchema = UserSchema.pick({
   password: true,
 })
   .extend({
@@ -36,20 +36,11 @@ const ResetpasswordSchema = UserSchema.pick({
     message: "Passwords do not match",
   });
 
-const UpdateUserProfileSchema = UserSchema.pick({
+export const UpdateUserProfileSchema = UserSchema.pick({
   name: true,
   email: true,
 });
 
-const recoverMailSchema = UserSchema.pick({
+export const recoverMailSchema = UserSchema.pick({
   email: true,
 });
-
-export {
-  UserSchema,
-  LoginSchema,
-  RegisterSchema,
-  ResetpasswordSchema,
-  UpdateUserProfileSchema,
-  recoverMailSchema,
-};
