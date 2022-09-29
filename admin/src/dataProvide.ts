@@ -1,6 +1,6 @@
-import { fetchUtils } from "react-admin";
+import { fetchUtils, useNotify } from "react-admin";
 
-const apiUrl = "/api";
+const apiUrl = "/api/admin";
 
 const httpClient = (url: string, options: any = {}) => {
   if (!options.headers) {
@@ -84,9 +84,9 @@ export const dataProvider = {
   update: (resource: any, params: { id: any; data: any }) => {
     const url = `${apiUrl}/${resource}/${params.id}`;
     const body = JSON.stringify(params.data);
-    return httpClient(url, { method: "PUT", body }).then(({ json }) => ({
-      data: { ...json, id: json._id },
-    }));
+    return httpClient(url, { method: "PUT", body }).then(({ json }) => {
+      return { data: { ...json, id: json._id } };
+    });
   },
 
   updateMany: (resource: any, params: { ids: any; data: any }) => {

@@ -1,32 +1,53 @@
-import { Admin, Resource, ShowGuesser } from "react-admin";
-import { DataProviderWithFormData, dataProvider } from "./dataProvide";
+import { Admin, AppBar, Layout, Resource, ToggleThemeButton } from "react-admin";
+import {  Box, Typography } from '@mui/material';
+import { DataProviderWithFormData } from "./dataProvide";
 import authProvider from "./AuthProvider";
-import { EditUsers } from "./Page/EditList";
-import EditProduct from "./Page/EditProduct";
-import ProductList from "./Page/ProductList";
-import OrderList from "./Page/OrderList";
-import UserList from "./Page/UserList";
-import EditOrder from "./Page/EditOrder";
-import CreateUser from "./Page/CreateUser";
-import CreateProduct from "./Page/CreateProduct";
+import EditUsers  from "./Page/Users/EditUsers";
+import UserList from "./Page/Users/UserList";
+import CreateUser from "./Page/Users/CreateUser";
+import EditProduct from "./Page/Product/EditProduct";
+import ProductList from "./Page/Product/ProductList";
+import CreateProduct from "./Page/Product/CreateProduct";
+import OrderList from "./Page/Order/OrderList";
+import EditOrder from "./Page/Order/EditOrder";
+import { darkTheme, Theme } from "./Theme";
+import { MyLoginPage } from "./Page/LoginPage";
+
+
+
+
+const MyAppBar = (props :any)=> (
+  <AppBar {...props}>
+      <Box flex="1">
+          <Typography variant="h6" id="react-admin-title"></Typography>
+      </Box>
+      <ToggleThemeButton
+          lightTheme={Theme}
+          darkTheme={darkTheme}
+      />
+  </AppBar>
+);
+
+const MyLayout = (props:any) => <Layout {...props} appBar={MyAppBar} />;
+
 
 function App() {
   return (
-    <Admin dataProvider={DataProviderWithFormData} authProvider={authProvider}>
+    <Admin loginPage={MyLoginPage} layout={MyLayout} dataProvider={DataProviderWithFormData} authProvider={authProvider} theme={Theme}>
       <Resource
-        name="admin/users"
+        name="users"
         list={UserList}
         edit={EditUsers}
         create={CreateUser}
+        
       />
-
       <Resource
-        name="admin/product"
+        name="product"
         list={ProductList}
         edit={EditProduct}
         create={CreateProduct}
       />
-      <Resource name="admin/orders" list={OrderList} edit={EditOrder} />
+      <Resource name="orders" list={OrderList} edit={EditOrder} />
     </Admin>
   );
 }
