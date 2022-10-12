@@ -1,4 +1,4 @@
-import { Dispatch } from "react";
+import React, { Dispatch } from "react";
 import { Link } from "react-router-dom";
 import { useTilt } from "../Utils/CustomHooks";
 import {
@@ -33,11 +33,12 @@ const Slide = ({
           }
         }
       }}
-      style={{
-        // @ts-ignore
-        "--offset": offset,
-        "--dir": offset === 0 ? 0 : offset > 0 ? 1 : -1,
-      }}
+      style={
+        {
+          "--offset": offset,
+          "--dir": offset === 0 ? 0 : offset > 0 ? 1 : -1,
+        } as React.CSSProperties
+      }
     >
       <StyledSlideBackground
         style={{

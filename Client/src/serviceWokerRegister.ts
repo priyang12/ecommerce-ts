@@ -21,9 +21,9 @@ export const serviceWorkerRegister = async () => {
 
       wb.register();
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   } else {
-    console.log("Service worker not supported");
+    // console.log("Service worker not supported");
   }
 };

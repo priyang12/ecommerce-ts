@@ -7,8 +7,8 @@
     "server": "nodemon --transpile-only server.ts ",
     "run-Build": "nodemon  build/server.js ",
     "build": "tsc -p ./",
-    "data:import": "node seeder",
-    "data:destroy": "node seeder -d"
+    "data:import": "ts-node seeder",
+    "data:destroy": "ts-node seeder -d"
   },
   "dependencies": {
     "@sendgrid/mail": "^7.7.0",

@@ -155,6 +155,9 @@ const getAllOrders = asyncHandler(async (req: Request, res: Response) => {
     .select("paymentMethod totalPrice isDelivered ")
     .populate("user", ["name", "email"])
     .lean();
+  const orderCount = await Order.countDocuments();
+  res.set("x-total-count", orderCount.toString());
+
   if (order) {
     res.json(order);
   } else {
@@ -186,8 +189,7 @@ const UpdateOrder = asyncHandler(async (req: Request, res: Response) => {
 });
 
 /**
- * @desc    Update Order to delivered
- * @route   Put /api/orders
+ * @desc    Delete Order to delivered
  * @access  Admin
  * @param   {object} req.params.id
  * @param   {object} res
@@ -196,7 +198,34 @@ const UpdateOrder = asyncHandler(async (req: Request, res: Response) => {
 const DeleteOrder = asyncHandler(async (req: Request, res: Response) => {
   const order = await Order.findByIdAndDelete(req.params.id).lean();
   if (order) {
-    res.json(order);
+    res.json({
+      msg: "Order has been deleted",
+    });
+  } else {
+    res.status(404);
+    throw new Error("Orders not found");
+  }
+});
+
+/**
+ * @desc    Delete Multiple Orders
+ * @access  Admin
+ * @param   {object} req.query.ids
+ * @param   {object} res
+ */
+
+const DeleteMany = asyncHandler(async (req: Request, res: Response) => {
+  const Ids = req.query.ids;
+  // build array of ids
+  const IdsArray = typeof Ids === "string" && Ids.split(",");
+  const orders = await Order.deleteMany({
+    _id: { $in: IdsArray },
+  }).lean();
+  if (orders) {
+    res.json({
+      msg: "Orders have been deleted",
+      ids: IdsArray,
+    });
   } else {
     res.status(404);
     throw new Error("Orders not found");
@@ -210,4 +239,5 @@ export {
   getAllOrders,
   UpdateOrder,
   DeleteOrder,
+  DeleteMany,
 };

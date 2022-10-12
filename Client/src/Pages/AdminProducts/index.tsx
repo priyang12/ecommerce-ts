@@ -68,9 +68,9 @@ const AdminProducts = () => {
                   <strong>category : {product.category}</strong>
                   <strong>
                     Last Updated :{" "}
-                    {typeof product.updatedAt === "string"
+                    {/* {typeof product.updatedAt === "string"
                       ? product.updatedAt.slice(0, 10)
-                      : product.updatedAt.toDateString()}
+                      : product.updatedAt.toDateString()} */}
                   </strong>
                 </div>
               </div>

@@ -81,7 +81,7 @@ const GetAllProducts = asyncHandler(async (req: Request, res: Response) => {
     : {};
   const count = await Products.countDocuments({ ...keyword });
   let products = myCache.get("products" + keyword + page + count);
-
+  res.set("x-total-count", JSON.stringify(count));
   if (!products) {
     products = await Products.find({ ...keyword })
       .limit(pageSize)
@@ -148,40 +148,27 @@ const GetProductByID = asyncHandler(async (req: Request, res: Response) => {
 
 const AddProduct = asyncHandler(async (req: Request, res: Response) => {
   const EndPoint = process.env.END_POINT;
+  let Image = req.body.image;
 
-  await runInTransaction(async (session) => {
-    const product = await new Products(
-      [
-        {
-          name: req.body.name,
-          description: req.body.description,
-          price: req.body.price,
-          brand: req.body.brand,
-          image: `${EndPoint}/sample_a81IvE0ug.webp`,
-          category: req.body.category,
-          stock: req.body.stock,
-          countInStock: req.body.countInStock,
-        },
-      ],
-      {
-        session,
-      }
-    );
+  if (!Image && req.file) {
+    const UploadedImage = await imageKit.upload({
+      file: req.file.buffer,
+      fileName: req.file.originalname,
+    });
+    Image = UploadedImage.url;
+  }
 
-    if (req.file) {
-      throw new Error("Image is not allowed");
-      const image: any = await imageKit.upload({
-        file: req.file.buffer,
-        fileName: req.file.originalname,
-        // @ts-ignore
-        tags: ["test", "image"],
-      });
-      product.image = image.url;
-      product.save();
-    }
-    throw new Error("Image is not allowed");
-    res.status(201).json({ msg: `${product.name} is Added` });
+  const product = await Products.create({
+    ...req.body,
+    image: Image || `${EndPoint}/sample_a81IvE0ug.webp`,
   });
+
+  console.log(product);
+
+  if (!product) {
+    res.status(400).json({ msg: "Product not added" });
+  }
+  res.status(201).json({ msg: "Product Added Successfully", product });
 });
 
 /**
@@ -198,8 +185,7 @@ const UpdateProduct = asyncHandler(async (req: Request, res: Response) => {
     if (!product) {
       return res.status(404).json({ msg: "Product not Found" });
     }
-    product.update(req.body);
-
+    await product.update(req.body);
     if (req.file) {
       imageKit
         .upload({
@@ -213,7 +199,13 @@ const UpdateProduct = asyncHandler(async (req: Request, res: Response) => {
           product.save();
         });
     }
-    res.status(200).json({ msg: `${product.name} is Updated` });
+    if (!product) {
+      res.status(400).json({ msg: "Product not added" });
+    }
+    myCache.del("AdminProducts");
+    res
+      .status(200)
+      .json({ msg: `${product.name} is Updated`, UpdatedImage: product.image });
   });
 });
 
@@ -230,6 +222,7 @@ const deleteProduct = asyncHandler(
     if (!product) {
       return res.status(404).json({ msg: "Product not Found" });
     }
+    myCache.del("AdminProducts");
     res.status(200).json({ msg: product.name + " Deleted Successfully" });
   }
 );
@@ -251,7 +244,8 @@ const AddReview = asyncHandler(async (req: Request, res: Response) => {
     throw new Error("Product not Found or not Ordered Error");
   } else {
     const alreadyReviewed = product.reviews.find(
-      (r) => r.user.toString() === req.user.id.toString()
+      // @ts-ignore
+      (r) => r.user?.toString() === req.user.id.toString()
     );
     if (alreadyReviewed) {
       res.status(404);
@@ -266,11 +260,51 @@ const AddReview = asyncHandler(async (req: Request, res: Response) => {
       product.reviews.unshift(review);
       product.numReviews = product.reviews.length;
       product.rating =
+        // @ts-ignore
         product.reviews.reduce((acc, item) => item.rating + acc, 0) /
         product.reviews.length;
       await product.save();
       res.status(201).json({ mag: "Review Added" });
     }
+  }
+});
+
+/**
+ * @desc    Get AdminProducts
+ * @route   Get /api/admin/products
+ * @access  Public
+ * @param   {object} req.query
+ * @param   {object} res
+ * @returns {object} products
+ */
+
+const AdminProducts = asyncHandler(async (req: Request, res: Response) => {
+  const pageSize = 9;
+  const page = Number(req.query.page) || 1;
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword,
+          $options: "i",
+        },
+      }
+    : {};
+  const count = await Products.countDocuments({ ...keyword });
+  let products = myCache.get("AdminProducts");
+
+  res.set("x-total-count", JSON.stringify(count));
+  if (!products) {
+    products = await Products.find({ ...keyword })
+      .limit(pageSize)
+      .skip(pageSize * (page - 1))
+      .select(
+        "rating numReviews price countInStock _id name brand image category Date"
+      );
+    myCache.set("AdminProducts", products, 3600 / 2);
+
+    res.json(products);
+  } else {
+    res.json(products);
   }
 });
 
@@ -282,5 +316,6 @@ export {
   AddProduct,
   AddReview,
   deleteProduct,
+  AdminProducts,
   GetTopProducts,
 };

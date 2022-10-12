@@ -38,7 +38,7 @@ const Home = () => {
           <Carousel />
         </React.Suspense>
       </ErrorCatch>
-      <DisplayProducts />
+      <DisplayProducts title="Products Display" />
     </>
   );
 };

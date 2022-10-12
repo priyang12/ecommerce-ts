@@ -177,7 +177,19 @@ const deleteAccount = asyncHandler(async (req: Request, res: Response) => {
  */
 
 const getUsers = asyncHandler(async (req: Request, res: Response) => {
-  const users = await User.find({}).select("-password -cart -__v").lean();
+  const Select = req.query.select ? req.query.select : "-password -cart -__v";
+  const Page =
+    typeof req.query.page === "string" ? parseInt(req.query.page) : 1;
+  const Limit =
+    typeof req.query.range === "string" ? parseInt(req.query.range) : 10;
+
+  const users = await User.find({})
+    .select(Select)
+    .skip((Page - 1) * Limit)
+    .limit(Limit)
+    .lean();
+  const count = await User.countDocuments();
+  res.set("x-total-count", JSON.stringify(count));
   res.json(users);
 });
 
@@ -299,6 +311,37 @@ const ChangeRole = asyncHandler(async (req: Request, res: Response) => {
   res.json({ msg: "User role Updated successfully", user: UserUpdate });
 });
 
+/**
+ * @desc    CreateUser For admin
+ * @route   PUT /api/admin
+ * @access  Admin
+ * @body    User
+ */
+
+const CreateUser = asyncHandler(async (req: Request, res: Response) => {
+  const { name, email, password, isAdmin } = req.body;
+  const userExists = await User.findOne({ email });
+  if (userExists) {
+    res.status(400);
+    throw new Error("User already exists");
+  }
+  const user = await User.create({
+    name,
+    email,
+    password,
+    isAdmin,
+  });
+
+  if (user) {
+    res.status(201).json({
+      msg: "User created successfully",
+    });
+  } else {
+    res.status(405);
+    throw new Error("Invalid user data");
+  }
+});
+
 export {
   test,
   registerUser,
@@ -313,4 +356,5 @@ export {
   resetpassword,
   recoverMail,
   ChangeRole,
+  CreateUser,
 };

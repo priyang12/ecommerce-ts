@@ -5,15 +5,17 @@
   "scripts": {
     "start": "npm run start --prefix Server",
     "client": "npm run start --prefix Client",
+    "admin": "npm run start --prefix admin",
     "server": "npm run server --prefix Server",
     "dev": "concurrently \"yarn run server\" \"yarn run client\"",
+    "dev:admin": "concurrently \"yarn run start\" \"yarn run admin\"",
     "build:client": "npm run build --prefix Client",
     "build:server": "npm run build --prefix Server",
     "build": "yarn turbo run build",
     "build:remove": "cd Client && rm -rf build && cd .. && cd Server && rm -rf build && cd ..",
     "test": "yarn turbo run test",
-    "data:import": "node Server/seeder",
-    "data:destroy": "node Server/seeder -d",
+    "data:import": "ts-node Server/seeder",
+    "data:destroy": "ts-node Server/seeder -d",
     "e2e": "cypress open"
   },
   "husky": {
@@ -24,7 +26,8 @@
   "workspaces": [
     "packages/*",
     "Client",
-    "Server"
+    "Server",
+    "admin"
   ],
   "author": "Priyang",
   "license": "ISC",

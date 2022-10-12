@@ -17,7 +17,7 @@ import Auth from "../middleware/AuthMiddleware";
 import Admin from "../middleware/AdminMiddleware";
 import ZodMiddleware from "../middleware/ZodMiddleware";
 import {
-  AddProjectValidation,
+  CreateProductValidation,
   UpdateProductValidation,
 } from "@ecommerce/validation";
 
@@ -33,23 +33,11 @@ router.route("/").get(GetAllProducts);
 router.route("/all").get(Admin, GetAllDetailsProducts);
 
 router.route("/top").get(GetTopProducts);
-router
-  .route("/add")
-  .post(
-    Admin,
-    ZodMiddleware(AddProjectValidation),
-    upload.single("imageFile"),
-    AddProduct
-  );
+router.route("/add").post(Admin, upload.single("imageFile"), AddProduct);
 router
   .route("/product/:id")
   .get(GetProductByID)
-  .put(
-    Admin,
-    ZodMiddleware(UpdateProductValidation),
-    upload.single("imageFile"),
-    UpdateProduct
-  )
+  .put(Admin, upload.single("imageFile"), UpdateProduct)
   .delete(Admin, deleteProduct);
 
 router.route("/review/:id").post(Auth, AddReview);

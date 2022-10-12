@@ -6,8 +6,9 @@ import CustomRateLimiter from "./middleware/Ratelimiter";
 import connectDB from "./config/db";
 import Jobs from "./Jobs";
 import { notFound, errorHandler } from "./middleware/ErrorMiddleWare";
-import UserRoute from "./routes/User.routes.js";
-import ProductsRoute from "./routes/Products.routes.js";
+import UserRoute from "./routes/User.routes";
+import AdminRoute from "./routes/Admin.routes";
+import ProductsRoute from "./routes/Products.routes";
 import CartRoute from "./routes/Cart.routes";
 import OrderRoute from "./routes/Order.routes";
 import WishListRoute from "./routes/WishList.routes";
@@ -31,6 +32,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 app.use("/api/users", CustomRateLimiter(), UserRoute);
+app.use("/api/admin", AdminRoute);
 app.use("/api/products", ProductsRoute);
 app.use("/api/cart", CartRoute);
 app.use("/api/orders", OrderRoute);
