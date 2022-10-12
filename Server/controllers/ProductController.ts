@@ -244,7 +244,8 @@ const AddReview = asyncHandler(async (req: Request, res: Response) => {
     throw new Error("Product not Found or not Ordered Error");
   } else {
     const alreadyReviewed = product.reviews.find(
-      (r) => r.user.toString() === req.user.id.toString()
+      // @ts-ignore
+      (r) => r.user?.toString() === req.user.id.toString()
     );
     if (alreadyReviewed) {
       res.status(404);
@@ -259,6 +260,7 @@ const AddReview = asyncHandler(async (req: Request, res: Response) => {
       product.reviews.unshift(review);
       product.numReviews = product.reviews.length;
       product.rating =
+        // @ts-ignore
         product.reviews.reduce((acc, item) => item.rating + acc, 0) /
         product.reviews.length;
       await product.save();

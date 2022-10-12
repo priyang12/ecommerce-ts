@@ -37,7 +37,7 @@ const initialState: AuthState = {
 
 export const AuthContext = createContext({} as IContextModel);
 
-export const AuthProvider: React.FC = ({ children }) => {
+export const AuthProvider = ({ children }: { children: any }) => {
   const [state, dispatch] = useReducer(AuthReducer, initialState);
   return (
     <AuthContext.Provider value={{ state, dispatch }}>

@@ -1,6 +1,6 @@
-import { fetchUtils, useNotify } from "react-admin";
+import { fetchUtils } from "react-admin";
 
-const apiUrl = "/api/admin";
+const apiUrl = "https://admin-test-4uwuoyc51-priyang12.vercel.app/api/admin";
 
 const httpClient = (url: string, options: any = {}) => {
   if (!options.headers) {
