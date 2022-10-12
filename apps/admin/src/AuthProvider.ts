@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const apiUrl = `${process.env.REACT_APP_BACKEND}/api/users`;
+
 const authProvider = {
   login: async ({
     username,
@@ -9,7 +11,7 @@ const authProvider = {
     password: string;
   }) => {
     try {
-      const { data } = await axios.post("/api/users/login", {
+      const { data } = await axios.post(`${apiUrl}/login`, {
         email: username,
         password,
       });
@@ -42,7 +44,7 @@ const authProvider = {
       }
       const token = localStorage.getItem("token") || "";
       axios.defaults.headers.common["x-auth-token"] = token;
-      const { data }: any = await axios.get("/api/users");
+      const { data }: any = await axios.get(apiUrl);
       sessionStorage.setItem("User", JSON.stringify(data));
       return data;
     } catch (error: any) {

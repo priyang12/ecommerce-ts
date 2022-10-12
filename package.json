@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "description": "Ecommerce shoping FullStack",
   "scripts": {
-    "start": "npm run start --prefix Server",
-    "client": "npm run start --prefix Client",
-    "admin": "npm run start --prefix admin",
-    "server": "npm run server --prefix Server",
+    "start": "npm run start --prefix apps/Server",
+    "client": "npm run start --prefix apps/Client",
+    "admin": "npm run start --prefix apps/admin",
+    "server": "npm run server --prefix apps/Server",
     "dev": "concurrently \"yarn run server\" \"yarn run client\"",
     "dev:admin": "concurrently \"yarn run start\" \"yarn run admin\"",
-    "build:client": "npm run build --prefix Client",
-    "build:server": "npm run build --prefix Server",
+    "build:client": "npm run build --prefix apps/Client",
+    "build:server": "npm run build --prefix apps/Server",
     "build": "yarn turbo run build",
     "build:remove": "cd Client && rm -rf build && cd .. && cd Server && rm -rf build && cd ..",
     "test": "yarn turbo run test",
@@ -25,9 +25,7 @@
   },
   "workspaces": [
     "packages/*",
-    "Client",
-    "Server",
-    "admin"
+    "apps/*"
   ],
   "author": "Priyang",
   "license": "ISC",

@@ -45,15 +45,19 @@ app.get("/api/config/paypal", (req, res) => {
 
 //static for Browser
 const _dirname = path.resolve();
+let staticPath = "apps/Client/build";
+
+if (process.env.NODE_ENV === "development") {
+  staticPath = "../Client/build";
+}
 
 if (
   process.env.NODE_ENV === "production" ||
   process.env.NODE_ENV === "development"
 ) {
-  app.use(express.static(path.join(_dirname, "/Client/build")));
-
+  app.use(express.static(path.join(_dirname, staticPath)));
   app.get("*", (req, res) =>
-    res.sendFile(path.resolve(_dirname, "Client", "build", "index.html"))
+    res.sendFile(path.resolve(_dirname, "..", "Client", "build", "index.html"))
   );
 } else {
   app.get("/", (req, res) => {
