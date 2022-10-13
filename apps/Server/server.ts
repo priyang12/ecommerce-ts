@@ -45,7 +45,7 @@ app.get("/api/config/paypal", (req, res) => {
 
 //static for Browser
 const _dirname = path.resolve();
-let staticPath = "apps/Client/build";
+let staticPath = "/Client/build";
 
 if (process.env.NODE_ENV === "development") {
   staticPath = "../Client/build";
