@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import path from "path";
 import morgan from "morgan";
+import Cors from "cors";
 import CustomRateLimiter from "./middleware/Ratelimiter";
 import connectDB from "./config/db";
 import Jobs from "./Jobs";
@@ -24,6 +25,14 @@ dotenv.config();
 
 //init middleware
 
+app.use(
+  Cors({
+    origin: process.env.CLIENT_URL || "https://ecommerce-ts-admin.vercel.app",
+    credentials: true,
+    exposedHeaders: ["x-total-count"],
+  })
+);
+
 app.use(express.json({}));
 
 if (process.env.NODE_ENV === "development") {
@@ -45,7 +54,7 @@ app.get("/api/config/paypal", (req, res) => {
 
 //static for Browser
 const _dirname = path.resolve();
-let staticPath = "/Client/build";
+let staticPath = "/apps/Client/build";
 
 if (process.env.NODE_ENV === "development") {
   staticPath = "../Client/build";
@@ -56,6 +65,7 @@ if (
   process.env.NODE_ENV === "development"
 ) {
   app.use(express.static(path.join(_dirname, staticPath)));
+
   app.get("*", (req, res) =>
     res.sendFile(path.resolve(_dirname, "..", "Client", "build", "index.html"))
   );

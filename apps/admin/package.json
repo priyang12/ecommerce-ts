@@ -2,6 +2,7 @@
   "name": "admin",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:5001",
   "dependencies": {
     "@ecommerce/validation": "*",
     "@hookform/resolvers": "^2.9.7",

@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const apiUrl = `${process.env.REACT_APP_BACKEND}/api/users`;
+const apiUrl = process.env.REACT_APP_BACKEND
+  ? `${process.env.REACT_APP_BACKEND}/api/users`
+  : "/api/users";
 
 const authProvider = {
   login: async ({

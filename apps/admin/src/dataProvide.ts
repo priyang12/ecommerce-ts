@@ -1,6 +1,8 @@
 import { fetchUtils } from "react-admin";
 
-const apiUrl = `${process.env.REACT_APP_BACKEND}/api/admin`;
+const apiUrl = process.env.REACT_APP_BACKEND
+  ? `${process.env.REACT_APP_BACKEND}/api/admin`
+  : "/api/admin";
 
 const httpClient = (url: string, options: any = {}) => {
   if (!options.headers) {
