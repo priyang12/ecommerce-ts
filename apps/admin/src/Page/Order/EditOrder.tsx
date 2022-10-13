@@ -5,20 +5,30 @@ import {
   SimpleForm,
   TextInput,
 } from "react-admin";
+import HelmetComponent from "../../HelmetComponent";
 
 const EditOrder = () => (
-  <Edit>
-    <SimpleForm>
-      {/* <ReferenceInput source="_id" reference="s">
+  <>
+    <HelmetComponent>
+      <title>Edit Order</title>
+      <meta
+        name="description"
+        content="This is the Edit Order page. It allows you to edit the orders in the database."
+      />
+    </HelmetComponent>
+    <Edit>
+      <SimpleForm>
+        {/* <ReferenceInput source="_id" reference="s">
         <SelectInput optionText="id" />
       </ReferenceInput> */}
-      <NumberInput source="totalPrice" />
-      <BooleanInput source="isDelivered" />
-      <TextInput source="user.name" />
-      <TextInput source="paymentMethod" />
-      <TextInput source="id" />
-    </SimpleForm>
-  </Edit>
+        <NumberInput source="totalPrice" />
+        <BooleanInput source="isDelivered" />
+        <TextInput source="user.name" />
+        <TextInput source="paymentMethod" />
+        <TextInput source="id" />
+      </SimpleForm>
+    </Edit>
+  </>
 );
 
 export default EditOrder;

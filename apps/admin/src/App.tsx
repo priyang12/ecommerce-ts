@@ -32,27 +32,29 @@ const MyLayout = (props: any) => <Layout {...props} appBar={MyAppBar} />;
 
 function App() {
   return (
-    <Admin
-      loginPage={MyLoginPage}
-      layout={MyLayout}
-      dataProvider={DataProviderWithFormData}
-      authProvider={authProvider}
-      theme={Theme}
-    >
-      <Resource
-        name="users"
-        list={UserList}
-        edit={EditUsers}
-        create={CreateUser}
-      />
-      <Resource
-        name="product"
-        list={ProductList}
-        edit={EditProduct}
-        create={CreateProduct}
-      />
-      <Resource name="orders" list={OrderList} edit={EditOrder} />
-    </Admin>
+    <>
+      <Admin
+        loginPage={MyLoginPage}
+        layout={MyLayout}
+        dataProvider={DataProviderWithFormData}
+        authProvider={authProvider}
+        theme={Theme}
+      >
+        <Resource
+          name="users"
+          list={UserList}
+          edit={EditUsers}
+          create={CreateUser}
+        />
+        <Resource
+          name="product"
+          list={ProductList}
+          edit={EditProduct}
+          create={CreateProduct}
+        />
+        <Resource name="orders" list={OrderList} edit={EditOrder} />
+      </Admin>
+    </>
   );
 }
 

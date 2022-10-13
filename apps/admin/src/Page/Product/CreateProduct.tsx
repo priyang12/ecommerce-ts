@@ -9,6 +9,7 @@ import {
 } from "react-admin";
 import { CreateProductValidation } from "@ecommerce/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import HelmetComponent from "../../HelmetComponent";
 
 function CreateProduct(props: any) {
   const categories = [
@@ -25,6 +26,13 @@ function CreateProduct(props: any) {
 
   return (
     <div>
+      <HelmetComponent>
+        <title>Create Product</title>
+        <meta
+          name="description"
+          content="This is the Create Product page. It allows you to create a new product in the database."
+        />
+      </HelmetComponent>
       <h1>Create Product</h1>
       <Create {...props}>
         <SimpleForm resolver={zodResolver(CreateProductValidation)}>
