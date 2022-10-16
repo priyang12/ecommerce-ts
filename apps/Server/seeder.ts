@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
-import users from "./data/userData";
-import products from "./data/productsData";
+import bcrypt from "bcryptjs";
+import users from "../../data/userData";
+import products from "../../data/productsData";
 import { CreateModels, models } from "./utils/Models";
 import connectDB from "./config/db";
 
@@ -8,7 +9,7 @@ dotenv.config();
 
 connectDB();
 
-const importdata = async () => {
+const importData = async () => {
   try {
     const { User, Product, Order } = models;
 
@@ -18,7 +19,11 @@ const importdata = async () => {
 
     CreateModels();
 
-    const createdUser = await User.insertMany(users);
+    const createdUser = await User.insertMany(
+      users.map((user) => {
+        return { ...user, password: bcrypt.hashSync(user.password, 10) };
+      })
+    );
 
     const adminUser = createdUser[0]._id;
 
@@ -54,5 +59,5 @@ const destroyData = async () => {
 if (process.argv[2] === "-d") {
   destroyData();
 } else {
-  importdata();
+  importData();
 }

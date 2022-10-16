@@ -16,14 +16,9 @@
     "build:Client": "turbo run build --filter=./apps/Server --filter=./apps/Client",
     "build:remove": "cd Client && rm -rf build && cd .. && cd Server && rm -rf build && cd ..",
     "test": "turbo run test",
-    "data:import": "ts-node Server/seeder",
-    "data:destroy": "ts-node Server/seeder -d",
+    "data:import": "ts-node apps/Server/seeder",
+    "data:destroy": "ts-node apps/Server/seeder -d",
     "e2e": "cypress open"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "echo ”[Husky] pre-commit”"
-    }
   },
   "workspaces": [
     "packages/*",
@@ -32,11 +27,12 @@
   "author": "Priyang",
   "license": "ISC",
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "@testing-library/cypress": "^8.0.3",
     "@types/node": "^18.0.3",
     "concurrently": "^6.2.0",
     "cypress": "^9.6.0",
     "dotenv": "^16.0.1",
-    "husky": "^7.0.0",
     "nodemon": "^2.0.15",
     "ts-node": "^10.8.2",
     "turbo": "^1.5.6",
