@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const UserSchema = z.object({
   _id: z.string(),
-  name: z.string().refine((name) => name.length > 2 && name.length < 5, {
+  name: z.string().refine((name) => name.length > 2 && name.length < 30, {
     message: "Name must be between 2 and 30 characters",
   }),
   email: z.string().email(),
@@ -22,7 +22,7 @@ export const RegisterSchema = UserSchema.pick({
   password: true,
 })
   .extend({ password2: z.string() })
-  .refine((data) => data.password !== data.password2, {
+  .refine((data) => data.password === data.password2, {
     message: "Passwords do not match",
   });
 
@@ -32,7 +32,7 @@ export const ResetpasswordSchema = UserSchema.pick({
   .extend({
     password2: z.string(),
   })
-  .refine((data) => data.password !== data.password2, {
+  .refine((data) => data.password === data.password2, {
     message: "Passwords do not match",
   });
 

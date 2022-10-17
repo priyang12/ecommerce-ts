@@ -39,9 +39,11 @@ const ProductList: FC<PropType> = ({
           {UpdateQty ? product.price : `${product.price} x ${qty}`}
         </StyledPrice>
         <StyledQuantity>
-          <label>{UpdateQty ? "Qty :" : "Total"}</label>
+          <label htmlFor="selectQty">{UpdateQty ? "Qty :" : "Total"}</label>
           {UpdateQty ? (
             <select
+              id="selectQty"
+              name="selectQty"
               data-testid="selectQty"
               value={qty}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>

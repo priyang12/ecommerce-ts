@@ -1,4 +1,20 @@
+export const NoProductData = {
+  _id: "60d5e622e5179e2bb44b4321",
+  rating: 2.3333333333333335,
+  numReviews: 3,
+  price: 5000,
+  countInStock: 0,
+  name: "No Product available",
+  image:
+    "https://ik.imagekit.io/5aalo5l7bu7/image-1628092416984_gMZA4LTKA.webp",
+  description:
+    "The ultimate home entertainment center starts with PlayStation. Whether you are into gaming, HD movies, television, music",
+  brand: "Sony",
+  category: "Electronics",
+};
+
 const products = [
+  NoProductData,
   {
     _id: "60d5e622e5179e2bb44bd839",
     rating: 2.3333333333333335,

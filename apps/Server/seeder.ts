@@ -11,11 +11,13 @@ connectDB();
 
 const importData = async () => {
   try {
-    const { User, Product, Order } = models;
+    const { User, Product, Order, Cart, Wishlist } = models;
 
     await User.deleteMany();
     await Product.deleteMany();
     await Order.deleteMany();
+    await Cart.deleteMany();
+    await Wishlist.deleteMany();
 
     CreateModels();
 
@@ -32,6 +34,10 @@ const importData = async () => {
     });
 
     await Product.insertMany(sampleProducts);
+
+    await Cart.insertMany(
+      createdUser.map((user) => ({ user: user._id, products: [] }))
+    );
 
     console.log("DATA IMPORTED");
     process.exit();

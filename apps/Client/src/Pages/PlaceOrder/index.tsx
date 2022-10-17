@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { Redirect, useHistory } from "react-router";
+import { Helmet } from "react-helmet-async";
 import TimeoutBtn from "../../Components/TimeoutBtn";
 import ProductList from "../../Components/ProductList";
 import Navigators from "../../Components/Navigators";
@@ -65,6 +66,10 @@ const PlaceOrder = () => {
 
   return (
     <StyledPaymentContainer theme={{ maxWidth: "80vw" }}>
+      <Helmet>
+        <title>Place Order</title>
+        <meta name="description" content="Place Order" />
+      </Helmet>
       <Navigators />
       <StyledPlaceOrder>
         <div className="OrderDetails">

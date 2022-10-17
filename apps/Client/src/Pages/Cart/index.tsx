@@ -98,7 +98,7 @@ const Cart = () => {
         <StyledContainer>
           <StyledCheckout>
             <h3>SUBTOTAL ({TotalProducts}) ITEMS</h3>
-            <p>${TotalAmount}</p>
+            <p>{TotalAmount}</p>
             <Link className="btn" to="/address">
               Checkout
             </Link>
