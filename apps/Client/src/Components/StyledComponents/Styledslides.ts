@@ -8,6 +8,7 @@ export const StyledSlidesContainer = styled.div`
   align-items: center;
   color: #fff;
   position: relative;
+  margin: 10% 5%;
   .active {
     --x: calc(var(--px) - 0.5);
     --y: calc(var(--py) - 0.5);
@@ -27,46 +28,6 @@ export const StyledSlide = styled.div`
   display: grid;
   > .slide {
     grid-area: 1 / -1;
-  }
-
-  > button {
-    cursor: pointer;
-    appearance: none;
-    border-radius: 50%;
-    border: none;
-    color: black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    font-size: 1.5rem;
-    width: 5rem;
-    height: 5rem;
-    transition: opacity 0.3s;
-    opacity: 0.7;
-    z-index: 5;
-    top: 15rem;
-    &:hover {
-      opacity: 1;
-    }
-    &:focus {
-      outline: none;
-    }
-    &:first-child {
-      left: 10%;
-    }
-    &:last-child {
-      right: 10%;
-    }
-    @media (max-width: 568px) {
-      display: none;
-      width: 3rem;
-      height: 3rem;
-      display: none;
-    }
-    @media (max-width: 868px) {
-      top: 10rem;
-    }
   }
 `;
 
@@ -145,9 +106,45 @@ export const StyledShowMore = styled.button`
   font-size: 2.5rem;
   transition: opacity 0.3s;
   &:focus {
-    outline: none;
+    outline: 5px solid var(--primary-color);
   }
   ${media.tablet} {
     font-size: 1rem;
+  }
+`;
+
+export const StyledSlideButton = styled.button`
+  cursor: pointer;
+  appearance: none;
+  border-radius: 50%;
+  border: none;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  font-size: 1.5rem;
+  width: 5rem;
+  height: 5rem;
+  transition: opacity 0.3s;
+  opacity: 0.7;
+  z-index: 5;
+  top: 40%;
+  &:hover {
+    opacity: 1;
+  }
+  &:focus {
+    outline: 5px solid #e65d5d;
+  }
+  &:first-child {
+    left: 10%;
+  }
+  &:last-child {
+    right: 10%;
+  }
+  ${media.mobile} {
+    top: 30%;
+    width: 3rem;
+    height: 3rem;
   }
 `;

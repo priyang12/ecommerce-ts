@@ -11,10 +11,14 @@ import {
 const Slide = ({
   slide,
   offset,
+  onMouseEnter,
+  onMouseLeave,
   dispatch,
 }: {
   slide: any;
   offset: number;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
   dispatch: Dispatch<any>;
 }) => {
   const active = offset === 0 ? true : null;
@@ -23,6 +27,10 @@ const Slide = ({
     <div
       ref={ref}
       className="slide"
+      data-active={active}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      onFocus={onMouseEnter}
       onTouchMove={(e) => {
         if (e.touches.length >= 1) {
           if (offset === 1) {

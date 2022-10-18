@@ -1,8 +1,9 @@
-import { FC, useEffect, useReducer } from "react";
+import { FC, useEffect, useReducer, useState } from "react";
 import { useLoadTopProducts } from "../API/ProductAPI";
 import Slide from "./Slide";
 import {
   StyledSlide,
+  StyledSlideButton,
   StyledSlidesContainer,
 } from "./StyledComponents/Styledslides";
 
@@ -10,9 +11,8 @@ const initialState = {
   slideIndex: 0,
 };
 
-const Carousel: FC = () => {
+function Carousel() {
   const { data: Products } = useLoadTopProducts();
-
   const DisplayProducts = Products || [];
 
   const slidesReducer = (state: any, event: any) => {
@@ -32,21 +32,38 @@ const Carousel: FC = () => {
       };
     }
   };
-
   const [state, dispatch] = useReducer(slidesReducer, initialState);
+  const [Hover, setHover] = useState(false);
+
   useEffect(() => {
     const interval = setInterval(() => {
       dispatch({ type: "NEXT" });
     }, 3000);
+    if (Hover) clearInterval(interval);
     return () => clearInterval(interval);
-  }, []);
+  }, [Hover]);
+
+  const handleHover = () => {
+    setHover(true);
+  };
+
+  const handleLeave = () => {
+    setHover(false);
+  };
+
+  if (DisplayProducts.length === 0) return <div>Loading...</div>;
 
   return (
     <StyledSlidesContainer>
       <StyledSlide>
-        <button onClick={() => dispatch({ type: "PREV" })}>
+        <StyledSlideButton
+          onClick={() => dispatch({ type: "PREV" })}
+          tabIndex={0}
+          aria-label="Previous Slide"
+          aria-describedby="Previous Slide"
+        >
           <i className="fas fa-chevron-left"></i>
-        </button>
+        </StyledSlideButton>
 
         {[...DisplayProducts, ...DisplayProducts, ...DisplayProducts].map(
           (slide, i) => {
@@ -56,17 +73,24 @@ const Carousel: FC = () => {
                 slide={slide}
                 offset={offset}
                 key={i}
+                onMouseEnter={handleHover}
+                onMouseLeave={handleLeave}
                 dispatch={dispatch}
               />
             );
           }
         )}
-        <button onClick={() => dispatch({ type: "NEXT" })}>
+        <StyledSlideButton
+          onClick={() => dispatch({ type: "NEXT" })}
+          tabIndex={0}
+          aria-label="Next Slide"
+          aria-describedby="Next Slide"
+        >
           <i className="fas fa-chevron-right"></i>
-        </button>
+        </StyledSlideButton>
       </StyledSlide>
     </StyledSlidesContainer>
   );
-};
+}
 
 export default Carousel;
