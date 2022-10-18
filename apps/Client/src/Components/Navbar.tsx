@@ -9,6 +9,7 @@ import {
   DropDown,
   StyledDropDownButton,
   StyledSecondaryNav,
+  StyledUserName,
 } from "./StyledComponents/StyledNavbar";
 import LogoImage from "../Assets/Logo.png";
 
@@ -33,7 +34,7 @@ const Navbar = () => {
     <>
       {user && (
         <DropDown>
-          <div>{user.name}</div>
+          <StyledUserName>{user.name}</StyledUserName>
           <StyledDropDownButton className="Dropdown-btn">
             <i className="fas fa-caret-down"></i>
           </StyledDropDownButton>

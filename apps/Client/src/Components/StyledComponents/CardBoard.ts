@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { media } from "../../Variables";
 
 export const CardBoard = styled.section`
   display: grid;
@@ -20,6 +21,9 @@ export const Card = styled.article`
   img {
     border-radius: 5%;
     width: 100%;
-    height: 100%;
+    height: 20vw;
+    ${media.mobile} {
+      height: 50vh;
+    }
   }
 `;

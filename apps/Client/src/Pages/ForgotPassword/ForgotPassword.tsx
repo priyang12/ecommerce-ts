@@ -1,9 +1,16 @@
 import React, { useContext, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import AlertDisplay from "../../Components/AlertDisplay";
 import Spinner from "../../Components/Spinner";
 
 import { RecoverPassword } from "../../Context/Authentication/AuthActions";
 import { AuthContext } from "../../Context/Authentication/AuthContext";
+import {
+  FormControl,
+  Input,
+  Label,
+  SubmitButton,
+} from "../../StyledComponents/FormControl";
 import { ValidateEmail } from "../../Utils/Validation";
 import { StyledForgetPassword } from "./StyledForgetPassword";
 
@@ -26,6 +33,10 @@ function ForgotPassword() {
   };
   return (
     <StyledForgetPassword>
+      <Helmet>
+        <title>Forgot Password</title>
+        <meta name="description" content="Forgot Password" />
+      </Helmet>
       <h1>Forgot Password ?</h1>
       {state?.alert && (
         <AlertDisplay
@@ -35,8 +46,8 @@ function ForgotPassword() {
       )}
       {state?.err && <AlertDisplay msg={state.err} type={false} />}
       <form onSubmit={SendMail}>
-        <div className="form-control">
-          <input
+        <FormControl>
+          <Input
             type="text"
             name="email"
             id="email"
@@ -52,7 +63,7 @@ function ForgotPassword() {
             required
           />
           <span className="bar"></span>
-          <label htmlFor="email">
+          <Label htmlFor="email">
             {error ? (
               <span className="error">{error}</span>
             ) : (
@@ -64,11 +75,13 @@ function ForgotPassword() {
                 Email
               </span>
             )}
-          </label>
-        </div>
-        <button type="submit" className="btn">
-          Send Recovery Mail
-        </button>
+          </Label>
+        </FormControl>
+        <SubmitButton
+          type="submit"
+          className="btn"
+          value="Send Recovery Mail"
+        />
       </form>
     </StyledForgetPassword>
   );

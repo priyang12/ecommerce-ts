@@ -12,7 +12,8 @@ import ProductCard from "../../Components/ProductCard";
 import AlertDisplay from "../../Components/AlertDisplay";
 import Spinner from "../../Components/Spinner";
 import { Product } from "../../interfaces";
-const Home = () => {
+
+function Home() {
   const { keyword, pageNumber }: any = useParams();
   const page: number = pageNumber ? parseInt(pageNumber) : 1;
 
@@ -81,6 +82,6 @@ const Home = () => {
       )}
     </>
   );
-};
+}
 
 export default Home;

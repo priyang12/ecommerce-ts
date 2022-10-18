@@ -7,6 +7,12 @@ import {
   UpdatePassword,
 } from "../../Context/Authentication/AuthActions";
 import { AuthContext } from "../../Context/Authentication/AuthContext";
+import {
+  FormControl,
+  Input,
+  Label,
+  SubmitButton,
+} from "../../StyledComponents/FormControl";
 import { useForm } from "../../Utils/CustomHooks";
 import setAuthToken from "../../Utils/setAuthToken";
 import { ConfirmPassword, ValidatePassword } from "../../Utils/Validation";
@@ -83,8 +89,8 @@ function ResetPassword() {
           <h1>{state.user.name}</h1>
           <p>{state.user.email}</p>
           <form onSubmit={onSubmit}>
-            <div className="form-control">
-              <input
+            <FormControl>
+              <Input
                 type="password"
                 name="Password"
                 id="Password"
@@ -93,16 +99,16 @@ function ResetPassword() {
                 required
               />
               <span className="bar"></span>
-              <label htmlFor="Password">
+              <Label htmlFor="Password">
                 {FormErrors.password ? (
                   <span className="error">{FormErrors.password}</span>
                 ) : (
                   "Password"
                 )}
-              </label>
-            </div>
-            <div className="form-control">
-              <input
+              </Label>
+            </FormControl>
+            <FormControl>
+              <Input
                 type="password"
                 name="Password2"
                 id="Password2"
@@ -111,15 +117,15 @@ function ResetPassword() {
                 required
               />
               <span className="bar"></span>
-              <label htmlFor="Password2">
+              <Label htmlFor="Password2">
                 {FormErrors.password2 ? (
                   <span className="error">{FormErrors.password2}</span>
                 ) : (
                   "Confirm password"
                 )}
-              </label>
-            </div>
-            <input type="submit" className="btn" value="Reset" />
+              </Label>
+            </FormControl>
+            <SubmitButton type="submit" className="btn" value="Reset" />
           </form>
         </div>
       )}

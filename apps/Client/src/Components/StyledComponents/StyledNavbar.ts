@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { media } from "../../Variables";
 
 export const StyledNavbar = styled.nav`
   color: var(--primary-dark-color);
@@ -10,8 +11,7 @@ export const StyledNavbar = styled.nav`
   h1 {
     margin: 0;
   }
-
-  @media (min-width: 800px) {
+  ${media.LargerThanTablet} {
     flex-direction: row;
   }
 `;
@@ -24,7 +24,7 @@ export const StyledSecondaryNav = styled.div`
     margin: 0.5em;
     padding: 2em;
   }
-  @media (max-width: 576px) {
+  ${media.mobile} {
     flex-direction: column;
     & > * {
       padding: 0.5em;
@@ -49,12 +49,10 @@ export const StyledLinks = styled.div`
   text-align: center;
   margin-right: 1em;
   a {
-    color: var(--secondary-color);
+    color: var(--bg-contrast-color);
     &:hover {
       color: #fff;
     }
-  }
-  @media (max-width: 800px) {
   }
 `;
 export const DropDown = styled.div`
@@ -62,11 +60,11 @@ export const DropDown = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: var(--secondary-light-color);
   .dropdown-content {
     display: none;
     position: absolute;
-    top: 100%;
+    text-align: center;
+    top: 90%;
     right: 0%;
     padding: 0rem;
     background-color: var(--assertive-color);
@@ -74,6 +72,7 @@ export const DropDown = styled.div`
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 2020;
     border-radius: 20px;
+    width: fit-content;
     li {
       width: fit-content;
       padding: 0.5rem 2rem;
@@ -82,10 +81,6 @@ export const DropDown = styled.div`
       a {
         color: var(--secondary-color);
       }
-    }
-    @media (max-width: 576px) {
-      top: 50%;
-      left: 0%;
     }
   }
 `;
@@ -106,4 +101,9 @@ export const StyledDropDownButton = styled.button`
   & ~ .dropdown-content:hover {
     display: block;
   }
+`;
+export const StyledUserName = styled.h3`
+  color: var(--bg-contrast-color);
+  font-size: 1.2rem;
+  margin: 0;
 `;
