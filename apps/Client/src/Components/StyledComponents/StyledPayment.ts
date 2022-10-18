@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { media } from "../../Variables";
 
 export const StyledPaymentContainer = styled.section`
   width: 100%;
@@ -11,7 +12,7 @@ export const StyledPaymentContainer = styled.section`
   @media (max-width: 576px) {
     max-width: 35ch;
   }
-  @media (max-width: 768px) {
+  ${media.tablet} {
     max-width: 50ch;
   }
 `;

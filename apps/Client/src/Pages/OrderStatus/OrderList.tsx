@@ -12,7 +12,7 @@ const ListItem = styled.ul`
   justify-content: space-evenly;
   align-items: center;
   background-color: var(--assertive-color);
-  color: var(--main-light-color);
+  color: var(--primary-light-color);
   border-radius: 15px;
   div {
     min-width: 300px;
@@ -21,7 +21,7 @@ const ListItem = styled.ul`
     min-width: 100px;
   }
   a {
-    color: var(--bg-light);
+    color: var(--bg-color);
   }
 `;
 

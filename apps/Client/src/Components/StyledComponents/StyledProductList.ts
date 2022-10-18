@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { media } from "../../Variables";
 
 export const StyledProductList = styled.ul`
   padding: 1rem 0;
@@ -29,7 +30,7 @@ export const StyledItem = styled.li`
   img {
     width: 80%;
   }
-  @media (max-width: 768px) {
+  ${media.tablet} {
     margin: 0 auto;
     width: 70%;
   }

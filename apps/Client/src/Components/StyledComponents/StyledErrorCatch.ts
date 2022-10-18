@@ -40,11 +40,12 @@ export const StyledButton = styled.button`
 `;
 
 export const StyledErrorCatchMessage = styled.p`
-  width: 50%;
-  font-size: 3rem;
+  width: 100%;
+  font-size: 2.5rem;
   font-weight: bold;
   color: #fff;
   text-align: center;
+  margin: 0rem;
   backdrop-filter: blur(11px) saturate(200%);
   -webkit-backdrop-filter: blur(11px) saturate(200%);
   background-color: rgba(29, 42, 62, 0.47);
@@ -52,5 +53,6 @@ export const StyledErrorCatchMessage = styled.p`
   border: 1px solid rgba(255, 255, 255, 0.125);
   @media (min-width: 768px) {
     font-size: 5rem;
+    width: 50%;
   }
 `;

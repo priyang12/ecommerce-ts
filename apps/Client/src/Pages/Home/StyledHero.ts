@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { media } from "../../Variables";
 
 export const StyledHeroContainer = styled.section`
   overflow: hidden;
@@ -13,7 +14,7 @@ export const StyledHeroContainer = styled.section`
     width: 100%;
     flex-direction: column;
   }
-  @media (max-width: 768px) {
+  ${media.tablet} {
     width: 100%;
     flex-direction: column;
   }

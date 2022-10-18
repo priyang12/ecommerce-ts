@@ -58,7 +58,7 @@ function ForgotPassword() {
             ) : (
               <span
                 style={{
-                  color: "var(--main-color)",
+                  color: "var(--primary-color)",
                 }}
               >
                 Email

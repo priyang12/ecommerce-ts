@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const StyledNavbar = styled.nav`
-  color: #c996cc;
-  background-color: #916bbf;
+  color: var(--primary-dark-color);
+  background-color: var(--primary-light-color);
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -76,7 +76,7 @@ export const DropDown = styled.div`
     li {
       width: fit-content;
       padding: 0.5rem 2rem;
-      border-bottom: 2px solid var(--main-color);
+      border-bottom: 2px solid var(--primary-color);
       border-radius: 20px;
       a {
         color: var(--secondary-color);

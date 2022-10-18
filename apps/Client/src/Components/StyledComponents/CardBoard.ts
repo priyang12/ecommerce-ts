@@ -4,7 +4,7 @@ export const CardBoard = styled.section`
   display: grid;
   margin: auto;
   padding: 1em;
-  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
   grid-template-rows: 1fr;
   gap: 2rem;
 `;

@@ -11,7 +11,7 @@ import StillWorking from "./Pages/StillWorking";
 import PrivateRoute from "./PrivateRoute";
 import setAuthToken from "./Utils/setAuthToken";
 import Footer from "./Components/Footer";
-import ScrollToTop from "./Components/ScrollToTop";
+import ScrollToTop from "./ScrollToTop";
 import ForgotPassword from "./Pages/ForgotPassword";
 import ResetPassword from "./Pages/ResetPassword";
 import AlertDisplay from "./Components/AlertDisplay";

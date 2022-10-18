@@ -1,7 +1,11 @@
-import { StyledRating, StyledProductCard } from "./StyledComponents/Products";
+import {
+  StyledRating,
+  StyledProductCard,
+  StyledProductPrice,
+} from "./StyledComponents/Products";
 import { Link } from "react-router-dom";
-import type { Product } from "../interfaces";
 import Rating from "./Rating";
+import type { Product } from "../interfaces";
 
 type CardProps = {
   product: Product;
@@ -13,7 +17,7 @@ const ProductCard: React.FC<CardProps> = ({
   return (
     <StyledProductCard className="product">
       <Link to={`/product/${_id}`}>
-        <h4 className="CardTitle">{name}</h4>
+        <h1 className="CardTitle">{name}</h1>
       </Link>
       {/* Still need to work */}
       <Link to={`/product/${_id}`}>
@@ -25,7 +29,7 @@ const ProductCard: React.FC<CardProps> = ({
         ${image}?tr=w-700 700w`}
         />
       </Link>
-      <h3 className="card-text">${price}</h3>
+      <StyledProductPrice>${price}</StyledProductPrice>
       <StyledRating>
         <Rating value={rating} text={`${numReviews} reviews`} />
       </StyledRating>

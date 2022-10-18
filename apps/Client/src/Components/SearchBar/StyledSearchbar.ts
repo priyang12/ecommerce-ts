@@ -26,7 +26,7 @@ export const SerachButton = styled.button`
   transition: all 0.3s ease-in-out;
   border: 2px solid var(--assertive-color);
   &:hover {
-    color: var(--main-color);
+    color: var(--primary-color);
     background-color: var(--assertive-color);
   }
   &:focus {
@@ -45,8 +45,8 @@ export const SerachInput = styled.input`
 
   &:hover,
   &:focus {
-    color: var(--bg-light);
-    background-color: var(--main-dark-color);
+    color: var(--bg-color);
+    background-color: var(--primary-dark-color);
     outline: none;
   }
 `;

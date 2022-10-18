@@ -40,7 +40,7 @@ export const StyledDetails = styled.div`
 `;
 export const StyledCheckout = styled.div`
   padding: 2rem;
-  background-color: var(--main-dark-color);
+  background-color: var(--primary-dark-color);
   border: 1px solid #fff;
   .status-label {
     border-bottom: 2px solid #fff;

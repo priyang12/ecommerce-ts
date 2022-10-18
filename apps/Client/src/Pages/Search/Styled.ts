@@ -8,7 +8,7 @@ export const Pagination = styled.div`
 
 export const PaginationButton = styled.button<{ active: boolean }>`
   background: none;
-  border: 2px solid var(--main-bg-color);
+  border: 2px solid var(--primary-bg-color);
   outline: none;
   cursor: pointer;
   font-size: 1.5rem;

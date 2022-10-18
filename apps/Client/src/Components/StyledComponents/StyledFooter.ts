@@ -1,15 +1,16 @@
 import styled from "styled-components";
+import { media } from "../../Variables";
 
 export const Footer = styled.footer`
   display: flex;
   justify-content: center;
-  background-color: #c996cc;
-  color: white;
+  background-color: var(--secondary-color);
+  color: var(--bg-color);
   font-size: 1.5rem;
   font-weight: bold;
   gap: 1rem;
   font-family: "Roboto", sans-serif;
-  margin: 1rem 0;
+  margin: 1em 0;
   padding: 1em;
   p {
     margin: 0;
@@ -17,7 +18,7 @@ export const Footer = styled.footer`
   h4 {
     margin: 0;
   }
-  @media (max-width: 768px) {
+  ${media.tablet} {
     font-size: 1.2rem;
     flex-direction: column;
   }
@@ -32,7 +33,7 @@ export const FooterContainer = styled.div`
   width: 100%;
   height: 100%;
   gap: 1rem;
-  @media (max-width: 768px) {
+  ${media.tablet} {
     flex-direction: row;
     padding: 0;
   }
@@ -52,7 +53,7 @@ export const ContentInfo = styled.ul`
     margin: 0.5rem 0;
   }
 
-  @media (max-width: 768px) {
+  ${media.tablet} {
     flex-direction: row;
   }
 `;

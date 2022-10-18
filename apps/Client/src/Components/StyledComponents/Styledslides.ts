@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { media } from "../../Variables";
 
 export const StyledSlidesContainer = styled.div`
   overflow: hidden;
@@ -114,9 +115,10 @@ export const StyledContentInner = styled.div`
     .slideDescription {
       font-size: 1.5rem;
     }
-  @media (max-width: 768px) {
-    .slideDescription {
-      display: none;
+    ${media.tablet} {
+      .slideDescription {
+        display: none;
+      }
     }
   }
 `;
@@ -145,7 +147,7 @@ export const StyledShowMore = styled.button`
   &:focus {
     outline: none;
   }
-  @media (max-width: 768px) {
+  ${media.tablet} {
     font-size: 1rem;
   }
 `;

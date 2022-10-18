@@ -10,7 +10,6 @@ import {
   StyledDropDownButton,
   StyledSecondaryNav,
 } from "./StyledComponents/StyledNavbar";
-
 import LogoImage from "../Assets/Logo.png";
 
 const Navbar = () => {

@@ -20,12 +20,12 @@ export const StyledCheckout = styled.div`
   color: var(--assertive-color);
   p {
     font-size: 1.5rem;
-    background-color: var(--main-light-color);
+    background-color: var(--primary-light-color);
     padding: 0.5em;
   }
   .btn {
     margin: 0;
-    border: 2px solid var(--main-dark-color);
+    border: 2px solid var(--primary-dark-color);
     transition: all 0.3s ease-in-out;
   }
 `;
