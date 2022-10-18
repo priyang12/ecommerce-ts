@@ -4,7 +4,7 @@ export const FormControl = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 1.5em 0em;
+  margin-bottom: 1.5em;
   position: relative;
   width: 100%;
   .bar {
@@ -12,7 +12,7 @@ export const FormControl = styled.div`
   }
 
   input:valid ~ label {
-    transform: translateY(-160%) translateX(0%);
+    transform: translateY(-101%) translateX(-1%);
     text-align: left;
   }
   textarea:valid ~ label {
@@ -43,4 +43,9 @@ export const Input = styled.input`
     border: 4px solid white;
     outline: none;
   }
+`;
+
+export const SubmitButton = styled.input`
+  width: 100%;
+  border-radius: var(--border-radius);
 `;

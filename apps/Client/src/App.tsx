@@ -17,6 +17,8 @@ import ResetPassword from "./Pages/ResetPassword";
 import AlertDisplay from "./Components/AlertDisplay";
 import NotFound from "./Pages/NotFound";
 import { LOG_OUT } from "./Context/Authentication/Authtypes";
+import Register from "./Pages/Register";
+import Login from "./Pages/Login";
 
 function App() {
   const { state, dispatch } = useContext(AuthContext);
@@ -49,14 +51,17 @@ function App() {
         <Route path="/search/name=:keyword" element={<Search />} />
         <Route path="/search/name=:keyword/:pageNumber" element={<Search />} />
         <Route path="/product/:id" element={<SingleProduct />} />
-        <Route path="/Auth" element={<Auth />} />
+        <Route path="/Auth" element={<Auth />}>
+          <Route path="register" element={<Register />} />
+          <Route path="login" element={<Login />} />
+        </Route>
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
         <Route path="/ResetPassword/:id" element={<ResetPassword />} />
         <Route path="/StillWorking" element={<StillWorking />} />
         <Route path="*" element={<PrivateRoute />} />
         <Route element={<NotFound />} />
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
     </BrowserRouter>
   );
 }

@@ -1,12 +1,16 @@
 import React, { useContext } from "react";
 import { LoginSchema } from "@ecommerce/validation";
-import { StyledContainer } from "../../Components/StyledComponents/Container";
 import { useForm } from "../../Utils/CustomHooks";
 import { LoginUser } from "../../Context/Authentication/AuthActions";
 import { AuthContext } from "../../Context/Authentication/AuthContext";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { FormControl, Input, Label } from "../../StyledComponents/FormControl";
+import {
+  FormControl,
+  Input,
+  Label,
+  SubmitButton,
+} from "../../StyledComponents/FormControl";
 
 const Login = () => {
   const { dispatch } = useContext(AuthContext);
@@ -30,15 +34,21 @@ const Login = () => {
     }
   };
   return (
-    <StyledContainer>
+    <>
       <Helmet>
         <title>Login</title>
+        <meta
+          name="description"
+          content="
+        Login to your account"
+        />
       </Helmet>
       <form onSubmit={login}>
         <FormControl>
           <Input
             type="text"
             name="email"
+            aria-label="email"
             id="email"
             value={email}
             onChange={ChangeState}
@@ -49,7 +59,7 @@ const Login = () => {
             {FormErrors.email ? (
               <span className="error">{FormErrors.email}</span>
             ) : (
-              "email"
+              "Email"
             )}
           </Label>
         </FormControl>
@@ -57,6 +67,7 @@ const Login = () => {
           <Input
             type="password"
             name="password"
+            aria-label="password"
             id="password"
             value={password}
             onChange={ChangeState}
@@ -71,14 +82,14 @@ const Login = () => {
             )}
           </Label>
         </FormControl>
-        <Input type="submit" value="login" className="btn" />
+        <SubmitButton type="submit" value="login" className="btn" />
       </form>
       <div className="help">
         <Link to="/ForgotPassword">Forget Password /</Link>
         <br />
         <Link to="/StillWorking"> Need Help</Link>
       </div>
-    </StyledContainer>
+    </>
   );
 };
 

@@ -5,7 +5,12 @@ import { AuthContext } from "../../Context/Authentication/AuthContext";
 import { useForm } from "../../Utils/CustomHooks";
 import { StyledContainer } from "../../Components/StyledComponents/Container";
 import { Helmet } from "react-helmet-async";
-import { FormControl, Input, Label } from "../../StyledComponents/FormControl";
+import {
+  FormControl,
+  Input,
+  Label,
+  SubmitButton,
+} from "../../StyledComponents/FormControl";
 import { RegisterSchema } from "@ecommerce/validation";
 import Spinner from "../../Components/Spinner";
 const init = {
@@ -60,7 +65,7 @@ const Register = () => {
             {FormErrors.name ? (
               <span className="error">{FormErrors.name}</span>
             ) : (
-              "name"
+              "Username"
             )}
           </Label>
         </FormControl>
@@ -78,7 +83,7 @@ const Register = () => {
             {FormErrors.email ? (
               <span className="error">{FormErrors.email}</span>
             ) : (
-              "email"
+              "Email"
             )}
           </Label>
         </FormControl>
@@ -96,7 +101,7 @@ const Register = () => {
             {FormErrors.password ? (
               <span className="error">{FormErrors.password}</span>
             ) : (
-              "password"
+              "Password"
             )}
           </Label>
         </FormControl>
@@ -114,11 +119,11 @@ const Register = () => {
             {FormErrors.password2 ? (
               <span className="error">{FormErrors.password2}</span>
             ) : (
-              "confirm password"
+              "Confirm password"
             )}
           </Label>
         </FormControl>
-        <Input type="submit" className="btn" value="Register" />
+        <SubmitButton type="submit" className="btn" value="Register" />
       </form>
       <div className="help">
         <Link to="#"> Need Help</Link>

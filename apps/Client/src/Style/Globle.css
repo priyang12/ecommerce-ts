@@ -12,6 +12,7 @@
   --bg-contrast-color: #150d1e;
   --font-stack: "cursive";
   --Secondary-font-stack: "Nunito", sans-serif;
+  --border-radius: 0.5rem;
   --media-mobile: 576px;
   --media-tablet: 768px;
   --media-query-width-lg: 992px;
@@ -31,12 +32,6 @@
     --bg-color: #150d1e;
     --bg-contrast-color: #fff;
     --bg-color-alpha: #150d1e7c;
-    --font-stack: "cursive";
-    --Secondary-font-stack: "Nunito", sans-serif;
-    --media-mobile: 576px;
-    --media-tablet: 768px;
-    --media-query-width-lg: 992px;
-    --media-desktop: 1200px;
   }
 }
 

@@ -1,4 +1,4 @@
-import { Fragment, useContext } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Logout } from "../Context/Authentication/AuthActions";
 import { AuthContext } from "../Context/Authentication/AuthContext";
@@ -22,15 +22,15 @@ const Navbar = () => {
   };
 
   const GuestLink = (
-    <Fragment>
-      <Link to="/Auth" className="Auth">
+    <>
+      <Link to="/Auth/login" className="Auth">
         Login/Register
       </Link>
-    </Fragment>
+    </>
   );
 
   const AuthLink = (
-    <Fragment>
+    <>
       {user && (
         <DropDown>
           <div>{user.name}</div>
@@ -61,7 +61,7 @@ const Navbar = () => {
           </div>
         </DropDown>
       )}
-    </Fragment>
+    </>
   );
 
   return (

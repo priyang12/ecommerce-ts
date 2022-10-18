@@ -10,6 +10,7 @@ export const StyledNavbar = styled.nav`
   h1 {
     margin: 0;
   }
+
   @media (min-width: 800px) {
     flex-direction: row;
   }

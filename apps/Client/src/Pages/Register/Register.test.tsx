@@ -2,36 +2,31 @@ import { render, screen } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
-import { AuthContext } from "../../Context/Authentication/AuthContext";
 import { Wrapper } from "../../TestSetup";
 import Register from "./Register";
+import MockAdapter from "axios-mock-adapter";
+import { createMemoryHistory } from "history";
+import axios from "axios";
+import { AuthProvider } from "../../Context/Authentication/AuthContext";
+
+const mock = new MockAdapter(axios);
+const History = createMemoryHistory();
 
 const setup = () => {
   render(
     <Wrapper>
-      <AuthContext.Provider
-        value={{
-          state: {
-            loading: false,
-            err: null,
-            token: null,
-            user: null,
-            alert: null,
-          },
-          dispatch: () => {},
-        }}
-      >
+      <AuthProvider>
         <Router>
           <Register />
         </Router>
-      </AuthContext.Provider>
+      </AuthProvider>
     </Wrapper>
   );
 
-  const name = screen.getByLabelText(/name/i);
-  const email = screen.getByLabelText(/email/i);
-  const password = screen.getByLabelText("password");
-  const password2 = screen.getByLabelText(/confirm password/i);
+  const name = screen.getByLabelText(/Username/i);
+  const email = screen.getByLabelText(/Email/i);
+  const password = screen.getByLabelText(/Password/);
+  const password2 = screen.getByLabelText(/Confirm password/i);
 
   return { name, email, password, password2 };
 };
@@ -76,5 +71,30 @@ it("Check For User's Matching Passwords", async () => {
 
   await userEvent.click(screen.getByText(/Register/i));
   //Remove the error message
-  expect(screen.getByText(/confirm /)).toBeInTheDocument();
+  expect(screen.getByText(/Confirm /)).toBeInTheDocument();
+});
+
+it("Successful Register and Redirect", async () => {
+  const { email, name, password, password2 } = setup();
+  const data = {
+    token: "asdbsabdibaisd45asd",
+  };
+
+  mock.onPost("/api/users/register").reply(200, data);
+
+  //Check We are on Register Page
+  expect(screen.getByDisplayValue(/Register/i)).toBeInTheDocument();
+
+  //Fill the form
+
+  await userEvent.type(name, "priyang");
+  await userEvent.type(email, "asdasio@gmail.com");
+  await userEvent.type(password, "123456");
+  await userEvent.type(password2, "123456");
+
+  //Click Register
+  await userEvent.click(screen.getByDisplayValue(/Register/i));
+
+  //check for redirect
+  expect(History.location.pathname).toBe("/");
 });
