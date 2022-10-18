@@ -36,17 +36,22 @@ export const SerachButton = styled.button`
 `;
 
 export const SerachInput = styled.input`
-  color: white;
+  color: var(--bg-contrast-color);
   padding: 0.7em;
   font-size: 1.1rem;
   width: 60%;
   border-radius: 10px;
   background-color: var(--secondary-color);
-
+  border: 1px solid var(--assertive-color);
+  transition: border 0.3s ease-in-out;
+  ::placeholder {
+    color: var(--bg-contrast-color);
+    opacity: 0.5;
+  }
   &:hover,
   &:focus {
-    color: var(--bg-color);
     background-color: var(--primary-dark-color);
     outline: none;
+    border: 5px solid var(--assertive-color);
   }
 `;

@@ -9,6 +9,7 @@
   --assertive-color: #3d2c8d;
   --bg-color: #e2d7d7;
   --bg-color-alpha: #e2d7d763;
+  --bg-contrast-color: #150d1e;
   --font-stack: "cursive";
   --Secondary-font-stack: "Nunito", sans-serif;
   --media-mobile: 576px;
@@ -28,6 +29,7 @@
     --secondary-dark-color: #7f0e7f;
     --assertive-color: #3d2c8d;
     --bg-color: #150d1e;
+    --bg-contrast-color: #fff;
     --bg-color-alpha: #150d1e7c;
     --font-stack: "cursive";
     --Secondary-font-stack: "Nunito", sans-serif;

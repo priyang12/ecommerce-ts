@@ -18,7 +18,7 @@ const Home = () => {
           content="Products Page - Browse our products"
         />
       </Helmet>
-      <SearchBar />
+      <SearchBar searchedValue="" />
       <StyledHeroContainer>
         <StyledHero>
           <h1>Shop at your will</h1>

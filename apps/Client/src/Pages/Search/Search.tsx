@@ -28,15 +28,7 @@ const Home = () => {
     else setUrl(`?keyword=${keyword}`);
   }, [keyword, pageNumber]);
 
-  const {
-    data: ProductData,
-    isLoading,
-    error: Err,
-  }: {
-    data: any;
-    isLoading: boolean;
-    error: any;
-  } = useSearchProduct(Url);
+  const { data: ProductData, isLoading, error: Err } = useSearchProduct(Url);
 
   if (isLoading) return <Spinner />;
 
@@ -50,12 +42,6 @@ const Home = () => {
     Navigate(`/search/name=${keyword}/${page - 1}`);
   };
 
-  if (ProductData?.products?.length === 0)
-    return (
-      <StyledDisplay>
-        <h1>No Products Found</h1>
-      </StyledDisplay>
-    );
   return (
     <>
       <Helmet>
@@ -66,19 +52,22 @@ const Home = () => {
         />
       </Helmet>
       <StyledDisplay>
+        <SearchBar searchedValue={keyword} />
         <h1>{`Search Results for ${keyword}`}</h1>
-        <SearchBar />
-        <StyledProducts id="Products">
-          {ProductData?.products &&
-            ProductData?.products.map((product: Product) => (
+        {ProductData?.products.length > 0 ? (
+          <StyledProducts id="Products">
+            {ProductData?.products.map((product: Product) => (
               <ProductCard product={product} key={product._id} />
             ))}
-        </StyledProducts>
+          </StyledProducts>
+        ) : (
+          <h1>No Products Found</h1>
+        )}
       </StyledDisplay>
 
       {ProductData.pages > 1 && (
         <Pagination>
-          {parseInt(ProductData.page) > 1 && (
+          {ProductData.page > 1 && (
             <PaginationButton active onClick={PreviousPage}>
               Previous
             </PaginationButton>

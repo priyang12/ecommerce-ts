@@ -39,7 +39,7 @@ export const StyledProductCard = styled(Card)`
   transition: 0.8s all ease;
   border-radius: 10px;
   color: var(--bg-color);
-  background-color: var(--primary-light-color);
+  background-color: var(--secondary-light-color);
   a {
     overflow: hidden;
     white-space: nowrap;

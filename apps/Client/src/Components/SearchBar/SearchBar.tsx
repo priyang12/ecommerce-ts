@@ -4,12 +4,11 @@ import {
   SearchBarContainer,
   SerachInput,
   SerachButton,
-} from "./StyledSearchbar";
+} from "./StyledSearchbox";
 
-function SearchBar() {
+function SearchBar({ searchedValue }: { searchedValue: string }) {
   const Navigate = useNavigate();
   const [searchValue, setSearchValue] = useState<string>("");
-
   const search = () => {
     if (searchValue !== "") {
       const path = `/search/name=${searchValue}`;
@@ -23,6 +22,7 @@ function SearchBar() {
         type="text"
         placeholder="Search Product"
         name="search"
+        defaultValue={searchedValue}
         onKeyUp={(e: any) => {
           setSearchValue(e.target.value);
           if (e.key === "Enter") {
