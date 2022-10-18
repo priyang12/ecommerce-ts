@@ -28,7 +28,7 @@ function ResetPassword() {
   const { Password, Password2 } = UserForm;
 
   useEffect(() => {
-    setAuthToken(id);
+    setAuthToken(id as string);
   }, [id]);
 
   useEffect(() => {

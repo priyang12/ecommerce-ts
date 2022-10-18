@@ -1,22 +1,13 @@
-import {
-  act,
-  render,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-} from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-
 import { createMemoryHistory } from "history";
-import { Router } from "react-router-dom";
-
-import Auth from "../Auth";
+import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "../../Context/Authentication/AuthContext";
 import "@testing-library/jest-dom";
 import { Wrapper } from "../../TestSetup";
+import Auth from ".";
 
 const mock = new MockAdapter(axios);
 const History = createMemoryHistory();
@@ -25,9 +16,9 @@ const setup = () =>
   render(
     <Wrapper>
       <AuthProvider>
-        <Router history={createMemoryHistory()}>
+        <BrowserRouter>
           <Auth />
-        </Router>
+        </BrowserRouter>
       </AuthProvider>
     </Wrapper>
   );
@@ -47,9 +38,12 @@ it("Successful login And Redirect To Home", async () => {
   mock.onPost("/api/users/login").reply(200, data);
   setup();
 
-  userEvent.type(screen.getByLabelText(/email/i), "PatelPriyang95@gmail.com");
-  userEvent.type(screen.getByLabelText(/password/i), "123456");
-  userEvent.click(screen.getByDisplayValue(/login/i));
+  await userEvent.type(
+    screen.getByLabelText(/email/i),
+    "PatelPriyang95@gmail.com"
+  );
+  await userEvent.type(screen.getByLabelText(/password/i), "123456");
+  await userEvent.click(screen.getByDisplayValue(/login/i));
 
   //check For Redirect
   expect(History.location.pathname).toBe("/");
@@ -58,7 +52,7 @@ it("Successful login And Redirect To Home", async () => {
 it("Successful Register and Redirect", async () => {
   setup();
   //Click register
-  userEvent.click(screen.getByText("Register"));
+  await userEvent.click(screen.getByText("Register"));
   const data = {
     token: "asdbsabdibaisd45asd",
   };
@@ -74,13 +68,13 @@ it("Successful Register and Redirect", async () => {
   const password = screen.getByLabelText("password");
   const password2 = screen.getByLabelText(/confirm password/i);
 
-  userEvent.type(name, "priyang");
-  userEvent.type(email, "asdasio@gmail.com");
-  userEvent.type(password, "123456");
-  userEvent.type(password2, "123456");
+  await userEvent.type(name, "priyang");
+  await userEvent.type(email, "asdasio@gmail.com");
+  await userEvent.type(password, "123456");
+  await userEvent.type(password2, "123456");
 
   //Click Register
-  userEvent.click(screen.getByDisplayValue(/Register/i));
+  await userEvent.click(screen.getByDisplayValue(/Register/i));
 
   //check for redirect
   expect(History.location.pathname).toBe("/");

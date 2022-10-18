@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { Router, Route } from "react-router-dom";
+import { Router, Route, Routes } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
@@ -27,10 +27,10 @@ const Setup = () => {
   mock.onGet("/api/products/product/123123").reply(200, product);
   render(
     <Wrapper>
-      <Router history={history}>
-        <Route path="/product/:id">
-          <SingleProduct />
-        </Route>
+      <Router navigator={history} location={route}>
+        <Routes>
+          <Route path="/product/:id" element={<SingleProduct />} />
+        </Routes>
       </Router>
     </Wrapper>
   );
@@ -57,12 +57,12 @@ it("Mock Add to Cart", async () => {
   };
   mock.onPost("/api/cart").reply(200, cartResponse);
 
-  userEvent.selectOptions(screen.getByLabelText(/Qty/), "2");
-  userEvent.click(screen.getByText(/ADD TO CART/));
+  await userEvent.selectOptions(screen.getByLabelText(/Qty/), "2");
 
-  await waitFor(() => screen.findByText(/Adding to cart/));
+  await userEvent.click(screen.getByText(/ADD TO CART/));
 
   const alert = screen.getByText(`${product.name} Added Cart`);
+
   expect(alert).toBeInTheDocument();
 
   setTimeout(() => {
@@ -81,9 +81,9 @@ it("Error on Add Cart", async () => {
     msg: "Please Try Again Later",
   });
 
-  userEvent.selectOptions(screen.getByLabelText(/Qty/), "2");
-  userEvent.click(screen.getByText(/ADD TO CART/));
-  await waitFor(() => screen.findByText(/Adding to cart/));
+  await userEvent.selectOptions(screen.getByLabelText(/Qty/), "2");
+  await userEvent.click(screen.getByText(/ADD TO CART/));
+
   const Error = screen.getByText(/Please Try Again Later/);
   expect(Error).toBeInTheDocument();
 });
@@ -102,9 +102,7 @@ it("Add To Wishlist", async () => {
 
   mock.onPatch(`/api/wishlist/${product._id}`).reply(200, wishlistResponse);
 
-  userEvent.click(screen.getByText(/WISHLIST/));
-
-  await waitFor(() => screen.findByText(/Adding to wishlist/));
+  await userEvent.click(screen.getByText(/WISHLIST/));
 
   const alert = screen.getByText(`${product.name} Added Wishlist`);
   expect(alert).toBeInTheDocument();

@@ -16,7 +16,7 @@ function Wishlist() {
   const {
     isError: DeleteError,
     isLoading: Deleting,
-    isSuccess,
+    isSuccess: DeleteSuccess,
     mutate: DeleteProduct,
     error,
   } = RemoveWishlistQuery();
@@ -37,7 +37,7 @@ function Wishlist() {
         </AlertDisplay>
       )}
       <StyledHeading>Wishlist</StyledHeading>
-      {isSuccess && <AlertDisplay msg={"Product Deleted"} type={false} />}
+      {DeleteSuccess && <AlertDisplay msg={"Product Deleted"} type={false} />}
       {Deleting && <AlertDisplay msg="Deleting...." type={true} />}
       <StyledProducts>
         {WishList.map((product: Product) => (

@@ -1,18 +1,11 @@
-import { render, screen, act } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-
-import "@testing-library/jest-dom";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import TimeoutBtn from "../TimeoutBtn";
+import "@testing-library/jest-dom";
 
-it("Disable and Enable on CLick", () => {
-  jest.useFakeTimers();
-  render(<TimeoutBtn className='btn' FormValue='ADD TO CART' Time={2000} />);
+it("Disable and Enable on CLick", async () => {
+  render(<TimeoutBtn className="btn" FormValue="ADD TO CART" Time={2000} />);
   const Btn = screen.getByText(/ADD TO CART/i);
-  userEvent.click(Btn);
-  act(() => {
-    jest.advanceTimersByTime(1);
-    expect(Btn).toBeDisabled();
-    jest.advanceTimersByTime(2000);
-    expect(Btn).not.toBeDisabled();
-  });
+  Btn.click();
+  await waitFor(() => expect(Btn).toBeDisabled());
+  await waitFor(() => expect(Btn).not.toBeDisabled(), { timeout: 2000 });
 });

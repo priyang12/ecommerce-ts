@@ -70,7 +70,10 @@ export const RemoveWishlistQuery = (): any => {
         const snapshotOfPreviousWishlist = queryClient.getQueryData("wishList");
 
         queryClient.setQueryData("wishList", (oldData: any) => {
-          return oldData.products.filter((item: any) => item._id !== id);
+          return {
+            ...oldData,
+            products: oldData.products.filter((item: any) => item._id !== id),
+          };
         });
 
         return {

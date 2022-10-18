@@ -4,6 +4,7 @@ import generateToken from "../utils/generateToken";
 import dotenv from "dotenv";
 import User from "../modals/User";
 import Cart from "../modals/Cart";
+import WishList from "../modals/Wishlist";
 
 import sgMail from "@sendgrid/mail";
 import agenda from "../config/agenda";
@@ -72,6 +73,10 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
     );
 
     await Cart.create({
+      user: user[0]._id,
+    });
+
+    await WishList.create({
       user: user[0]._id,
     });
 

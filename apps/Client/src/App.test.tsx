@@ -1,9 +1,8 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import App from "./App";
 import { Wrapper } from "./TestSetup";
-
 import {
   AuthContext,
   AuthProvider,
@@ -27,63 +26,68 @@ mock.onGet("/api/products").reply(200, {
   products: Products,
 });
 
-it("render App with login", () => {
-  render(
-    <Wrapper>
-      <AuthContext.Provider
-        value={{
-          state: {
-            token: "asdasdasdasd",
-            user: User,
-            alert: null,
-            loading: false,
-            err: null,
-          },
-          dispatch: jest.fn(),
-        }}
-      >
-        <App />
-      </AuthContext.Provider>
-    </Wrapper>
-  );
+it("render App with login", async () => {
+  await act(() => {
+    render(
+      <Wrapper>
+        <AuthContext.Provider
+          value={{
+            state: {
+              token: "asdasdasdasd",
+              user: User,
+              alert: null,
+              loading: false,
+              err: null,
+            },
+            dispatch: jest.fn(),
+          }}
+        >
+          <App />
+        </AuthContext.Provider>
+      </Wrapper>
+    );
+  });
 
-  screen.getByText(/SHOP IT/);
+  expect(screen.getByText(/SHOP IT/)).toBeInTheDocument();
 });
 
 it("render App with loadUser", async () => {
   localStorage.setItem("token", "asdasdasdasd");
-
   const dispatch = jest.fn();
-  render(
-    <Wrapper>
-      <AuthContext.Provider
-        value={{
-          state: {
-            token: "asdasdasdasd",
-            user: null,
-            alert: null,
-            loading: false,
-            err: null,
-          },
-          dispatch,
-        }}
-      >
-        <App />
-      </AuthContext.Provider>
-    </Wrapper>
-  );
+  await act(() => {
+    render(
+      <Wrapper>
+        <AuthContext.Provider
+          value={{
+            state: {
+              token: "asdasdasdasd",
+              user: null,
+              alert: null,
+              loading: false,
+              err: null,
+            },
+            dispatch,
+          }}
+        >
+          <App />
+        </AuthContext.Provider>
+      </Wrapper>
+    );
+  });
 
   // dispatch should be called
   expect(dispatch).toHaveBeenCalled();
 });
 
-it("Render Without Login", () => {
-  render(
-    <Wrapper>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
-    </Wrapper>
-  );
+it("Render Without Login", async () => {
+  await act(() => {
+    render(
+      <Wrapper>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </Wrapper>
+    );
+  });
   screen.getByText("Login/Register");
 });

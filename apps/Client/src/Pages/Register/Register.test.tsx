@@ -2,11 +2,9 @@ import { render, screen } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
-
-//Components: Register,Context
-import Register from "../Register";
 import { AuthContext } from "../../Context/Authentication/AuthContext";
 import { Wrapper } from "../../TestSetup";
+import Register from "./Register";
 
 const setup = () => {
   render(
@@ -38,10 +36,10 @@ const setup = () => {
   return { name, email, password, password2 };
 };
 
-it("Check For User Validation on Invalid Submit", () => {
+it("Check For User Validation on Invalid Submit", async () => {
   const { email } = setup();
-  userEvent.type(email, "asdasd");
-  userEvent.click(screen.getByText(/Register/i));
+  await userEvent.type(email, "asdasd");
+  await userEvent.click(screen.getByText(/Register/i));
   expect(screen.getByText(/Invalid email/i)).toBeInTheDocument();
   expect(
     screen.getByText(/Name must be between 2 and 30 characters/)
@@ -51,32 +49,32 @@ it("Check For User Validation on Invalid Submit", () => {
   ).toBeInTheDocument();
 });
 
-it("Check For empty value onChange", () => {
+it("Check For empty value onChange", async () => {
   const { email, name } = setup();
-  userEvent.type(name, "asdas");
-  userEvent.clear(name);
+  await userEvent.type(name, "asdas");
+  await userEvent.clear(name);
   expect(screen.getByText(/NAME is required/)).toBeInTheDocument();
-  userEvent.type(email, "asdas");
-  userEvent.click(screen.getByText(/Register/i));
+  await userEvent.type(email, "asdas");
+  await userEvent.click(screen.getByText(/Register/i));
   expect(screen.getByText(/Invalid email/)).toBeInTheDocument();
 });
 
-it("Check For User's Matching Passwords", () => {
+it("Check For User's Matching Passwords", async () => {
   const { password, password2 } = setup();
-  userEvent.type(password, "123456sd");
-  userEvent.type(password2, "1566");
+  await userEvent.type(password, "123456sd");
+  await userEvent.type(password2, "1566");
 
-  userEvent.click(screen.getByText(/Register/i));
+  await userEvent.click(screen.getByText(/Register/i));
 
   // Update the password
   // expect(screen.getByText(/Passwords Does not Match/)).toBeInTheDocument();
 
   //First We have to remove the input values or null values
-  userEvent.clear(password2);
+  await userEvent.clear(password2);
 
-  userEvent.type(password2, "123456");
+  await userEvent.type(password2, "123456");
 
-  userEvent.click(screen.getByText(/Register/i));
+  await userEvent.click(screen.getByText(/Register/i));
   //Remove the error message
   expect(screen.getByText(/confirm /)).toBeInTheDocument();
 });

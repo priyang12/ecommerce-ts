@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import App from "./App";
 import ErrorCatch from "./Components/ErrorCatch";
 import { AuthProvider } from "./Context/Authentication/AuthContext";
@@ -8,8 +8,8 @@ import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { HelmetProvider } from "react-helmet-async";
 import { queryClient } from "./query";
-import "./Style/Globle.css";
 import { serviceWorkerRegister } from "./serviceWokerRegister";
+import "./Style/Globle.css";
 
 declare global {
   interface Window {
@@ -46,7 +46,10 @@ if (process.env.NODE_ENV === "production") {
   disableReactDevTools();
 }
 
-ReactDOM.render(
+const container = document.getElementById("root");
+const root = createRoot(container!);
+
+root.render(
   <QueryClientProvider client={queryClient}>
     <ReactQueryDevtools initialIsOpen={false} />
     <ErrorCatch>
@@ -59,8 +62,7 @@ ReactDOM.render(
         </React.StrictMode>
       </AuthProvider>
     </ErrorCatch>
-  </QueryClientProvider>,
-  document.getElementById("root")
+  </QueryClientProvider>
 );
 
 serviceWorkerRegister();

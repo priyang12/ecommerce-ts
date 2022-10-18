@@ -9,9 +9,8 @@ import { Products } from "../Testdata/Data";
 import userEvent from "@testing-library/user-event";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-
-import Wishlist from "./Wishlist";
 import { queryClient } from "../../query";
+import Wishlist from "./Wishlist";
 
 const mock = new MockAdapter(axios);
 queryClient.setQueryData("wishList", {
@@ -55,10 +54,12 @@ it("Delete Product from WishList", async () => {
   expect(screen.getByText("Wishlist")).toBeInTheDocument();
 
   const deleteButton = screen.getByTestId(`Delete-${Products[0]._id}`);
-  userEvent.click(deleteButton);
-  await waitFor(() => screen.findByText(/Deleting/));
 
-  expect(screen.getByText(/Product Deleted/)).toBeInTheDocument();
+  await userEvent.click(deleteButton);
+
+  await waitFor(() =>
+    expect(screen.getByText(/Product Deleted/)).toBeInTheDocument()
+  );
 });
 
 it("Delete Error", async () => {
@@ -68,10 +69,10 @@ it("Delete Error", async () => {
   setup();
   await waitFor(() => screen.findByAltText(Products[0].name));
   const deleteButton = screen.getByTestId(`Delete-${Products[0]._id}`);
-  userEvent.click(deleteButton);
-  await waitFor(() => screen.findByText(/Deleting/));
-
-  expect(
-    screen.getByText(/Server Problem Please try again later/)
-  ).toBeInTheDocument();
+  await userEvent.click(deleteButton);
+  await waitFor(() =>
+    expect(
+      screen.getByText(/Server Problem Please try again later/)
+    ).toBeInTheDocument()
+  );
 });

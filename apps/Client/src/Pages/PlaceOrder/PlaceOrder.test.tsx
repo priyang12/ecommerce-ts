@@ -1,15 +1,17 @@
-import { render, screen, act } from "@testing-library/react";
-import { Router } from "react-router-dom";
+import { render, screen, act, waitFor } from "@testing-library/react";
+import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
 import {
   AuthContext,
   AuthState,
 } from "../../Context/Authentication/AuthContext";
-import { createMemoryHistory, MemoryHistory } from "history";
-import PlaceOrder from "../PlaceOrder";
+import { createMemoryHistory } from "history";
+import PlaceOrder from "./PlaceOrder";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
+import { Wrapper } from "../../TestSetup";
 
-let History: MemoryHistory<unknown>;
+const route = "/PlaceOrder";
+const History = createMemoryHistory({ initialEntries: [route] });
 
 const Cart = [
   {
@@ -55,10 +57,6 @@ const addDecimals = (num: number) => {
   return result;
 };
 
-beforeAll(() => {
-  History = createMemoryHistory();
-});
-
 const state: AuthState = {
   loading: false,
   err: null,
@@ -72,29 +70,77 @@ const state: AuthState = {
   alert: null,
 };
 
+localStorage.setItem("Cart", JSON.stringify(Cart));
+localStorage.setItem("address", JSON.stringify(address));
+localStorage.setItem("payMethod", Method);
+localStorage.setItem("ProductsAmount", JSON.stringify(productsAmount));
+
 const Setup = () => {
-  localStorage.setItem("Cart", JSON.stringify(Cart));
-  localStorage.setItem("address", JSON.stringify(address));
-  localStorage.setItem("payMethod", Method);
-  localStorage.setItem("ProductsAmount", JSON.stringify(productsAmount));
-
   ExtraAmount = 0;
-
   return render(
-    <>
-      <AuthContext.Provider
-        value={{
-          state,
-          dispatch: jest.fn(),
-        }}
-      >
-        <Router history={History}>
-          <PlaceOrder />
-        </Router>
-      </AuthContext.Provider>
-    </>
+    <Wrapper>
+      <Router navigator={History} location={route}>
+        <Routes>
+          <Route
+            path="PlaceOrder"
+            element={
+              <AuthContext.Provider
+                value={{
+                  state,
+                  dispatch: jest.fn(),
+                }}
+              >
+                <PlaceOrder />
+              </AuthContext.Provider>
+            }
+          />
+        </Routes>
+      </Router>
+    </Wrapper>
   );
 };
+
+it("Check For Amount Summery", async () => {
+  Setup();
+
+  const shipping = addDecimals(productsAmount > 500 ? 0 : 100);
+  const Tax = addDecimals(productsAmount * 0.1);
+
+  await waitFor(() => screen.getByTestId("ShippingCost"));
+
+  expect(screen.getByTestId("ShippingCost").textContent).toMatch(
+    String(shipping)
+  );
+  expect(screen.getByTestId("TaxCost").textContent).toMatch(String(Tax));
+
+  const TotalAmount = Math.round(shipping + Tax + productsAmount);
+  expect(screen.getByTestId("TotalAmount").textContent).toMatch(
+    String(TotalAmount)
+  );
+});
+
+it("Store Order in Local Storage And Redirect to Payment Gateway", async () => {
+  Setup();
+
+  const shipping = addDecimals(productsAmount > 500 ? 0 : 100);
+  const Tax = addDecimals(productsAmount * 0.1);
+  const Order = {
+    orderItems: Cart,
+    shippingAddress: address,
+    paymentMethod: Method,
+    itemsPrice: productsAmount,
+    taxPrice: Tax,
+    shippingPrice: shipping,
+    totalPrice: Math.round(ExtraAmount + productsAmount),
+  };
+  const PlaceOrderBtn = screen.getByText(/PlaceOrder/);
+  await userEvent.click(PlaceOrderBtn);
+
+  await waitFor(() => expect(PlaceOrderBtn).toBeDisabled());
+
+  expect(JSON.parse(localStorage.order)).toStrictEqual(Order);
+  expect(History.location.pathname).toMatch(/PayPal/);
+});
 
 it("Return to cart Page Removed Values", () => {
   localStorage.clear();
@@ -108,44 +154,4 @@ it("Return to cart Page on Empty Cart", () => {
   localStorage.setItem("productsAmount", JSON.stringify(productsAmount));
   Setup();
   expect(History.location.pathname).toBe("/");
-});
-
-it("Check For Amount Summery", () => {
-  Setup();
-  const shipping = addDecimals(productsAmount > 500 ? 0 : 100);
-  const Tax = addDecimals(productsAmount * 0.1);
-
-  expect(screen.getByTestId("ShippingCost").textContent).toMatch(
-    String(shipping)
-  );
-  expect(screen.getByTestId("TaxCost").textContent).toMatch(String(Tax));
-
-  const TotalAmount = Math.round(shipping + Tax + productsAmount);
-  expect(screen.getByTestId("TotalAmount").textContent).toMatch(
-    String(TotalAmount)
-  );
-});
-
-it("Store Order in Local Storage And Redirect to Payment Gateway", () => {
-  Setup();
-  jest.useFakeTimers();
-  const shipping = addDecimals(productsAmount > 500 ? 0 : 100);
-  const Tax = addDecimals(productsAmount * 0.1);
-  const Order = {
-    orderItems: Cart,
-    shippingAddress: address,
-    paymentMethod: Method,
-    itemsPrice: productsAmount,
-    taxPrice: Tax,
-    shippingPrice: shipping,
-    totalPrice: Math.round(ExtraAmount + productsAmount),
-  };
-  const PlaceOrderBtn = screen.getByText(/PlaceOrder/);
-  userEvent.click(PlaceOrderBtn);
-  act(() => {
-    jest.advanceTimersByTime(1);
-  });
-  expect(PlaceOrderBtn).toBeDisabled();
-  expect(JSON.parse(localStorage.order)).toStrictEqual(Order);
-  expect(History.location.pathname).toMatch(/PayPal/);
 });

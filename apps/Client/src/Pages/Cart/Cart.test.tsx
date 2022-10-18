@@ -8,12 +8,12 @@ import { BrowserRouter } from "react-router-dom";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import userEvent from "@testing-library/user-event";
-import MockedData from "./FakeData/CartData.json";
+import MockedData from "../../FakeData/CartData.json";
 
 import "@testing-library/jest-dom";
 
 // Components
-import Cart from "../Cart";
+import Cart from ".";
 import { client, Wrapper } from "../../TestSetup";
 
 const mock = new MockAdapter(axios);
@@ -60,7 +60,7 @@ it("Mock Change Cart Qty", async () => {
   setup();
   await waitForElementToBeRemoved(screen.queryByAltText(/Loading/));
   const QtySelects = screen.getAllByTestId("selectQty");
-  userEvent.selectOptions(QtySelects[1], "1");
+  await userEvent.selectOptions(QtySelects[1], "1");
   await waitFor(() => screen.findByText(UpdateProduct.msg));
 });
 
@@ -74,7 +74,7 @@ it("Mock Delete Product Form Cart", async () => {
   await waitForElementToBeRemoved(screen.queryByAltText(/Loading/));
   const DeleteBtn = screen.getAllByTestId("DeleteIcon");
 
-  userEvent.click(DeleteBtn[0]);
+  await userEvent.click(DeleteBtn[0]);
 
   await waitFor(() => screen.findByText(/Deleting/));
 });

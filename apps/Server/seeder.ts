@@ -39,6 +39,10 @@ const importData = async () => {
       createdUser.map((user) => ({ user: user._id, products: [] }))
     );
 
+    await Wishlist.insertMany(
+      createdUser.map((user) => ({ user: user._id, products: [] }))
+    );
+
     console.log("DATA IMPORTED");
     process.exit();
   } catch (error) {

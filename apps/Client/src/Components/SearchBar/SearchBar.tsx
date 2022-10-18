@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   SearchBarContainer,
   SerachInput,
@@ -7,13 +7,13 @@ import {
 } from "./StyledSearchbar";
 
 function SearchBar() {
-  const history = useHistory();
+  const Navigate = useNavigate();
   const [searchValue, setSearchValue] = useState<string>("");
 
   const search = () => {
     if (searchValue !== "") {
       const path = `/search/name=${searchValue}`;
-      history.push(path);
+      Navigate(path);
     }
   };
 

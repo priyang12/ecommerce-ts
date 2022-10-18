@@ -82,11 +82,6 @@ const Navbar = () => {
             </Link>
           </StyledLinks>
         )}
-        {user?.isAdmin && (
-          <StyledLinks>
-            <Link to="/AdminDashboard">AdminDashboard</Link>
-          </StyledLinks>
-        )}
         {user ? AuthLink : GuestLink}
       </StyledSecondaryNav>
     </StyledNavbar>

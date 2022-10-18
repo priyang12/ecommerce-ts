@@ -24,8 +24,8 @@ it("Render Page", async () => {
   Setup();
   expect(screen.getByText(/Forgot Password/)).toBeInTheDocument();
   expect(screen.getByLabelText(/Email/)).toBeInTheDocument();
-  userEvent.type(screen.getByLabelText(/Email/), "pategmail.com");
-  userEvent.click(screen.getByText(/Send Recovery Mail/));
+  await userEvent.type(screen.getByLabelText(/Email/), "pategmail.com");
+  await userEvent.click(screen.getByText(/Send Recovery Mail/));
 
   expect(screen.getByLabelText(/Email is not Valid/)).toBeInTheDocument();
 });
@@ -36,8 +36,8 @@ it("Input Email", async () => {
   });
   Setup();
   expect(screen.getByLabelText(/Email/)).toBeInTheDocument();
-  userEvent.type(screen.getByLabelText(/Email/), "patel@gmail.com");
-  userEvent.click(screen.getByText(/Send Recovery Mail/));
+  await userEvent.type(screen.getByLabelText(/Email/), "patel@gmail.com");
+  await userEvent.click(screen.getByText(/Send Recovery Mail/));
   await waitFor(() => {
     expect(
       screen.getByText(/Recovery Email has been sent/)
@@ -50,8 +50,8 @@ it("Severe Error", async () => {
     msg: "Email is not Register",
   });
   Setup();
-  userEvent.type(screen.getByLabelText(/Email/), "patel@gmail.com");
-  userEvent.click(screen.getByText(/Send Recovery Mail/));
+  await userEvent.type(screen.getByLabelText(/Email/), "patel@gmail.com");
+  await userEvent.click(screen.getByText(/Send Recovery Mail/));
   await waitFor(() => {
     expect(screen.getByText(/Email is not Register/)).toBeInTheDocument();
   });

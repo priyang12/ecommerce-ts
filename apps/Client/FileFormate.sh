@@ -8,8 +8,24 @@ Path="src/Pages"
 for entry in "$Path"/*; do
     echo "$entry"
 
-    # create a folder for each file and remove .js extension
-    mkdir -p "$Path/$(basename "$entry" .tsx)"
-    mv "$entry" "$Path/$(basename "$entry" .tsx)/index.tsx"
+    # loop through folder and move index.tsx to foldername.tsx
+    if [ -d "$entry" ]; then
+        echo "$entry is a directory"
+        for file in "$entry"/*; do
+            echo "$file"
+            if [ "$file" == "$entry/index.tsx" ]; then
+                echo "found index.tsx"
+                # get folder name
+                folderName=$(basename "$entry")
+                touch "$entry/$folderName.tsx"
+                mv "$entry/index.tsx" "$entry/$folderName.tsx"
+                touch "$entry/index.tsx"
+                # add export to index.tsx
+                echo "export { default } from './$folderName';" >> "$entry/index.tsx"
+
+            fi
+        done
+    fi    
 
 done
+

@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import React, { createContext, useReducer } from "react";
 import { AuthActions, AuthReducer } from "./AuthReducer";
 import { User } from "../../interfaces";
 
@@ -36,6 +36,10 @@ const initialState: AuthState = {
 };
 
 export const AuthContext = createContext({} as IContextModel);
+
+export const useAuth = () => {
+  return React.useContext(AuthContext);
+};
 
 export const AuthProvider = ({ children }: { children: any }) => {
   const [state, dispatch] = useReducer(AuthReducer, initialState);

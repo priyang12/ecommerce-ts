@@ -8,6 +8,7 @@ type prop = {
 
 const TimeoutBtn = ({ className, FormValue, Time }: prop) => {
   const [Dis, ToggleDis, SetDisable] = useToggle(false);
+
   const DisableBtn = () => {
     setTimeout(() => {
       ToggleDis();

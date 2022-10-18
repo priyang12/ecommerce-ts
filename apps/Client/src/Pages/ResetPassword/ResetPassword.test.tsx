@@ -3,7 +3,7 @@ import {
   screen,
   waitForElementToBeRemoved,
 } from "@testing-library/react";
-import { Route, Router } from "react-router-dom";
+import { Route, Router, Routes } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
@@ -18,12 +18,17 @@ const mock = new MockAdapter(axios);
 
 const setup = () =>
   render(
-    <Router history={history}>
-      <Route path="/ResetPassword/:id">
-        <AuthProvider>
-          <ResetPassword />
-        </AuthProvider>
-      </Route>
+    <Router navigator={history} location={route}>
+      <Routes>
+        <Route
+          path="/ResetPassword/:id"
+          element={
+            <AuthProvider>
+              <ResetPassword />
+            </AuthProvider>
+          }
+        />
+      </Routes>
     </Router>
   );
 
@@ -48,22 +53,20 @@ it("Render ResetPassword with valid token", async () => {
     /Confirm password/
   ) as HTMLInputElement;
 
-  userEvent.type(password, "1223");
-  userEvent.type(passwordConfirm, "12311");
+  await userEvent.type(password, "1223");
+  await userEvent.type(passwordConfirm, "12311");
 
-  userEvent.click(screen.getByText("Reset"));
+  await userEvent.click(screen.getByText("Reset"));
   expect(screen.getByText(/more than 6 Characters/)).toBeInTheDocument();
   expect(screen.getByText(/Confirm Password do not match/)).toBeInTheDocument();
 
-  userEvent.clear(password);
-  userEvent.clear(passwordConfirm);
+  await userEvent.clear(password);
+  await userEvent.clear(passwordConfirm);
 
-  userEvent.type(password, "123123");
-  userEvent.type(passwordConfirm, "123123");
+  await userEvent.type(password, "123123");
+  await userEvent.type(passwordConfirm, "123123");
 
-  userEvent.click(screen.getByText("Reset"));
-
-  await waitForElementToBeRemoved(screen.queryByAltText(/Loading/));
+  await userEvent.click(screen.getByText("Reset"));
 
   expect(screen.getByText(/Password Reset Successfully/)).toBeInTheDocument();
 });

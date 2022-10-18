@@ -8,12 +8,12 @@ import userEvent from "@testing-library/user-event";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { createMemoryHistory } from "history";
-import { Route, Router } from "react-router-dom";
+import { Route, Router, Routes } from "react-router-dom";
 import { AuthContext } from "../../Context/Authentication/AuthContext";
 import { Wrapper } from "../../TestSetup";
 
 // component: OrderDetails
-import OrderDetails from "../OrderDetails";
+import OrderDetails from ".";
 
 // Mock Data
 import { MockedOrderDetails } from "../Testdata/Data";
@@ -25,7 +25,7 @@ afterAll(() => {
 });
 
 const route = "/OrderStatus/61d1fdcc78d91ad851125bb8";
-const history = createMemoryHistory({ initialEntries: [route] });
+const History = createMemoryHistory({ initialEntries: [route] });
 
 Mock.onGet("/api/orders/order/61d1fdcc78d91ad851125bb8").reply(
   200,
@@ -44,17 +44,17 @@ const Setup = () =>
             user: {
               ...MockedOrderDetails.user,
               isAdmin: true,
-              createdAt: "2020-05-06T13:41:00.000Z",
             },
+            alert: null,
           },
           // eslint-disable-next-line @typescript-eslint/no-empty-function
           dispatch: () => {},
         }}
       >
-        <Router history={history}>
-          <Route path="/OrderStatus/:id">
-            <OrderDetails />
-          </Route>
+        <Router navigator={History} location={route}>
+          <Routes>
+            <Route path="/OrderStatus/:id" element={<OrderDetails />} />
+          </Routes>
         </Router>
       </AuthContext.Provider>
     </Wrapper>
@@ -83,7 +83,7 @@ it("Mark Order as Delivered", async () => {
     isDelivered: true,
   });
   const button = screen.getByText(/Mark as Delivered/i);
-  userEvent.click(button);
+  await userEvent.click(button);
 
   //wait for loading to finish
   await waitFor(() => {
