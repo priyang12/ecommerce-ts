@@ -34,7 +34,7 @@ const SingleProduct = () => {
   } = useSingleProduct(id as string, false);
 
   const { mutate: AddToWishlist, isLoading: AddingWishList } =
-    AddWishlistQuery(setAlert);
+    AddWishlistQuery();
 
   const { isLoading: CartMutation, mutate: PostQty } =
     AddOrUpdateCartQuery(setAlert);

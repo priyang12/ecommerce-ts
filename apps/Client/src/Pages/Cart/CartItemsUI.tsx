@@ -24,7 +24,6 @@ function CartItemsUI({
     mutate: AddToWishlist,
     isLoading: AddingWishList,
     isError,
-    error,
   } = AddWishlistQuery();
 
   return (

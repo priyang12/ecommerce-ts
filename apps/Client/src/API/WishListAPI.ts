@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { queryClient } from "../query";
+import { toast } from "react-toastify";
 
 const fetchData = async (url: string) => {
   const response = await axios.get(url);
@@ -29,24 +30,35 @@ export const LoadWishListQuery = () => {
   };
 };
 
-export const AddWishlistQuery = (setAlert?: any) => {
+export const AddWishlistQuery = () => {
   return useMutation(
     async (id: string) => {
       return await axios.patch(`/api/wishlist/${id}`);
     },
     {
       onSuccess: (res: any) => {
-        setAlert?.({
-          msg: res?.data.msg || "Added to wishlist",
-          type: true,
+        toast.success("Added to wishlist", {
+          autoClose: 2000,
         });
         queryClient.invalidateQueries(["wishList"]);
       },
-      onError: (error: any) => {
-        setAlert?.({
-          msg: error.data.msg,
-          type: false,
-        });
+      onError: (error: unknown) => {
+        if (
+          typeof error === "object" &&
+          error !== null &&
+          "response" in error
+        ) {
+          const { response } = error as {
+            response: { data: { msg: string } };
+          };
+          toast.error(response.data.msg, {
+            autoClose: 2000,
+          });
+        } else {
+          toast.error("Something went wrong", {
+            autoClose: 2000,
+          });
+        }
       },
     }
   );

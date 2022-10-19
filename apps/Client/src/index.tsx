@@ -2,6 +2,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import ErrorCatch from "./Components/ErrorCatch";
+import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "./Context/Authentication/AuthContext";
 import { Normalize } from "styled-normalize";
 import { QueryClientProvider } from "react-query";
@@ -9,6 +10,8 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import { HelmetProvider } from "react-helmet-async";
 import { queryClient } from "./query";
 import { serviceWorkerRegister } from "./serviceWokerRegister";
+import "react-toastify/dist/ReactToastify.css";
+
 import "./Style/Globle.css";
 
 declare global {
@@ -56,6 +59,7 @@ root.render(
       <AuthProvider>
         <React.StrictMode>
           <Normalize />
+          <ToastContainer />
           <HelmetProvider>
             <App />
           </HelmetProvider>
