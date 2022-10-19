@@ -29,32 +29,27 @@ export const LoadWishListQuery = () => {
   };
 };
 
-export const AddWishlistQuery = (setAlert: any) => {
-  const { data, isLoading, mutate } = useMutation(
+export const AddWishlistQuery = (setAlert?: any) => {
+  return useMutation(
     async (id: string) => {
       return await axios.patch(`/api/wishlist/${id}`);
     },
     {
       onSuccess: (res: any) => {
-        setAlert({
+        setAlert?.({
           msg: res?.data.msg || "Added to wishlist",
           type: true,
         });
         queryClient.invalidateQueries(["wishList"]);
       },
       onError: (error: any) => {
-        setAlert({
+        setAlert?.({
           msg: error.data.msg,
           type: false,
         });
       },
     }
   );
-  return {
-    mutate,
-    data,
-    isLoading,
-  };
 };
 
 export const RemoveWishlistQuery = (): any => {

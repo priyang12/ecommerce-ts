@@ -65,7 +65,12 @@ const SingleProduct = () => {
       </Helmet>
       {FetchData && (
         <StyledContainer>
-          {Alert.msg && <AlertDisplay msg={Alert.msg} type={Alert.type} />}
+          {Alert.msg && (
+            <AlertDisplay
+              msg={Alert.msg}
+              type={Alert.type ? "success" : "error"}
+            />
+          )}
           <StyledProduct>
             <img src={Product.image} alt={Product.name} />
             <StyledDetails>
@@ -120,10 +125,10 @@ const SingleProduct = () => {
                 WISHLIST
               </button>
               {CartMutation && (
-                <AlertDisplay msg="Adding to cart" type={true} />
+                <AlertDisplay msg="Adding to cart" type={"info"} />
               )}
               {AddingWishList && (
-                <AlertDisplay msg="Adding to wishlist" type={true} />
+                <AlertDisplay msg="Adding to wishlist" type={"info"} />
               )}
             </StyledCheckout>
           </StyledProduct>

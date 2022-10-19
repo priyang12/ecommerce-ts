@@ -35,7 +35,7 @@ function Home() {
 
   if (!ProductData) return null;
 
-  if (Err) return <AlertDisplay msg={"Something Went Wrong"} type={false} />;
+  if (Err) return <AlertDisplay msg={"Something Went Wrong"} type={"error"} />;
   const NextPage = () => {
     Navigate(`/search/name=${keyword}/${page + 1}`);
   };

@@ -32,13 +32,15 @@ function Wishlist() {
   return (
     <div>
       {DeleteError && (
-        <AlertDisplay msg={error.msg} type={false}>
+        <AlertDisplay msg={error.msg} type={"error"}>
           <div>Server Problem Please try again later</div>
         </AlertDisplay>
       )}
       <StyledHeading>Wishlist</StyledHeading>
-      {DeleteSuccess && <AlertDisplay msg={"Product Deleted"} type={false} />}
-      {Deleting && <AlertDisplay msg="Deleting...." type={true} />}
+      {DeleteSuccess && (
+        <AlertDisplay msg={"Product Deleted"} type={"warning"} />
+      )}
+      {Deleting && <AlertDisplay msg="Deleting...." type={"warning"} />}
       <StyledProducts>
         {WishList.map((product: Product) => (
           <StyledProduct key={product._id}>

@@ -41,10 +41,10 @@ function ForgotPassword() {
       {state?.alert && (
         <AlertDisplay
           msg={state.alert.message}
-          type={state.alert.type === "success"}
+          type={state.alert.type as any}
         />
       )}
-      {state?.err && <AlertDisplay msg={state.err} type={false} />}
+      {state?.err && <AlertDisplay msg={state.err} type={"error"} />}
       <form onSubmit={SendMail}>
         <FormControl>
           <Input

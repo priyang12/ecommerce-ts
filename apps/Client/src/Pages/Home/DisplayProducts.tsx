@@ -12,7 +12,10 @@ function DisplayProducts({ title }: { title?: string }) {
   const { data: ProductsData, error: Err, isLoading } = useProducts();
 
   if (isLoading) return <Spinner />;
-  if (Err) return <AlertDisplay AxiosErrorState={Err} type={false} />;
+  if (Err)
+    return (
+      <AlertDisplay AxiosErrorState={Err} msg="Server Error" type={"error"} />
+    );
 
   if (!ProductsData) throw Error("No Products Data");
 

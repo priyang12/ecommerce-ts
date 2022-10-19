@@ -1,25 +1,59 @@
-import { ReactNode, FC } from "react";
+import { ReactNode, FC, useState, useEffect } from "react";
 import { CustomAxiosError } from "../API/interface";
 import { Alert, AlertContainer } from "./StyledComponents/AlertDisplayStyled";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
 type AlertDisplayProps = {
-  msg?: string;
+  msg: string;
   AxiosErrorState?: CustomAxiosError;
-  type?: boolean;
+  type?: "success" | "error" | "warning" | "info";
   children?: ReactNode;
+};
+
+const TypeCss = (type: string) => {
+  switch (type) {
+    case "success":
+      return {
+        bg: "#afdbaf",
+        alertTextColor: "#fff",
+      };
+    case "error":
+      return {
+        bg: "#ef251b",
+        alertTextColor: "#fff",
+      };
+    case "warning":
+      return {
+        bg: "#ff9800",
+        alertTextColor: "#fff",
+      };
+    case "info":
+      return {
+        bg: "#2196f3",
+        alertTextColor: "#fff",
+      };
+    default:
+      return {
+        bg: "#2196f3",
+        alertTextColor: "#fff",
+      };
+  }
 };
 
 const AlertDisplay: FC<AlertDisplayProps> = ({
   AxiosErrorState,
   msg,
-  type,
+  type = "success",
   children,
 }) => {
+  const { bg, alertTextColor } = TypeCss(type);
+
   const theme = {
-    alertTextColor: type ? "#00b500" : "#eacece",
-    bg: type ? "#afdbaf" : "#ef251b",
+    bg,
+    alertTextColor,
     radius: "10px",
   };
+  // if (!alertState) return null;
   return (
     <AlertContainer
       theme={{
@@ -34,6 +68,7 @@ const AlertDisplay: FC<AlertDisplayProps> = ({
       ) : (
         <Alert theme={theme}>{msg}</Alert>
       )}
+
       {children}
     </AlertContainer>
   );

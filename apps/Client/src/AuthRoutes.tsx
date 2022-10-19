@@ -5,7 +5,7 @@ import Cart from "./Pages/Cart";
 import OrderDetails from "./Pages/OrderDetails";
 import OrderStatus from "./Pages/OrderStatus";
 import PaymentMethod from "./Pages/PaymentMethod";
-// import Paypal from "./Pages/PayPal";
+import PayPal from "./Pages/PayPal";
 import PlaceOrder from "./Pages/PlaceOrder";
 import Profile from "./Pages/Profile";
 import Wishlist from "./Pages/WishList";
@@ -26,7 +26,7 @@ function AuthRoutes() {
         <Route path="/Profile" element={<Profile />} />
         <Route path="/address" element={<AddressPage />} />
         <Route path="/payment" element={<PaymentMethod />} />
-        {/* <Route path="/PayPal" element={<Paypal />} /> */}
+        <Route path="/PayPal" element={<PayPal />} />
       </Routes>
     </AuthContainer>
   );

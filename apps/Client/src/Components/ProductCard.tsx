@@ -16,7 +16,6 @@ const ProductCard: React.FC<CardProps> = ({
 }: CardProps) => {
   const Navigate = useNavigate();
   const EnterProduct = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    e.preventDefault();
     if (e.key === "Enter") {
       Navigate(`/product/${_id}`);
     }

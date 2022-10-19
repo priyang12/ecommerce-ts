@@ -43,7 +43,9 @@ function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      {!window.navigator.onLine && <AlertDisplay msg="Offline" type={false} />}
+      {!window.navigator.onLine && (
+        <AlertDisplay msg="Offline" type={"error"} />
+      )}
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

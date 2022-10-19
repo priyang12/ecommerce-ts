@@ -12,7 +12,7 @@ export const FormControl = styled.div`
   }
 
   input:valid ~ label {
-    transform: translateY(-101%) translateX(-1%);
+    transform: translateY(-150%) translateX(-1%);
     text-align: left;
   }
   textarea:valid ~ label {

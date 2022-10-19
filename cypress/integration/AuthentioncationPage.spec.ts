@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import { AdminUser } from "../../data/userData";
 
 beforeEach(function () {
-  cy.visit("/Auth");
+  cy.visit("/Auth/login");
 });
 
 it("Input Invalid Email and Invalid Password", () => {

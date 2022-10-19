@@ -52,9 +52,9 @@ function Paypal() {
 
   if (isLoading || !isIdle) return <Spinner />;
 
-  if (isSuccess) return Navigate("/OrderStatus");
+  if (isSuccess) Navigate("/OrderStatus");
 
-  if (!Order) return Navigate("/");
+  if (!Order) Navigate("/");
 
   if (PaymentErrors) return <div className="Error">{PaymentErrors}</div>;
 
@@ -65,7 +65,7 @@ function Paypal() {
       ) : (
         <FragmentContainer>
           {OrderError && (
-            <AlertDisplay msg="Error While Placing Order" type={false} />
+            <AlertDisplay msg="Error While Placing Order" type={"error"} />
           )}
           <PayPalButton
             amount={Order.totalPrice}

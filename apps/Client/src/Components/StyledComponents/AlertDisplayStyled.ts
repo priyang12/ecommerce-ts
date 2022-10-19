@@ -1,6 +1,9 @@
 import styled from "styled-components";
 
 export const Alert = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: ${(props) => props.theme.bg}; /* background-color */
   color: ${(props) => props.theme.alertTextColor}; /* text color */
   border-radius: ${(props) =>

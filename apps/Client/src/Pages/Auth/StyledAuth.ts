@@ -5,7 +5,6 @@ export const StyledAuthPage = styled.section`
   width: 100%;
   max-width: 80ch;
   margin: 2em auto;
-
   .container {
     padding: 1em 2em;
     border: 2px solid white;
@@ -30,6 +29,10 @@ export const StyledAuthPage = styled.section`
     padding: 1em 0;
     label {
       color: #002227;
+    }
+    input:valid ~ label {
+      transform: translateY(-104%) translateX(-1%);
+      text-align: left;
     }
   }
   a {

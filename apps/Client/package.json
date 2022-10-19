@@ -12,6 +12,7 @@
     "react-dom": "^18.2.0",
     "react-error-boundary": "^3.1.0",
     "react-helmet-async": "^1.3.0",
+    "react-icons": "^4.6.0",
     "react-paypal-button-v2": "^2.6.3",
     "react-query": "^3.39.2",
     "react-router-dom": "^6.4.2",
@@ -29,7 +30,7 @@
     "workbox-window": "^6.5.3"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start",
     "build": "CI=false && react-scripts build",
     "test": "react-scripts test --watchAll=false  --coverage --forceExit",
     "test:watch": "react-scripts test --watch",

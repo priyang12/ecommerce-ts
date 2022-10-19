@@ -6,6 +6,7 @@ import { StopLoading } from "../../Context/Authentication/AuthActions";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import Spinner from "../../Components/Spinner";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 function Auth() {
   const { pathname } = useLocation();

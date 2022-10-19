@@ -45,7 +45,7 @@ const OrderDetails = () => {
   return (
     <>
       <StyledPaymentContainer theme={{ maxWidth: "70vw" }}>
-        {isSuccess && <AlertDisplay msg="Order Delivered" type={true} />}
+        {isSuccess && <AlertDisplay msg="Order Delivered" type={"success"} />}
         <div className="left">
           <StyledOrderDetails>
             <h1>SHIPPING</h1>

@@ -1,16 +1,27 @@
-import { CartSchema } from "@ecommerce/validation";
-import axios from "axios";
-import { useMutation } from "react-query";
+import { CartSchema, z } from "@ecommerce/validation";
+import axios, { AxiosResponse } from "axios";
+import { useMutation, useQuery } from "react-query";
 import { CartItem } from "../Components/ProductList";
 import { queryClient } from "../query";
+import { CustomAxiosError } from "./interface";
 
-export const LoadCartQuery = async () => {
-  try {
-    const response = await axios.get("/api/cart");
-    return CartSchema.parse(response.data);
-  } catch (error: any) {
-    return error.response;
-  }
+type CartResponse = z.infer<typeof CartSchema> & {
+  products: CartItem[];
+};
+
+export const LoadCartQuery = () => {
+  return useQuery<CartResponse, CustomAxiosError>(
+    "Cart",
+    async () => {
+      const response: AxiosResponse<CartResponse> = await axios.get(
+        "/api/cart"
+      );
+      return response.data;
+    },
+    {
+      useErrorBoundary: (error: any) => error.response?.status >= 500,
+    }
+  );
 };
 
 export const AddOrUpdateCartQuery = (setAlert: any) => {

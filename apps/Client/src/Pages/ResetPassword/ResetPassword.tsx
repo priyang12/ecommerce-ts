@@ -70,7 +70,7 @@ function ResetPassword() {
   if (state.loading) return <Spinner />;
   if (state.err)
     return (
-      <AlertDisplay msg={state.err} type={false}>
+      <AlertDisplay msg={state.err} type={"error"}>
         <Link to="/Auth/login"> Go back to Login Page</Link>
       </AlertDisplay>
     );
@@ -79,7 +79,7 @@ function ResetPassword() {
       <h1>Reset Password</h1>
       {state.alert && (
         <div>
-          <AlertDisplay msg={state.alert?.message} type={true}>
+          <AlertDisplay msg={state.alert?.message} type={"success"}>
             <Link to="/">Home Page</Link>
           </AlertDisplay>
         </div>
