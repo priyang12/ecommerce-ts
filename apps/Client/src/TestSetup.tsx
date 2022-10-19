@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { QueryClientProvider, QueryClient } from "react-query";
+import { ToastContainer } from "react-toastify";
 import { setLogger } from "react-query";
 
 setLogger({
@@ -22,6 +23,7 @@ export const client = new QueryClient({
 export const Wrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <QueryClientProvider client={client}>
+      <ToastContainer />
       <HelmetProvider>{children}</HelmetProvider>
     </QueryClientProvider>
   );

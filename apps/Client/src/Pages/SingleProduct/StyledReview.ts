@@ -4,7 +4,7 @@ export const ReviewContainer = styled.div`
   width: 100%;
   max-width: 100ch;
   margin: auto;
-  border-top: 2px solid darken($color: $PrimaryColor, $amount: 50);
+  border-top: 2px solid var(--bg-contrast-color);
   background: url("../images/circle-scatter-haikei.svg") repeat;
   border-radius: 20px;
   h1 {
@@ -28,7 +28,6 @@ export const ReviewItem = styled.li`
   max-width: 60ch;
   padding: 1em;
   &:nth-child(odd) {
-    // background-color: darken($color: $PrimaryColor, $amount: 20);
     backdrop-filter: blur(16px) saturate(180%);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
     background-color: rgba(17, 25, 40, 0.75);

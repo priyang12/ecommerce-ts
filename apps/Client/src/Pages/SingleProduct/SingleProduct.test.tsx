@@ -57,17 +57,13 @@ it("Mock Add to Cart", async () => {
   };
   mock.onPost("/api/cart").reply(200, cartResponse);
 
-  await userEvent.selectOptions(screen.getByLabelText(/Qty/), "2");
+  await userEvent.selectOptions(screen.getByLabelText("Quantity"), "2");
 
-  await userEvent.click(screen.getByText(/ADD TO CART/));
+  await userEvent.click(screen.getByText(/TO CART/));
 
-  const alert = screen.getByText(`${product.name} Added Cart`);
-
-  expect(alert).toBeInTheDocument();
-
-  setTimeout(() => {
-    expect(alert).not.toBeInTheDocument();
-  }, 5000);
+  await waitFor(() => {
+    expect(screen.getByText(`${product.name} Added Cart`)).toBeInTheDocument();
+  });
 });
 
 it("Error on Add Cart", async () => {
@@ -81,11 +77,12 @@ it("Error on Add Cart", async () => {
     msg: "Please Try Again Later",
   });
 
-  await userEvent.selectOptions(screen.getByLabelText(/Qty/), "2");
-  await userEvent.click(screen.getByText(/ADD TO CART/));
+  await userEvent.selectOptions(screen.getByLabelText("Quantity"), "2");
+  await userEvent.click(screen.getByText(/TO CART/));
 
-  const Error = screen.getByText(/Please Try Again Later/);
-  expect(Error).toBeInTheDocument();
+  await waitFor(() => {
+    expect(screen.getByText(/Please Try Again Later/)).toBeInTheDocument();
+  });
 });
 
 it("Add To Wishlist", async () => {
@@ -102,8 +99,11 @@ it("Add To Wishlist", async () => {
 
   mock.onPatch(`/api/wishlist/${product._id}`).reply(200, wishlistResponse);
 
-  await userEvent.click(screen.getByText(/WISHLIST/));
+  await userEvent.click(screen.getByText("WISH LIST"));
 
-  const alert = screen.getByText(`${product.name} Added Wishlist`);
-  expect(alert).toBeInTheDocument();
+  await waitFor(() => {
+    expect(
+      screen.getByText(`${product.name} Added Wishlist`)
+    ).toBeInTheDocument();
+  });
 });

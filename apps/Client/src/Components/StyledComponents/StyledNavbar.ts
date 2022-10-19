@@ -102,7 +102,7 @@ export const StyledDropDownButton = styled.button`
     display: block;
   }
 `;
-export const StyledUserName = styled.h3`
+export const StyledUserName = styled.div`
   color: var(--bg-contrast-color);
   font-size: 1.2rem;
   margin: 0;

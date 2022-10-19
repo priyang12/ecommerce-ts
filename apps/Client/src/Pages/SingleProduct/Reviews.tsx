@@ -1,11 +1,7 @@
 import React, { Fragment } from "react";
-import { Review } from "../interfaces";
-import Rating from "./Rating";
-import {
-  ReviewContainer,
-  ReviewItem,
-  ReviewList,
-} from "./StyledComponents/Review";
+import { Review } from "../../interfaces";
+import Rating from "../../Components/Rating";
+import { ReviewContainer, ReviewItem, ReviewList } from "./StyledReview";
 
 const Reviews: React.FC<{ reviews: Review[] }> = ({ reviews }) => {
   if (!reviews || reviews.length === 0) return null;

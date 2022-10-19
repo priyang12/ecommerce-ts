@@ -16,7 +16,8 @@ export const media = {
   laptopL: `@media (max-width: ${size.laptopL})`,
   desktop: `@media (max-width: ${size.desktop})`,
   LargerThanDesktop: `@media (min-width: ${size.desktop})`,
-  LargerThanLaptop: `@media (min-width: ${size.laptopL})`,
+  LargerThanLLaptop: `@media (min-width: ${size.laptopL})`,
+  LargerThanLaptop: `@media (min-width: ${size.laptop})`,
   LargerThanTablet: `@media (min-width: ${size.tablet})`,
   LargerThanMobile: `@media (min-width: ${size.mobile})`,
 };

@@ -4,15 +4,32 @@ import axios from "axios";
 import { BrowserRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
 import Auth from "./Auth";
+import { AuthProvider } from "../../Context/Authentication/AuthContext";
+import { Wrapper } from "../../TestSetup";
 
 const setup = () =>
   render(
-    <BrowserRouter>
-      <Auth />
-    </BrowserRouter>
+    <Wrapper>
+      <AuthProvider>
+        <BrowserRouter>
+          <Auth />
+        </BrowserRouter>
+      </AuthProvider>
+    </Wrapper>
   );
 
-it("Login on init", () => {
+it("Switcher", async () => {
   setup();
-  expect(screen.getByDisplayValue(/login/i)).toBeInTheDocument();
+  const Login = screen.getByText(/Login/) as HTMLButtonElement;
+  const Register = screen.getByText(/Register/) as HTMLButtonElement;
+
+  expect(window.location.pathname).toMatch("/");
+
+  await userEvent.click(Login);
+
+  expect(window.location.pathname).toMatch("/login");
+
+  await userEvent.click(Register);
+
+  expect(window.location.pathname).toMatch("/register");
 });

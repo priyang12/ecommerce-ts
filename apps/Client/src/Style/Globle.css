@@ -84,6 +84,8 @@ form input[type="submit"] {
   }
 }
 .btn {
+  background-color: var(--primary-color);
+  color: var(--bg-color);
   cursor: pointer;
   padding: 1rem 2rem;
   margin: 0.5rem;
@@ -91,6 +93,8 @@ form input[type="submit"] {
   transition: background-color 1s;
   border-radius: 5 em;
   font-size: 1.5rem;
+  font-weight: 600;
+  text-transform: capitalize;
 }
 
 .btn:hover {
@@ -100,13 +104,6 @@ form input[type="submit"] {
 }
 .btn:disabled {
   display: none;
-}
-.btn-gray {
-  padding: 1rem 2rem;
-  width: fit-content;
-  border: 2px solid transparent;
-  background-color: #626d78;
-  color: white;
 }
 
 .alert {

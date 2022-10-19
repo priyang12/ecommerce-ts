@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { DetailedProduct } from "../../interfaces";
-import Reviews from "../../Components/Reviews";
+import { toast } from "react-toastify";
+import Reviews from "./Reviews";
 import Rating from "../../Components/Rating";
 import Quantity from "../../Components/Quantity";
-import TimeoutBtn from "../../Components/TimeoutBtn";
 import AlertDisplay from "../../Components/AlertDisplay";
 
 //styles
@@ -13,38 +12,37 @@ import {
   StyledProduct,
   StyledDetails,
   StyledCheckout,
-} from "../../Components/StyledComponents/Productdetails";
-import { AddOrUpdateCartQuery } from "../../API/CartAPI";
+  StyledImageContainer,
+  StyledQuantity,
+  CheckFormControl,
+} from "./StyledSingleProduct";
+import { PostCartQuery } from "../../API/CartAPI";
 import { Helmet } from "react-helmet-async";
 import { useSingleProduct } from "../../API/ProductAPI";
 import { AddWishlistQuery } from "../../API/WishListAPI";
 import Spinner from "../../Components/Spinner";
+import { Select } from "../../StyledComponents/FormControl";
+import LoadingButton from "../../Components/LoadingButton";
 
 const SingleProduct = () => {
   const { id } = useParams<{ id: string }>();
-  const [Alert, setAlert] = useState({
-    msg: "",
-    type: false,
-  });
 
   const {
-    data: FetchData,
+    data: Product,
     error: ProductError,
     isLoading: loading,
   } = useSingleProduct(id as string, false);
 
-  const { mutate: AddToWishlist, isLoading: AddingWishList } =
-    AddWishlistQuery();
+  const { mutate: AddWishlist, isLoading: AddingWishList } = AddWishlistQuery();
 
-  const { isLoading: CartMutation, mutate: PostQty } =
-    AddOrUpdateCartQuery(setAlert);
+  const { isLoading: CartMutation, mutate: PostQty } = PostCartQuery();
 
   const [Qty, setQty] = useState("1");
 
   const AddToCart = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     PostQty({
-      ProductId: Product._id,
+      ProductId: Product?._id,
       qty: parseInt(Qty),
     });
   };
@@ -53,28 +51,24 @@ const SingleProduct = () => {
 
   if (ProductError) return <div className="Error">{ProductError.message}</div>;
 
-  if (!FetchData) return null;
-
-  const Product: DetailedProduct = FetchData;
-
   return (
     <div>
       <Helmet>
-        <title>{Product.name}</title>
-        <meta name="description" content={Product.description} />
+        <title>{Product?.name}</title>
+        <meta name="description" content={Product?.description} />
       </Helmet>
-      {FetchData && (
+      {Product && (
         <StyledContainer>
-          {Alert.msg && (
-            <AlertDisplay
-              msg={Alert.msg}
-              type={Alert.type ? "success" : "error"}
-            />
+          {CartMutation && <AlertDisplay msg="Adding to cart" type={"info"} />}
+          {AddingWishList && (
+            <AlertDisplay msg="Adding to wishlist" type={"info"} />
           )}
           <StyledProduct>
-            <img src={Product.image} alt={Product.name} />
+            <StyledImageContainer>
+              <img src={Product.image} alt={Product.name} />
+            </StyledImageContainer>
             <StyledDetails>
-              <h2>{Product.name}</h2>
+              <h1>{Product.name}</h1>
               <div className="star-review">
                 <span className="stars">
                   <Rating
@@ -83,12 +77,15 @@ const SingleProduct = () => {
                   />
                 </span>
               </div>
-              <h4>Price: {Product.price}</h4>
+              <div>Brand: {Product.brand}</div>
+              <div>Category: {Product.category}</div>
+              <br />
               <div className="Description">
-                <div>Description:</div>
-                {Product.description}
+                Description: <span>{Product.description}</span>
               </div>
+              <br />
             </StyledDetails>
+
             <StyledCheckout>
               <h3 className="status-label">Price: {Product.price}</h3>
               {Product.countInStock <= 0 ? (
@@ -96,45 +93,61 @@ const SingleProduct = () => {
               ) : (
                 <h3 className="status-label">Status: In Stock</h3>
               )}
+            </StyledCheckout>
 
+            <StyledQuantity>
               {Product.countInStock > 0 && (
                 <form onSubmit={AddToCart}>
-                  <label htmlFor="Qty">Qty</label>
-                  <select id="Qty" onChange={(e) => setQty(e.target.value)}>
-                    <Quantity countInStock={Product.countInStock} />
-                  </select>
+                  <CheckFormControl>
+                    <label htmlFor="Quantity" aria-label="Quantity of product">
+                      Quantity
+                    </label>
+                    <Select
+                      style={{
+                        width: "90%",
+                      }}
+                      id="Quantity"
+                      name="Quantity"
+                      onChange={(e) => setQty(e.target.value)}
+                    >
+                      <Quantity countInStock={Product.countInStock} />
+                    </Select>
+                  </CheckFormControl>
                   <br />
 
                   {localStorage.token ? (
-                    <TimeoutBtn
-                      Time={1000}
+                    <LoadingButton
+                      isLoading={CartMutation}
+                      loadingText={"Adding To Cart"}
                       className="btn"
-                      FormValue="ADD TO CART"
-                    />
+                    >
+                      TO CART
+                    </LoadingButton>
                   ) : (
                     <div className="btn-gray">Login/Register</div>
                   )}
+
+                  <LoadingButton
+                    className="btn"
+                    style={{
+                      backgroundColor: " #626d78",
+                    }}
+                    isLoading={AddingWishList}
+                    loadingText={"Adding To Wishlist"}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      AddWishlist(Product._id);
+                    }}
+                  >
+                    WISH LIST
+                  </LoadingButton>
                 </form>
               )}
-              <button
-                className="btn btn-gray"
-                onClick={() => {
-                  AddToWishlist(Product._id);
-                }}
-              >
-                WISHLIST
-              </button>
-              {CartMutation && (
-                <AlertDisplay msg="Adding to cart" type={"info"} />
-              )}
-              {AddingWishList && (
-                <AlertDisplay msg="Adding to wishlist" type={"info"} />
-              )}
-            </StyledCheckout>
+            </StyledQuantity>
           </StyledProduct>
         </StyledContainer>
       )}
-      <Reviews reviews={FetchData?.reviews} />
+      {Product?.reviews && <Reviews reviews={Product.reviews} />}
     </div>
   );
 };

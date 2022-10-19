@@ -1,5 +1,6 @@
 import { CartSchema, z } from "@ecommerce/validation";
 import axios, { AxiosResponse } from "axios";
+import { toast } from "react-toastify";
 import { useMutation, useQuery } from "react-query";
 import { CartItem } from "../Components/ProductList";
 import { queryClient } from "../query";
@@ -24,30 +25,29 @@ export const LoadCartQuery = () => {
   );
 };
 
-export const AddOrUpdateCartQuery = (setAlert: any) => {
-  const { mutate, isLoading, isSuccess } = useMutation(
-    async (data: { ProductId: string; qty: number }) => {
+export const PostCartQuery = () => {
+  const PostToCart = useMutation(
+    async (data: { ProductId?: string; qty: number }) => {
       return await axios.post("/api/cart", data);
     },
     {
       onSuccess: (res: any) => {
-        setAlert({ msg: res.data.msg, type: true });
+        toast.success(res.data.msg, {
+          autoClose: 3000,
+          closeButton: true,
+        });
         queryClient.invalidateQueries("Cart");
       },
       onError: (err: any) => {
-        setAlert({
-          msg: err.response.data.msg,
-          type: false,
+        toast.error(err.response.data.msg, {
+          autoClose: 3000,
+          closeButton: true,
         });
       },
     }
   );
 
-  return {
-    mutate,
-    isLoading,
-    isSuccess,
-  };
+  return PostToCart;
 };
 
 export const DeleteCartApi = (setAlert: any) => {

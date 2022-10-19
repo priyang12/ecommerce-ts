@@ -12,6 +12,7 @@ import {
 } from "./StyledCart";
 import { AddWishlistQuery } from "../../API/WishListAPI";
 import Quantity from "../../Components/Quantity";
+import { PostCartQuery } from "../../API/CartAPI";
 
 function CartItemsUI({
   CartItem,
@@ -25,6 +26,9 @@ function CartItemsUI({
     isLoading: AddingWishList,
     isError,
   } = AddWishlistQuery();
+
+  const PostCart = PostCartQuery();
+  const { mutate: UpdateCart } = PostCart;
 
   return (
     <StyledCartCard>
@@ -49,12 +53,16 @@ function CartItemsUI({
             data-testid="selectQty"
             value={CartItem.qty}
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-              // UpdateQty(product._id, parseInt(e.target.value))
+              UpdateCart({
+                ProductId: CartItem.product._id,
+                qty: parseInt(e.target.value),
+              });
             }}
           >
             <Quantity countInStock={CartItem.product.countInStock} />
           </select>
           <IconButton
+            data-testid="DeleteIcon"
             onClick={() => {
               RemoveFromCart(CartItem.product._id);
             }}

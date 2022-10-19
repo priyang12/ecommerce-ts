@@ -45,6 +45,22 @@ export const Input = styled.input`
   }
 `;
 
+export const Select = styled.select`
+  border: none;
+  font-size: 1rem;
+  padding: 1em;
+  background-color: var(--bg-color);
+  color: var(--secondary-light-color);
+  border: solid var(--primary-color);
+  border-width: 1px;
+  border-radius: var(--border-radius);
+  transition: border-width 0.5s ease;
+  &:focus {
+    border-width: 4px;
+    outline: none;
+  }
+`;
+
 export const SubmitButton = styled.input`
   width: 100%;
   border-radius: var(--border-radius);

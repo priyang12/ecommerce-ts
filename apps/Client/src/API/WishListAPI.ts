@@ -31,13 +31,13 @@ export const LoadWishListQuery = () => {
 };
 
 export const AddWishlistQuery = () => {
-  return useMutation(
+  const Query = useMutation(
     async (id: string) => {
       return await axios.patch(`/api/wishlist/${id}`);
     },
     {
       onSuccess: (res: any) => {
-        toast.success("Added to wishlist", {
+        toast.success(res.data.msg, {
           autoClose: 2000,
         });
         queryClient.invalidateQueries(["wishList"]);
@@ -62,6 +62,7 @@ export const AddWishlistQuery = () => {
       },
     }
   );
+  return Query;
 };
 
 export const RemoveWishlistQuery = (): any => {

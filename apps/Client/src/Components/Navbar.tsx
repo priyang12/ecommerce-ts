@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Logout } from "../Context/Authentication/AuthActions";
 import { AuthContext } from "../Context/Authentication/AuthContext";
+import { FaCaretDown } from "react-icons/fa";
 import {
   StyledNavbar,
   Logo,
@@ -35,8 +36,13 @@ const Navbar = () => {
       {user && (
         <DropDown>
           <StyledUserName>{user.name}</StyledUserName>
-          <StyledDropDownButton className="Dropdown-btn">
-            <i className="fas fa-caret-down"></i>
+          <StyledDropDownButton
+            role={"button"}
+            className="Dropdown-btn"
+            aria-label="Dropdown"
+            aria-labelledby="Dropdown"
+          >
+            <FaCaretDown />
           </StyledDropDownButton>
           <div className="dropdown-content">
             <li>

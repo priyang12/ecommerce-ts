@@ -1,11 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { useQuery } from "react-query";
-import {
-  CustomAxiosError,
-  ProductAPI,
-  SearchProductAPI,
-  SingleProductAPI,
-} from "./interface";
+import { DetailedProduct } from "../interfaces";
+import { CustomAxiosError, ProductAPI, SearchProductAPI } from "./interface";
 
 export const useProducts = () => {
   return useQuery<ProductAPI, CustomAxiosError>(
@@ -25,10 +21,10 @@ export const useProducts = () => {
 };
 
 export const useSingleProduct = (id: string, Type?: boolean) => {
-  return useQuery<SingleProductAPI, CustomAxiosError>(
+  return useQuery<DetailedProduct, CustomAxiosError>(
     ["product", id],
     async () => {
-      const response: AxiosResponse<SingleProductAPI> = await axios.get(
+      const response: AxiosResponse<DetailedProduct> = await axios.get(
         `/api/products/product/${id}`
       );
       return response.data;

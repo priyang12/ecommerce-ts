@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { useQuery } from "react-query";
 import AlertDisplay from "../../Components/AlertDisplay";
 import Spinner from "../../Components/Spinner";
-import ProductList from "../../Components/ProductList";
 import {
   StyledContainer,
   StyledCheckout,
@@ -12,11 +10,7 @@ import {
   StyledCartContainer,
 } from "./StyledCart";
 import { CartPost } from "@ecommerce/validation";
-import {
-  AddOrUpdateCartQuery,
-  DeleteCartApi,
-  LoadCartQuery,
-} from "../../API/CartAPI";
+import { PostCartQuery, DeleteCartApi, LoadCartQuery } from "../../API/CartAPI";
 import { DetailedProduct } from "../../interfaces";
 import CartItemsUI from "./CartItemsUI";
 
@@ -47,18 +41,6 @@ const Cart = () => {
   } = LoadCartQuery();
 
   const { mutate: DeleteCart, isLoading: Deleting } = DeleteCartApi(setAlert);
-
-  const { mutate: UpdateCart, isLoading: Updating } =
-    AddOrUpdateCartQuery(setAlert);
-
-  const UpdateQuantity = (_id: string, quantity: number) => {
-    UpdateCart(
-      CartPost.parse({
-        ProductId: _id,
-        qty: quantity,
-      })
-    );
-  };
 
   const RemoveFromCart = (id: string) => {
     DeleteCart(id);
@@ -107,7 +89,6 @@ const Cart = () => {
         <AlertDisplay msg={Alert.msg} type={Alert.type ? "success" : "error"} />
       )}
       {Deleting && <AlertDisplay type={"warning"} msg="Deleting" />}
-      {Updating && <AlertDisplay type={"info"} msg="Updating" />}
 
       <StyledContainer>
         <h1>SHOPPING CART</h1>
