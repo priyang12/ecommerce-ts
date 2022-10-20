@@ -25,7 +25,7 @@ function AuthRoutes() {
         <Route path="/OrderStatus/:id" element={<OrderDetails />} />
         <Route path="/Profile" element={<Profile />} />
         <Route path="/address" element={<AddressPage />} />
-        <Route path="/payment" element={<PaymentMethod />} />
+        <Route path="/paymentMethod" element={<PaymentMethod />} />
         <Route path="/PayPal" element={<PayPal />} />
       </Routes>
     </AuthContainer>

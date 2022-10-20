@@ -2,7 +2,7 @@ import axios from "axios";
 import { useMutation, useQuery } from "react-query";
 import { queryClient } from "../query";
 
-export const LoadOrders = async (url: any) => {
+export const useLoadOrders = async (url: any) => {
   try {
     const response = await axios.get(url.queryKey[0]);
     return response.data;
@@ -36,6 +36,27 @@ export const useOrderDelivered = () => {
     {
       onSuccess: (data, id) => {
         queryClient.invalidateQueries([`orderDetails/${id}`]);
+      },
+    }
+  );
+};
+
+export const useMakeOrder = () => {
+  return useMutation(
+    "makeOrder",
+    async (order: any) => {
+      const response = await axios.post("/api/orders", order);
+      return response.data;
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("orders");
+      },
+      onError(err: any) {
+        throw Error(err.message);
+      },
+      useErrorBoundary(error) {
+        return error.response?.status >= 500;
       },
     }
   );

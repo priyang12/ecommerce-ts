@@ -9,7 +9,7 @@ const fetchData = async (url: string) => {
   return response.data;
 };
 
-export const LoadWishListQuery = () => {
+export const useLoadWishListQuery = () => {
   const [WishList, setWishList] = useState([]);
   const { isFetched, isLoading, data } = useQuery(
     "wishList",
@@ -30,7 +30,7 @@ export const LoadWishListQuery = () => {
   };
 };
 
-export const AddWishlistQuery = () => {
+export const useAddWishlistQuery = () => {
   const Query = useMutation(
     async (id: string) => {
       return await axios.patch(`/api/wishlist/${id}`);
@@ -65,7 +65,7 @@ export const AddWishlistQuery = () => {
   return Query;
 };
 
-export const RemoveWishlistQuery = (): any => {
+export const useRemoveWishlistQuery = (): any => {
   const { mutate, isLoading, isError, isSuccess, data, error } = useMutation(
     "removeWishlist",
     async (id: string) => {

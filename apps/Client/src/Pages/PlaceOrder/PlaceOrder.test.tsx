@@ -1,42 +1,24 @@
-import { render, screen, act, waitFor } from "@testing-library/react";
-import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
 import {
-  AuthContext,
-  AuthState,
-} from "../../Context/Authentication/AuthContext";
+  render,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
+import { Route, Router, Routes } from "react-router-dom";
+import MockAdapter from "axios-mock-adapter";
+import axios from "axios";
 import { createMemoryHistory } from "history";
 import PlaceOrder from "./PlaceOrder";
 import userEvent from "@testing-library/user-event";
-import "@testing-library/jest-dom";
+import MockedData from "../../FakeData/CartData.json";
 import { Wrapper } from "../../TestSetup";
+import { act } from "react-test-renderer";
 
 const route = "/PlaceOrder";
 const History = createMemoryHistory({ initialEntries: [route] });
+const mock = new MockAdapter(axios);
 
-const Cart = [
-  {
-    _id: "617028b4ae931d0004f7d964",
-    product: {
-      price: 89.99,
-      countInStock: 2,
-      _id: "60d5e622e5179e2bb44bd838",
-      name: "Airpods Wireless Bluetooth Headphones",
-      image: "/Photos/image-1627384388351.webp",
-    },
-    qty: 2,
-  },
-  {
-    _id: "61705624b54854000494b5ce",
-    product: {
-      price: 929.99,
-      countInStock: 5,
-      _id: "60d5e622e5179e2bb44bd83c",
-      name: "Logtech mouse",
-      image: "/Photos/image-1627385386692.webp",
-    },
-    qty: 1,
-  },
-];
+mock.onGet("/api/cart").reply(200, MockedData.LoadUserCart);
 
 const address = {
   homeAddress: "202,Pipload",
@@ -47,53 +29,24 @@ const address = {
 
 const Method = "PayPal or Credit Card";
 
-const productsAmount = 2000;
+const ProductsAmount = MockedData.LoadUserCart.products.reduce(
+  (acc, item) => acc + item.product.price * item.qty,
+  0
+);
 
-let ExtraAmount = 0;
+const ShippingAmount = ProductsAmount! > 500 ? 0 : 100;
+const TaxAmount = 0.15 * ProductsAmount!;
+const TotalAmount = ProductsAmount! + ShippingAmount + TaxAmount;
 
-const addDecimals = (num: number) => {
-  const result = Number((Math.round(num * 100) / 100).toFixed(2));
-  ExtraAmount += result;
-  return result;
-};
-
-const state: AuthState = {
-  loading: false,
-  err: null,
-  token: null,
-  user: {
-    name: "Priyang",
-    isAdmin: false,
-    email: "asdas",
-    _id: "asdasd",
-  },
-  alert: null,
-};
-
-localStorage.setItem("Cart", JSON.stringify(Cart));
 localStorage.setItem("address", JSON.stringify(address));
 localStorage.setItem("payMethod", Method);
-localStorage.setItem("ProductsAmount", JSON.stringify(productsAmount));
 
 const Setup = () => {
-  ExtraAmount = 0;
   return render(
     <Wrapper>
       <Router navigator={History} location={route}>
         <Routes>
-          <Route
-            path="PlaceOrder"
-            element={
-              <AuthContext.Provider
-                value={{
-                  state,
-                  dispatch: jest.fn(),
-                }}
-              >
-                <PlaceOrder />
-              </AuthContext.Provider>
-            }
-          />
+          <Route path="PlaceOrder" element={<PlaceOrder />} />
         </Routes>
       </Router>
     </Wrapper>
@@ -103,55 +56,57 @@ const Setup = () => {
 it("Check For Amount Summery", async () => {
   Setup();
 
-  const shipping = addDecimals(productsAmount > 500 ? 0 : 100);
-  const Tax = addDecimals(productsAmount * 0.1);
-
-  await waitFor(() => screen.getByTestId("ShippingCost"));
+  await waitForElementToBeRemoved(screen.getByTestId("Loading"));
 
   expect(screen.getByTestId("ShippingCost").textContent).toMatch(
-    String(shipping)
+    String(ShippingAmount)
   );
-  expect(screen.getByTestId("TaxCost").textContent).toMatch(String(Tax));
+  expect(screen.getByTestId("TaxCost").textContent).toMatch(String(TaxAmount));
 
-  const TotalAmount = Math.round(shipping + Tax + productsAmount);
   expect(screen.getByTestId("TotalAmount").textContent).toMatch(
-    String(TotalAmount)
+    String(Math.round(TotalAmount))
   );
 });
 
 it("Store Order in Local Storage And Redirect to Payment Gateway", async () => {
   Setup();
-
-  const shipping = addDecimals(productsAmount > 500 ? 0 : 100);
-  const Tax = addDecimals(productsAmount * 0.1);
   const Order = {
-    orderItems: Cart,
+    orderItems: MockedData.LoadUserCart.products,
     shippingAddress: address,
     paymentMethod: Method,
-    itemsPrice: productsAmount,
-    taxPrice: Tax,
-    shippingPrice: shipping,
-    totalPrice: Math.round(ExtraAmount + productsAmount),
+    itemsPrice: ProductsAmount,
+    taxPrice: TaxAmount,
+    shippingPrice: ShippingAmount,
+    totalPrice: Math.round(TotalAmount),
   };
+
   const PlaceOrderBtn = screen.getByText(/PlaceOrder/);
   await userEvent.click(PlaceOrderBtn);
-
-  await waitFor(() => expect(PlaceOrderBtn).toBeDisabled());
-
   expect(JSON.parse(localStorage.order)).toStrictEqual(Order);
   expect(History.location.pathname).toMatch(/PayPal/);
 });
 
-it("Return to cart Page Removed Values", () => {
-  localStorage.clear();
-  Setup();
+it("Redirect on Empty Cart", async () => {
+  mock.onGet("/api/cart").reply(200, { products: [] });
+  await act(() => {
+    Setup();
+  });
   expect(History.location.pathname).toBe("/");
 });
-it("Return to cart Page on Empty Cart", () => {
-  localStorage.setItem("cart", JSON.stringify([]));
-  localStorage.setItem("address", JSON.stringify(address));
-  localStorage.setItem("payMethod", Method);
-  localStorage.setItem("productsAmount", JSON.stringify(productsAmount));
+
+it("Return to address Page when address is not available", async () => {
   Setup();
-  expect(History.location.pathname).toBe("/");
+  await act(() => {
+    localStorage.removeItem("address");
+  });
+  expect(History.location.pathname).toBe("/address");
+});
+
+it("Return to payMethod Page", async () => {
+  Setup();
+  await act(() => {
+    localStorage.setItem("address", JSON.stringify(address));
+    localStorage.removeItem("payMethod");
+  });
+  expect(History.location.pathname).toBe("/paymentMethod");
 });

@@ -1,68 +1,66 @@
-import React, { useContext, useEffect } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import { Navigate as Redirect, useNavigate } from "react-router";
 import { Helmet } from "react-helmet-async";
-import TimeoutBtn from "../../Components/TimeoutBtn";
-import ProductList from "../../Components/ProductList";
-import Navigators from "../../Components/Navigators";
-import { Address, CartProducts } from "../../interfaces";
-import { AuthContext } from "../../Context/Authentication/AuthContext";
+import { Address } from "../../interfaces";
 import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
-
+import ProductList from "./ProductList";
+import Navigators from "../../Components/Navigators";
 import {
   StyledHeader,
   StyledOrderSummary,
   StyledOrderSummaryBody,
   StyledOrderSummaryItem,
+  StyledParagraph,
   StyledPlaceOrder,
 } from "./StyledPlaceOrder";
+import { useLoadCartQuery } from "../../API/CartAPI";
+import Spinner from "../../Components/Spinner";
 
 const PlaceOrder = () => {
   const Navigate = useNavigate();
-  const { state } = useContext(AuthContext);
-  const { token } = state;
+  const { data: Cart, isLoading } = useLoadCartQuery();
+  const [ProductsAmount, setProductsAmount] = useState(0);
+  const ShippingAmount = ProductsAmount! > 500 ? 0 : 100;
+  const TaxAmount = 0.15 * ProductsAmount!;
+  const TotalAmount = ProductsAmount! + ShippingAmount + TaxAmount;
 
-  const Cart: CartProducts[] =
-    localStorage.Cart && JSON.parse(localStorage.Cart);
   const Address: Address =
     localStorage.address && JSON.parse(localStorage.address);
   const PayMethod = localStorage.payMethod;
-  const ProductsAmount =
-    localStorage.ProductsAmount && JSON.parse(localStorage.ProductsAmount);
 
-  let ExtraAmount = 0;
-
-  useEffect(() => {
-    if (!token) {
-      Navigate("/");
+  useLayoutEffect(() => {
+    if (Cart) {
+      setProductsAmount(() => {
+        let Total = 0;
+        Cart?.products?.forEach((item) => {
+          Total += item.product.price * item.qty;
+        });
+        return Total;
+      });
     }
-  }, [token, history]);
+  }, [Cart]);
 
-  const addDecimals = (num: number) => {
-    const result = Number((Math.round(num * 100) / 100).toFixed(2));
-    ExtraAmount += result;
-    return result;
-  };
   const PlaceTheOrder = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const shipping = addDecimals(ProductsAmount > 500 ? 0 : 100);
-    const Tax = addDecimals(ProductsAmount * 0.1);
     const Order = {
-      orderItems: Cart,
+      orderItems: Cart?.products,
       shippingAddress: Address,
       paymentMethod: PayMethod,
       itemsPrice: ProductsAmount,
-      taxPrice: 0.1 * ProductsAmount,
-      shippingPrice: ProductsAmount > 500 ? 0 : 100,
-      totalPrice: Math.round(shipping + Tax + ProductsAmount),
+      taxPrice: TaxAmount,
+      shippingPrice: ShippingAmount,
+      totalPrice: Math.round(TotalAmount),
     };
     localStorage.setItem("order", JSON.stringify(Order));
     Navigate("/PayPal");
   };
 
-  if (!Cart || !Address || !PayMethod || !ProductsAmount)
-    return <Redirect to="/cart" />;
+  if (!Address) return <Redirect to="/address" />;
+  if (!PayMethod) return <Redirect to="/paymentMethod" />;
 
-  if (Cart?.length === 0) return <Redirect to="/" />;
+  if (isLoading) return <Spinner />;
+
+  if (Cart && Cart.products?.length === 0) return <Redirect to="/" />;
 
   return (
     <StyledPaymentContainer theme={{ maxWidth: "80vw" }}>
@@ -75,18 +73,18 @@ const PlaceOrder = () => {
         <div className="OrderDetails">
           <div className="detail">
             <StyledHeader>SHIPPING </StyledHeader>
-            <p>
+            <StyledParagraph>
               Address: {Address.address} , {Address.city} ,{Address.postalcode},
-            </p>
+            </StyledParagraph>
           </div>
           <div className="detail">
             <StyledHeader>PAYMENT METHOD</StyledHeader>
-            <p>Method: {PayMethod}</p>
+            <StyledParagraph>Method: {PayMethod}</StyledParagraph>
           </div>
           <div className="order-details">
             <StyledHeader>ORDER ITEMS</StyledHeader>
             <ul className="order-list">
-              {Cart.map((item) => (
+              {Cart?.products.map((item) => (
                 <ProductList Cart={item} key={item._id} styledWidth="80%" />
               ))}
             </ul>
@@ -101,25 +99,17 @@ const PlaceOrder = () => {
               </StyledOrderSummaryItem>
               <StyledOrderSummaryItem>
                 Shipping Cost :
-                <span data-testid="ShippingCost">
-                  {addDecimals(ProductsAmount > 500 ? 0 : 100)}
-                </span>
+                <span data-testid="ShippingCost">{ShippingAmount}</span>
               </StyledOrderSummaryItem>
               <StyledOrderSummaryItem>
-                Tax Cost :
-                <span data-testid="TaxCost">
-                  {addDecimals(0.1 * ProductsAmount)}
-                </span>
+                Tax Cost :<span data-testid="TaxCost">{TaxAmount}</span>
               </StyledOrderSummaryItem>
               <StyledOrderSummaryItem>
                 Total Cost :
-                <span data-testid="TotalAmount">
-                  {Math.round(ExtraAmount + ProductsAmount)}
-                </span>
+                <span data-testid="TotalAmount">{Math.round(TotalAmount)}</span>
               </StyledOrderSummaryItem>
             </StyledOrderSummaryBody>
-
-            <TimeoutBtn Time={4000} className="btn" FormValue="PlaceOrder" />
+            <button className="btn">PlaceOrder</button>
           </form>
         </StyledOrderSummary>
       </StyledPlaceOrder>

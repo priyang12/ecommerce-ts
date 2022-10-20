@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import LoadingButton from "./LoadingButton";
-import "@testing-library/jest-dom";
 
 it("Display Loading State", () => {
   render(<LoadingButton isLoading={true}>Should Not Display</LoadingButton>);

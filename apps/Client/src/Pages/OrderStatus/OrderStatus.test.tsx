@@ -7,7 +7,7 @@ import OrderStatus from ".";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { MemoryRouter } from "react-router-dom";
-import "@testing-library/jest-dom";
+
 import { client, Wrapper } from "../../TestSetup";
 
 const Orders = [

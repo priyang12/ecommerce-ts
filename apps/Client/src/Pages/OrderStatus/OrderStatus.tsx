@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useQuery } from "react-query";
-import { LoadOrders } from "../../API/OrdersAPI";
+import { useLoadOrders } from "../../API/OrdersAPI";
 import OrderList from "./OrderList";
 import Spinner from "../../Components/Spinner";
 
@@ -18,7 +18,7 @@ const OrderStatus = () => {
     isError: boolean;
     data: any;
     error: any;
-  } = useQuery([`${Url}`], LoadOrders);
+  } = useQuery([`${Url}`], useLoadOrders);
 
   if (isLoading) return <Spinner />;
   if (isError) return <div>{error.message}</div>;

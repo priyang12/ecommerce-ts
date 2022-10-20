@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter } from "react-router-dom";
 import Login from ".";
-import "@testing-library/jest-dom";
+
 import { Wrapper } from "../../TestSetup";
 import MockAdapter from "axios-mock-adapter";
 import { createMemoryHistory } from "history";

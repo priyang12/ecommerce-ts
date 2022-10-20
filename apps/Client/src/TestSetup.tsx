@@ -1,4 +1,3 @@
-import "@testing-library/jest-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ToastContainer } from "react-toastify";

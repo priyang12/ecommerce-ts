@@ -9,7 +9,7 @@ import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import ResetPassword from "./ResetPassword";
 import { AuthProvider } from "../../Context/Authentication/AuthContext";
-import "@testing-library/jest-dom";
+
 import userEvent from "@testing-library/user-event";
 
 const route = "/ResetPassword/123123";

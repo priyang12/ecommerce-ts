@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { CartItem } from "../../Components/ProductList";
+import { CartItem } from "../PlaceOrder/ProductList";
 import { FaTrash } from "react-icons/fa";
 import { AiFillSave } from "react-icons/ai";
 import {
@@ -10,9 +10,9 @@ import {
   StyledCartInfoContainer,
   StyledTotalPrice,
 } from "./StyledCart";
-import { AddWishlistQuery } from "../../API/WishListAPI";
+import { useAddWishlistQuery } from "../../API/WishListAPI";
 import Quantity from "../../Components/Quantity";
-import { PostCartQuery } from "../../API/CartAPI";
+import { usePostCartQuery } from "../../API/CartAPI";
 
 function CartItemsUI({
   CartItem,
@@ -25,9 +25,9 @@ function CartItemsUI({
     mutate: AddToWishlist,
     isLoading: AddingWishList,
     isError,
-  } = AddWishlistQuery();
+  } = useAddWishlistQuery();
 
-  const PostCart = PostCartQuery();
+  const PostCart = usePostCartQuery();
   const { mutate: UpdateCart } = PostCart;
 
   return (

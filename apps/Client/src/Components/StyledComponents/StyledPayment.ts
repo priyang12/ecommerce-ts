@@ -26,6 +26,7 @@ export const LinkContainer = styled.ul`
   border: 2px solid rgba(255, 255, 255, 0.125);
   padding: 2rem;
   border-radius: 15px;
+  font-size: 1.5rem;
   a {
     color: var(--secondary-color);
   }

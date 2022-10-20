@@ -8,13 +8,13 @@ const Navigators = () => {
   return (
     <LinkContainer>
       <li className={pathname === "/address" ? "Link-border" : ""}>
-        <Link to='/address'>Address</Link>
+        <Link to="/address">Address</Link>
       </li>
-      <li className={pathname === "/payment" ? "Link-border" : ""}>
-        <Link to='/payment'>Payment</Link>
+      <li className={pathname === "/paymentMethod" ? "Link-border" : ""}>
+        <Link to="/payment">Payment</Link>
       </li>
       <li className={pathname === "/PlaceOrder" ? "Link-border" : ""}>
-        <Link to='/PlaceOrder'>Place Order</Link>
+        <Link to="/PlaceOrder">Place Order</Link>
       </li>
     </LinkContainer>
   );

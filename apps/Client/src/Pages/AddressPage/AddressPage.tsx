@@ -36,7 +36,7 @@ const AddressPage = () => {
         "address",
         JSON.stringify({ address, city, postalcode })
       );
-      Navigate("/payment");
+      Navigate("/paymentMethod");
     } catch (error: any) {
       // Need To Handle Error
     }

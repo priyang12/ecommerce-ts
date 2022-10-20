@@ -4,7 +4,6 @@ import MockAdapter from "axios-mock-adapter";
 import { Router, Route, Routes } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import userEvent from "@testing-library/user-event";
-import "@testing-library/jest-dom";
 
 //Component
 import SingleProduct from "./index";

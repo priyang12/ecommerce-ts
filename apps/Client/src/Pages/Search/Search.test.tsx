@@ -3,7 +3,6 @@ import { createMemoryHistory } from "history";
 import { Route, Router, Routes } from "react-router-dom";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
-import "@testing-library/jest-dom";
 
 //Component: Search
 import Search from ".";

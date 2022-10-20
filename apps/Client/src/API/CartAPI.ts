@@ -2,7 +2,7 @@ import { CartSchema, z } from "@ecommerce/validation";
 import axios, { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { useMutation, useQuery } from "react-query";
-import { CartItem } from "../Components/ProductList";
+import { CartItem } from "../Pages/PlaceOrder/ProductList";
 import { queryClient } from "../query";
 import { CustomAxiosError } from "./interface";
 
@@ -10,7 +10,7 @@ type CartResponse = z.infer<typeof CartSchema> & {
   products: CartItem[];
 };
 
-export const LoadCartQuery = () => {
+export const useLoadCartQuery = () => {
   return useQuery<CartResponse, CustomAxiosError>(
     "Cart",
     async () => {
@@ -25,7 +25,7 @@ export const LoadCartQuery = () => {
   );
 };
 
-export const PostCartQuery = () => {
+export const usePostCartQuery = () => {
   const PostToCart = useMutation(
     async (data: { ProductId?: string; qty: number }) => {
       return await axios.post("/api/cart", data);
@@ -50,7 +50,7 @@ export const PostCartQuery = () => {
   return PostToCart;
 };
 
-export const DeleteCartApi = (setAlert: any) => {
+export const useDeleteCartApi = (setAlert: any) => {
   const { data, isLoading, mutate } = useMutation(
     (id: string) => {
       return axios.delete(`/api/cart/${id}`);

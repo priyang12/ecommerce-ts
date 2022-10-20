@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import axios from "axios";
 import { BrowserRouter } from "react-router-dom";
-import "@testing-library/jest-dom";
+
 import Auth from "./Auth";
 import { AuthProvider } from "../../Context/Authentication/AuthContext";
 import { Wrapper } from "../../TestSetup";

@@ -10,8 +10,6 @@ import MockAdapter from "axios-mock-adapter";
 import userEvent from "@testing-library/user-event";
 import MockedData from "../../FakeData/CartData.json";
 
-import "@testing-library/jest-dom";
-
 // Components
 import Cart from ".";
 import { client, Wrapper } from "../../TestSetup";
@@ -77,4 +75,21 @@ it("Mock Delete Product Form Cart", async () => {
   await userEvent.click(DeleteBtn[0]);
 
   await waitFor(() => screen.findByText(/Deleting/));
+});
+
+it("Mock Server Error Delete Product Form Cart", async () => {
+  mock.onGet("/api/cart").reply(200, LoadUserCart);
+  mock
+    .onDelete(`/api/cart/${LoadUserCart.products[0].product._id}`)
+    .reply(401, { msg: "Server Error" });
+
+  setup();
+  await waitForElementToBeRemoved(screen.queryByAltText(/Loading/));
+  const DeleteBtn = screen.getAllByTestId("DeleteIcon");
+
+  await userEvent.click(DeleteBtn[0]);
+  // expect(DeleteBtn[0]).not.toBeInTheDocument();
+  await waitFor(() => screen.findByText(/Deleting/));
+
+  await waitFor(() => screen.getAllByTestId("DeleteIcon"));
 });

@@ -94,6 +94,7 @@ form input[type="submit"] {
   border-radius: 5 em;
   font-size: 1.5rem;
   font-weight: 600;
+  border-radius: var(--border-radius);
   text-transform: capitalize;
 }
 

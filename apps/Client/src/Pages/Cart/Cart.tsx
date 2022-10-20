@@ -10,7 +10,11 @@ import {
   StyledCartContainer,
 } from "./StyledCart";
 import { CartPost } from "@ecommerce/validation";
-import { PostCartQuery, DeleteCartApi, LoadCartQuery } from "../../API/CartAPI";
+import {
+  usePostCartQuery,
+  useDeleteCartApi,
+  useLoadCartQuery,
+} from "../../API/CartAPI";
 import { DetailedProduct } from "../../interfaces";
 import CartItemsUI from "./CartItemsUI";
 
@@ -38,9 +42,10 @@ const Cart = () => {
     error: Err,
     isFetching,
     isLoading: loading,
-  } = LoadCartQuery();
+  } = useLoadCartQuery();
 
-  const { mutate: DeleteCart, isLoading: Deleting } = DeleteCartApi(setAlert);
+  const { mutate: DeleteCart, isLoading: Deleting } =
+    useDeleteCartApi(setAlert);
 
   const RemoveFromCart = (id: string) => {
     DeleteCart(id);

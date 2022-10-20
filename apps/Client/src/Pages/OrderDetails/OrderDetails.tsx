@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useOrderDelivered, useOrderDetails } from "../../API/OrdersAPI";
-import { CartItem } from "../../Components/ProductList";
+import { CartItem } from "../PlaceOrder/ProductList";
 import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
 import { AuthContext } from "../../Context/Authentication/AuthContext";
 import AlertDisplay from "../../Components/AlertDisplay";

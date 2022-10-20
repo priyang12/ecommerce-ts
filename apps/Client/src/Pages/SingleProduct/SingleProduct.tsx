@@ -16,10 +16,10 @@ import {
   StyledQuantity,
   CheckFormControl,
 } from "./StyledSingleProduct";
-import { PostCartQuery } from "../../API/CartAPI";
+import { usePostCartQuery } from "../../API/CartAPI";
 import { Helmet } from "react-helmet-async";
 import { useSingleProduct } from "../../API/ProductAPI";
-import { AddWishlistQuery } from "../../API/WishListAPI";
+import { useAddWishlistQuery } from "../../API/WishListAPI";
 import Spinner from "../../Components/Spinner";
 import { Select } from "../../StyledComponents/FormControl";
 import LoadingButton from "../../Components/LoadingButton";
@@ -33,9 +33,10 @@ const SingleProduct = () => {
     isLoading: loading,
   } = useSingleProduct(id as string, false);
 
-  const { mutate: AddWishlist, isLoading: AddingWishList } = AddWishlistQuery();
+  const { mutate: AddWishlist, isLoading: AddingWishList } =
+    useAddWishlistQuery();
 
-  const { isLoading: CartMutation, mutate: PostQty } = PostCartQuery();
+  const { isLoading: CartMutation, mutate: PostQty } = usePostCartQuery();
 
   const [Qty, setQty] = useState("1");
 

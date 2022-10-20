@@ -1,45 +1,41 @@
 import { useEffect, useState } from "react";
-import { PayPalButton } from "react-paypal-button-v2";
-import { useNavigate } from "react-router";
-import axios from "axios";
-
-import {
-  StyledContainer,
-  FragmentContainer,
-} from "../../Components/StyledComponents/Container";
-import { useMutation } from "react-query";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { Navigate } from "react-router";
+import axios, { AxiosResponse } from "axios";
 import Spinner from "../../Components/Spinner";
-import AlertDisplay from "../../Components/AlertDisplay";
+import { useMakeOrder } from "../../API/OrdersAPI";
+import styled from "styled-components";
+import ErrorCatch from "../../Components/ErrorCatch";
+import { Helmet } from "react-helmet-async";
+
+type ClientIdRes = AxiosResponse<string>;
+
+const StyledContainer = styled.div`
+  margin: auto;
+  width: 50%;
+  height: 50vh;
+  transform: translate(0%, 50%);
+`;
 
 function Paypal() {
-  const Navigate = useNavigate();
   const {
     mutate: CallOrder,
-    isLoading,
-    isSuccess,
-    isIdle,
-    error: OrderError,
-  } = useMutation(async (order) => {
-    const res = await axios.post("/api/orders", order);
-    return res;
-  });
-  const [PaymentErrors, setPaymentErrors] = useState("");
+    isLoading: isOrderLoading,
+    isSuccess: isOrderSuccess,
+  } = useMakeOrder();
+
+  const [ClientId, setClientId] = useState("");
   const Order = localStorage.order && JSON.parse(localStorage.order);
-  const [SdkReady, setSdkReady] = useState(false);
 
   useEffect(() => {
-    const addPayPalScript = async () => {
-      const { data: clientId } = await axios.get("api/config/paypal");
-      const script = document.createElement("script");
-      script.type = "text/javascript";
-      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
-      script.async = true;
-      document.body.appendChild(script);
-      script.onload = () => {
-        setSdkReady(true);
-      };
+    const GetClientId = async () => {
+      const { data: ClientId }: ClientIdRes = await axios.get(
+        "api/config/paypal"
+      );
+
+      setClientId(ClientId);
     };
-    addPayPalScript();
+    GetClientId();
   }, []);
 
   const successPaymentHandler = (paymentResult: object) => {
@@ -47,34 +43,45 @@ function Paypal() {
     CallOrder(Order);
   };
   const DisplayPaymentError = (err: any) => {
-    setPaymentErrors(err);
+    throw new Error(err);
   };
 
-  if (isLoading || !isIdle) return <Spinner />;
+  if (isOrderLoading || !ClientId) return <Spinner />;
 
-  if (isSuccess) Navigate("/OrderStatus");
+  if (isOrderSuccess) return <Navigate to="/OrderStatus" />;
 
-  if (!Order) Navigate("/");
-
-  if (PaymentErrors) return <div className="Error">{PaymentErrors}</div>;
+  if (!Order) return <Navigate to="/" />;
 
   return (
-    <StyledContainer theme={{ marginTop: "2" }}>
-      {!SdkReady ? (
-        <Spinner />
-      ) : (
-        <FragmentContainer>
-          {OrderError && (
-            <AlertDisplay msg="Error While Placing Order" type={"error"} />
-          )}
-          <PayPalButton
-            amount={Order.totalPrice}
-            onSuccess={successPaymentHandler}
-            onError={DisplayPaymentError}
+    <ErrorCatch>
+      <StyledContainer>
+        <Helmet>
+          <title>PayPal</title>
+        </Helmet>
+        <PayPalScriptProvider options={{ "client-id": ClientId }}>
+          <PayPalButtons
+            style={{ layout: "horizontal" }}
+            createOrder={(data, actions) => {
+              return actions.order.create({
+                purchase_units: [
+                  {
+                    amount: {
+                      value: Order.totalPrice,
+                    },
+                  },
+                ],
+              });
+            }}
+            onApprove={(data, actions) => {
+              return actions.order?.capture().then(function (details) {
+                successPaymentHandler(details);
+              }) as any;
+            }}
+            onError={(err) => DisplayPaymentError(err)}
           />
-        </FragmentContainer>
-      )}
-    </StyledContainer>
+        </PayPalScriptProvider>
+      </StyledContainer>
+    </ErrorCatch>
   );
 }
 

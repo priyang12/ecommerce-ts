@@ -1,4 +1,7 @@
-import { LoadWishListQuery, RemoveWishlistQuery } from "../../API/WishListAPI";
+import {
+  useLoadWishListQuery,
+  useRemoveWishlistQuery,
+} from "../../API/WishListAPI";
 import AlertDisplay from "../../Components/AlertDisplay";
 import Spinner from "../../Components/Spinner";
 import { Product } from "../../interfaces";
@@ -12,14 +15,14 @@ import {
 } from "./StyledWishList";
 
 function Wishlist() {
-  const { WishList, isFetched, isLoading } = LoadWishListQuery();
+  const { WishList, isFetched, isLoading } = useLoadWishListQuery();
   const {
     isError: DeleteError,
     isLoading: Deleting,
     isSuccess: DeleteSuccess,
     mutate: DeleteProduct,
     error,
-  } = RemoveWishlistQuery();
+  } = useRemoveWishlistQuery();
 
   if (isLoading || !isFetched) {
     return <Spinner />;
