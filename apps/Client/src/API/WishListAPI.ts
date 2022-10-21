@@ -1,33 +1,20 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { queryClient } from "../query";
 import { toast } from "react-toastify";
 
 const fetchData = async (url: string) => {
-  const response = await axios.get(url);
+  const response: AxiosResponse<{
+    products: any[];
+    user: string;
+    _id: string;
+  }> = await axios.get(url);
   return response.data;
 };
 
 export const useLoadWishListQuery = () => {
-  const [WishList, setWishList] = useState([]);
-  const { isFetched, isLoading, data } = useQuery(
-    "wishList",
-    () => fetchData("/api/wishlist"),
-
-    {
-      onSuccess: (data: any) => {
-        setWishList(data.products);
-      },
-    }
-  );
-
-  return {
-    data,
-    WishList,
-    isFetched,
-    isLoading,
-  };
+  return useQuery("wishList", () => fetchData("/api/wishlist"));
 };
 
 export const useAddWishlistQuery = () => {

@@ -31,39 +31,6 @@ const Orders = [
   },
 ];
 
-const AdminOrders = [
-  {
-    _id: "612894962f469f19e8ee85e8",
-    user: {
-      name: "John Doe",
-      email: "sdsads@gmail.com",
-    },
-    totalPrice: "517",
-    isDelivered: true,
-    paymentMethod: "Paypal Or Debit Card",
-  },
-  {
-    _id: "612894962f469f19e8eeasdas8",
-    user: {
-      name: "asdasd Doe",
-      email: "sdsads@gmail.com",
-    },
-    totalPrice: "517",
-    isDelivered: false,
-    paymentMethod: "Paypal Or Debit Card",
-  },
-  {
-    _id: "612894962f469f19e8ee8asdsad8",
-    user: {
-      name: "Joasdasdhn Doe",
-      email: "sdsads@gmail.com",
-    },
-    totalPrice: "2000",
-    isDelivered: true,
-    paymentMethod: "Paypal Or Debit Card",
-  },
-];
-
 const mock = new MockAdapter(axios);
 
 describe("User Orders", () => {
@@ -123,20 +90,19 @@ describe("User Orders", () => {
   });
 });
 
-describe("Admin Orders", () => {
-  it("Call All the Order For Admin", async () => {
-    mock.onGet("/api/orders/all").reply(200, AdminOrders);
-    render(
-      <Wrapper>
-        <MemoryRouter initialEntries={["/AdminOrders"]}>
-          <OrderStatus />
-        </MemoryRouter>
-      </Wrapper>
-    );
+it("No Order", async () => {
+  client.clear();
+  mock.onGet("/api/orders").reply(200, []);
+  render(
+    <Wrapper>
+      <MemoryRouter initialEntries={["/OrderStatus"]}>
+        <OrderStatus />
+      </MemoryRouter>
+    </Wrapper>
+  );
 
-    //check if the loading is true
-    await waitForElementToBeRemoved(screen.queryByTestId("Loading"));
-    //check if the loading is true
-    expect(screen.getByText(/John Doe/)).toBeInTheDocument();
-  });
+  //check if the loading is true
+  await waitForElementToBeRemoved(screen.queryByTestId("Loading"));
+  //Check if the Error Message is rendered.
+  expect(screen.getByText("No Order Are In Place")).toBeInTheDocument();
 });

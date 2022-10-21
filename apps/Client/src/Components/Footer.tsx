@@ -6,7 +6,7 @@ import {
   Footer as StyledFooter,
   FooterContainer,
 } from "./StyledComponents/StyledFooter";
-
+import { FaMapMarker, FaPhone, FaEnvelope } from "react-icons/fa";
 const Footer = () => {
   const location = useLocation();
   const isAuth = location.pathname === "/Auth";
@@ -30,17 +30,17 @@ const Footer = () => {
           </p>
           <ContactInfo>
             <li>
-              <i className="fa fa-map-marker" />
+              <FaMapMarker />
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Beatae,
               ex!
             </li>
             <li>
-              <i className="fa fa-phone" />
-              Phone: +88 01911 854 xxx
+              <FaPhone />
+              <span>Phone: +88 01911 854 xxx</span>
             </li>
             <li>
-              <i className="fa fa-envelope" />
-              Email:
+              <FaEnvelope />
+              <span>Email:</span>
               <a href="mailto:patelpriyang95@gmail.com">shopitTeam@gmail.com</a>
             </li>
           </ContactInfo>

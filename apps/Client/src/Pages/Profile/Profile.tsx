@@ -9,6 +9,8 @@ import {
   ValidatePassword,
 } from "../../Utils/Validation";
 import Spinner from "../../Components/Spinner";
+import { Helmet } from "react-helmet-async";
+import { FormControl, Input, Label } from "../../StyledComponents/FormControl";
 const Profile = () => {
   const { state, dispatch } = useContext(AuthContext);
   const {
@@ -68,84 +70,89 @@ const Profile = () => {
     return <Spinner />;
   }
   return (
-    <StyledProfile>
-      <form onSubmit={onSubmit}>
-        <div className="form-control">
-          <input
-            type="text"
-            name="name"
-            id="name"
-            value={name}
-            onChange={ChangeState}
-            required
-          />
-          <span className="bar"></span>
-          <label htmlFor="name">
-            {FormErrors.name ? (
-              <span className="error">{FormErrors.name}</span>
-            ) : (
-              "name"
-            )}
-          </label>
-        </div>
+    <>
+      <Helmet>
+        <title>Profile</title>
+      </Helmet>
+      <StyledProfile>
+        <form onSubmit={onSubmit}>
+          <FormControl>
+            <Input
+              type="text"
+              name="name"
+              id="name"
+              value={name}
+              onChange={ChangeState}
+              required
+            />
+            <span className="bar"></span>
+            <Label htmlFor="name">
+              {FormErrors.name ? (
+                <span className="error">{FormErrors.name}</span>
+              ) : (
+                "name"
+              )}
+            </Label>
+          </FormControl>
 
-        <div className="form-control">
-          <input
-            type="password"
-            name="currentPassword"
-            id="currentPassword"
-            value={currentPassword}
-            onChange={ChangeState}
-            required
-          />
-          <span className="bar"></span>
-          <label htmlFor="currentPassword">
-            {FormErrors.password ? (
-              <span className="error">{FormErrors.currentPassword}</span>
-            ) : (
-              "Current Password"
-            )}
-          </label>
-        </div>
-        <div className="form-control">
-          <input
-            type="password"
-            name="Password"
-            id="Password"
-            value={Password}
-            onChange={ChangeState}
-            required
-          />
-          <span className="bar"></span>
-          <label htmlFor="Password">
-            {FormErrors.password ? (
-              <span className="error">{FormErrors.password}</span>
-            ) : (
-              "Password"
-            )}
-          </label>
-        </div>
-        <div className="form-control">
-          <input
-            type="password"
-            name="Password2"
-            id="Password2"
-            value={Password2}
-            onChange={ChangeState}
-            required
-          />
-          <span className="bar"></span>
-          <label htmlFor="Password2">
-            {FormErrors.password2 ? (
-              <span className="error">{FormErrors.password2}</span>
-            ) : (
-              "Confirm password"
-            )}
-          </label>
-        </div>
-        <input type="submit" className="btn" value="Update" />
-      </form>
-    </StyledProfile>
+          <FormControl>
+            <Input
+              type="password"
+              name="currentPassword"
+              id="currentPassword"
+              value={currentPassword}
+              onChange={ChangeState}
+              required
+            />
+            <span className="bar"></span>
+            <Label htmlFor="currentPassword">
+              {FormErrors.password ? (
+                <span className="error">{FormErrors.currentPassword}</span>
+              ) : (
+                "Current Password"
+              )}
+            </Label>
+          </FormControl>
+          <FormControl>
+            <Input
+              type="password"
+              name="Password"
+              id="Password"
+              value={Password}
+              onChange={ChangeState}
+              required
+            />
+            <span className="bar"></span>
+            <Label htmlFor="Password">
+              {FormErrors.password ? (
+                <span className="error">{FormErrors.password}</span>
+              ) : (
+                "Password"
+              )}
+            </Label>
+          </FormControl>
+          <FormControl>
+            <Input
+              type="password"
+              name="Password2"
+              id="Password2"
+              value={Password2}
+              onChange={ChangeState}
+              required
+            />
+            <span className="bar"></span>
+            <Label htmlFor="Password2">
+              {FormErrors.password2 ? (
+                <span className="error">{FormErrors.password2}</span>
+              ) : (
+                "Confirm password"
+              )}
+            </Label>
+          </FormControl>
+          <input type="submit" className="btn" value="Update" />
+        </form>
+      </StyledProfile>
+    </>
   );
 };
 

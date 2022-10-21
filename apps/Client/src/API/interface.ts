@@ -1,3 +1,4 @@
+import { OrderSchema, z } from "@ecommerce/validation";
 import { AxiosError } from "axios";
 import { DetailedProduct, Product, User } from "../interfaces";
 
@@ -7,25 +8,27 @@ export interface ProductAPI {
   pages: number;
 }
 
-export interface AdminProductAPI {
-  products: DetailedProduct[];
-  page: number;
-  pages: number;
-}
+export type SingleProductAPI = DetailedProduct;
 
-export interface AdminProductMutationAPI {
-  msg: string;
-}
+export type SearchProductAPI = Product;
 
-export type SingleProductAPI = DetailedProduct
-
-export type SearchProductAPI = Product
-
-export type LoadUsersAPI = User
+export type LoadUsersAPI = User;
 
 export interface RemoveUSerAPI {
   message: string;
 }
+
+export type Order = z.infer<typeof OrderSchema>;
+
+export type OrderListItem = Pick<
+  Order,
+  "_id" | "paymentMethod" | "totalPrice" | "user" | "isDelivered"
+> & {
+  user: {
+    name: string;
+    email: string;
+  };
+};
 
 export type CustomAxiosError = AxiosError<{
   msg: string;

@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import {
   useLoadWishListQuery,
   useRemoveWishlistQuery,
@@ -15,7 +16,7 @@ import {
 } from "./StyledWishList";
 
 function Wishlist() {
-  const { WishList, isFetched, isLoading } = useLoadWishListQuery();
+  const { data: WishList, isFetched, isLoading } = useLoadWishListQuery();
   const {
     isError: DeleteError,
     isLoading: Deleting,
@@ -24,38 +25,46 @@ function Wishlist() {
     error,
   } = useRemoveWishlistQuery();
 
-  if (isLoading || !isFetched) {
-    return <Spinner />;
-  }
+  if (isLoading || !isFetched) return <Spinner />;
 
-  if (WishList?.length === 0 && isFetched) {
+  if (WishList?.products.length === 0 && isFetched) {
     return <div>No Products in WishList</div>;
   }
 
   return (
-    <div>
+    <>
+      <Helmet>
+        <title>WishList</title>
+        <meta
+          name="description"
+          content={`
+        WishList
+        ${WishList?.products.map((product: Product) => product.name)}
+        `}
+        />
+      </Helmet>
       {DeleteError && (
         <AlertDisplay msg={error.msg} type={"error"}>
           <div>Server Problem Please try again later</div>
         </AlertDisplay>
       )}
       <StyledHeading>Wishlist</StyledHeading>
-      {DeleteSuccess && (
-        <AlertDisplay msg={"Product Deleted"} type={"warning"} />
-      )}
+      {DeleteSuccess && <AlertDisplay msg={"Product Deleted"} type={"error"} />}
       {Deleting && <AlertDisplay msg="Deleting...." type={"warning"} />}
       <StyledProducts>
-        {WishList.map((product: Product) => (
-          <StyledProduct key={product._id}>
+        {WishList?.products.map((product: Product) => (
+          <StyledProduct key={product._id} tabIndex={0}>
             <StyledProductTitle>{product.name}</StyledProductTitle>
             <StyledProductDescription>
               {product.description}
             </StyledProductDescription>
             <img src={product.image} alt={product.name} />
-            <StyledProductPrice>{product.price}</StyledProductPrice>
+            <StyledProductPrice>
+              <span>$</span> {product.price}
+            </StyledProductPrice>
             <button
               data-testid={`Delete-${product._id}`}
-              className="btn btn-light"
+              className="btn"
               onClick={() => {
                 DeleteProduct(product._id);
               }}
@@ -65,7 +74,7 @@ function Wishlist() {
           </StyledProduct>
         ))}
       </StyledProducts>
-    </div>
+    </>
   );
 }
 

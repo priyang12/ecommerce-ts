@@ -22,12 +22,7 @@ export const OrderSchema = z.object({
     postalcode: z.string().refine((postalcode) => postalcode.length === 6),
   }),
   paymentMethod: z.string(),
-  paymentResult: z.object({
-    id: z.string(),
-    status: z.string(),
-    update_time: z.string(),
-    email_address: z.string(),
-  }),
+  paymentResult: z.any(),
   itemsPrice: z.number(),
   taxPrice: z.number(),
   shippingPrice: z.number(),
@@ -44,4 +39,7 @@ export const CreateOrder = OrderSchema.omit({
   user: true,
   createdAt: true,
   updatedAt: true,
+  isDelivered: true,
+  deliveredAt: true,
+  paidAt: true,
 });

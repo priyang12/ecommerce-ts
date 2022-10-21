@@ -90,7 +90,7 @@ export const StyledDropDownButton = styled.button`
   font-size: 1.2rem;
   margin: 0rem 0.5rem;
   background-color: transparent;
-  color: var(--seccondary-color);
+  color: var(--bg-contrast-color);
   border-radius: 50%;
   border-color: var(--seccondary-color);
   transition: all 0.3s ease-in-out;

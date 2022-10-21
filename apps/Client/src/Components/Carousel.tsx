@@ -1,4 +1,4 @@
-import { FC, useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { useLoadTopProducts } from "../API/ProductAPI";
 import Slide from "./Slide";
 import {
@@ -6,7 +6,7 @@ import {
   StyledSlideButton,
   StyledSlidesContainer,
 } from "./StyledComponents/Styledslides";
-
+import { FaChevronCircleLeft, FaChevronCircleRight } from "react-icons/fa";
 const initialState = {
   slideIndex: 0,
 };
@@ -62,7 +62,7 @@ function Carousel() {
           aria-label="Previous Slide"
           aria-describedby="Previous Slide"
         >
-          <i className="fas fa-chevron-left"></i>
+          <FaChevronCircleLeft />
         </StyledSlideButton>
 
         {[...DisplayProducts, ...DisplayProducts, ...DisplayProducts].map(
@@ -86,7 +86,7 @@ function Carousel() {
           aria-label="Next Slide"
           aria-describedby="Next Slide"
         >
-          <i className="fas fa-chevron-right"></i>
+          <FaChevronCircleRight />
         </StyledSlideButton>
       </StyledSlide>
     </StyledSlidesContainer>

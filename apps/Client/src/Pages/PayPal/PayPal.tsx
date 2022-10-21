@@ -39,7 +39,7 @@ function Paypal() {
   }, []);
 
   const successPaymentHandler = (paymentResult: object) => {
-    Order.payment = paymentResult;
+    Order.paymentResult = paymentResult;
     CallOrder(Order);
   };
   const DisplayPaymentError = (err: any) => {

@@ -12,6 +12,7 @@ import {
   StyledSecondaryNav,
   StyledUserName,
 } from "./StyledComponents/StyledNavbar";
+import { FaShoppingCart } from "react-icons/fa";
 import LogoImage from "../Assets/Logo.png";
 
 const Navbar = () => {
@@ -20,7 +21,6 @@ const Navbar = () => {
 
   const onLogout = () => {
     Logout(dispatch);
-    window.location.reload();
   };
 
   const GuestLink = (
@@ -44,7 +44,7 @@ const Navbar = () => {
           >
             <FaCaretDown />
           </StyledDropDownButton>
-          <div className="dropdown-content">
+          <div className="dropdown-content" tabIndex={0}>
             <li>
               <Link to="/Profile">
                 <span className="hide-sm">Profile</span>
@@ -61,7 +61,7 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              <Link to="/Auth" onClick={onLogout}>
+              <Link to="/Auth/login" onClick={onLogout}>
                 <span className="hide-sm">Logout</span>
               </Link>
             </li>
@@ -84,7 +84,7 @@ const Navbar = () => {
         {user && (
           <StyledLinks>
             <Link to="/Cart">
-              <i className="fas fa-shopping-cart"></i> CART
+              <FaShoppingCart /> CART
             </Link>
           </StyledLinks>
         )}

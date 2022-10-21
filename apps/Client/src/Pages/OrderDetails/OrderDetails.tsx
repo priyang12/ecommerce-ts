@@ -1,26 +1,26 @@
-import { useContext } from "react";
-import { Link, useParams } from "react-router-dom";
-import { useOrderDelivered, useOrderDetails } from "../../API/OrdersAPI";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useOrderDetails } from "../../API/OrdersAPI";
 import { CartItem } from "../PlaceOrder/ProductList";
 import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
-import { AuthContext } from "../../Context/Authentication/AuthContext";
-import AlertDisplay from "../../Components/AlertDisplay";
 import Spinner from "../../Components/Spinner";
 import {
+  StyledDelivery,
+  StyledImageContainer,
   StyledListItems,
   StyledOrderDetails,
+  StyledOrderItems,
   StyledOrderList,
 } from "./StyledOrderDeatails";
+import { Helmet } from "react-helmet-async";
 
 const OrderDetails = () => {
-  const { state } = useContext(AuthContext);
+  const Navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-
   const {
     data: OrderDetails,
-    isLoading,
-    error,
-    isError,
+    isLoading: isOrderDetailsLoading,
+    error: OrderDetailsError,
+    isError: isOrderDetailsError,
   }: {
     data: any;
     isLoading: boolean;
@@ -28,110 +28,128 @@ const OrderDetails = () => {
     isError: boolean;
   } = useOrderDetails(id);
 
-  const {
-    mutate: MarkAsDeliver,
-    isLoading: Mutating,
-    isSuccess,
-  } = useOrderDelivered();
-
-  const SubmitReview = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const EnterProduct = (
+    e: React.KeyboardEvent<HTMLLIElement>,
+    ProductID: string
+  ) => {
+    if (e.key === "Enter") {
+      Navigate(`/product/${ProductID}`);
+    }
   };
 
-  if (isLoading || Mutating) return <Spinner />;
-  if (isError) return <div>{error}</div>;
+  if (isOrderDetailsLoading) return <Spinner />;
+  if (isOrderDetailsError) return <div>{OrderDetailsError}</div>;
   if (!OrderDetails) return <div>Server Error Please Try Again</div>;
 
   return (
     <>
+      <Helmet>
+        <title>Order Details</title>
+        <meta
+          name="description"
+          content={`
+        Order Details
+        ${OrderDetails._id}
+        ${OrderDetails.shippingAddress.address}
+        ${OrderDetails.shippingAddress.city}
+        ${OrderDetails.paymentMethod}
+        `}
+        />
+      </Helmet>
       <StyledPaymentContainer theme={{ maxWidth: "70vw" }}>
-        {isSuccess && <AlertDisplay msg="Order Delivered" type={"success"} />}
-        <div className="left">
-          <StyledOrderDetails>
-            <h1>SHIPPING</h1>
-            <p>
-              Name: <span>{OrderDetails.user.name}</span>
-            </p>
-            <p>
-              Email: <span>{OrderDetails.user.email}</span>
-            </p>
-            <p>
-              Address: {OrderDetails.shippingAddress.address},{" "}
-              {OrderDetails.shippingAddress.city},{" "}
-              {OrderDetails.shippingAddress.country} ,{" "}
-              {OrderDetails.shippingAddress.postalcode}
-            </p>
-          </StyledOrderDetails>
-          <StyledOrderDetails>
-            <h1>PAYMENT METHOD</h1>
-            <p>Method: {OrderDetails.paymentMethod}</p>
-          </StyledOrderDetails>
-          <div className="details">
-            <h1>ORDER ITEMS</h1>
-            <StyledOrderList>
-              {OrderDetails.orderItems.map((orderItems: CartItem) => (
-                <StyledListItems key={orderItems._id}>
-                  <p>
-                    {orderItems.qty} x ${orderItems.product.price} = $
-                    {Math.round(orderItems.qty * orderItems.product.price)}
-                  </p>
-                  <img
-                    src={`..${orderItems.product.image}`}
-                    alt={orderItems.product.name}
-                  />
-                  <Link to={`/product/${orderItems.product._id}`}>
-                    {orderItems.product.name}
-                  </Link>
-                </StyledListItems>
-              ))}
-            </StyledOrderList>
-          </div>
-        </div>
         <StyledOrderDetails>
-          <h1>ORDER SUMMARY</h1>
-          <li>
-            Items : <span> ${OrderDetails.itemsPrice}</span>
-          </li>
-          <li>
-            Shipping : <span> ${OrderDetails.shippingPrice}</span>
-          </li>
-          <li>
-            Tax : <span> ${OrderDetails.taxPrice}</span>
-          </li>
-          <li className="Total">
-            Total : <span>${OrderDetails.totalPrice}</span>
-          </li>
-          <li></li>
-          {OrderDetails.isDelivered ? (
-            <p className="success">Delivered</p>
-          ) : state.user?.isAdmin ? (
-            <button
-              className="btn"
-              onClick={() => {
-                MarkAsDeliver(id as string);
-              }}
-            >
-              Mark as Delivered
-            </button>
-          ) : (
-            <p className="alert">Not Delivered</p>
-          )}
+          <h1>SHIPPING</h1>
+          <p>
+            Name: <span>{OrderDetails.user.name}</span>
+          </p>
+          <p>
+            Email: <span>{OrderDetails.user.email}</span>
+          </p>
+          <p>
+            Address:
+            <span>
+              &nbsp;
+              {OrderDetails.shippingAddress.address}
+              &nbsp;
+              <>&#44;</>
+            </span>
+            <span>
+              &nbsp;
+              {OrderDetails.shippingAddress.city} <>&#44;</>
+            </span>
+            <span>{OrderDetails.shippingAddress.postalcode}</span>
+          </p>
         </StyledOrderDetails>
-        {OrderDetails.user._id === state.user?._id && OrderDetails.isDelivered && (
-          <form className="review" onSubmit={SubmitReview}>
-            <label>Rating</label>
-            <select className="rating">
-              <option value="">Select...</option>
-              <option value="1">1 - Poor</option>
-              <option value="2">2 - Fair</option>
-              <option value="3">3 - Good</option>
-              <option value="4">4 - Very Good</option>
-              <option value="5">5 - Excellent</option>
-            </select>
-            <label>Comment</label>
-            {/* <input type="textarea" onChange={onchangeReview}></input> */}
-            <input type="submit" />
-          </form>
+
+        <StyledOrderDetails>
+          <h2>PAYMENT METHOD</h2>
+          <p>Method: {OrderDetails.paymentMethod}</p>
+        </StyledOrderDetails>
+
+        <StyledOrderItems>
+          <h3>ORDER ITEMS</h3>
+          <StyledOrderList>
+            {OrderDetails.orderItems.map((orderItems: CartItem) => (
+              <StyledListItems
+                key={orderItems._id}
+                tabIndex={0}
+                onKeyDown={(e) => EnterProduct(e, orderItems.product._id)}
+              >
+                <Link to={`/product/${orderItems.product._id}`} tabIndex={-1}>
+                  <StyledImageContainer>
+                    <img
+                      src={`${orderItems.product.image}`}
+                      alt={orderItems.product.name}
+                    />
+                  </StyledImageContainer>
+                </Link>
+                <Link to={`/product/${orderItems.product._id}`} tabIndex={-1}>
+                  {orderItems.product.name}
+                </Link>
+                <p>
+                  {orderItems.qty} x ${orderItems.product.price} = $
+                  {Math.round(orderItems.qty * orderItems.product.price)}
+                </p>
+              </StyledListItems>
+            ))}
+          </StyledOrderList>
+        </StyledOrderItems>
+        <br />
+        <StyledOrderDetails>
+          <h3>ORDER SUMMARY</h3>
+          <ul>
+            <li>
+              Items : <span> ${OrderDetails.itemsPrice}</span>
+            </li>
+            <li>
+              Shipping : <span> ${OrderDetails.shippingPrice}</span>
+            </li>
+            <li>
+              Tax : <span> ${OrderDetails.taxPrice}</span>
+            </li>
+            <li className="Total">
+              Total : <span>${OrderDetails.totalPrice}</span>
+            </li>
+          </ul>
+        </StyledOrderDetails>
+        {OrderDetails.isDelivered ? (
+          <StyledDelivery
+            theme={{
+              color: "green",
+              backgroundColor: "rgba(0, 255, 0, 0.1)",
+            }}
+          >
+            Delivered
+          </StyledDelivery>
+        ) : (
+          <StyledDelivery
+            theme={{
+              color: "red",
+              backgroundColor: "rgba(255, 0, 0, 0.1)",
+            }}
+          >
+            Not Delivered
+          </StyledDelivery>
         )}
       </StyledPaymentContainer>
     </>

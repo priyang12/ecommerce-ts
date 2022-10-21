@@ -170,7 +170,6 @@ export const RecoverPassword = async (
 
 export const Logout = (dispatch: React.Dispatch<AuthActions>) => {
   try {
-    setLoading(dispatch);
     localStorage.clear();
     sessionStorage.clear();
     dispatch({
@@ -180,7 +179,7 @@ export const Logout = (dispatch: React.Dispatch<AuthActions>) => {
   } catch (error) {
     dispatch({
       type: AUTH_ERROR,
-      payload: "Server Error Reload ",
+      payload: "Server Error Reload",
     });
   }
 };

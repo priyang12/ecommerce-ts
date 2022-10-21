@@ -3,6 +3,7 @@ import {
   render,
   waitForElementToBeRemoved,
   waitFor,
+  act,
 } from "@testing-library/react";
 import { Wrapper } from "../../TestSetup";
 import { Products } from "../Testdata/Data";
@@ -18,9 +19,6 @@ queryClient.setQueryData("wishList", {
 });
 
 const setup = () => {
-  mock.onGet("/api/wishlist").reply(200, {
-    products: Products,
-  });
   render(
     <Wrapper>
       <Wishlist />
@@ -29,6 +27,9 @@ const setup = () => {
 };
 
 it("Render WishList", async () => {
+  mock.onGet("/api/wishlist").reply(200, {
+    products: Products,
+  });
   setup();
   await waitForElementToBeRemoved(screen.queryByAltText(/Loading/));
   mock.resetHandlers();
@@ -44,11 +45,17 @@ it("Render WishList", async () => {
 });
 
 it("Delete Product from WishList", async () => {
+  mock.onGet("/api/wishlist").reply(200, {
+    products: Products,
+  });
   mock.onDelete(`/api/wishlist/${Products[0]._id}`).reply(200, {
     msg: "Product Deleted",
   });
 
-  setup();
+  await act(() => {
+    setup();
+  });
+
   await waitFor(() => screen.findByAltText(Products[0].name));
 
   expect(screen.getByText("Wishlist")).toBeInTheDocument();
@@ -63,16 +70,35 @@ it("Delete Product from WishList", async () => {
 });
 
 it("Delete Error", async () => {
+  mock.onGet("/api/wishlist").reply(200, {
+    products: Products,
+  });
   mock.onDelete(`/api/wishlist/${Products[0]._id}`).reply(501, {
     msg: "Server Error",
   });
-  setup();
+  await act(() => {
+    setup();
+  });
+
   await waitFor(() => screen.findByAltText(Products[0].name));
+
   const deleteButton = screen.getByTestId(`Delete-${Products[0]._id}`);
+
   await userEvent.click(deleteButton);
+
   await waitFor(() =>
     expect(
       screen.getByText(/Server Problem Please try again later/)
     ).toBeInTheDocument()
+  );
+});
+
+it('Render "No Products in WishList" when WishList is empty', async () => {
+  mock.onGet("/api/wishlist").reply(200, {
+    products: [],
+  });
+  setup();
+  await waitFor(() =>
+    expect(screen.getByText("No Products in WishList")).toBeInTheDocument()
   );
 });

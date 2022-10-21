@@ -1,33 +1,34 @@
-import { useLocation } from "react-router-dom";
-import { useQuery } from "react-query";
 import { useLoadOrders } from "../../API/OrdersAPI";
 import OrderList from "./OrderList";
 import Spinner from "../../Components/Spinner";
+import { Helmet } from "react-helmet-async";
 
 const OrderStatus = () => {
-  const { pathname } = useLocation();
-  const Url = pathname === "/OrderStatus" ? "/api/orders" : "/api/orders/all";
-
   const {
-    isLoading,
-    isError,
+    isLoading: isOrdersLoading,
+    isError: isOrdersError,
     data: OrderData,
-    error,
-  }: {
-    isLoading: boolean;
-    isError: boolean;
-    data: any;
-    error: any;
-  } = useQuery([`${Url}`], useLoadOrders);
+    error: OrderError,
+  } = useLoadOrders("/api/orders");
 
-  if (isLoading) return <Spinner />;
-  if (isError) return <div>{error.message}</div>;
-  if (!OrderData) return <div>Server Error Please Try Again</div>;
+  if (isOrdersLoading) return <Spinner />;
+
+  // @ts-ignore
+  if (isOrdersError) return <div>{OrderError.message}</div>;
 
   return (
-    <section id="OrderStatus">
-      <OrderList Orders={OrderData} />
-    </section>
+    <>
+      <Helmet>
+        <title>Orders</title>
+      </Helmet>
+      <section>
+        {OrderData && OrderData.length > 0 ? (
+          <OrderList Orders={OrderData} />
+        ) : (
+          <div>No Order Are In Place</div>
+        )}
+      </section>
+    </>
   );
 };
 

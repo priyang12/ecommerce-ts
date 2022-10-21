@@ -35,7 +35,7 @@ const addOrderItems = asyncHandler(async (req: Request, res: Response) => {
       taxPrice,
       shippingPrice,
       totalPrice,
-      payment,
+      paymentResult,
       shippingAddress,
     } = req.body;
     const user = req.user.id;
@@ -60,7 +60,7 @@ const addOrderItems = asyncHandler(async (req: Request, res: Response) => {
         taxPrice,
         shippingPrice,
         totalPrice,
-        paymentResult: payment,
+        paymentResult,
         paidAt: Date.now(),
       });
 

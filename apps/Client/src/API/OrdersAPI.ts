@@ -1,14 +1,13 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useMutation, useQuery } from "react-query";
 import { queryClient } from "../query";
+import { OrderListItem } from "./interface";
 
-export const useLoadOrders = async (url: any) => {
-  try {
-    const response = await axios.get(url.queryKey[0]);
-    return response.data;
-  } catch (error: any) {
-    throw Error(error.message);
-  }
+export const useLoadOrders = (url: string) => {
+  return useQuery("orders", async () => {
+    const { data }: AxiosResponse<OrderListItem[]> = await axios.get(url);
+    return data;
+  });
 };
 
 export const useOrderDetails = (id: any) => {
@@ -21,21 +20,6 @@ export const useOrderDetails = (id: any) => {
     {
       onError: (err: any) => {
         throw Error(err.message);
-      },
-    }
-  );
-};
-
-export const useOrderDelivered = () => {
-  return useMutation(
-    "OrderDelivered",
-    async (id: string) => {
-      const response = await axios.put(`/api/orders/order/${id}`);
-      return response.data;
-    },
-    {
-      onSuccess: (data, id) => {
-        queryClient.invalidateQueries([`orderDetails/${id}`]);
       },
     }
   );
