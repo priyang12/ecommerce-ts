@@ -13,7 +13,6 @@ export default async function (req, res, next) {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    console.log(decoded.id);
     const UserModal = await User.findById(decoded.id).select("-password -__v");
     req.user = decoded;
     req.userModal = UserModal;

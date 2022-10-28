@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-
+import { subMonths } from "date-fns";
 import User from "../modals/User";
 import Order from "../modals/Order";
 import Product from "../modals/Product";
@@ -72,13 +72,13 @@ const addOrderItems = asyncHandler(async (req: Request, res: Response) => {
 
       const createdOrder = await order.save();
 
-      ag.schedule(new Date(Date.now() + 1000), "place order", {
-        order: createdOrder,
-        email: req.userModal.email,
-      });
-      ag.schedule(new Date(Date.now() + 1000), "update product", {
-        order: order,
-      });
+      // ag.schedule(new Date(Date.now() + 1000), "place order", {
+      //   order: createdOrder,
+      //   email: req.userModal.email,
+      // });
+      // ag.schedule(new Date(Date.now() + 1000), "update product", {
+      //   order: order,
+      // });
 
       res.status(201);
       res.json({
@@ -132,7 +132,7 @@ const getOrder = asyncHandler(async (req: Request, res: Response) => {
 
 const getUserOrders = asyncHandler(async (req: Request, res: Response) => {
   const order = await Order.find({ user: req.user.id })
-    .select("paymentMethod totalPrice isDelivered")
+    .select("paymentMethod totalPrice isDelivered createdAt")
     .lean();
 
   if (order) {
@@ -145,19 +145,76 @@ const getUserOrders = asyncHandler(async (req: Request, res: Response) => {
 
 /**
  * @desc    Get All orders
- * @route   GET /api/orders
+ * @route   GET /api/admin/orders
  * @access  Admin
  * @param   {object} res
  */
 
 const getAllOrders = asyncHandler(async (req: Request, res: Response) => {
+  let sort = "-createdAt";
+  if (req.query.sort && typeof req.query.sort === "string") {
+    const sortBy = req.query.sort.split(",").join(" ");
+    sort = sortBy;
+  }
   const order = await Order.find({})
-    .select("paymentMethod totalPrice isDelivered ")
+    .select(
+      req.params.select || "paymentMethod totalPrice isDelivered createdAt"
+    )
+    .sort(sort)
     .populate("user", ["name", "email"])
     .lean();
   const orderCount = await Order.countDocuments();
   res.set("x-total-count", orderCount.toString());
+  if (order) {
+    res.json(order);
+  } else {
+    res.status(404);
+    throw new Error("Orders not found");
+  }
+});
 
+/**
+ * @desc    Get All orders of last month
+ * @route   GET /api/admin/orders/lastMonth
+ * @access  Admin
+ * @param   {object} res
+ */
+
+const getLastMonth = asyncHandler(async (req: Request, res: Response) => {
+  const CurrentDay = new Date();
+  const LastMonth = subMonths(CurrentDay, 1);
+
+  // const order = await Order.aggregate([
+  //   {
+  //     $project: {
+  //       totalPrice: 1,
+  //       isDelivered: "$isDelivered",
+  //       createdAt: "$createdAt",
+  //       year: { $year: "$createdAt" },
+  //       month: { $month: "$createdAt" },
+  //     },
+  //   },
+  //   {
+  //     $match: {
+  //       month: LastMonth.getMonth() + 1,
+  //       year: LastMonth.getFullYear(),
+  //     },
+  //   },
+  // ]);
+
+  const order = await Order.find({
+    createdAt: {
+      $gte: LastMonth,
+    },
+  })
+    .select(
+      req.params.select || "paymentMethod totalPrice isDelivered createdAt"
+    )
+    .populate("user", ["name", "email"])
+    .lean();
+
+  const orderCount = await Order.countDocuments();
+  res.set("x-total-count", orderCount.toString());
   if (order) {
     res.json(order);
   } else {
@@ -175,14 +232,16 @@ const getAllOrders = asyncHandler(async (req: Request, res: Response) => {
  */
 
 const UpdateOrder = asyncHandler(async (req: Request, res: Response) => {
-  const order = await Order.findById(req.params.id);
+  const order = await Order.findOneAndUpdate(
+    { _id: req.params.id },
+    { $set: req.body },
+    { new: true }
+  );
+
   if (!order) {
     res.status(404);
     throw new Error("Order not found");
   }
-  const Del = req.body.isDelivered;
-  order.isDelivered = Del;
-  order.save();
   res.json({
     msg: "Order is Delivered",
   });
@@ -236,6 +295,7 @@ export {
   addOrderItems,
   getUserOrders,
   getOrder,
+  getLastMonth,
   getAllOrders,
   UpdateOrder,
   DeleteOrder,

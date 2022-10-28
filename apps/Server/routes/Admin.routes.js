@@ -23,6 +23,7 @@ import {
   DeleteMany,
   DeleteOrder,
   getAllOrders,
+  getLastMonth,
   getOrder,
   UpdateOrder,
 } from "../controllers/OrderController";
@@ -57,6 +58,7 @@ router
   .delete(Admin, deleteProduct);
 
 router.route("/orders").get(Admin, getAllOrders).delete(Admin, DeleteMany);
+router.route("/orders/lastMonth").get(Admin, getLastMonth);
 router
   .route("/orders/:id")
   .get(Admin, getOrder)

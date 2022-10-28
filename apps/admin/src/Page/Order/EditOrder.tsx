@@ -1,5 +1,7 @@
 import {
   BooleanInput,
+  DateField,
+  DateInput,
   Edit,
   NumberInput,
   SimpleForm,
@@ -26,6 +28,7 @@ const EditOrder = () => (
         <TextInput source="user.name" />
         <TextInput source="paymentMethod" />
         <TextInput source="id" />
+        <DateInput source="createdAt" />
       </SimpleForm>
     </Edit>
   </>
