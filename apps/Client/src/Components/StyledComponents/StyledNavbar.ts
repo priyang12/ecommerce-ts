@@ -87,7 +87,7 @@ export const DropDown = styled.div`
 
 export const StyledDropDownButton = styled.button`
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   margin: 0rem 0.5rem;
   background-color: transparent;
   color: var(--bg-contrast-color);

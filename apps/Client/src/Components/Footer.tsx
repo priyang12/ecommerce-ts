@@ -9,7 +9,8 @@ import {
 import { FaMapMarker, FaPhone, FaEnvelope } from "react-icons/fa";
 const Footer = () => {
   const location = useLocation();
-  const isAuth = location.pathname === "/Auth";
+  const isAuth =
+    location.pathname == "/Auth/login" || location.pathname == "/Auth/register";
   const isPlaceOrder = location.pathname === "/PlaceOrder";
   const isPaypal = location.pathname === "/PayPal";
   if (isAuth || isPlaceOrder || isPaypal) return null;

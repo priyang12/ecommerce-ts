@@ -63,7 +63,7 @@ function App() {
         <Route path="*" element={<PrivateRoute />} />
         <Route element={<NotFound />} />
       </Routes>
-      {/* <Footer /> */}
+      <Footer />
     </BrowserRouter>
   );
 }
