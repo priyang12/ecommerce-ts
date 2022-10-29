@@ -3,7 +3,6 @@ import { subMonths } from "date-fns";
 import User from "../modals/User";
 import Order from "../modals/Order";
 import Product from "../modals/Product";
-
 import sgMail from "@sendgrid/mail";
 import dotenv from "dotenv";
 import agenda from "../config/agenda";
@@ -72,13 +71,13 @@ const addOrderItems = asyncHandler(async (req: Request, res: Response) => {
 
       const createdOrder = await order.save();
 
-      // ag.schedule(new Date(Date.now() + 1000), "place order", {
-      //   order: createdOrder,
-      //   email: req.userModal.email,
-      // });
-      // ag.schedule(new Date(Date.now() + 1000), "update product", {
-      //   order: order,
-      // });
+      ag.schedule(new Date(Date.now() + 1000), "place order", {
+        order: createdOrder,
+        email: req.userModal.email,
+      });
+      ag.schedule(new Date(Date.now() + 1000), "update product", {
+        order: order,
+      });
 
       res.status(201);
       res.json({

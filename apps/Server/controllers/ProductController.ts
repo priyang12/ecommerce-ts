@@ -163,8 +163,6 @@ const AddProduct = asyncHandler(async (req: Request, res: Response) => {
     image: Image || `${EndPoint}/sample_a81IvE0ug.webp`,
   });
 
-  console.log(product);
-
   if (!product) {
     res.status(400).json({ msg: "Product not added" });
   }
@@ -228,48 +226,6 @@ const deleteProduct = asyncHandler(
 );
 
 /**
- * @desc    Add Review
- * @route   POST /api/products/review
- * @access  Private
- * @param   {object} req.body {rating, comment}
- */
-
-const AddReview = asyncHandler(async (req: Request, res: Response) => {
-  const { name, rating, comment, order_id } = req.body;
-  const order = await Orders.findById(order_id).select("_id");
-  const product = await Products.findById(req.params.id);
-
-  if (!order || !product) {
-    res.status(404);
-    throw new Error("Product not Found or not Ordered Error");
-  } else {
-    const alreadyReviewed = product.reviews.find(
-      // @ts-ignore
-      (r) => r.user?.toString() === req.user.id.toString()
-    );
-    if (alreadyReviewed) {
-      res.status(404);
-      throw new Error("Already Reviewed");
-    } else {
-      const review: any = {
-        name: name,
-        rating: Number(rating),
-        comment,
-        user: req.user.id,
-      };
-      product.reviews.unshift(review);
-      product.numReviews = product.reviews.length;
-      product.rating =
-        // @ts-ignore
-        product.reviews.reduce((acc, item) => item.rating + acc, 0) /
-        product.reviews.length;
-      await product.save();
-      res.status(201).json({ mag: "Review Added" });
-    }
-  }
-});
-
-/**
  * @desc    Get AdminProducts
  * @route   Get /api/admin/products
  * @access  Public
@@ -314,7 +270,6 @@ export {
   GetProductByID,
   UpdateProduct,
   AddProduct,
-  AddReview,
   deleteProduct,
   AdminProducts,
   GetTopProducts,

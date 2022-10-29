@@ -3,6 +3,7 @@ import Product from "../modals/Product";
 import Order from "../modals/Order";
 import Cart from "../modals/Cart";
 import Wishlist from "../modals/Wishlist";
+import Review from "../modals/Review";
 
 const models = {
   User,
@@ -10,6 +11,7 @@ const models = {
   Order,
   Cart,
   Wishlist,
+  Review,
 };
 
 // explicitly create each collection

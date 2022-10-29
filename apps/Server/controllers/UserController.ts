@@ -306,7 +306,6 @@ const ChangeRole = asyncHandler(async (req: Request, res: Response) => {
     res.status(403);
     throw new Error("Forbidden");
   }
-  console.log(req.user);
 
   const UserUpdate = await User.findByIdAndUpdate(req.user.id, {
     $set: {

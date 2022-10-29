@@ -5,7 +5,6 @@ import {
   GetAllProducts,
   GetProductByID,
   AddProduct,
-  AddReview,
   UpdateProduct,
   deleteProduct,
   GetTopProducts,
@@ -39,7 +38,5 @@ router
   .get(GetProductByID)
   .put(Admin, upload.single("imageFile"), UpdateProduct)
   .delete(Admin, deleteProduct);
-
-router.route("/review/:id").post(Auth, AddReview);
 
 export default router;

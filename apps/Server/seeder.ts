@@ -11,13 +11,14 @@ connectDB();
 
 const importData = async () => {
   try {
-    const { User, Product, Order, Cart, Wishlist } = models;
+    const { User, Product, Order, Cart, Wishlist, Review } = models;
 
     await User.deleteMany();
     await Product.deleteMany();
     await Order.deleteMany();
     await Cart.deleteMany();
     await Wishlist.deleteMany();
+    await Review.deleteMany();
 
     CreateModels();
 

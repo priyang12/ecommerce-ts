@@ -28,6 +28,13 @@ import {
   UpdateOrder,
 } from "../controllers/OrderController";
 
+import {
+  GetReviews,
+  ChangeApproversReview,
+  DeleteAnyReview,
+  DeleteManyReviews,
+} from "../controllers/ReviewController";
+
 const upload = multer({
   fileFilter: function (req, file, cb) {
     checkFileType(file, cb);

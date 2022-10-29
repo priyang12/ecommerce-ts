@@ -1,20 +1,6 @@
 import mongoose from "mongoose";
 import type { Model, InferSchemaType } from "mongoose";
-
-const reviewSchema = new mongoose.Schema(
-  {
-    rating: { type: Number, required: true },
-    comment: { type: String, required: true },
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "User",
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
+import ReviewModel from "./Review";
 
 const ProductSchema = new mongoose.Schema(
   {
@@ -38,8 +24,6 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    reviews: [reviewSchema],
-
     rating: {
       type: Number,
       required: true,

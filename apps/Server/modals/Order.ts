@@ -20,6 +20,10 @@ const OrderSchema = new mongoose.Schema(
           image: { type: String, required: true },
           price: { type: Number, required: true },
         },
+        Reviewed: {
+          type: Boolean,
+          default: false,
+        },
         qty: { type: Number, required: true },
       },
     ],

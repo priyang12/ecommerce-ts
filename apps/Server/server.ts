@@ -12,6 +12,7 @@ import AdminRoute from "./routes/Admin.routes";
 import ProductsRoute from "./routes/Products.routes";
 import CartRoute from "./routes/Cart.routes";
 import OrderRoute from "./routes/Order.routes";
+import ReviewsRoute from "./routes/Review.routes";
 import WishListRoute from "./routes/WishList.routes";
 import UploadRoute from "./routes/Upload.routes";
 
@@ -46,6 +47,7 @@ app.use("/api/products", ProductsRoute);
 app.use("/api/cart", CartRoute);
 app.use("/api/orders", OrderRoute);
 app.use("/api/wishlist", WishListRoute);
+app.use("/api/reviews", ReviewsRoute);
 app.use("/api/PhotoUpload", UploadRoute);
 
 app.get("/api/config/paypal", (req, res) => {
