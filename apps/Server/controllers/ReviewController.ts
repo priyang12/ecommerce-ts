@@ -3,6 +3,7 @@ import Order from "../modals/Order";
 import Product from "../modals/Product";
 import Review, { IReview } from "../modals/Review";
 import type { Request, Response } from "express";
+import { runInTransaction } from "../utils/Transactions";
 
 /**
  * @desc    Fetch All Product Reviews
@@ -150,7 +151,6 @@ export const DeleteReview = asyncHandler(
  * @desc    Get All Reviews
  * @route   Post /api/review
  * @access  admin
- * @param   {string} req.params.id
  * @param   {object} req
  * @param   {object} res
  * @returns {Array<IReview>} IReview[] - Order Products Reviews Array
@@ -158,18 +158,43 @@ export const DeleteReview = asyncHandler(
 
 export const GetReviews = asyncHandler(async (req: Request, res: Response) => {
   const ReviewSort = req.query.sort || "-createdAt";
-  const Reviews = await Review.find({}).sort(ReviewSort as string);
+  const Filter = req.query.filter ? JSON.parse(req.query.filter as string) : {};
+
+  const Reviews = await Review.find(Filter).sort(ReviewSort as string);
   if (!Reviews) {
     res.status(404);
     throw Error("Server Error Could not Found Reviews");
   }
+  const reviewCount = await Review.countDocuments();
+  res.set("x-total-count", reviewCount.toString());
   res.status(201);
   res.json(Reviews);
 });
 
 /**
+ * @desc    Get Id Review
+ * @route   GET /api/review/:id
+ * @access  admin
+ * @param   {object} req
+ * @param   {object} res
+ * @returns {IReview} IReview[] - Order Products Reviews Array
+ */
+
+export const GetReviewById = asyncHandler(
+  async (req: Request, res: Response) => {
+    const Reviews = await Review.findById(req.params.id);
+    if (!Reviews) {
+      res.status(404);
+      throw Error("Server Error Could not Found Reviews");
+    }
+    res.status(201);
+    res.json(Reviews);
+  }
+);
+
+/**
  * @desc    Change Approval of the Reviews
- * @route   patch api/review/:id
+ * @route   PUT api/review/:id
  * @access  admin
  * @param   {string} req.params.id
  * @param   {object} req
@@ -179,25 +204,55 @@ export const GetReviews = asyncHandler(async (req: Request, res: Response) => {
 
 export const ChangeApproversReview = asyncHandler(
   async (req: Request, res: Response) => {
-    const ApprovedReview = await Review.findOneAndUpdate(
-      {
-        _id: req.params.id,
-      },
-      {
-        approved: req.body.approved,
-      },
-      {
-        new: true,
-      }
-    );
-    if (!ApprovedReview) {
-      res.status(401);
-      throw Error("Fail to Approve the Review Server Error");
-    }
+    await runInTransaction(async (session) => {
+      const ApprovedReview = await Review.findOneAndUpdate(
+        {
+          _id: req.params.id,
+        },
+        {
+          approved: req.body.approved,
+          rating: req.body.rating,
+        },
+        {
+          new: true,
+        }
+      ).session(session);
 
-    res.status(201);
-    res.json({
-      msg: "Review has been approved",
+      if (!ApprovedReview) {
+        res.status(401);
+        throw Error("Fail to Approve the Review Server Error");
+      }
+
+      const [product] = await Promise.all([
+        await Product.findById(ApprovedReview.product).session(session),
+      ]);
+
+      if (!product) {
+        res.status(401);
+        throw Error("Fail to Approve the Review Server Error");
+      }
+
+      const TotalRating =
+        (product.rating + (ApprovedReview.rating as number)) /
+        product.numReviews;
+
+      await Product.findByIdAndUpdate(
+        {
+          _id: ApprovedReview.id,
+        },
+        {
+          rating: TotalRating,
+          numReviews: product.numReviews + 1,
+        },
+        {
+          new: true,
+        }
+      );
+
+      res.status(201);
+      res.json({
+        msg: "Review has been approved",
+      });
     });
   }
 );

@@ -155,13 +155,19 @@ const getAllOrders = asyncHandler(async (req: Request, res: Response) => {
     const sortBy = req.query.sort.split(",").join(" ");
     sort = sortBy;
   }
+  const pageSize = JSON.parse(req.query.perPage as string);
+  const page = JSON.parse(req.query.page as string);
+
   const order = await Order.find({})
     .select(
       req.params.select || "paymentMethod totalPrice isDelivered createdAt"
     )
+    .limit(pageSize)
+    .skip(pageSize * (page - 1))
     .sort(sort)
     .populate("user", ["name", "email"])
     .lean();
+
   const orderCount = await Order.countDocuments();
   res.set("x-total-count", orderCount.toString());
   if (order) {
@@ -182,24 +188,6 @@ const getAllOrders = asyncHandler(async (req: Request, res: Response) => {
 const getLastMonth = asyncHandler(async (req: Request, res: Response) => {
   const CurrentDay = new Date();
   const LastMonth = subMonths(CurrentDay, 1);
-
-  // const order = await Order.aggregate([
-  //   {
-  //     $project: {
-  //       totalPrice: 1,
-  //       isDelivered: "$isDelivered",
-  //       createdAt: "$createdAt",
-  //       year: { $year: "$createdAt" },
-  //       month: { $month: "$createdAt" },
-  //     },
-  //   },
-  //   {
-  //     $match: {
-  //       month: LastMonth.getMonth() + 1,
-  //       year: LastMonth.getFullYear(),
-  //     },
-  //   },
-  // ]);
 
   const order = await Order.find({
     createdAt: {

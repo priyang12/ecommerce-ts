@@ -1,12 +1,13 @@
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import { Box } from "@mui/material";
 import { Loading, Title, useGetList } from "react-admin";
-import { Link } from "react-router-dom";
 import HelmetComponent from "../../HelmetComponent";
+import LatestOrder from "./LatestOrder";
+import Typography from "@mui/material/Typography";
 import Chart from "./Chart";
+import LatestReview from "./LatestReview";
+import { Suspense } from "react";
 
 const Dashboard = () => {
   const { data, total, isLoading, error } = useGetList("orders", {
@@ -14,13 +15,14 @@ const Dashboard = () => {
       page: 1,
       perPage: 10,
     },
+
     sort: {
       field: "createdAt",
       order: "-1",
     },
   });
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading loadingPrimary="Loading Latest Orders" />;
 
   if (error) return <p>ERROR</p>;
 
@@ -49,27 +51,41 @@ const Dashboard = () => {
           <h1>Welcome to Admin to shopit for managing your Shop</h1>
         </CardContent>
       </Card>
+
       <Chart />
-      <h1>Recent Orders {total}</h1>
-      <List>
-        {data?.map((record) => (
-          <ListItem
-            component={Link}
-            to={`/orders/${record._id}`}
-            key={record.id}
-            style={{
+
+      <Box
+        sx={{
+          display: "flex",
+          gap: "1rem",
+        }}
+      >
+        <div>
+          <Box
+            sx={{
               display: "flex",
-              width: "100%",
-              justifyContent: "space-around",
+              gap: "1rem",
             }}
           >
-            <div>{record.user.name}</div>
-            <div>{record.user.email}</div>
-            <div>{record.totalPrice}</div>
-            <div>{record.isDelivered ? "Delivered" : "Not Delivered"}</div>
-          </ListItem>
-        ))}
-      </List>
+            <Card
+              sx={{
+                p: "1rem 2rem",
+              }}
+            >
+              <Typography component="h2">Total Orders {total}</Typography>
+            </Card>
+            <Card
+              sx={{
+                p: "1rem 2rem",
+              }}
+            >
+              <Typography component="h2">Total Orders {total}</Typography>
+            </Card>
+          </Box>
+          <LatestOrder data={data} />
+        </div>
+        <LatestReview />
+      </Box>
     </Box>
   );
 };

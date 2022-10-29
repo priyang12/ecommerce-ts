@@ -16,6 +16,7 @@ import ProductList from "./Page/Product/ProductList";
 import CreateProduct from "./Page/Product/CreateProduct";
 import OrderList from "./Page/Order/OrderList";
 import EditOrder from "./Page/Order/EditOrder";
+import ReviewList from "./Page/Reviews/ReviewList";
 import Dashboard from "./Page/Dashboard";
 import { darkTheme, Theme } from "./Theme";
 import { MyLoginPage } from "./Page/LoginPage";
@@ -55,6 +56,7 @@ function App() {
           create={CreateProduct}
         />
         <Resource name="orders" list={OrderList} edit={EditOrder} />
+        <Resource name="reviews" list={ReviewList} />
       </Admin>
     </>
   );

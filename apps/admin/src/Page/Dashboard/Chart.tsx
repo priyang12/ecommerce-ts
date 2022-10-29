@@ -1,3 +1,4 @@
+import axios, { AxiosResponse } from "axios";
 import { addDays, format, subDays } from "date-fns";
 import { Card, CardHeader, CardContent } from "@mui/material";
 import { Loading, useTranslate } from "react-admin";
@@ -11,7 +12,6 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
-import axios, { AxiosResponse } from "axios";
 
 const lastDay = new Date();
 const lastMonthDays = Array.from({ length: 30 }, (_, i) => subDays(lastDay, i));
@@ -40,6 +40,14 @@ const getRevenuePerDay = (orders: any): any[] => {
     total: daysWithRevenue[format(new Date(date), "yyyy-MM-dd")] || 0,
   }));
 };
+
+const TotalRevenue = (order: any[]) => {
+  return order.reduce(
+    (previousValue, currentValue) => previousValue + currentValue.totalPrice,
+    0
+  );
+};
+
 function Chart() {
   const { data: orders, isLoading: OrderLoading } = useQuery(
     "LastMonth",
@@ -56,30 +64,26 @@ function Chart() {
     }
   );
 
-  const translate = useTranslate();
-
-  if (OrderLoading)
-    return (
-      <Loading
-        loadingPrimary="app.page.loading"
-        loadingSecondary="app.message.loading"
-      />
-    );
+  if (OrderLoading) return <Loading loadingPrimary="Loading Cart" />;
 
   if (!orders) return null;
 
   return (
-    <div>
-      <Card>
-        <CardHeader title={translate("30 day Revenue")} />
+    <>
+      <Card
+        sx={{
+          m: "1rem 0",
+        }}
+      >
+        <CardHeader title={`30 day Revenue = $${TotalRevenue(orders)}`} />
         <CardContent>
           <div style={{ width: "100%", height: 300 }}>
             <ResponsiveContainer>
               <AreaChart data={getRevenuePerDay(orders)}>
                 <defs>
                   <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                    <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#ff8f00" stopOpacity={0.8} />
+                    <stop offset="95%" stopColor="#ff8f00" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <XAxis
@@ -108,7 +112,7 @@ function Chart() {
                 <Area
                   type="monotone"
                   dataKey="total"
-                  stroke="#8884d8"
+                  stroke="#ff4000"
                   strokeWidth={2}
                   fill="url(#colorUv)"
                 />
@@ -117,7 +121,7 @@ function Chart() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </>
   );
 }
 

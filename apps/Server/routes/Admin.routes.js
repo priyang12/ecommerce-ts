@@ -33,6 +33,7 @@ import {
   ChangeApproversReview,
   DeleteAnyReview,
   DeleteManyReviews,
+  GetReviewById,
 } from "../controllers/ReviewController";
 
 const upload = multer({
@@ -71,5 +72,16 @@ router
   .get(Admin, getOrder)
   .put(Admin, UpdateOrder)
   .delete(Admin, DeleteOrder);
+
+router
+  .route("/reviews")
+  .get(Admin, GetReviews)
+  .delete(Admin, DeleteManyReviews);
+
+router
+  .route("/reviews/:id")
+  .get(GetReviewById)
+  .put(ChangeApproversReview)
+  .delete(DeleteAnyReview);
 
 export default router;

@@ -21,9 +21,12 @@ export const dataProvider = {
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
     const sort = order === "1" ? `${field}` : `-${field}`;
-    const range = [(page - 1) * perPage, page * perPage - 1];
-    const filter = Object.keys(params.filter).length !== 0 ? params.filter : "";
-    const url = `${apiUrl}/${resource}?sort=${sort}&page=${page}&range=${range}&filter=${filter}`;
+    const filter =
+      Object.keys(params.filter).length !== 0
+        ? JSON.stringify(params.filter)
+        : "";
+
+    const url = `${apiUrl}/${resource}?sort=${sort}&page=${page}&perPage=${perPage}&filter=${filter}`;
     return httpClient(url).then(({ headers, json }) => ({
       data: json.map((resource: { _id: string }) => ({
         ...resource,

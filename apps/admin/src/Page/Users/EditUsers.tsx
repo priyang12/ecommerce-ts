@@ -7,6 +7,7 @@ import {
   SimpleFormIterator,
   NumberInput,
   DateInput,
+  ReferenceManyField,
 } from "react-admin";
 import { Box } from "@mui/material";
 import HelmetComponent from "../../HelmetComponent";
@@ -51,7 +52,16 @@ const EditUsers = () => {
             >
               <ArrayInput source="cart">
                 <SimpleFormIterator>
-                  <TextInput source="product" />
+                  <ReferenceManyField
+                    label="Books"
+                    reference="books"
+                    target="author_id"
+                  >
+                    {/* <Datagrid>
+                      <TextField source="title" />
+                      <TextField source="year" />
+                    </Datagrid> */}
+                  </ReferenceManyField>
 
                   <NumberInput source="qty" />
                 </SimpleFormIterator>
