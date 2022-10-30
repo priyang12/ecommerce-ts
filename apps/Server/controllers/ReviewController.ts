@@ -88,7 +88,7 @@ export const PostReview = asyncHandler(async (req: Request, res: Response) => {
     }),
   ]);
 
-  const IsProduct = CheckOrder?.orderItems.find(
+  const IsProduct = CheckOrder?.orderItems.findIndex(
     (item: any) => item.product._id.toString() === ProductId
   );
 
@@ -108,6 +108,8 @@ export const PostReview = asyncHandler(async (req: Request, res: Response) => {
     ...req.body,
   });
 
+  CheckOrder.orderItems[IsProduct].Reviewed = true;
+  CheckOrder.save();
   if (!MakeReview) {
     res.status(401);
     throw Error("Server Error Creating Review");

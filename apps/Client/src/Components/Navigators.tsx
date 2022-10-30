@@ -11,7 +11,7 @@ const Navigators = () => {
         <Link to="/address">Address</Link>
       </li>
       <li className={pathname === "/paymentMethod" ? "Link-border" : ""}>
-        <Link to="/payment">Payment</Link>
+        <Link to="/paymentMethod">Payment</Link>
       </li>
       <li className={pathname === "/PlaceOrder" ? "Link-border" : ""}>
         <Link to="/PlaceOrder">Place Order</Link>

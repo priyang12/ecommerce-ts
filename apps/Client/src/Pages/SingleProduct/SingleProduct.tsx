@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { toast } from "react-toastify";
 import Reviews from "./Reviews";
 import Rating from "../../Components/Rating";
 import Quantity from "../../Components/Quantity";
@@ -53,7 +52,7 @@ const SingleProduct = () => {
   if (ProductError) return <div className="Error">{ProductError.message}</div>;
 
   return (
-    <div>
+    <>
       <Helmet>
         <title>{Product?.name}</title>
         <meta name="description" content={Product?.description} />
@@ -148,8 +147,8 @@ const SingleProduct = () => {
           </StyledProduct>
         </StyledContainer>
       )}
-      {Product?.reviews && <Reviews reviews={Product.reviews} />}
-    </div>
+      {id && <Reviews id={id as string} />}
+    </>
   );
 };
 

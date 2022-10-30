@@ -12,7 +12,7 @@ function LoadingButton({
   ...props
 }: LoadingButtonProps & React.ComponentPropsWithoutRef<"button">) {
   return (
-    <button {...props}>
+    <button disabled={isLoading} {...props}>
       {isLoading ? (loadingText ? loadingText : "Loading...") : children}
     </button>
   );

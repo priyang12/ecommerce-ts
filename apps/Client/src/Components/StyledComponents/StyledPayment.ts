@@ -5,10 +5,6 @@ export const StyledPaymentContainer = styled.section`
   width: 100%;
   max-width: ${(props) => props.theme.maxWidth || "60ch"};
   margin: 2em auto;
-  .btn {
-    margin-top: 2rem;
-    width: 100%;
-  }
   @media (max-width: 576px) {
     max-width: 35ch;
   }

@@ -43,3 +43,7 @@ export const ReviewItem = styled.li`
     color: $AssetColor;
   }
 `;
+
+export const NoReview = styled.h2`
+  font-size: 5rem;
+`;

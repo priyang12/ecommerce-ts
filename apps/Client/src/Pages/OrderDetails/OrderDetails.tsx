@@ -1,9 +1,10 @@
+import * as React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useOrderDetails } from "../../API/OrdersAPI";
-import { CartItem } from "../PlaceOrder/ProductList";
 import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
 import Spinner from "../../Components/Spinner";
 import {
+  ReviewButton,
   StyledDelivery,
   StyledImageContainer,
   StyledListItems,
@@ -12,6 +13,7 @@ import {
   StyledOrderList,
 } from "./StyledOrderDeatails";
 import { Helmet } from "react-helmet-async";
+import ReviewModel from "./ReviewModel";
 
 const OrderDetails = () => {
   const Navigate = useNavigate();
@@ -89,28 +91,52 @@ const OrderDetails = () => {
         <StyledOrderItems>
           <h3>ORDER ITEMS</h3>
           <StyledOrderList>
-            {OrderDetails.orderItems.map((orderItems: CartItem) => (
-              <StyledListItems
+            {OrderDetails.orderItems.map((orderItems: any) => (
+              <div
                 key={orderItems._id}
-                tabIndex={0}
-                onKeyDown={(e) => EnterProduct(e, orderItems.product._id)}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1rem",
+                }}
               >
-                <Link to={`/product/${orderItems.product._id}`} tabIndex={-1}>
-                  <StyledImageContainer>
-                    <img
-                      src={`${orderItems.product.image}`}
-                      alt={orderItems.product.name}
-                    />
-                  </StyledImageContainer>
-                </Link>
-                <Link to={`/product/${orderItems.product._id}`} tabIndex={-1}>
-                  {orderItems.product.name}
-                </Link>
-                <p>
-                  {orderItems.qty} x ${orderItems.product.price} = $
-                  {Math.round(orderItems.qty * orderItems.product.price)}
-                </p>
-              </StyledListItems>
+                <StyledListItems
+                  key={orderItems._id}
+                  tabIndex={0}
+                  onKeyDown={(e) => EnterProduct(e, orderItems.product._id)}
+                >
+                  <Link to={`/product/${orderItems.product._id}`} tabIndex={-1}>
+                    <StyledImageContainer>
+                      <img
+                        src={`${orderItems.product.image}`}
+                        alt={orderItems.product.name}
+                      />
+                    </StyledImageContainer>
+                  </Link>
+                  <Link to={`/product/${orderItems.product._id}`} tabIndex={-1}>
+                    {orderItems.product.name}
+                  </Link>
+                  <p>
+                    {orderItems.qty} x ${orderItems.product.price} = $
+                    {Math.round(orderItems.qty * orderItems.product.price)}
+                  </p>
+                </StyledListItems>
+                {OrderDetails.isDelivered && !orderItems.Reviewed ? (
+                  <ReviewModel
+                    ProductID={orderItems.product._id}
+                    OrderID={id as string}
+                  />
+                ) : (
+                  <ReviewButton
+                    className="success"
+                    style={{
+                      width: "auto",
+                    }}
+                  >
+                    Review Submitted
+                  </ReviewButton>
+                )}
+              </div>
             ))}
           </StyledOrderList>
         </StyledOrderItems>

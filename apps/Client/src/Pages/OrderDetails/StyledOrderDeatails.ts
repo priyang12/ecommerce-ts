@@ -83,6 +83,7 @@ export const StyledOrderDetails = styled.div`
   background-color: var(--assertive-color);
   padding: 1em;
   border-radius: 5px;
+  margin: 1em 0;
   h3 {
     margin: 1em 0;
   }
@@ -110,4 +111,18 @@ export const StyledDelivery = styled.p`
   border-radius: var(--border-radius);
   color: ${(props) => props.theme.color};
   background-color: ${(props) => props.theme.backgroundColor};
+`;
+
+export const IconButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+`;
+
+export const ReviewButton = styled.button`
+  margin: 0;
+  border: 2px solid var(--bg-contrast-color);
+  border-radius: var(--border-radius);
+  height: 5rem;
 `;

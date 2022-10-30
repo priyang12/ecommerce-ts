@@ -78,11 +78,6 @@ form input[type="submit"] {
 .display {
   font-size: 2.5rem;
 }
-@media screen and (max-width: 576px) {
-  .display {
-    text-align: center;
-  }
-}
 .btn {
   background-color: var(--primary-color);
   color: var(--bg-color);
@@ -96,6 +91,14 @@ form input[type="submit"] {
   font-weight: 600;
   border-radius: var(--border-radius);
   text-transform: capitalize;
+}
+@media screen and (max-width: 576px) {
+  .display {
+    text-align: center;
+  }
+  .btn {
+    width: auto;
+  }
 }
 
 .btn:hover {
