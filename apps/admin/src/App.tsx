@@ -20,6 +20,7 @@ import ReviewList from "./Page/Reviews/ReviewList";
 import Dashboard from "./Page/Dashboard";
 import { darkTheme, Theme } from "./Theme";
 import { MyLoginPage } from "./Page/LoginPage";
+import { Icons } from "./Icons";
 
 const MyAppBar = (props: any) => (
   <AppBar {...props}>
@@ -48,15 +49,22 @@ function App() {
           list={UserList}
           edit={EditUsers}
           create={CreateUser}
+          icon={Icons["Users"]}
         />
         <Resource
           name="product"
           list={ProductList}
           edit={EditProduct}
           create={CreateProduct}
+          icon={Icons["Product"]}
         />
-        <Resource name="orders" list={OrderList} edit={EditOrder} />
-        <Resource name="reviews" list={ReviewList} />
+        <Resource
+          name="orders"
+          list={OrderList}
+          edit={EditOrder}
+          icon={Icons["Orders"]}
+        />
+        <Resource name="reviews" list={ReviewList} icon={Icons["Review"]} />
       </Admin>
     </>
   );

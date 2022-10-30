@@ -24,7 +24,7 @@ const OrderList = () => (
         <NumberField source="totalPrice" />
         <BooleanField source="isDelivered" />
         <DateField source="createdAt" />
-        <ReferenceField source="user._id" reference="admin/users">
+        <ReferenceField source="user._id" reference="users">
           <TextField source="name" />
         </ReferenceField>
         <TextField source="paymentMethod" />
