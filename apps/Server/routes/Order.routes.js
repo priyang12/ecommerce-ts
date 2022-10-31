@@ -4,12 +4,8 @@ import {
   addOrderItems,
   getUserOrders,
   getOrder,
-  getAllOrders,
-  UpdateOrder,
-  DeleteOrder,
 } from "../controllers/OrderController";
 import Auth from "../middleware/AuthMiddleware";
-import Admin from "../middleware/AdminMiddleware";
 import ZodMiddleware from "../middleware/ZodMiddleware";
 import { CreateOrder } from "@ecommerce/validation";
 
@@ -19,12 +15,6 @@ router
   .post(Auth, ZodMiddleware(CreateOrder), addOrderItems)
   .get(Auth, getUserOrders);
 
-router
-  .route("/order/:id")
-  .get(Auth, getOrder)
-  .put(Admin, UpdateOrder)
-  .delete(Admin, DeleteOrder);
+router.route("/order/:id").get(Auth, getOrder);
 
-//Admin
-router.route("/all").get(Admin, getAllOrders);
 export default router;

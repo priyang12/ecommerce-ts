@@ -1,62 +1,16 @@
 import asyncHandler from "express-async-handler";
 import dotenv from "dotenv";
+import NodeCache from "node-cache";
 
-dotenv.config();
 //modal
 import Products from "../modals/Product";
-
-import Orders from "../modals/Order";
 import imageKit from "../config/imageKit";
-import myCache from "../utils/cache";
-
 import { runInTransaction } from "../utils/Transactions";
-
 import type { Request, Response } from "express";
+import { GetParams } from "./Utils";
+dotenv.config();
 
-/**
- * @desc    Get All Products
- * @route   Get /api/products/all
- * @access  Public
- * @param   {object} req.query
- * @param   {object} res
- * @returns {object} products
- */
-
-const GetAllDetailsProducts = asyncHandler(
-  async (req: Request, res: Response) => {
-    const pageSize = 9;
-    const page = Number(req.query.page) || 1;
-
-    const keyword = req.query.keyword
-      ? {
-          name: {
-            $regex: req.query.keyword,
-            $options: "i",
-          },
-        }
-      : {};
-    const count = await Products.countDocuments({ ...keyword });
-    let products = myCache.get("products" + keyword + page + count);
-
-    if (!products) {
-      products = await Products.find({ ...keyword })
-        .limit(pageSize)
-        .select("-__v -createdAt")
-        .skip(pageSize * (page - 1))
-        .lean();
-
-      myCache.set("products" + keyword + page + count, products, 3600 / 2);
-
-      res.json({ products, page, pages: Math.ceil(count / pageSize) });
-    } else {
-      res.json({
-        products,
-        page,
-        pages: Math.ceil(count / pageSize),
-      });
-    }
-  }
-);
+const ProductCache = new NodeCache({ stdTTL: 600 });
 
 /**
  * @desc    Get Previous Products
@@ -68,8 +22,11 @@ const GetAllDetailsProducts = asyncHandler(
  */
 
 const GetAllProducts = asyncHandler(async (req: Request, res: Response) => {
-  const pageSize = 9;
-  const page = Number(req.query.page) || 1;
+  const { select, page, filter, perPage, sort } = GetParams(req.query, {
+    page: 1,
+    perPage: 9,
+    filter: {},
+  });
 
   const keyword = req.query.keyword
     ? {
@@ -77,27 +34,34 @@ const GetAllProducts = asyncHandler(async (req: Request, res: Response) => {
           $regex: req.query.keyword,
           $options: "i",
         },
+        ...filter,
       }
-    : {};
+    : filter;
+
   const count = await Products.countDocuments({ ...keyword });
-  let products = myCache.get("products" + keyword + page + count);
+
+  let products = ProductCache.get("products" + keyword + page + count + filter);
+
   res.set("x-total-count", JSON.stringify(count));
   if (!products) {
     products = await Products.find({ ...keyword })
-      .limit(pageSize)
-      .skip(pageSize * (page - 1))
-      .select(
-        "rating numReviews price countInStock _id name brand image category Date"
-      );
+      .sort(sort)
+      .limit(perPage)
+      .skip(perPage * (page - 1))
+      .select(select);
 
-    myCache.set("products" + keyword + page + count, products, 3600 / 2);
+    ProductCache.set(
+      "products" + keyword + page + count + filter,
+      products,
+      3600 / 2
+    );
 
-    res.json({ products, page, pages: Math.ceil(count / pageSize) });
+    res.json({ products, page, pages: Math.ceil(count / perPage) });
   } else {
     res.json({
       products,
       page,
-      pages: Math.ceil(count / pageSize),
+      pages: Math.ceil(count / perPage),
     });
   }
 });
@@ -109,14 +73,14 @@ const GetAllProducts = asyncHandler(async (req: Request, res: Response) => {
  */
 
 const GetTopProducts = asyncHandler(async (req: Request, res: Response) => {
-  let TopProducts = myCache.get("TopProducts");
+  let TopProducts = ProductCache.get("TopProducts");
   if (!TopProducts) {
     TopProducts = await Products.find({})
       .sort({ rating: -1 })
       .limit(5)
       .select("name image description")
       .lean();
-    myCache.set("TopProducts", TopProducts, 3600 / 2);
+    ProductCache.set("TopProducts", TopProducts, 3600 / 2);
     res.json(TopProducts);
   } else {
     res.json(TopProducts);
@@ -200,7 +164,7 @@ const UpdateProduct = asyncHandler(async (req: Request, res: Response) => {
     if (!product) {
       res.status(400).json({ msg: "Product not added" });
     }
-    myCache.del("AdminProducts");
+    ProductCache.flushAll();
     res
       .status(200)
       .json({ msg: `${product.name} is Updated`, UpdatedImage: product.image });
@@ -220,7 +184,7 @@ const deleteProduct = asyncHandler(
     if (!product) {
       return res.status(404).json({ msg: "Product not Found" });
     }
-    myCache.del("AdminProducts");
+    ProductCache.flushAll();
     res.status(200).json({ msg: product.name + " Deleted Successfully" });
   }
 );
@@ -235,37 +199,50 @@ const deleteProduct = asyncHandler(
  */
 
 const AdminProducts = asyncHandler(async (req: Request, res: Response) => {
-  const pageSize = 9;
-  const page = Number(req.query.page) || 1;
+  const { select, page, filter, perPage, sort } = GetParams(req.query, {
+    page: 1,
+    perPage: 10,
+    filter: {},
+  });
+
   const keyword = req.query.keyword
     ? {
         name: {
           $regex: req.query.keyword,
           $options: "i",
         },
+        ...filter,
       }
     : {};
   const count = await Products.countDocuments({ ...keyword });
-  let products = myCache.get("AdminProducts");
+
+  let products = ProductCache.get(
+    "AdminProducts" + keyword + page + count + filter + sort
+  );
 
   res.set("x-total-count", JSON.stringify(count));
+
   if (!products) {
     products = await Products.find({ ...keyword })
-      .limit(pageSize)
-      .skip(pageSize * (page - 1))
-      .select(
-        "rating numReviews price countInStock _id name brand image category Date"
-      );
-    myCache.set("AdminProducts", products, 3600 / 2);
+      .limit(perPage)
+      .skip(perPage * (page - 1))
+      .select(select)
+      .sort(sort);
 
+    ProductCache.set(
+      "AdminProducts" + keyword + page + count + filter + sort,
+      products,
+      3600 / 2
+    );
     res.json(products);
   } else {
+    console.log("Cache");
+
     res.json(products);
   }
 });
 
 export {
-  GetAllDetailsProducts,
   GetAllProducts,
   GetProductByID,
   UpdateProduct,

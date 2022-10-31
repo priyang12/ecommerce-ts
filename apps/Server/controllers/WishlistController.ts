@@ -1,9 +1,11 @@
 import asyncHandler from "express-async-handler";
 import type { Request, Response } from "express";
-// User Modal
-
 import Products from "../modals/Product";
 import Wishlist from "../modals/Wishlist";
+import NodeCache from "node-cache";
+import { GetParams } from "./Utils";
+
+const WishListCache = new NodeCache({ stdTTL: 600 });
 
 /**
  * @desc    Get All Wishlist Products
@@ -14,19 +16,38 @@ import Wishlist from "../modals/Wishlist";
 
 const GetWishlist = asyncHandler(
   async (req: Request, res: Response): Promise<any> => {
-    const list = await Wishlist.findOne({ user: req.user.id })
-      .select("-__v -updatedAt -createdAt")
-      .populate({
-        path: "products",
-        model: "Product",
-        select: "name price _id image countInStock description",
-      })
-      .lean();
-    if (!list) {
-      return res.status(400).json({ msg: "Wishlist is empty" });
-    }
+    const { select, page, perPage, sort } = GetParams(req.query, {
+      select: "-__v -createdAt",
+    });
 
-    res.status(200).json(list);
+    const CacheUserDate = WishListCache.get(
+      `${req.user.id} + ${page} + ${perPage} + ${sort}`
+    );
+
+    if (CacheUserDate) {
+      res.status(200).json(CacheUserDate);
+    } else {
+      const list = await Wishlist.findOne({ user: req.user.id })
+        .select(select)
+        .populate({
+          path: "products",
+          model: "Product",
+          select: "name price _id image countInStock description",
+        })
+        .sort(sort)
+        .limit(perPage)
+        .skip((page - 1) * perPage)
+        .lean();
+
+      if (!list) {
+        return res.status(400).json({ msg: "Wishlist is empty" });
+      }
+      WishListCache.set(
+        `${req.user.id} + ${page} + ${perPage} + ${sort}`,
+        list
+      );
+      res.status(200).json(list);
+    }
   }
 );
 
@@ -62,6 +83,7 @@ const AddToWishlist = asyncHandler(
       const ProjectId = req.params.id as any;
       List.products.push(ProjectId);
       await List.save();
+      WishListCache.flushAll();
       res.status(200).json({
         msg: `${product.name} is Added to wishlist`,
       });
@@ -88,7 +110,7 @@ const DeleteWishlistProduct = asyncHandler(
     if (!List) {
       return res.status(400).json({ msg: "Server Error" });
     }
-
+    WishListCache.flushAll();
     res.status(200).json({ msg: "Product Deleted" });
   }
 );

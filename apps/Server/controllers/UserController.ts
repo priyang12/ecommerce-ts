@@ -9,13 +9,17 @@ import WishList from "../modals/Wishlist";
 import sgMail from "@sendgrid/mail";
 import agenda from "../config/agenda";
 import { runInTransaction } from "../utils/Transactions";
-
+import { GetParams, ParamsRequest } from "./Utils";
 import type { Request, Response } from "express";
+import NodeCache from "node-cache";
 
 dotenv.config();
 
 if (process.env.SENDGRID_API_KEY)
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+const UserCache = new NodeCache({ stdTTL: 600 });
+const AdminUserCache = new NodeCache({ stdTTL: 600 });
 
 const test = asyncHandler(async (req: Request, res: Response) => {
   res.json(req.headers.host);
@@ -96,15 +100,20 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
  */
 
 const getUserProfile = asyncHandler(async (req: Request, res: Response) => {
-  const user = await User.findById(req.user.id)
-    .select("-password -__v -cart")
-    .lean();
-
-  if (user) {
+  const CacheUserDate = UserCache.get(`User + ${req.user.id}`);
+  if (CacheUserDate) {
+    const user = await User.findById(req.user.id)
+      .select("-password -__v -cart")
+      .lean();
+    UserCache.set(`User + ${req.user.id}`, user, 3600 / 2);
+    if (!user) {
+      res.status(404);
+      throw new Error("User not found");
+    }
+    res.status(201);
     res.json(user);
   } else {
-    res.status(404);
-    throw new Error("User not found");
+    res.json(CacheUserDate);
   }
 });
 
@@ -116,7 +125,6 @@ const getUserProfile = asyncHandler(async (req: Request, res: Response) => {
  */
 const resetpassword = asyncHandler(async (req: Request, res: Response) => {
   const { password } = req.body;
-
   await User.updateOne(
     {
       _id: req.user.id,
@@ -127,6 +135,7 @@ const resetpassword = asyncHandler(async (req: Request, res: Response) => {
       },
     }
   );
+  UserCache.flushAll();
   res.json({ message: "Password reset successfully" });
 });
 
@@ -155,7 +164,7 @@ const UpdateProfile = asyncHandler(async (req: Request, res: Response) => {
     res.status(404);
     throw new Error("User not found");
   }
-
+  UserCache.flushAll();
   res.json({ msg: "User updated successfully", user: UserUpdate });
 });
 
@@ -168,6 +177,7 @@ const UpdateProfile = asyncHandler(async (req: Request, res: Response) => {
 const deleteAccount = asyncHandler(async (req: Request, res: Response) => {
   const user = await User.deleteOne({ _id: req.params.id });
   if (user.acknowledged) {
+    UserCache.flushAll();
     res.json({ message: "User removed" });
   } else {
     res.status(404);
@@ -181,21 +191,44 @@ const deleteAccount = asyncHandler(async (req: Request, res: Response) => {
  * @access  Private/Admin
  */
 
-const getUsers = asyncHandler(async (req: Request, res: Response) => {
-  const Select = req.query.select ? req.query.select : "-password -cart -__v";
-  const Page =
-    typeof req.query.page === "string" ? parseInt(req.query.page) : 1;
-  const Limit =
-    typeof req.query.range === "string" ? parseInt(req.query.range) : 10;
+const getUsers = asyncHandler(async (req: ParamsRequest, res: Response) => {
+  const { select, page, filter, sort, perPage } = GetParams(req.query, {
+    select: " -cart -__v",
+    page: 1,
+    perPage: 10,
+  });
 
-  const users = await User.find({})
-    .select(Select)
-    .skip((Page - 1) * Limit)
-    .limit(Limit)
-    .lean();
   const count = await User.countDocuments();
   res.set("x-total-count", JSON.stringify(count));
-  res.json(users);
+
+  const CacheUserDate = AdminUserCache.get(
+    `Users + ${page} + ${perPage} + ${filter} + ${sort} + ${count}`
+  );
+
+  if (!CacheUserDate) {
+    const RemovePassword =
+      typeof select === "string"
+        ? select?.concat(" -password")
+        : select?.filter((item) => item !== "password");
+
+    const users = await User.find(filter)
+      .select(RemovePassword)
+      .sort(sort)
+      .limit(perPage)
+      .skip((page - 1) * perPage)
+      .lean();
+
+    AdminUserCache.set(
+      `Users + ${page} + ${perPage} + ${filter} + ${sort} + ${count}`,
+      users,
+      3600 / 2
+    );
+
+    res.json(users);
+  } else {
+    console.log("adminUser cache");
+    res.json(CacheUserDate);
+  }
 });
 
 /**
@@ -225,7 +258,6 @@ const deleteUser = asyncHandler(async (req: Request, res: Response) => {
 
 const getUserById = asyncHandler(async (req: Request, res: Response) => {
   const user = await User.findById(req.params.id).select("-password").lean();
-
   if (user) {
     res.json(user);
   } else {
@@ -251,6 +283,7 @@ const updateUser = asyncHandler(async (req: Request, res: Response) => {
 
     const updatedUser = await user.save();
 
+    AdminUserCache.flushAll();
     res.json({
       _id: updatedUser._id,
       name: updatedUser.name,
@@ -335,7 +368,7 @@ const CreateUser = asyncHandler(async (req: Request, res: Response) => {
     password,
     isAdmin,
   });
-
+  AdminUserCache.flushAll();
   if (user) {
     res.status(201).json({
       msg: "User created successfully",

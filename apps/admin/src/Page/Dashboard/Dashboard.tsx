@@ -18,7 +18,7 @@ const Dashboard = () => {
 
     sort: {
       field: "createdAt",
-      order: "-1",
+      order: "ASC",
     },
   });
 

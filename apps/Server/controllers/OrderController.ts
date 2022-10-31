@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 import agenda from "../config/agenda";
 
 import type { Request, Response } from "express";
+import { GetParams } from "./Utils";
 
 dotenv.config();
 
@@ -130,8 +131,14 @@ const getOrder = asyncHandler(async (req: Request, res: Response) => {
  */
 
 const getUserOrders = asyncHandler(async (req: Request, res: Response) => {
+  const { select, sort, perPage, page } = GetParams(req.query, {
+    select: "paymentMethod totalPrice isDelivered createdAt",
+  });
   const order = await Order.find({ user: req.user.id })
-    .select("paymentMethod totalPrice isDelivered createdAt")
+    .select(select)
+    .sort(sort)
+    .limit(perPage)
+    .skip((page - 1) * perPage)
     .lean();
 
   if (order) {
@@ -150,20 +157,14 @@ const getUserOrders = asyncHandler(async (req: Request, res: Response) => {
  */
 
 const getAllOrders = asyncHandler(async (req: Request, res: Response) => {
-  let sort = "-createdAt";
-  if (req.query.sort && typeof req.query.sort === "string") {
-    const sortBy = req.query.sort.split(",").join(" ");
-    sort = sortBy;
-  }
-  const pageSize = JSON.parse(req.query.perPage as string);
-  const page = JSON.parse(req.query.page as string);
+  const { select, sort, perPage, page } = GetParams(req.query, {
+    select: "paymentMethod totalPrice isDelivered createdAt",
+  });
 
   const order = await Order.find({})
-    .select(
-      req.params.select || "paymentMethod totalPrice isDelivered createdAt"
-    )
-    .limit(pageSize)
-    .skip(pageSize * (page - 1))
+    .select(select)
+    .limit(perPage)
+    .skip(perPage * (page - 1))
     .sort(sort)
     .populate("user", ["name", "email"])
     .lean();
@@ -189,19 +190,22 @@ const getLastMonth = asyncHandler(async (req: Request, res: Response) => {
   const CurrentDay = new Date();
   const LastMonth = subMonths(CurrentDay, 1);
 
+  const { select } = GetParams(req.query, {
+    select: "paymentMethod totalPrice isDelivered createdAt",
+  });
+
   const order = await Order.find({
     createdAt: {
       $gte: LastMonth,
     },
   })
-    .select(
-      req.params.select || "paymentMethod totalPrice isDelivered createdAt"
-    )
+    .select(select)
     .populate("user", ["name", "email"])
     .lean();
 
   const orderCount = await Order.countDocuments();
   res.set("x-total-count", orderCount.toString());
+
   if (order) {
     res.json(order);
   } else {

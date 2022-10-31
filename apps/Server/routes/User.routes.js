@@ -5,17 +5,12 @@ import {
   registerUser,
   getUserProfile,
   UpdateProfile,
-  getUsers,
-  deleteUser,
-  getUserById,
-  updateUser,
   deleteAccount,
   resetpassword,
   recoverMail,
   ChangeRole,
 } from "../controllers/UserController";
 import Auth from "../middleware/AuthMiddleware";
-import Admin from "../middleware/AdminMiddleware";
 import ZodMiddleware from "../middleware/ZodMiddleware";
 import {
   LoginSchema,
@@ -43,12 +38,5 @@ router
   .get(Auth, getUserProfile)
   .delete(Auth, deleteAccount)
   .put(Auth, ZodMiddleware(UpdateUserProfileSchema), UpdateProfile);
-
-router.route("/admin/all").get(Admin, getUsers);
-router
-  .route("/admin/:id")
-  .delete(Admin, deleteUser)
-  .get(Admin, getUserById)
-  .put(Admin, updateUser);
 
 export default router;

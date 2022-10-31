@@ -4,6 +4,9 @@ import Products from "../modals/Product";
 import { runInTransaction } from "../utils/Transactions";
 
 import type { Request, Response } from "express";
+import NodeCache from "node-cache";
+
+const CartCache = new NodeCache({ stdTTL: 600 });
 
 /**
  * @desc    Get All Cart Products
@@ -13,19 +16,22 @@ import type { Request, Response } from "express";
 
 const GetCartProducts = asyncHandler(
   async (req: Request, res: Response): Promise<any> => {
-    const cart = await Cart.findOne({ user: req.user.id })
-      .populate({
-        path: "products.product",
-        model: "Product",
-        select: "name price _id image countInStock",
-      })
-      .lean();
-
-    if (!cart) {
-      return res.status(400).json({ msg: "Cart is empty" });
+    const CacheData = CartCache.get(`${req.user.id}`);
+    if (CacheData) {
+      res.status(200).json(CacheData);
+    } else {
+      const cart = await Cart.findOne({ user: req.user.id })
+        .populate({
+          path: "products.product",
+          model: "Product",
+          select: "name price _id image countInStock",
+        })
+        .lean();
+      if (!cart) {
+        return res.status(400).json({ msg: "Cart is empty" });
+      }
+      res.status(200).json(cart);
     }
-
-    res.status(200).json(cart);
   }
 );
 
@@ -65,12 +71,14 @@ const AddToCart = asyncHandler(async (req: Request, res: Response) => {
     if (isProduct) {
       isProduct.qty = qty;
       await UserCart.save();
+      CartCache.flushAll();
       res.json({
         msg: `${product.name} Qty is Updated to ${qty}`,
       });
     } else {
       await UserCart.products.push({ product: ProductId, qty });
       await UserCart.save();
+      CartCache.flushAll();
       res.json({
         msg: `${product.name} is Added Cart`,
       });
@@ -95,6 +103,7 @@ const DeleteCartProduct = asyncHandler(
     if (!cart) {
       return res.status(501).json({ msg: "Server Error Cart is Empty" });
     }
+    CartCache.flushAll();
     res.status(200).json({ msg: "Product Deleted" });
   }
 );

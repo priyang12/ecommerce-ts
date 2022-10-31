@@ -45,7 +45,7 @@ function LatestReview() {
       </Typography>
       <List sx={{ width: "100%", minWidth: 800, bgcolor: "background.paper" }}>
         {ReviewsData?.map((item) => (
-          <>
+          <div key={item._id}>
             <ListItem
               alignItems="flex-start"
               button
@@ -71,7 +71,7 @@ function LatestReview() {
               />
               <ListItemText primary={item.comment} />
             </ListItem>
-          </>
+          </div>
         ))}
         <Box
           sx={{

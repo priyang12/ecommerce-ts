@@ -20,11 +20,13 @@ export const dataProvider = {
   getList: (resource: any, params: any) => {
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
-    const sort = order === "1" ? `${field}` : `-${field}`;
+
+    const sort = order === "ASC" ? `${field}` : `-${field}`;
     const filter =
       Object.keys(params.filter).length !== 0
         ? JSON.stringify(params.filter)
         : "";
+    console.log(filter);
 
     const url = `${apiUrl}/${resource}?sort=${sort}&page=${page}&perPage=${perPage}&filter=${filter}`;
     return httpClient(url).then(({ headers, json }) => ({

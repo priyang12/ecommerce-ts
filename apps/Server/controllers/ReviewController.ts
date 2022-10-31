@@ -1,9 +1,13 @@
 import asyncHandler from "express-async-handler";
 import Order from "../modals/Order";
 import Product from "../modals/Product";
-import Review, { IReview } from "../modals/Review";
+import Review from "../modals/Review";
 import type { Request, Response } from "express";
 import { runInTransaction } from "../utils/Transactions";
+import { GetParams } from "./Utils";
+import NodeCache from "node-cache";
+
+const ReviewCache = new NodeCache({ stdTTL: 600 });
 
 /**
  * @desc    Fetch All Product Reviews
@@ -60,19 +64,26 @@ export const GetOrderReviews = asyncHandler(
  */
 
 export const UserReviews = asyncHandler(async (req: Request, res: Response) => {
-  const filter =
-    typeof req.query.filter === "string" ? JSON.parse(req.query.filter) : null;
-  const sort =
-    typeof req.query.sort === "string" ? req.query.sort : "-createdAt";
+  const { page, filter, sort, perPage } = GetParams(req.query, {
+    sort: "-createdAt",
+    filter: {},
+    page: 0,
+    perPage: 0,
+  });
+
   const ProductSelect = req.query.productSelect as string;
   const OrderSelect = req.query.orderSelect as string;
+
   if (!OrderSelect) {
     const Reviews = await Review.find({
       user: req.user.id,
       ...filter,
     })
       .sort(sort)
-      .populate("product", ProductSelect.split(","));
+      .populate("product", ProductSelect.split(","))
+      .limit(perPage)
+      .skip((page - 1) * perPage);
+
     res.json(Reviews);
   }
   if (OrderSelect) {
@@ -82,7 +93,10 @@ export const UserReviews = asyncHandler(async (req: Request, res: Response) => {
     })
       .sort(sort)
       .populate("product", ProductSelect.split(","))
-      .populate("order", OrderSelect.split(","));
+      .populate("order", OrderSelect.split(","))
+      .limit(perPage)
+      .skip((page - 1) * perPage);
+
     res.json(Reviews);
   }
 });
@@ -180,18 +194,41 @@ export const DeleteReview = asyncHandler(
  */
 
 export const GetReviews = asyncHandler(async (req: Request, res: Response) => {
-  const ReviewSort = req.query.sort || "-createdAt";
-  const Filter = req.query.filter ? JSON.parse(req.query.filter as string) : {};
+  const { page, filter, sort, perPage } = GetParams(req.query, {
+    sort: "-createdAt",
+    filter: {},
+    page: 0,
+    perPage: 0,
+  });
 
-  const Reviews = await Review.find(Filter).sort(ReviewSort as string);
-  if (!Reviews) {
-    res.status(404);
-    throw Error("Server Error Could not Found Reviews");
-  }
   const reviewCount = await Review.countDocuments();
   res.set("x-total-count", reviewCount.toString());
-  res.status(201);
-  res.json(Reviews);
+
+  const GetCache = ReviewCache.get(
+    `AllReviews + ${page} + ${perPage} + ${filter} + ${sort} + ${reviewCount}`
+  );
+
+  if (GetCache) {
+    res.status(201);
+    res.json(GetCache);
+  } else {
+    const Reviews = await Review.find(filter)
+      .sort(sort)
+      .limit(perPage)
+      .skip((page - 1) * perPage);
+
+    if (!Reviews) {
+      res.status(404);
+      throw Error("Server Error Could not Found Reviews");
+    }
+    ReviewCache.set(
+      `AllReviews + ${page} + ${perPage} + ${filter} + ${sort} + ${reviewCount}`,
+      Reviews,
+      3600 / 2
+    );
+    res.status(201);
+    res.json(Reviews);
+  }
 });
 
 /**
@@ -271,7 +308,7 @@ export const ChangeApproversReview = asyncHandler(
           new: true,
         }
       );
-
+      ReviewCache.flushAll();
       res.status(201);
       res.json({
         msg: "Review has been approved",
