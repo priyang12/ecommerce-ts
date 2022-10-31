@@ -6,8 +6,6 @@ import { IconButton, ReviewButton } from "./StyledOrderDeatails";
 import { usePostReview } from "../../API/ReviewAPI";
 import LoadingButton from "../../Components/LoadingButton";
 
-Modal.setAppElement("#root");
-
 const customStyles = {
   content: {
     width: "50vw",

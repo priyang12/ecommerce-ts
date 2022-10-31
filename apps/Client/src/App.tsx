@@ -57,13 +57,12 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
         </Route>
+        <Route path="*" element={<PrivateRoute />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
         <Route path="/ResetPassword/:id" element={<ResetPassword />} />
         <Route path="/StillWorking" element={<StillWorking />} />
-        <Route path="*" element={<PrivateRoute />} />
-        <Route element={<NotFound />} />
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
     </BrowserRouter>
   );
 }

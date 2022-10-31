@@ -31,9 +31,9 @@ export type ListProduct = Pick<
 
 export type Review = z.infer<typeof ReviewSchema>;
 
-export type OrderSchema = z.infer<typeof OrderSchema>;
+export type IOrder = z.infer<typeof OrderSchema>;
 
-export type Address = OrderSchema["shippingAddress"];
+export type Address = IOrder["shippingAddress"];
 
 export type Cart = z.infer<typeof CartSchema>;
 

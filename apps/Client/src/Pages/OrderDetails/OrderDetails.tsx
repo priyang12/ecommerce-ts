@@ -28,7 +28,7 @@ const OrderDetails = () => {
     isLoading: boolean;
     error: any;
     isError: boolean;
-  } = useOrderDetails(id);
+  } = useOrderDetails(id as string);
 
   const EnterProduct = (
     e: React.KeyboardEvent<HTMLLIElement>,
@@ -133,7 +133,9 @@ const OrderDetails = () => {
                       width: "auto",
                     }}
                   >
-                    Review Submitted
+                    <Link to="/reviews" className="success">
+                      Review Submitted
+                    </Link>
                   </ReviewButton>
                 )}
               </div>

@@ -221,7 +221,12 @@ const getLastMonth = asyncHandler(async (req: Request, res: Response) => {
 const UpdateOrder = asyncHandler(async (req: Request, res: Response) => {
   const order = await Order.findOneAndUpdate(
     { _id: req.params.id },
-    { $set: req.body },
+    {
+      $set: {
+        ...req.body,
+        deliveredAt: new Date(),
+      },
+    },
     { new: true }
   );
 

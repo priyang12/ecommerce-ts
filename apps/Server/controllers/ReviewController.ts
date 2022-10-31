@@ -60,10 +60,31 @@ export const GetOrderReviews = asyncHandler(
  */
 
 export const UserReviews = asyncHandler(async (req: Request, res: Response) => {
-  const Reviews = await Review.find({
-    user: req.user.id,
-  });
-  res.json(Reviews);
+  const filter =
+    typeof req.query.filter === "string" ? JSON.parse(req.query.filter) : null;
+  const sort =
+    typeof req.query.sort === "string" ? req.query.sort : "-createdAt";
+  const ProductSelect = req.query.productSelect as string;
+  const OrderSelect = req.query.orderSelect as string;
+  if (!OrderSelect) {
+    const Reviews = await Review.find({
+      user: req.user.id,
+      ...filter,
+    })
+      .sort(sort)
+      .populate("product", ProductSelect.split(","));
+    res.json(Reviews);
+  }
+  if (OrderSelect) {
+    const Reviews = await Review.find({
+      user: req.user.id,
+      ...filter,
+    })
+      .sort(sort)
+      .populate("product", ProductSelect.split(","))
+      .populate("order", OrderSelect.split(","));
+    res.json(Reviews);
+  }
 });
 
 /**

@@ -13,6 +13,7 @@ import { serviceWorkerRegister } from "./serviceWokerRegister";
 import "react-toastify/dist/ReactToastify.css";
 
 import "./Style/Globle.css";
+import ReactModal from "react-modal";
 
 declare global {
   interface Window {
@@ -50,6 +51,9 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const container = document.getElementById("root");
+
+ReactModal.setAppElement("#root");
+
 const root = createRoot(container!);
 
 root.render(

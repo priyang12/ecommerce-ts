@@ -1,14 +1,15 @@
 import { Fragment } from "react";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import { StyledStars } from "./StyledRating";
 type rating = {
   value: number;
   text: string;
   color: string;
 };
 
-const Rating = ({ value, text, color }: rating) => {
+function Rating({ value, text, color }: rating) {
   return (
-    <Fragment>
+    <StyledStars>
       <span>
         {value >= 1 ? (
           <FaStar color={color} />
@@ -55,9 +56,9 @@ const Rating = ({ value, text, color }: rating) => {
         )}
       </span>
       <span>{text && text}</span>
-    </Fragment>
+    </StyledStars>
   );
-};
+}
 
 Rating.defaultProps = {
   color: "#f8e825",

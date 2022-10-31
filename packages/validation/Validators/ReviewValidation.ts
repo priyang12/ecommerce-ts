@@ -12,16 +12,8 @@ export const ReviewSchema = z.object({
       email: true,
     })
   ),
-  order: z.string().or(
-    OrderSchema.pick({
-      _id: true,
-    })
-  ),
-  product: z.string().or(
-    ProductsSchema.pick({
-      _id: true,
-    })
-  ),
+  order: z.string().or(OrderSchema.partial()),
+  product: z.string().or(ProductsSchema.partial()),
   approved: z.boolean(),
   rating: z.number(),
   comment: z.string(),

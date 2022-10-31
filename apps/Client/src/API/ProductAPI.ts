@@ -6,12 +6,10 @@ import { CustomAxiosError, ProductAPI, SearchProductAPI } from "./interface";
 export const useProducts = () => {
   return useQuery<ProductAPI, CustomAxiosError>(
     "products",
-
     async () => {
       const response: AxiosResponse<ProductAPI> = await axios.get(
         "/api/products"
       );
-
       return response.data;
     },
     {

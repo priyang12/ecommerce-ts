@@ -61,6 +61,11 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
+              <Link to="/Reviews">
+                <span className="hide-sm">Reviews</span>
+              </Link>
+            </li>
+            <li>
               <Link to="/Auth/login" onClick={onLogout}>
                 <span className="hide-sm">Logout</span>
               </Link>

@@ -1,5 +1,5 @@
 // import { Review } from "../../interfaces";
-import { useReviews } from "../../API/ReviewAPI";
+import { useProductReviews } from "../../API/ReviewAPI";
 import Rating from "../../Components/Rating";
 import {
   NoReview,
@@ -9,7 +9,7 @@ import {
 } from "./StyledReview";
 
 function Reviews({ id }: { id: string }) {
-  const { data: reviews } = useReviews(id);
+  const { data: reviews } = useProductReviews(id);
   if (!reviews) return null;
   return (
     <>

@@ -12,7 +12,7 @@ export const OrderSchema = z.object({
         image: z.string(),
         price: z.number(),
       }),
-
+      Reviewed: z.boolean(),
       qty: z.number(),
     })
   ),

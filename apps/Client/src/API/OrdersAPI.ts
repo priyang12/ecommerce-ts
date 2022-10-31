@@ -10,7 +10,7 @@ export const useLoadOrders = (url: string) => {
   });
 };
 
-export const useOrderDetails = (id: any) => {
+export const useOrderDetails = (id: string) => {
   return useQuery(
     `orderDetails/${id}`,
     async () => {

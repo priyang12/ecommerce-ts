@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { useMutation, useQuery } from "react-query";
 import { toast } from "react-toastify";
-import { Review } from "../interfaces";
+import { IOrder, Product, Review } from "../interfaces";
 import { queryClient } from "../query";
 import { CustomAxiosError } from "./interface";
 
@@ -41,6 +41,25 @@ export const usePostReview = () => {
       return res.data;
     },
     {
+      async onMutate({ OrderID, ProductID }) {
+        await queryClient.cancelQueries("Cart");
+        const snapshotOfPreviousCart = queryClient.getQueryData(
+          `orderDetails/${OrderID}`
+        );
+        queryClient.setQueryData(`orderDetails/${OrderID}`, (oldData: any) => {
+          const { orderItems }: Pick<IOrder, "orderItems"> = oldData;
+          const NewLists = orderItems.map((item) => {
+            if (item.product._id !== ProductID) {
+              item.Reviewed = true;
+            }
+          });
+          return { ...oldData, orderItems: NewLists };
+        });
+
+        return {
+          snapshotOfPreviousCart,
+        };
+      },
       onSuccess(data, { ProductID }) {
         toast.success(data.msg, {
           autoClose: 3000,
@@ -55,11 +74,22 @@ export const usePostReview = () => {
   );
 };
 
-export const useReviews = (id: string) => {
-  return useQuery<Review[], CustomAxiosError>(["review", id], async () => {
+export const useProductReviews = (id: string) => {
+  return useQuery<Review[], CustomAxiosError>(["reviews", id], async () => {
     const response: AxiosResponse<Review[]> = await axios.get(
       `/api/reviews/ProductId/${id}`
     );
     return response.data;
+  });
+};
+
+type UserReviews = Partial<IOrder> & Partial<Product> & Review;
+
+export const useUserReviews = () => {
+  return useQuery<Review[], CustomAxiosError>("UserReview", async () => {
+    const { data }: AxiosResponse<UserReviews[]> = await axios.get(
+      `/api/reviews?productSelect=name,price,image,brand,numReviews&orderSelect=itemsPrice,totalPrice,paymentMethod,deliveredAt,createdAt`
+    );
+    return data;
   });
 };
