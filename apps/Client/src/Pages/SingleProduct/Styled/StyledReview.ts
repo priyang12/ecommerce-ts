@@ -46,4 +46,5 @@ export const ReviewItem = styled.li`
 
 export const NoReview = styled.h2`
   font-size: 5rem;
+  text-align: center;
 `;

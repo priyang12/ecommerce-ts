@@ -20,9 +20,9 @@ const PlaceOrder = () => {
   const Navigate = useNavigate();
   const { data: Cart, isLoading } = useLoadCartQuery();
   const [ProductsAmount, setProductsAmount] = useState(0);
-  const ShippingAmount = ProductsAmount! > 500 ? 0 : 100;
-  const TaxAmount = 0.15 * ProductsAmount!;
-  const TotalAmount = ProductsAmount! + ShippingAmount + TaxAmount;
+  const ShippingAmount = ProductsAmount > 500 ? 0 : 100;
+  const TaxAmount = 0.15 * ProductsAmount;
+  const TotalAmount = ProductsAmount + ShippingAmount + TaxAmount;
 
   const Address: Address =
     localStorage.address && JSON.parse(localStorage.address);

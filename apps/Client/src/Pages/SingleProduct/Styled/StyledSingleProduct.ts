@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import { FormControl } from "../../StyledComponents/FormControl";
-import { media } from "../../Variables";
+import { media } from "../../../Variables";
 
 export const StyledContainer = styled.section`
   max-width: 120ch;
@@ -31,7 +30,7 @@ export const StyledImageContainer = styled.div`
   grid-column: 1 / span 2;
   img {
     width: 100%;
-    /* height: 150%; */
+    border-radius: 1.5rem;
   }
   ${media.mobile} {
     grid-column: 1;

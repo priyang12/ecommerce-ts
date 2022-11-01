@@ -61,7 +61,7 @@ function App() {
         <Route path="/ResetPassword/:id" element={<ResetPassword />} />
         <Route path="/StillWorking" element={<StillWorking />} />
       </Routes>
-      {/* <Footer /> */}
+      <Footer />
     </BrowserRouter>
   );
 }

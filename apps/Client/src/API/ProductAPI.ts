@@ -18,6 +18,29 @@ export const useProducts = () => {
   );
 };
 
+export const useSuggestProduct = (filter: string, perPage = 6) => {
+  return useQuery<ProductAPI, CustomAxiosError>(
+    `suggested?filter=${filter}&perPage=${perPage}`,
+    async () => {
+      const response: AxiosResponse<ProductAPI> = await axios.get(
+        "/api/products",
+        {
+          params: {
+            perPage: perPage,
+            sort: "rating",
+            filter,
+          },
+        }
+      );
+
+      return response.data;
+    },
+    {
+      useErrorBoundary: true,
+    }
+  );
+};
+
 export const useSingleProduct = (id: string, Type?: boolean) => {
   return useQuery<DetailedProduct, CustomAxiosError>(
     ["product", id],

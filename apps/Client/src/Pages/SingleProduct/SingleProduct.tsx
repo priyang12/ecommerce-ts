@@ -14,7 +14,8 @@ import {
   StyledImageContainer,
   StyledQuantity,
   CheckFormControl,
-} from "./StyledSingleProduct";
+} from "./Styled/StyledSingleProduct";
+
 import { usePostCartQuery } from "../../API/CartAPI";
 import { Helmet } from "react-helmet-async";
 import { useSingleProduct } from "../../API/ProductAPI";
@@ -23,6 +24,7 @@ import Spinner from "../../Components/Spinner";
 import { Select } from "../../StyledComponents/FormControl";
 import LoadingButton from "../../Components/LoadingButton";
 import { useAuth } from "../../Context/Authentication/AuthContext";
+import SuggestionProducts from "./SuggestionProducts";
 
 const SingleProduct = () => {
   const { state } = useAuth();
@@ -89,11 +91,11 @@ const SingleProduct = () => {
             </StyledDetails>
 
             <StyledCheckout>
-              <h3 className="status-label">Price: {Product.price}</h3>
+              <h2 className="status-label">Price: {Product.price}</h2>
               {Product.countInStock <= 0 ? (
-                <h3 style={{ color: "red" }}>Status: Out In Stock</h3>
+                <p style={{ color: "red" }}>Status: Out In Stock</p>
               ) : (
-                <h3 className="status-label">Status: In Stock</h3>
+                <p className="status-label">Status: In Stock</p>
               )}
             </StyledCheckout>
 
@@ -150,6 +152,10 @@ const SingleProduct = () => {
         </StyledContainer>
       )}
       {id && <Reviews id={id as string} />}
+      <br />
+      {Product ? (
+        <SuggestionProducts brand={Product.brand} category={Product.category} />
+      ) : null}
     </>
   );
 };

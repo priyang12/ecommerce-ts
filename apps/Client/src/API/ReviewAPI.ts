@@ -86,10 +86,16 @@ export const useProductReviews = (id: string) => {
 type UserReviews = Partial<IOrder> & Partial<Product> & Review;
 
 export const useUserReviews = () => {
-  return useQuery<Review[], CustomAxiosError>("UserReview", async () => {
-    const { data }: AxiosResponse<UserReviews[]> = await axios.get(
-      `/api/reviews?productSelect=name,price,image,brand,numReviews&orderSelect=itemsPrice,totalPrice,paymentMethod,deliveredAt,createdAt`
-    );
-    return data;
-  });
+  return useQuery<Review[], CustomAxiosError>(
+    "UserReview",
+    async () => {
+      const { data }: AxiosResponse<UserReviews[]> = await axios.get(
+        `/api/reviews?productSelect=name,price,image,brand,numReviews&orderSelect=itemsPrice,totalPrice,paymentMethod,deliveredAt,createdAt`
+      );
+      return data;
+    },
+    {
+      useErrorBoundary: true,
+    }
+  );
 };

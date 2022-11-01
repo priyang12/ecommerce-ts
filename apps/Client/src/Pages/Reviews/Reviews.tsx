@@ -1,6 +1,5 @@
 import { useUserReviews } from "../../API/ReviewAPI";
 import Spinner from "../../Components/Spinner";
-import { StyledContainer } from "../SingleProduct/StyledSingleProduct";
 import {
   ImageContainer,
   ReviewContainer,
@@ -12,6 +11,7 @@ import {
 import Rating from "../../Components/Rating";
 import { format, parseISO } from "date-fns";
 import { Link } from "react-router-dom";
+import { StyledContainer } from "../Cart/StyledCart";
 
 function Reviews() {
   const { data: Reviews, isLoading } = useUserReviews();

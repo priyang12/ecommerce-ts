@@ -29,7 +29,6 @@ const ProductCard: React.FC<CardProps> = ({
       <Link to={`/product/${_id}`}>
         <h1 className="CardTitle">{name}</h1>
       </Link>
-      {/* Still need to work */}
       <Link to={`/product/${_id}`}>
         <img
           src={image}
