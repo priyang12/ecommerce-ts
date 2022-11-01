@@ -9,6 +9,7 @@ import {
 function SearchBar({ searchedValue }: { searchedValue: string }) {
   const Navigate = useNavigate();
   const [searchValue, setSearchValue] = useState<string>("");
+
   const search = () => {
     if (searchValue !== "") {
       const path = `/search/name=${searchValue}`;

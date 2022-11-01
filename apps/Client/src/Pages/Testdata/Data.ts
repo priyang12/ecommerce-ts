@@ -178,13 +178,38 @@ export const MockedOrderDetails = {
   orderItems: [
     {
       product: {
-        price: 89.99,
-        _id: "60d5e622e5179e2bb44bd838",
-        name: "Airpods Wireless Bluetooth Headphones",
-        image: "/Photos/image-1627384388351.webp",
+        _id: "60d5e622e5179e2bb44bd83c",
+        name: "Logtech mouse",
+        image:
+          "https://ik.imagekit.io/5aalo5l7bu7/image-1627385386692_1jmB_46rs.webp",
+        price: 5000.99,
       },
-      _id: "61d19ca72b1719ae39c17744",
-      qty: 7,
+      Reviewed: false,
+      qty: 5,
+      _id: "63506553f20432a1a5761fbf",
+    },
+    {
+      product: {
+        _id: "6128b45753286e2ff497fbd5",
+        name: "Cannon EOS 80D DSLR Camera",
+        image:
+          "https://ik.imagekit.io/5aalo5l7bu7/image-1627384388351_XfFBU9mag.webp",
+        price: 120,
+      },
+      Reviewed: true,
+      qty: 1,
+      _id: "63514be15526b2669538bc05",
+    },
+    {
+      product: {
+        _id: "62839b2f2268bfc2e068ae83",
+        name: "Merrell Women'S Bare Access Xtr Trail Running Shoes",
+        image: "https://m.media-amazon.com/images/I/51bLpccQMkL.jpg",
+        price: 431,
+      },
+      Reviewed: true,
+      qty: 1,
+      _id: "63514be65526b2669538bc0d",
     },
   ],
   paymentMethod: "PayPal or Credit Card",

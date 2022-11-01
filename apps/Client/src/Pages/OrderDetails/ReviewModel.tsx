@@ -64,7 +64,7 @@ function ReviewModel({
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         style={customStyles}
-        contentLabel="Example Modal"
+        contentLabel="Review Modal"
       >
         <div
           style={{

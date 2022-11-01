@@ -101,15 +101,15 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
 
 const getUserProfile = asyncHandler(async (req: Request, res: Response) => {
   const CacheUserDate = UserCache.get(`User + ${req.user.id}`);
-  if (CacheUserDate) {
+  if (!CacheUserDate) {
     const user = await User.findById(req.user.id)
       .select("-password -__v -cart")
       .lean();
-    UserCache.set(`User + ${req.user.id}`, user, 3600 / 2);
     if (!user) {
       res.status(404);
       throw new Error("User not found");
     }
+    UserCache.set(`User + ${req.user.id}`, user, 3600 / 2);
     res.status(201);
     res.json(user);
   } else {

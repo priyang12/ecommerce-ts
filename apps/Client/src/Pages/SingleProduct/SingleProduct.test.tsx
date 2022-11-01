@@ -4,12 +4,15 @@ import MockAdapter from "axios-mock-adapter";
 import { Router, Route, Routes } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import userEvent from "@testing-library/user-event";
+import { Products } from "../Testdata/Data";
+import { Wrapper } from "../../TestSetup";
+import {
+  AuthContext,
+  AuthProvider,
+} from "../../Context/Authentication/AuthContext";
 
 //Component
 import SingleProduct from "./index";
-
-import { Products } from "../Testdata/Data";
-import { Wrapper } from "../../TestSetup";
 
 const product = Products[0];
 
@@ -23,15 +26,31 @@ const route = "/product/123123";
 const history = createMemoryHistory({ initialEntries: [route] });
 
 const Setup = () => {
+  localStorage.setItem("token", "asdasdasdasd");
+  const dispatch = jest.fn();
+
   mock.onGet("/api/products/product/123123").reply(200, product);
   render(
-    <Wrapper>
-      <Router navigator={history} location={route}>
-        <Routes>
-          <Route path="/product/:id" element={<SingleProduct />} />
-        </Routes>
-      </Router>
-    </Wrapper>
+    <AuthContext.Provider
+      value={{
+        state: {
+          token: "asdasdasdasd",
+          user: null,
+          alert: null,
+          loading: false,
+          err: null,
+        },
+        dispatch,
+      }}
+    >
+      <Wrapper>
+        <Router navigator={history} location={route}>
+          <Routes>
+            <Route path="/product/:id" element={<SingleProduct />} />
+          </Routes>
+        </Router>
+      </Wrapper>
+    </AuthContext.Provider>
   );
 };
 

@@ -15,7 +15,6 @@ import ScrollToTop from "./ScrollToTop";
 import ForgotPassword from "./Pages/ForgotPassword";
 import ResetPassword from "./Pages/ResetPassword";
 import AlertDisplay from "./Components/AlertDisplay";
-import NotFound from "./Pages/NotFound";
 import { LOG_OUT } from "./Context/Authentication/Authtypes";
 import Register from "./Pages/Register";
 import Login from "./Pages/Login";

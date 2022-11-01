@@ -22,8 +22,10 @@ import { useAddWishlistQuery } from "../../API/WishListAPI";
 import Spinner from "../../Components/Spinner";
 import { Select } from "../../StyledComponents/FormControl";
 import LoadingButton from "../../Components/LoadingButton";
+import { useAuth } from "../../Context/Authentication/AuthContext";
 
 const SingleProduct = () => {
+  const { state } = useAuth();
   const { id } = useParams<{ id: string }>();
 
   const {
@@ -115,7 +117,7 @@ const SingleProduct = () => {
                   </CheckFormControl>
                   <br />
 
-                  {localStorage.token ? (
+                  {state.token ? (
                     <LoadingButton
                       isLoading={CartMutation}
                       loadingText={"Adding To Cart"}

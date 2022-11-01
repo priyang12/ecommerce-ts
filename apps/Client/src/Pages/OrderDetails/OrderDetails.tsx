@@ -41,7 +41,7 @@ const OrderDetails = () => {
 
   if (isOrderDetailsLoading) return <Spinner />;
   if (isOrderDetailsError) return <div>{OrderDetailsError}</div>;
-  if (!OrderDetails) return <div>Server Error Please Try Again</div>;
+  if (!OrderDetails) return null;
 
   return (
     <>
@@ -103,6 +103,7 @@ const OrderDetails = () => {
                 <StyledListItems
                   key={orderItems._id}
                   tabIndex={0}
+                  data-testid={`orderItem-${orderItems._id}`}
                   onKeyDown={(e) => EnterProduct(e, orderItems.product._id)}
                 >
                   <Link to={`/product/${orderItems.product._id}`} tabIndex={-1}>
@@ -121,23 +122,25 @@ const OrderDetails = () => {
                     {Math.round(orderItems.qty * orderItems.product.price)}
                   </p>
                 </StyledListItems>
-                {OrderDetails.isDelivered && !orderItems.Reviewed ? (
-                  <ReviewModel
-                    ProductID={orderItems.product._id}
-                    OrderID={id as string}
-                  />
-                ) : (
-                  <ReviewButton
-                    className="success"
-                    style={{
-                      width: "auto",
-                    }}
-                  >
-                    <Link to="/reviews" className="success">
-                      Review Submitted
-                    </Link>
-                  </ReviewButton>
-                )}
+                {OrderDetails.isDelivered ? (
+                  !orderItems.Reviewed ? (
+                    <ReviewModel
+                      ProductID={orderItems.product._id}
+                      OrderID={id as string}
+                    />
+                  ) : (
+                    <ReviewButton
+                      className="success"
+                      style={{
+                        width: "auto",
+                      }}
+                    >
+                      <Link to="/reviews" className="success">
+                        Review Submitted
+                      </Link>
+                    </ReviewButton>
+                  )
+                ) : null}
               </div>
             ))}
           </StyledOrderList>

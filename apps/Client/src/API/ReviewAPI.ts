@@ -49,13 +49,13 @@ export const usePostReview = () => {
         queryClient.setQueryData(`orderDetails/${OrderID}`, (oldData: any) => {
           const { orderItems }: Pick<IOrder, "orderItems"> = oldData;
           const NewLists = orderItems.map((item) => {
-            if (item.product._id !== ProductID) {
+            if (item.product._id === ProductID) {
               item.Reviewed = true;
             }
+            return item;
           });
           return { ...oldData, orderItems: NewLists };
         });
-
         return {
           snapshotOfPreviousCart,
         };

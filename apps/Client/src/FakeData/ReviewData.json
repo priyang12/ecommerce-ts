@@ -1,0 +1,82 @@
+{
+  "UserReviews": [
+    {
+      "_id": "635ee276bec316617d8474f6",
+      "user": "634d8bec4c8d31862a461b85",
+      "order": {
+        "_id": "635bdba4be6b6972b2de1353",
+        "paymentMethod": "PayPal or Credit Card",
+        "itemsPrice": 5120,
+        "totalPrice": 123,
+        "createdAt": "2022-10-12T13:39:48.909Z",
+        "deliveredAt": "2022-10-11T14:53:34.372Z"
+      },
+      "product": {
+        "_id": "62839b2f2268bfc2e068ae83",
+        "name": "Merrell Women'S Bare Access Xtr Trail Running Shoes",
+        "image": "https://m.media-amazon.com/images/I/51bLpccQMkL.jpg",
+        "brand": "Visit the Merrell Store",
+        "numReviews": 0,
+        "price": 431
+      },
+      "rating": 1,
+      "comment": "asdasd",
+      "approved": false,
+      "createdAt": "2022-10-30T20:45:42.538Z",
+      "updatedAt": "2022-10-31T22:02:37.878Z",
+      "__v": 0
+    },
+    {
+      "_id": "635ec4be2c6c4ed610ebff7b",
+      "user": "634d8bec4c8d31862a461b85",
+      "order": {
+        "_id": "635bdba4be6b6972b2de1353",
+        "paymentMethod": "PayPal or Credit Card",
+        "itemsPrice": 5200,
+        "totalPrice": 9999,
+        "createdAt": "2022-10-28T13:39:48.909Z",
+        "deliveredAt": "2022-10-02T14:53:34.372Z"
+      },
+      "product": {
+        "_id": "6128b45753286e2ff497fbd5",
+        "name": "Cannon EOS 80D DSLR Camera",
+        "image": "https://ik.imagekit.io/5aalo5l7bu7/image-1627384388351_XfFBU9mag.webp",
+        "brand": "Cannon",
+        "numReviews": 0,
+        "price": 120
+      },
+      "rating": 2,
+      "comment": "asdasdsd",
+      "approved": true,
+      "createdAt": "2022-10-30T18:38:54.621Z",
+      "updatedAt": "2022-10-30T19:02:14.014Z",
+      "__v": 0
+    },
+    {
+      "_id": "635e8fddaec709fee68914cb",
+      "user": "634d8bec4c8d31862a461b85",
+      "order": {
+        "_id": "635c29edbe976f9e7fd80533",
+        "paymentMethod": "PayPal or Credit Card",
+        "itemsPrice": 5100,
+        "totalPrice": 10000,
+        "createdAt": "2022-12-09T18:30:00.000Z",
+        "deliveredAt": "2022-10-31T14:54:18.339Z"
+      },
+      "product": {
+        "_id": "60d5e622e5179e2bb44bd83c",
+        "name": "Logtech mouse",
+        "image": "https://ik.imagekit.io/5aalo5l7bu7/image-1627385386692_1jmB_46rs.webp",
+        "brand": "Cannon",
+        "numReviews": 0,
+        "price": 929.99
+      },
+      "rating": 5,
+      "comment": "this is a first comment",
+      "approved": true,
+      "createdAt": "2022-10-30T14:53:17.698Z",
+      "updatedAt": "2022-10-30T19:02:03.259Z",
+      "__v": 0
+    }
+  ]
+}

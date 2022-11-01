@@ -16,11 +16,12 @@ import { Link } from "react-router-dom";
 function Reviews() {
   const { data: Reviews, isLoading } = useUserReviews();
   if (isLoading) return <Spinner />;
+
   if (!Reviews) return null;
 
   return (
     <StyledContainer>
-      <h1>Reviews </h1>
+      <h1>Reviews</h1>
       <h2>Total Reviews : {Reviews.length}</h2>
       <ReviewsList>
         {Reviews.map((item) => (
@@ -40,10 +41,10 @@ function ReviewItem({ item }: any) {
           <>
             <h2>Order</h2>
             <p>
-              Items Price : <span>${item.order.itemsPrice}</span>
+              Items Price : $<span>{item.order.itemsPrice}</span>
             </p>
             <p>
-              Total Price : <span>${item.order.totalPrice}</span>
+              Total Price : $<span>{item.order.totalPrice}</span>
             </p>
             <p>
               Payment Method : <span>{item.order.paymentMethod}</span>
@@ -51,7 +52,6 @@ function ReviewItem({ item }: any) {
             <p>
               Order Place Date :&nbsp;
               <span>
-                {" "}
                 {format(
                   parseISO(item.order.createdAt as string),
                   "dd-MM-yyyy'"

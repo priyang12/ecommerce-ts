@@ -57,20 +57,20 @@ ReactModal.setAppElement("#root");
 const root = createRoot(container!);
 
 root.render(
-  <QueryClientProvider client={queryClient}>
-    <ReactQueryDevtools initialIsOpen={false} />
-    <ErrorCatch>
-      <AuthProvider>
-        <React.StrictMode>
-          <Normalize />
-          <ToastContainer />
-          <HelmetProvider>
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <HelmetProvider>
+        <ErrorCatch>
+          <ReactQueryDevtools initialIsOpen={false} />
+          <AuthProvider>
+            <Normalize />
+            <ToastContainer />
             <App />
-          </HelmetProvider>
-        </React.StrictMode>
-      </AuthProvider>
-    </ErrorCatch>
-  </QueryClientProvider>
+          </AuthProvider>
+        </ErrorCatch>
+      </HelmetProvider>
+    </QueryClientProvider>
+  </React.StrictMode>
 );
 
 serviceWorkerRegister();
