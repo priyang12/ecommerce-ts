@@ -40,7 +40,15 @@ const GetAllProducts = asyncHandler(async (req: Request, res: Response) => {
 
   const count = await Products.countDocuments({ ...keyword });
 
-  let products = ProductCache.get("products" + keyword + page + count + filter);
+  let products = ProductCache.get(
+    "products " +
+      "Filter" +
+      JSON.stringify(keyword) +
+      "Page" +
+      page +
+      "Count" +
+      count
+  );
 
   res.set("x-total-count", JSON.stringify(count));
   if (!products) {
@@ -51,13 +59,20 @@ const GetAllProducts = asyncHandler(async (req: Request, res: Response) => {
       .select(select);
 
     ProductCache.set(
-      "products" + keyword + page + count + filter,
+      "products " +
+        "Filter" +
+        JSON.stringify(keyword) +
+        "Page" +
+        page +
+        "Count" +
+        count,
       products,
       3600 / 2
     );
-
+    res.status(201);
     res.json({ products, page, pages: Math.ceil(count / perPage) });
   } else {
+    res.status(201);
     res.json({
       products,
       page,
@@ -74,6 +89,7 @@ const GetAllProducts = asyncHandler(async (req: Request, res: Response) => {
 
 const GetTopProducts = asyncHandler(async (req: Request, res: Response) => {
   let TopProducts = ProductCache.get("TopProducts");
+
   if (!TopProducts) {
     TopProducts = await Products.find({})
       .sort({ rating: -1 })
@@ -81,8 +97,10 @@ const GetTopProducts = asyncHandler(async (req: Request, res: Response) => {
       .select("name image description")
       .lean();
     ProductCache.set("TopProducts", TopProducts, 3600 / 2);
+    res.status(201);
     res.json(TopProducts);
   } else {
+    res.status(201);
     res.json(TopProducts);
   }
 });
@@ -96,7 +114,7 @@ const GetTopProducts = asyncHandler(async (req: Request, res: Response) => {
 const GetProductByID = asyncHandler(async (req: Request, res: Response) => {
   const product = await Products.findById(req.params.id).lean();
   if (product) {
-    res.json(product);
+    res.status(201).json(product);
   } else {
     res.status(404).json({ msg: "Product not Found" });
   }
@@ -217,7 +235,7 @@ const AdminProducts = asyncHandler(async (req: Request, res: Response) => {
   const count = await Products.countDocuments({ ...keyword });
 
   let products = ProductCache.get(
-    "AdminProducts" + keyword + page + count + filter + sort
+    "AdminProducts" + JSON.stringify(keyword) + page + count + sort
   );
 
   res.set("x-total-count", JSON.stringify(count));
@@ -230,14 +248,12 @@ const AdminProducts = asyncHandler(async (req: Request, res: Response) => {
       .sort(sort);
 
     ProductCache.set(
-      "AdminProducts" + keyword + page + count + filter + sort,
+      "AdminProducts" + JSON.stringify(keyword) + page + count + sort,
       products,
       3600 / 2
     );
     res.json(products);
   } else {
-    console.log("Cache");
-
     res.json(products);
   }
 });

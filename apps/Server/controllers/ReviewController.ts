@@ -204,9 +204,10 @@ export const GetReviews = asyncHandler(async (req: Request, res: Response) => {
   const reviewCount = await Review.countDocuments();
   res.set("x-total-count", reviewCount.toString());
 
-  const GetCache = ReviewCache.get(
-    `AllReviews + ${page} + ${perPage} + ${filter} + ${sort} + ${reviewCount}`
-  );
+  const CacheKey = `AllReviews + ${page} + ${perPage} + 
+  ${JSON.stringify(filter)} + ${JSON.stringify(sort)} + ${reviewCount}`;
+
+  const GetCache = ReviewCache.get(CacheKey);
 
   if (GetCache) {
     res.status(201);
@@ -221,11 +222,7 @@ export const GetReviews = asyncHandler(async (req: Request, res: Response) => {
       res.status(404);
       throw Error("Server Error Could not Found Reviews");
     }
-    ReviewCache.set(
-      `AllReviews + ${page} + ${perPage} + ${filter} + ${sort} + ${reviewCount}`,
-      Reviews,
-      3600 / 2
-    );
+    ReviewCache.set(`CacheKey`, Reviews, 3600 / 2);
     res.status(201);
     res.json(Reviews);
   }

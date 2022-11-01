@@ -201,9 +201,10 @@ const getUsers = asyncHandler(async (req: ParamsRequest, res: Response) => {
   const count = await User.countDocuments();
   res.set("x-total-count", JSON.stringify(count));
 
-  const CacheUserDate = AdminUserCache.get(
-    `Users + ${page} + ${perPage} + ${filter} + ${sort} + ${count}`
-  );
+  const CacheKey = `Users + ${page} + ${perPage} + 
+  ${JSON.stringify(filter)} + ${JSON.stringify(sort)} + ${count}`;
+
+  const CacheUserDate = AdminUserCache.get(CacheKey);
 
   if (!CacheUserDate) {
     const RemovePassword =
@@ -218,15 +219,10 @@ const getUsers = asyncHandler(async (req: ParamsRequest, res: Response) => {
       .skip((page - 1) * perPage)
       .lean();
 
-    AdminUserCache.set(
-      `Users + ${page} + ${perPage} + ${filter} + ${sort} + ${count}`,
-      users,
-      3600 / 2
-    );
+    AdminUserCache.set(CacheKey, users, 3600 / 2);
 
     res.json(users);
   } else {
-    console.log("adminUser cache");
     res.json(CacheUserDate);
   }
 });
