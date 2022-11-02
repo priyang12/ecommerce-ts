@@ -131,20 +131,22 @@ const SingleProduct = () => {
                     <div className="btn-gray">Login/Register</div>
                   )}
 
-                  <LoadingButton
-                    className="btn"
-                    style={{
-                      backgroundColor: " #626d78",
-                    }}
-                    isLoading={AddingWishList}
-                    loadingText={"Adding To Wishlist"}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      AddWishlist(Product._id);
-                    }}
-                  >
-                    WISH LIST
-                  </LoadingButton>
+                  {state.token ? (
+                    <LoadingButton
+                      className="btn"
+                      style={{
+                        backgroundColor: " #626d78",
+                      }}
+                      isLoading={AddingWishList}
+                      loadingText={"Adding To Wishlist"}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        AddWishlist(Product._id);
+                      }}
+                    >
+                      WISH LIST
+                    </LoadingButton>
+                  ) : null}
                 </form>
               )}
             </StyledQuantity>

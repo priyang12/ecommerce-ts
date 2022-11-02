@@ -13,6 +13,7 @@ import {
 import { useAddWishlistQuery } from "../../API/WishListAPI";
 import Quantity from "../../Components/Quantity";
 import { usePostCartQuery } from "../../API/CartAPI";
+import { Select } from "../../StyledComponents/FormControl";
 
 function CartItemsUI({
   CartItem,
@@ -21,11 +22,7 @@ function CartItemsUI({
   CartItem: CartItem;
   RemoveFromCart: (id: string) => void;
 }) {
-  const {
-    mutate: AddToWishlist,
-    isLoading: AddingWishList,
-    isError,
-  } = useAddWishlistQuery();
+  const { mutate: AddToWishlist } = useAddWishlistQuery();
 
   const PostCart = usePostCartQuery();
   const { mutate: UpdateCart } = PostCart;
@@ -44,10 +41,9 @@ function CartItemsUI({
           </li>
           <li className="price">Price : {CartItem.product.price}</li>
         </StyledCartInfo>
-        <div>
+        <>
           <label htmlFor="selectQty">Quantity</label>
-
-          <select
+          <Select
             id="selectQty"
             name="selectQty"
             data-testid="selectQty"
@@ -60,7 +56,7 @@ function CartItemsUI({
             }}
           >
             <Quantity countInStock={CartItem.product.countInStock} />
-          </select>
+          </Select>
           <IconButton
             data-testid="DeleteIcon"
             onClick={() => {
@@ -78,7 +74,7 @@ function CartItemsUI({
             <AiFillSave />
             Save for later
           </IconButton>
-        </div>
+        </>
       </StyledCartInfoContainer>
       <StyledTotalPrice>
         <span>Total : {CartItem.product.price * CartItem.qty}</span>

@@ -1,20 +1,58 @@
 import axios, { AxiosResponse } from "axios";
-import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { queryClient } from "../query";
 import { toast } from "react-toastify";
+import { DetailedProduct } from "../interfaces";
 
-const fetchData = async (url: string) => {
-  const response: AxiosResponse<{
-    products: any[];
-    user: string;
-    _id: string;
-  }> = await axios.get(url);
-  return response.data;
+type wishlist = {
+  products: Pick<
+    DetailedProduct,
+    | "_id"
+    | "name"
+    | "price"
+    | "image"
+    | "description"
+    | "createdAt"
+    | "countInStock"
+  >[];
+  user: string;
+  _id: string;
+  createdAt: string;
 };
 
 export const useLoadWishListQuery = () => {
-  return useQuery("wishList", () => fetchData("/api/wishlist"));
+  return useQuery("wishList", async () => {
+    const { data }: AxiosResponse<wishlist> = await axios.get("api/wishlist");
+    return data;
+  });
+};
+
+export const useFilterWishlist = (sort: string, perPage = 5) => {
+  return useQuery(
+    "wishList",
+    async () => {
+      const { data }: AxiosResponse<wishlist> = await axios.get(
+        "api/wishlist",
+        {
+          params: {
+            perPage,
+            sort,
+          },
+        }
+      );
+      return data;
+    },
+    {
+      useErrorBoundary: (error: any) => error.response?.status >= 500,
+      onError(err) {
+        if (err.isAxiosError) {
+          toast.error(err.response?.data.msg);
+        } else {
+          throw err;
+        }
+      },
+    }
+  );
 };
 
 export const useAddWishlistQuery = () => {

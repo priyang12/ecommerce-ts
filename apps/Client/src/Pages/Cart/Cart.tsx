@@ -9,14 +9,10 @@ import {
   StyledCart,
   StyledCartContainer,
 } from "./StyledCart";
-import { CartPost } from "@ecommerce/validation";
-import {
-  usePostCartQuery,
-  useDeleteCartApi,
-  useLoadCartQuery,
-} from "../../API/CartAPI";
+import { useDeleteCartApi, useLoadCartQuery } from "../../API/CartAPI";
 import { DetailedProduct } from "../../interfaces";
 import CartItemsUI from "./CartItemsUI";
+import Cartwishlist from "./Cartwishlist";
 
 type CartItem = {
   _id: string;
@@ -37,12 +33,7 @@ const Cart = () => {
     type: false,
   });
 
-  const {
-    data: Cart,
-    error: Err,
-    isFetching,
-    isLoading: loading,
-  } = useLoadCartQuery();
+  const { data: Cart, isFetching, isLoading: loading } = useLoadCartQuery();
 
   const { mutate: DeleteCart, isLoading: Deleting } =
     useDeleteCartApi(setAlert);
@@ -68,14 +59,10 @@ const Cart = () => {
       TotalAmount = Math.round(Total * 100) / 100;
       setTotalAmount(TotalAmount);
       setTotalProducts(TotalProducts);
-      localStorage.setItem("ProductsAmount", JSON.stringify(TotalProducts));
-      localStorage.setItem("Cart", JSON.stringify(CartItems));
     }
   }, [CartItems]);
 
   if (loading || isFetching) return <Spinner />;
-
-  if (Err) return <div>Server Error</div>;
 
   if (CartItems?.length === 0 || !CartItems)
     return (
@@ -94,7 +81,6 @@ const Cart = () => {
         <AlertDisplay msg={Alert.msg} type={Alert.type ? "success" : "error"} />
       )}
       {Deleting && <AlertDisplay type={"warning"} msg="Deleting" />}
-
       <StyledContainer>
         <h1>SHOPPING CART</h1>
         <StyledCartContainer>
@@ -108,7 +94,7 @@ const Cart = () => {
             ))}
           </StyledCart>
 
-          <StyledContainer>
+          <div>
             <StyledCheckout>
               <h3>SUBTOTAL ({TotalProducts}) ITEMS</h3>
               <p>$ {TotalAmount}</p>
@@ -116,8 +102,9 @@ const Cart = () => {
                 Checkout
               </Link>
             </StyledCheckout>
-          </StyledContainer>
+          </div>
         </StyledCartContainer>
+        <Cartwishlist />
       </StyledContainer>
     </>
   );

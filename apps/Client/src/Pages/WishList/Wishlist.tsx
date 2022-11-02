@@ -5,7 +5,6 @@ import {
 } from "../../API/WishListAPI";
 import AlertDisplay from "../../Components/AlertDisplay";
 import Spinner from "../../Components/Spinner";
-import { Product } from "../../interfaces";
 import {
   StyledHeading,
   StyledProduct,
@@ -39,7 +38,7 @@ function Wishlist() {
           name="description"
           content={`
         WishList
-        ${WishList?.products.map((product: Product) => product.name)}
+        ${WishList?.products.map((product) => product.name)}
         `}
         />
       </Helmet>
@@ -52,7 +51,7 @@ function Wishlist() {
       {DeleteSuccess && <AlertDisplay msg={"Product Deleted"} type={"error"} />}
       {Deleting && <AlertDisplay msg="Deleting...." type={"warning"} />}
       <StyledProducts>
-        {WishList?.products.map((product: Product) => (
+        {WishList?.products.map((product) => (
           <StyledProduct key={product._id} tabIndex={0}>
             <StyledProductTitle>{product.name}</StyledProductTitle>
             <StyledProductDescription>

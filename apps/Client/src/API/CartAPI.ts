@@ -21,6 +21,11 @@ export const useLoadCartQuery = () => {
     },
     {
       useErrorBoundary: (error: any) => error.response?.status >= 500,
+      onError(err) {
+        if (err.isAxiosError) {
+          toast.error(err.response?.data.msg);
+        }
+      },
     }
   );
 };
@@ -44,6 +49,7 @@ export const usePostCartQuery = () => {
           closeButton: true,
         });
       },
+      useErrorBoundary: (error: any) => error.response?.status >= 500,
     }
   );
 

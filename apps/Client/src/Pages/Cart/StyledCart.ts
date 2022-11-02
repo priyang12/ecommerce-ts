@@ -5,11 +5,8 @@ export const StyledContainer = styled.div`
   margin: 0 auto;
   max-width: 1200px;
   width: 100%;
-  min-height: 80vh;
-
+  min-height: 100vh;
   h1 {
-    text-align: center;
-    margin-left: 1em;
     font-size: 2.5rem;
   }
   ${media.tablet} {
@@ -35,34 +32,39 @@ export const StyledCartContainer = styled.div`
 `;
 
 export const StyledCart = styled.div`
-  width: 100%;
   padding: 0 1rem;
   width: 70%;
   height: 100%;
-  margin: 0 auto;
   ${media.tablet} {
     width: 100%;
   }
 `;
 
 export const StyledCheckout = styled.div`
-  width: 100%;
+  margin: auto;
   background-color: var(--secondary-light-color);
-  max-width: 50ch;
   padding: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   color: var(--assertive-color);
   border-radius: var(--border-radius);
-  margin: auto;
+
   p {
     font-size: 1.5rem;
     background-color: var(--primary-light-color);
     padding: 0.5em;
+    border: 3px solid var(--bg-color);
+    border-radius: var(--border-radius);
   }
   .btn {
     margin: 0;
     border-radius: var(--border-radius);
     border: 2px solid var(--primary-dark-color);
     transition: all 0.3s ease-in-out;
+  }
+  ${media.LargerThanTablet} {
+    width: 100%;
   }
 `;
 
@@ -167,5 +169,21 @@ export const IconButton = styled.button`
   &:hover {
     color: var(--primary-dark-color);
     transform: scale(1.1);
+  }
+`;
+
+export const StyledWishlistProduct = styled.article`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  padding: 1em;
+`;
+
+export const StyledWishlistItem = styled.div`
+  p {
+    color: var(--bg-contrast-color);
+  }
+  p:first-child {
+    font-size: 1.5rem;
   }
 `;

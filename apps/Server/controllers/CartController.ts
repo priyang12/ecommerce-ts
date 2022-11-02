@@ -18,7 +18,7 @@ const GetCartProducts = asyncHandler(
   async (req: Request, res: Response): Promise<any> => {
     const CacheData = CartCache.get(`${req.user.id}`);
     if (CacheData) {
-      res.status(200).json(CacheData);
+      res.status(201).json(CacheData);
     } else {
       const cart = await Cart.findOne({ user: req.user.id })
         .populate({
@@ -30,6 +30,7 @@ const GetCartProducts = asyncHandler(
       if (!cart) {
         return res.status(400).json({ msg: "Cart is empty" });
       }
+      CartCache.set(`${req.user.id}`, cart, 3600 / 2);
       res.status(200).json(cart);
     }
   }

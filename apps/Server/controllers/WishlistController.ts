@@ -17,7 +17,7 @@ const WishListCache = new NodeCache({ stdTTL: 600 });
 const GetWishlist = asyncHandler(
   async (req: Request, res: Response): Promise<any> => {
     const { select, page, perPage, sort } = GetParams(req.query, {
-      select: "-__v -createdAt",
+      select: "-__v",
     });
 
     const CacheUserDate = WishListCache.get(
