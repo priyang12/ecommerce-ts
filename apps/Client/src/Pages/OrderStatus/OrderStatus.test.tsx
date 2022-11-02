@@ -69,25 +69,6 @@ describe("User Orders", () => {
       screen.getByText("ORDER:612894962f469f19e8ee85e8")
     ).toBeInTheDocument();
   });
-
-  it("Server Error", async () => {
-    client.clear();
-    mock.onGet("/api/orders").reply(500);
-    render(
-      <Wrapper>
-        <MemoryRouter initialEntries={["/OrderStatus"]}>
-          <OrderStatus />
-        </MemoryRouter>
-      </Wrapper>
-    );
-
-    //check if the loading is true
-    await waitForElementToBeRemoved(screen.queryByTestId("Loading"));
-    //Check if the Error Message is rendered.
-    expect(
-      screen.getByText("Request failed with status code 500")
-    ).toBeInTheDocument();
-  });
 });
 
 it("No Order", async () => {

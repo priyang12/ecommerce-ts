@@ -6,6 +6,7 @@ import Navigators from "../../Components/Navigators";
 import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
 import { OrderSchema } from "@ecommerce/validation";
 import { FormControl, Input, Label } from "../../StyledComponents/FormControl";
+import { useLoadCartQuery } from "../../API/CartAPI";
 
 const init: Address = {
   address: "",
@@ -19,15 +20,16 @@ const AddressPage = () => {
     localStorage.address ? JSON.parse(localStorage.address) : init
   );
   const { address, city, postalcode } = ShippingAddress;
+  const { data: Cart, isSuccess, isError } = useLoadCartQuery();
 
   useEffect(() => {
-    if (!localStorage.Cart || localStorage.Cart.length === 0) {
+    if ((isSuccess && Cart.products.length === 0) || isError) {
       Navigate("/cart");
     }
-  }, [Navigate]);
+  }, [Cart, Navigate, isError, isSuccess]);
+
   const SubmitAddress = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     try {
       OrderSchema.pick({
         shippingAddress: true,

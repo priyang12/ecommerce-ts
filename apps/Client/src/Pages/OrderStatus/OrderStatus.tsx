@@ -4,17 +4,10 @@ import Spinner from "../../Components/Spinner";
 import { Helmet } from "react-helmet-async";
 
 const OrderStatus = () => {
-  const {
-    isLoading: isOrdersLoading,
-    isError: isOrdersError,
-    data: OrderData,
-    error: OrderError,
-  } = useLoadOrders("/api/orders");
+  const { isLoading: isOrdersLoading, data: OrderData } =
+    useLoadOrders("/api/orders");
 
   if (isOrdersLoading) return <Spinner />;
-
-  // @ts-ignore
-  if (isOrdersError) return <div>{OrderError.message}</div>;
 
   return (
     <>

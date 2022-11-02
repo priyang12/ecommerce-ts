@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Helmet } from "react-helmet-async";
 import Spinner from "../../Components/Spinner";
 import SearchBar from "../../Components/SearchBar";
@@ -7,6 +7,7 @@ import { StyledHeroContainer, StyledHero } from "./StyledHero";
 import DisplayProducts from "./DisplayProducts";
 
 const Carousel = React.lazy(() => import("../../Components/Carousel"));
+const HeroImage = React.lazy(() => import("./HeroImage"));
 
 const Home = () => {
   return (
@@ -27,11 +28,9 @@ const Home = () => {
             everything you need for your next adventure.
           </p>
         </StyledHero>
-        <img
-          src={require("../../Assets/74322-3d-marketing.gif")}
-          alt=""
-          width={400}
-        />
+        <Suspense fallback={<Spinner />}>
+          <HeroImage />
+        </Suspense>
       </StyledHeroContainer>
       <ErrorCatch>
         <React.Suspense fallback={<Spinner />}>

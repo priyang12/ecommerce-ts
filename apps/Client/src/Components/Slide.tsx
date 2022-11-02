@@ -58,14 +58,15 @@ const Slide = ({
           backgroundImage: `url('${slide.image}')`,
           opacity: active ? 1 : 0.7,
         }}
-        // className={active ? "active" : ""}
+        className={active ? "active" : ""}
       >
         <StyledContentInner
           style={{
             opacity: active ? 1 : 0,
           }}
         >
-          <h2 className="slideTitle">{slide.title}</h2>
+          <h2 className="slideTitle">{slide.name}</h2>
+          <br />
           <p className="slideDescription">{slide.description}</p>
         </StyledContentInner>
         <StyledShowMore

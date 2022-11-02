@@ -36,7 +36,7 @@ const initialState: AuthState = {
 };
 
 export const AuthContext = createContext({} as IContextModel);
-
+AuthContext.displayName = "AuthContext";
 export const useAuth = () => {
   return React.useContext(AuthContext);
 };

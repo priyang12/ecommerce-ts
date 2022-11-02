@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 //components
 import AddressPage from "./AddressPage";
 import { Address } from "../../interfaces";
+import { Wrapper } from "../../TestSetup";
 
 const cart = [
   {
@@ -15,18 +16,22 @@ localStorage.setItem("cart", JSON.stringify(cart));
 
 it("Do not Submit on inValid", async () => {
   render(
-    <BrowserRouter>
-      <AddressPage />
-    </BrowserRouter>
+    <Wrapper>
+      <BrowserRouter>
+        <AddressPage />
+      </BrowserRouter>
+    </Wrapper>
   );
   await userEvent.click(screen.getByText(/Continue/i));
 });
 
 it("Store Address in Local Storage", async () => {
   render(
-    <BrowserRouter>
-      <AddressPage />
-    </BrowserRouter>
+    <Wrapper>
+      <BrowserRouter>
+        <AddressPage />
+      </BrowserRouter>
+    </Wrapper>
   );
   const address: Address = {
     address: "Pipload",

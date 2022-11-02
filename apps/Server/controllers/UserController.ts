@@ -113,7 +113,7 @@ const getUserProfile = asyncHandler(async (req: Request, res: Response) => {
     res.status(201);
     res.json(user);
   } else {
-    res.json(CacheUserDate);
+    res.status(201).json(CacheUserDate);
   }
 });
 

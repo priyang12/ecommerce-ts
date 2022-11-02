@@ -15,13 +15,14 @@ import ScrollToTop from "./ScrollToTop";
 import ForgotPassword from "./Pages/ForgotPassword";
 import ResetPassword from "./Pages/ResetPassword";
 import AlertDisplay from "./Components/AlertDisplay";
-import { LOG_OUT } from "./Context/Authentication/Authtypes";
 import Register from "./Pages/Register";
 import Login from "./Pages/Login";
+import { LOG_OUT } from "./Context/Authentication/Authtypes";
 
 function App() {
   const { state, dispatch } = useContext(AuthContext);
   const { token, user } = state;
+
   useEffect(() => {
     if (token) {
       if (user) {
@@ -37,8 +38,10 @@ function App() {
     }
   }, [token, dispatch, user]);
 
-  if (token) setAuthToken(token);
+  // useEffect(() => {
 
+  // }, [token]);
+  if (token) setAuthToken(token);
   return (
     <BrowserRouter>
       <ScrollToTop />

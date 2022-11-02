@@ -1,9 +1,10 @@
 import { z } from "zod";
+import { UserSchema } from "./UserValidation";
 
 export const OrderSchema = z.object({
   // Look into RegEx for validation more
   _id: z.string().regex(/^[0-9a-fA-F]{24}$/),
-  user: z.string(),
+  user: z.string().or(UserSchema.partial()),
   orderItems: z.array(
     z.object({
       product: z.object({

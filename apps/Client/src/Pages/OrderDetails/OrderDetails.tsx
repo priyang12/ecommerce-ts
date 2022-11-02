@@ -18,17 +18,8 @@ import ReviewModel from "./ReviewModel";
 const OrderDetails = () => {
   const Navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const {
-    data: OrderDetails,
-    isLoading: isOrderDetailsLoading,
-    error: OrderDetailsError,
-    isError: isOrderDetailsError,
-  }: {
-    data: any;
-    isLoading: boolean;
-    error: any;
-    isError: boolean;
-  } = useOrderDetails(id as string);
+  const { data: OrderDetails, isLoading: isOrderDetailsLoading } =
+    useOrderDetails(id as string);
 
   const EnterProduct = (
     e: React.KeyboardEvent<HTMLLIElement>,
@@ -40,7 +31,7 @@ const OrderDetails = () => {
   };
 
   if (isOrderDetailsLoading) return <Spinner />;
-  if (isOrderDetailsError) return <div>{OrderDetailsError}</div>;
+
   if (!OrderDetails) return null;
 
   return (
@@ -62,10 +53,16 @@ const OrderDetails = () => {
         <StyledOrderDetails>
           <h1>SHIPPING</h1>
           <p>
-            Name: <span>{OrderDetails.user.name}</span>
+            Name: &nbsp;
+            <span>
+              {typeof OrderDetails.user !== "string" && OrderDetails.user.name}
+            </span>
           </p>
           <p>
-            Email: <span>{OrderDetails.user.email}</span>
+            Email: &nbsp;
+            <span>
+              {typeof OrderDetails.user !== "string" && OrderDetails.user.email}
+            </span>
           </p>
           <p>
             Address:

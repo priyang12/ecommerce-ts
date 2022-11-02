@@ -20,10 +20,12 @@ export const loadUser = async (
   if (token) {
     try {
       setLoading(dispatch);
-      const { data }: any = await axios.get("/api/users");
-
+      const { data }: any = await axios.get("/api/users", {
+        headers: {
+          "x-auth-token": token,
+        },
+      });
       sessionStorage.setItem("User", JSON.stringify(data));
-
       dispatch({
         type: LOAD_USER,
         payload: data,
@@ -33,7 +35,7 @@ export const loadUser = async (
       if (err as AxiosError) {
         ErrorMessage = err.response.data?.msg;
       }
-
+      Logout(dispatch);
       dispatch({
         type: AUTH_ERROR,
         payload: ErrorMessage,
@@ -54,7 +56,7 @@ export const LoginUser = async (
     });
     localStorage.setItem("token", data.token);
 
-    loadUser(data.token, dispatch);
+    // loadUser(data.token, dispatch);
   } catch (err: any | AxiosError) {
     let ErrorMessage = "Server Error Try Again Later";
     if (err as AxiosError) {

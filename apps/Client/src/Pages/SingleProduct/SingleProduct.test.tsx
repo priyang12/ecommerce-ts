@@ -63,7 +63,7 @@ const Setup = () => {
     <AuthContext.Provider
       value={{
         state: {
-          token: "asdasdasdasd",
+          token: "123123",
           user: null,
           alert: null,
           loading: false,
@@ -120,7 +120,7 @@ it("Error on Add Cart", async () => {
   await waitFor(() => {
     expect(screen.getAllByText(product.name)[0]).toBeInTheDocument();
   });
-  mock.onPost("/api/cart").reply(501, {
+  mock.onPost("/api/cart").reply(401, {
     msg: "Please Try Again Later",
   });
 

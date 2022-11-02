@@ -59,27 +59,31 @@ export const StyledContentInner = styled.div`
   text-shadow: 0 0.1rem 1rem #000;
   opacity: 0;
   text-align: center;
+
   .slideTitle {
+    margin: 0;
     font-size: 2rem;
     font-weight: normal;
     letter-spacing: 0.2ch;
     text-transform: uppercase;
-    margin: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 20vw;
   }
-  .slideDescription {
-    margin: 0.5em;
-    margin-bottom: 1em;
-    font-size: 2rem;
-    letter-spacing: 0.2ch;
-  }
+
   @media (max-width: 1028px) {
     .slideDescription {
       font-size: 1.5rem;
     }
-    ${media.tablet} {
-      .slideDescription {
-        display: none;
-      }
+  }
+  ${media.tablet} {
+    .slideTitle {
+      width: fit-content;
+      white-space: pre-line;
+    }
+    .slideDescription {
+      display: none;
     }
   }
 `;

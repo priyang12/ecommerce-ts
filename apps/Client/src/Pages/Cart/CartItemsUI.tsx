@@ -39,7 +39,7 @@ function CartItemsUI({
               {CartItem.product.name}
             </Link>
           </li>
-          <li className="price">Price : {CartItem.product.price}</li>
+          <li className="price">Price : ${CartItem.product.price}</li>
         </StyledCartInfo>
         <>
           <label htmlFor="selectQty">Quantity</label>

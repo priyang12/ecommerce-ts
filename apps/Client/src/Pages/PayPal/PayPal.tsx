@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { Navigate } from "react-router";
 import axios, { AxiosResponse } from "axios";
@@ -7,6 +7,8 @@ import { useMakeOrder } from "../../API/OrdersAPI";
 import styled from "styled-components";
 import ErrorCatch from "../../Components/ErrorCatch";
 import { Helmet } from "react-helmet-async";
+
+const PayLottie = React.lazy(() => import("./PayLottie"));
 
 type ClientIdRes = AxiosResponse<string>;
 
@@ -79,6 +81,9 @@ function Paypal() {
             }}
             onError={(err) => DisplayPaymentError(err)}
           />
+          <Suspense fallback={<Spinner />}>
+            <PayLottie />
+          </Suspense>
         </PayPalScriptProvider>
       </StyledContainer>
     </ErrorCatch>

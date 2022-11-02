@@ -4,7 +4,9 @@ import { ToastContainer } from "react-toastify";
 import { setLogger } from "react-query";
 
 setLogger({
+  // eslint-disable-next-line no-console
   log: console.log,
+  // eslint-disable-next-line no-console
   warn: console.warn,
   // ✅ no more errors on the console
   // eslint-disable-next-line @typescript-eslint/no-empty-function

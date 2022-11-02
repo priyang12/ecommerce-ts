@@ -13,6 +13,7 @@ export const StyledContainer = styled.div`
     width: 90%;
     h1 {
       font-size: 3rem;
+      text-align: center;
     }
   }
 
@@ -26,13 +27,13 @@ export const StyledContainer = styled.div`
 
 export const StyledCartContainer = styled.div`
   display: flex;
-  ${media.laptop} {
+  gap: 1rem;
+  ${media.tablet} {
     flex-direction: column;
   }
 `;
 
 export const StyledCart = styled.div`
-  padding: 0 1rem;
   width: 70%;
   height: 100%;
   ${media.tablet} {
@@ -69,30 +70,39 @@ export const StyledCheckout = styled.div`
 `;
 
 export const StyledCartCard = styled.div`
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: baseline;
   justify-content: space-between;
   height: 100%;
-  border: 1px solid white;
+  border: 2px solid white;
   border-radius: 5px;
   padding: 1rem;
   gap: 1rem;
   margin-bottom: 1rem;
-  ${media.tablet} {
-    flex-direction: column;
-    align-items: flex-start;
+  ${media.mobile} {
+    padding: 0.5em;
+    grid-template-columns: 1fr;
+    select {
+      width: 80%;
+    }
   }
 `;
 
 export const StyledCartImageContainer = styled.div`
   width: 40vw;
   height: 250px;
-  padding: 0.5em;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   img {
     border-radius: 10px;
     width: 40ch;
     height: 100%;
     object-fit: cover;
+    ${media.tablet} {
+      width: 100%;
+    }
   }
   ${media.tablet} {
     width: 100%;
@@ -177,6 +187,12 @@ export const StyledWishlistProduct = styled.article`
   grid-template-columns: 1fr 1fr 1fr;
   gap: 1rem;
   padding: 1em;
+  ${media.tablet} {
+    grid-template-columns: 1fr 1fr;
+  }
+  ${media.mobile} {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const StyledWishlistItem = styled.div`
