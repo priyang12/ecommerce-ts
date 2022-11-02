@@ -53,7 +53,7 @@ function Chart() {
     "LastMonth",
     async () => {
       const { data }: AxiosResponse<any> = await axios.get(
-        "http://localhost:5001/api/admin/orders/lastMonth",
+        "/api/admin/orders/lastMonth",
         {
           headers: {
             "x-auth-token": localStorage.token,

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Ecommerce shoping FullStack",
   "scripts": {
+    "install:dev": "npm i ---workspace=apps/Client && npm i --workspace=apps/Server",
     "start": "npm run start --prefix apps/Server",
     "client": "npm run start --prefix apps/Client",
     "admin": "npm run start --prefix apps/admin",
