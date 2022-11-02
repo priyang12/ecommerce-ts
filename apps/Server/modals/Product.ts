@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import type { Model, InferSchemaType } from "mongoose";
-import ReviewModel from "./Review";
 
 const ProductSchema = new mongoose.Schema(
   {

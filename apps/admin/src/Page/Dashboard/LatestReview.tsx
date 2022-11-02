@@ -37,20 +37,30 @@ function LatestReview() {
       sx={{
         display: "flex",
         flexDirection: "column",
+        width: "50%",
         gap: "1rem",
       }}
     >
       <Typography component="h2" fontSize="3rem">
         Latest Unapproved Review
       </Typography>
-      <List sx={{ width: "100%", minWidth: 800, bgcolor: "background.paper" }}>
+      <List
+        sx={{
+          width: "50%",
+          minWidth: 500,
+          bgcolor: "background.paper",
+        }}
+      >
         {ReviewsData?.map((item) => (
           <div key={item._id}>
             <ListItem
+              sx={{
+                border: "2px solid red",
+              }}
               alignItems="flex-start"
               button
               component={Link}
-              to={`/review/${item._id}`}
+              to={`/reviews/${item._id}`}
             >
               <ListItemText
                 primary={
@@ -69,7 +79,7 @@ function LatestReview() {
                   </>
                 }
               />
-              <ListItemText primary={item.comment} />
+              <ListItemText primary={`User Comment : ${item.comment}`} />
             </ListItem>
           </div>
         ))}

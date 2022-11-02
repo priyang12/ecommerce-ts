@@ -223,35 +223,25 @@ const AdminProducts = asyncHandler(async (req: Request, res: Response) => {
     filter: {},
   });
 
-  const keyword = req.query.keyword
-    ? {
-        name: {
-          $regex: req.query.keyword,
-          $options: "i",
-        },
-        ...filter,
-      }
-    : {};
-  const count = await Products.countDocuments({ ...keyword });
+  const count = await Products.countDocuments({ ...filter });
 
-  let products = ProductCache.get(
-    "AdminProducts" + JSON.stringify(keyword) + page + count + sort
-  );
+  console.log(req.query.name);
+
+  const ProductKey =
+    "AdminProducts" + JSON.stringify(filter) + page + count + sort;
+
+  let products = ProductCache.get(ProductKey);
 
   res.set("x-total-count", JSON.stringify(count));
 
   if (!products) {
-    products = await Products.find({ ...keyword })
+    const products = await Products.find({ ...filter })
       .limit(perPage)
       .skip(perPage * (page - 1))
       .select(select)
       .sort(sort);
 
-    ProductCache.set(
-      "AdminProducts" + JSON.stringify(keyword) + page + count + sort,
-      products,
-      3600 / 2
-    );
+    ProductCache.set(ProductKey, products, 3600 / 2);
     res.json(products);
   } else {
     res.json(products);
