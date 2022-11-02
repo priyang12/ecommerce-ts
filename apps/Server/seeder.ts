@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
-import users from "../../data/userData";
-import products from "../../data/productsData";
+import users from "./data/userData";
+import products from "./data/productsData";
 import { CreateModels, models } from "./utils/Models";
 import connectDB from "./config/db";
 
