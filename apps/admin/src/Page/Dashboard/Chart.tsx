@@ -42,7 +42,7 @@ const getRevenuePerDay = (orders: any): any[] => {
 };
 
 const TotalRevenue = (order: any[]) => {
-  return order.reduce(
+  return order?.reduce(
     (previousValue, currentValue) => previousValue + currentValue.totalPrice,
     0
   );
