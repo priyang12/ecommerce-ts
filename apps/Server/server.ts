@@ -69,7 +69,9 @@ if (
   app.use(express.static(path.join(_dirname, staticPath)));
 
   app.get("*", (req, res) =>
-    res.sendFile(path.resolve(_dirname, "..", "Client", "build", "index.html"))
+    res.sendFile(
+      path.resolve(_dirname, "apps", "Client", "build", "index.html")
+    )
   );
 } else {
   app.get("/", (req, res) => {
