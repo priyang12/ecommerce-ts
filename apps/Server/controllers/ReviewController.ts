@@ -125,9 +125,9 @@ export const PostReview = asyncHandler(async (req: Request, res: Response) => {
 
   const IsProduct = CheckOrder?.orderItems.findIndex(
     (item: any) => item.product._id.toString() === ProductId
-  );
+  ) as number;
 
-  if (!CheckOrder || !CheckProduct || !IsProduct) {
+  if (!CheckOrder || !CheckProduct || IsProduct < 0) {
     res.status(413);
     throw Error("Wrong Credentials");
   }

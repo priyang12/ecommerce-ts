@@ -88,10 +88,10 @@ const GetAllProducts = asyncHandler(async (req: Request, res: Response) => {
  */
 
 const GetTopProducts = asyncHandler(async (req: Request, res: Response) => {
-  let TopProducts = ProductCache.get("TopProducts");
+  const TopProducts = ProductCache.get("TopProducts");
 
   if (!TopProducts) {
-    TopProducts = await Products.find({})
+    const TopProducts = await Products.find({})
       .sort({ rating: -1 })
       .limit(5)
       .select("name image description")
@@ -113,10 +113,16 @@ const GetTopProducts = asyncHandler(async (req: Request, res: Response) => {
 
 const GetProductByID = asyncHandler(async (req: Request, res: Response) => {
   const product = await Products.findById(req.params.id).lean();
-  if (product) {
-    res.status(201).json(product);
+
+  if (ProductCache.get(req.params.id)) {
+    res.status(201).json(ProductCache.get(req.params.id));
   } else {
-    res.status(404).json({ msg: "Product not Found" });
+    if (product) {
+      ProductCache.set(req.params.id, product, 3600 / 2);
+      res.status(201).json(product);
+    } else {
+      res.status(404).json({ msg: "Product not Found" });
+    }
   }
 });
 
