@@ -5,7 +5,9 @@ export const StyledAuthPage = styled.section`
   width: 100%;
   max-width: 80ch;
   margin: 2em auto;
+  margin-bottom: 0;
   .container {
+    border-radius: var(--border-radius);
     padding: 1em 2em;
     border: 2px solid white;
     color: var(--bg-contrast-color);
