@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { ImageMagnifier } from "@priyang/react-component-lib";
 import Reviews from "./Reviews";
 import Rating from "../../Components/Rating";
 import Quantity from "../../Components/Quantity";
@@ -69,7 +70,14 @@ const SingleProduct = () => {
           )}
           <StyledProduct>
             <StyledImageContainer>
-              <img src={Product.image} alt={Product.name} />
+              <ImageMagnifier
+                src={Product.image}
+                width={""}
+                height={""}
+                magnifierHeight={200}
+                magnifierWidth={200}
+                zoomLevel={1}
+              />
             </StyledImageContainer>
             <StyledDetails>
               <h1>{Product.name}</h1>

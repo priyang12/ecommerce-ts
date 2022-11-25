@@ -6,6 +6,7 @@
   "dependencies": {
     "@ecommerce/validation": "*",
     "@paypal/react-paypal-js": "^7.8.1",
+    "@priyang/react-component-lib": "^1.0.2",
     "axios": "^0.23.0",
     "date-fns": "^2.29.3",
     "history": "^5.3.0",
