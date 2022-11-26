@@ -8,6 +8,8 @@ import { StaleWhileRevalidate, CacheFirst } from "workbox-strategies";
 
 clientsClaim();
 
+declare const self: ServiceWorkerGlobalScope;
+
 precacheAndRoute(self.__WB_MANIFEST);
 
 const fileExtensionRegexp = new RegExp("/[^/?]+\\.[^/]+$");
@@ -61,7 +63,7 @@ registerRoute(
   })
 );
 
-self.addEventListener("message", (event) => {
+self.addEventListener("message", (event: any) => {
   if (event.data && event.data.type === "SKIP_WAITING") {
     self.skipWaiting();
   }
