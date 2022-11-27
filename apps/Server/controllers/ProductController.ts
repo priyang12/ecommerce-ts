@@ -39,16 +39,18 @@ const GetAllProducts = asyncHandler(async (req: Request, res: Response) => {
     : filter;
 
   const count = await Products.countDocuments({ ...keyword });
-
-  let products = ProductCache.get(
+  const CacheKey =
     "products " +
-      "Filter" +
-      JSON.stringify(keyword) +
-      "Page" +
-      page +
-      "Count" +
-      count
-  );
+    "Filter" +
+    JSON.stringify(keyword) +
+    "Page" +
+    page +
+    "Count" +
+    count +
+    "Select" +
+    select;
+
+  let products = ProductCache.get(CacheKey);
 
   res.set("x-total-count", JSON.stringify(count));
   if (!products) {
@@ -58,17 +60,7 @@ const GetAllProducts = asyncHandler(async (req: Request, res: Response) => {
       .skip(perPage * (page - 1))
       .select(select);
 
-    ProductCache.set(
-      "products " +
-        "Filter" +
-        JSON.stringify(keyword) +
-        "Page" +
-        page +
-        "Count" +
-        count,
-      products,
-      3600 / 2
-    );
+    ProductCache.set(CacheKey, products, 3600 / 2);
     res.status(201);
     res.json({ products, page, pages: Math.ceil(count / perPage) });
   } else {

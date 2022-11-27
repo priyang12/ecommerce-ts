@@ -24,7 +24,7 @@ function DisplayProducts({ title }: { title?: string }) {
       <h1>{title}</h1>
       <StyledProducts>
         {ProductsData?.products.length > 0 ? (
-          ProductsData?.products.map((product: Product) => (
+          ProductsData?.products.map((product) => (
             <ProductCard product={product} key={product._id} />
           ))
         ) : (

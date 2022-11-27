@@ -11,9 +11,9 @@ type CardProps = {
   product: Product;
 };
 
-const ProductCard: React.FC<CardProps> = ({
+function ProductCard({
   product: { _id, name, image, price, rating, numReviews },
-}: CardProps) => {
+}: CardProps) {
   const Navigate = useNavigate();
   const EnterProduct = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -44,6 +44,6 @@ const ProductCard: React.FC<CardProps> = ({
       </StyledRating>
     </StyledProductCard>
   );
-};
+}
 
 export default ProductCard;

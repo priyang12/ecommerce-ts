@@ -8,7 +8,12 @@ export const useProducts = () => {
     "products",
     async () => {
       const response: AxiosResponse<ProductAPI> = await axios.get(
-        "/api/products"
+        "/api/products",
+        {
+          params: {
+            select: "_id,name,image,price,rating,numReviews",
+          },
+        }
       );
       return response.data;
     },
