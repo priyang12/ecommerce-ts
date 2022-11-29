@@ -11,6 +11,7 @@ import {
   StyledDropDownButton,
   StyledSecondaryNav,
   StyledUserName,
+  StyledSkipNav,
 } from "./StyledComponents/StyledNavbar";
 import { FaShoppingCart } from "react-icons/fa";
 import LogoImage from "../Assets/Logo.png";
@@ -84,7 +85,7 @@ const Navbar = () => {
           <img src={LogoImage} alt="" />
         </Logo>
       </Link>
-
+      <StyledSkipNav href="#SkipNav">Skip Navigation</StyledSkipNav>
       <StyledSecondaryNav>
         {user && (
           <StyledLinks>
@@ -95,6 +96,7 @@ const Navbar = () => {
         )}
         {user ? AuthLink : GuestLink}
       </StyledSecondaryNav>
+      <div id="SkipNav"></div>
     </StyledNavbar>
   );
 };

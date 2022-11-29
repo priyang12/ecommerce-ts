@@ -16,6 +16,14 @@ export const StyledNavbar = styled.nav`
   }
 `;
 
+export const StyledSkipNav = styled.a`
+  z-index: -1;
+  &:focus {
+    z-index: 1;
+    display: block;
+  }
+`;
+
 export const StyledSecondaryNav = styled.div`
   display: flex;
   justify-content: space-evenly;

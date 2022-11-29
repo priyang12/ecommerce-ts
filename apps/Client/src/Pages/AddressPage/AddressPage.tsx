@@ -28,7 +28,7 @@ const AddressPage = () => {
     }
   }, [Cart, Navigate, isError, isSuccess]);
 
-  const SubmitAddress = (e: React.ChangeEvent<HTMLFormElement>) => {
+  const SubmitAddress: React.ComponentProps<"form">["onSubmit"] = (e) => {
     e.preventDefault();
     try {
       OrderSchema.pick({
