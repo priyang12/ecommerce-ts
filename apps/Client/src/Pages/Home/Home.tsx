@@ -5,8 +5,9 @@ import SearchBar from "../../Components/SearchBar";
 import ErrorCatch from "../../Components/ErrorCatch";
 import { StyledHeroContainer, StyledHero } from "./StyledHero";
 import DisplayProducts from "./DisplayProducts";
+import CarouselBoundary from "../../Components/Carousel/CarouselBoundary";
 
-const Carousel = React.lazy(() => import("../../Components/Carousel"));
+const Carousel = React.lazy(() => import("../../Components/Carousel/Carousel"));
 const HeroImage = React.lazy(() => import("./HeroImage"));
 
 const Home = () => {
@@ -32,11 +33,11 @@ const Home = () => {
           <HeroImage />
         </Suspense>
       </StyledHeroContainer>
-      <ErrorCatch>
+      <CarouselBoundary>
         <React.Suspense fallback={<Spinner />}>
           <Carousel />
         </React.Suspense>
-      </ErrorCatch>
+      </CarouselBoundary>
       <DisplayProducts title="Products Display" />
     </>
   );

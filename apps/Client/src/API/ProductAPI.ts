@@ -83,6 +83,7 @@ export const useLoadTopProducts = () => {
       return response.data;
     },
     {
+      suspense: true,
       useErrorBoundary: (error: any) => error.response?.status >= 500,
     }
   );

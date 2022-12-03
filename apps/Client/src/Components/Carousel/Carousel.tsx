@@ -1,11 +1,11 @@
 import { useEffect, useReducer, useState } from "react";
-import { useLoadTopProducts } from "../API/ProductAPI";
-import Slide from "./Slide";
+import { useLoadTopProducts } from "../../API/ProductAPI";
+import Slide from "../Slide";
 import {
   StyledSlide,
   StyledSlideButton,
   StyledSlidesContainer,
-} from "./StyledComponents/Styledslides";
+} from "../StyledComponents/Styledslides";
 import { FaChevronCircleLeft, FaChevronCircleRight } from "react-icons/fa";
 const initialState = {
   slideIndex: 0,
@@ -50,8 +50,6 @@ function Carousel() {
   const handleLeave = () => {
     setHover(false);
   };
-
-  if (DisplayProducts.length === 0) return <div>Loading...</div>;
 
   return (
     <StyledSlidesContainer>
