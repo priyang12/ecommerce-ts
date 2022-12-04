@@ -21,11 +21,15 @@ Client web app it is well tested by react-testing lib. the paypment is powered b
 
 ## Video
 
+
+
 Client Side
-https://user-images.githubusercontent.com/72823974/205493981-7942496c-bbad-4222-bc48-d6111b9843b1.mp4
+
+https://user-images.githubusercontent.com/72823974/205494063-3ca16515-b722-4fb8-9211-2e63074ac963.mp4
 
 Admin Side
-https://user-images.githubusercontent.com/72823974/205493973-5bb27b1d-25d8-4e9a-87e8-8fd4ad953356.mp4
+
+https://user-images.githubusercontent.com/72823974/205494089-5fda4ba1-9fc5-4b1a-a9c6-5063d9937932.mp4
 
 
 ## Technologies
