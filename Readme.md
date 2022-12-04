@@ -1,50 +1,94 @@
-# Ecommerce
+---
+TechName: FULL-STACK-MonoRepo
+Title: ShopIT E-commerce & Admin
+Description: It's a full-stack web application that allows users to create an account, log in, and create an order. The application also allows users to view their order history, and view their cart. The application is built with Node.js, Express, MongoDB, React, Context API, and Styled Component. The application is deployed on Vercel.
+Technologies: [Node.js, Express, MongoDB, React, Styled Component]
+ProjectLink: https://www.shop.web-club.co
+AdminLink: http://shop-admin.web-club.co
+GithubLink: https://github.com/priyang12/ecommerce-ts
+Image: https://ik.imagekit.io/5aalo5l7bu7/Ecommerce_8WgWzew6o.png?ik-sdk-version=javascript-1.4.3&updatedAt=1660117461345
+ClientImage: https://ik.imagekit.io/5aalo5l7bu7/Ecommerce_8WgWzew6o.png?ik-sdk-version=javascript-1.4.3&updatedAt=1660117461345
+ClientVideo: https://ik.imagekit.io/5aalo5l7bu7/Portfolio/EcommerceClient_9av_ILt4v.mp4?ik-sdk-version=javascript-1.4.3&updatedAt=1668355268526
+AdminImage: https://ik.imagekit.io/5aalo5l7bu7/Portfolio/Admin_4pWkBKF7g?ik-sdk-version=javascript-1.4.3&updatedAt=1668887257201
+AdminVideo: https://ik.imagekit.io/5aalo5l7bu7/Portfolio/EcommerceAdmin_DDzIsBmjK.mp4?ik-sdk-version=javascript-1.4.3&updatedAt=1668887007286
+---
 
-> eCommerce platform built with the MERN stack
-> -Front-end: typescript, React, React Router, Styled Components,
-> -Back-end: Node.js, Express, MongoDB, Mongoose,
-> -Database: MongoDB, Mongoose,
-> -Hosting: Vercel,
-> -Testing: Jest, react-testing-library,
-> -Version Control: Git,
+ShopIT is a Fullstack Ecommerce webapp. it's where you can shop the things that you want with out worring about long processes.
 
-> check-out layout at https://github.com/priyang12/Ecommerce-Layout-with-Scss/tree/Modern
+it's a monorepo with two frontends and same backend created using turborepo. One is for client to use and place order and other is admin panel for administrator work process. there one comman package for validation created for value validation using **ZOD**.
 
-![Login Page](https://github.com/priyang12/Ecommerce-typescript/blob/master/ScreenShots/Screenshot%202022-01-06%20at%207.44.18%20PM.png)
+Client web app it is well tested by react-testing lib. the paypment is powered by paypal. it is a PWA which is installlable and is **semi** workable in **offline** mode. cahceing worked by workbox. Other frontend is a for admin work and which is build using react-admin. it show's interactive ways to handle orders, review and other work. There are end-to-end test for the client apps by cypress.
 
-![Admin Dashboard](https://github.com/priyang12/Ecommerce-typescript/blob/master/ScreenShots/Screenshot%202022-01-06%20at%207.45.01%20PM.png)
+## Video
 
-![Single Product](https://github.com/priyang12/Ecommerce-typescript/blob/master/ScreenShots/Screenshot%202022-01-06%20at%207.48.00%20PM.png)
+Client Side
+https://user-images.githubusercontent.com/72823974/205493981-7942496c-bbad-4222-bc48-d6111b9843b1.mp4
 
-## Features
+Admin Side
+https://user-images.githubusercontent.com/72823974/205493973-5bb27b1d-25d8-4e9a-87e8-8fd4ad953356.mp4
 
+
+## Technologies
+
+1. Client
+   - React
+   - Styled Component
+   - react-query
+   - workbox
+   - @testing-library
+2. Admin
+   - React
+   - React-admin
+   - recharts
+   - @mui/material
+3. Backend
+   - Node.js
+   - Express.js
+   - imagekit
+   - mongoose
+   - agenda
+   - @sendgrid/mail
+
+## Client Features
+
+- PWA
 - Top products carousel
 - Product pagination
-- Carousel slider
+- Carousel
 - Full featured shopping cart
 - Product reviews and ratings
+- Suggrested Products
+- Wishlist Products
 - Product search feature
-- Save the Cart in User
+- Product Reviews
+- User Cart
 - Order Placement
-- Admin product management
-- Admin Order details page
 - Checkout process (shipping, payment method, etc)
 - PayPal / credit card integration
-- Database seeder (products & users)
-- Admin Update product
 - Private and Protected Routes
-- User account management
-- Products Search
 - Forget password
-- Backend API Cache
-- Backend Rate Limiter
-- deployment to Vercel
+- Servive worker cache
 
-## Features Still In Development
+## Admin Features
 
-- end-to-end testing/cypress
-- Product Sorting
-- Demo Usage
+- Dashborad 
+- Admin User management
+- Admin Product management
+- Admin Order management
+- User's Review management
+- Filtering in Products
+
+## Server Features
+
+- Admin and Client APIs
+- Cache Response
+- Rate Limiter
+- Jobs Scheduling
+- Seeder
+- Cors
+
+
+
 
 ### Env Variables
 
@@ -61,23 +105,31 @@ SENDGRID_API_KEY = your sendgrid api key
 
 ```
 
-### Install Dependencies (frontend & backend)
+
+### Install Dependencies (frontend & backend & Admin)
 
 ```
-npm install
-
-cd client
 npm install
 ```
 
 ### Run
 
 ```
+# Run individual
+
+npm run client
+npm run admin
+npm run server
+
 # Run frontend (:3000) & backend (:5000)
 npm run dev
 
-# Run backend only
-npm run server
+# Run frontend (:3000) & backend (:5000)
+npm run dev:admin
+
+# Cypress e2e tests
+	npm run e2e
+
 ```
 
 ### Seed Database
