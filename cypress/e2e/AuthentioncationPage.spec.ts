@@ -27,7 +27,7 @@ it("Input Valid Email and Password and Logout", () => {
   cy.get("form").submit();
 
   //check for login success
-  cy.url().should("eq", "http://localhost:3000/");
+  cy.url().should("eq", "http://localhost:5173/");
   //check for User Name
   cy.contains(AdminUser.name);
 
