@@ -3,8 +3,8 @@ import {
   render,
   waitForElementToBeRemoved,
   waitFor,
-  act,
 } from "@testing-library/react";
+import { act } from "react";
 import { Wrapper } from "../../TestSetup";
 import { Products } from "../Testdata/Data";
 import userEvent from "@testing-library/user-event";

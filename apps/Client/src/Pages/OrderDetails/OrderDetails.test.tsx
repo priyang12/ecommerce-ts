@@ -1,10 +1,10 @@
 import {
   render,
   screen,
-  act,
   waitForElementToBeRemoved,
   fireEvent,
 } from "@testing-library/react";
+import { act } from "react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import userEvent from "@testing-library/user-event";

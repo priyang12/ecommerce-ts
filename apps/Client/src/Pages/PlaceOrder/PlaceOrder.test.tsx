@@ -1,9 +1,9 @@
 import {
   render,
   screen,
-  waitFor,
   waitForElementToBeRemoved,
 } from "@testing-library/react";
+
 import { Route, Router, Routes } from "react-router-dom";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
