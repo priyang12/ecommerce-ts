@@ -1,5 +1,5 @@
 import fs from "fs";
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import { VitePWA } from "vite-plugin-pwa";
 import react from "@vitejs/plugin-react";
 
@@ -8,10 +8,18 @@ const manifest = JSON.parse(
 );
 
 export default defineConfig({
+  build: {
+    outDir: "build",
+  },
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: "./src/setupTests.ts",
+  },
   plugins: [
     react(),
     VitePWA({
-      srcDir: "src", // assuming your service-worker.ts is in src
+      srcDir: "src",
       filename: "service-worker.ts",
       strategies: "injectManifest",
       injectRegister: false, // because you register manually
