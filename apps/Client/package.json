@@ -36,7 +36,7 @@
     "workbox-window": "^6.5.3"
   },
   "scripts": {
-    "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start",
+    "start": "vite",
     "build": "CI=false && react-scripts build",
     "test": "react-scripts test --watchAll=false  --coverage --forceExit",
     "test:watch": "react-scripts test --watch",
@@ -86,11 +86,13 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/react-test-renderer": "^17.0.1",
     "@types/styled-components": "^5.1.15",
+    "@vitejs/plugin-react": "^4.5.1",
     "axios-mock-adapter": "^1.20.0",
     "eslint-config-custom": "*",
     "eslint-plugin-react-hooks": "^4.6.0",
     "jest-canvas-mock": "^2.4.0",
     "react-scripts": "^5.0.0",
-    "react-test-renderer": "^18.2.0"
+    "react-test-renderer": "^18.2.0",
+    "vite": "^6.3.5"
   }
 }
