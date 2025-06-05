@@ -1,7 +1,9 @@
+import heroImage from "../../Assets/HeroImage.gif";
+
 function HeroImage() {
   return (
     <>
-      <img src={require("../../Assets/HeroImage.gif")} alt="" width={400} />
+      <img src={heroImage} alt="" width={400} />
     </>
   );
 }
