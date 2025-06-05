@@ -13,15 +13,13 @@ AdminImage: https://ik.imagekit.io/5aalo5l7bu7/Portfolio/Admin_4pWkBKF7g?ik-sdk-
 AdminVideo: https://ik.imagekit.io/5aalo5l7bu7/Portfolio/EcommerceAdmin_DDzIsBmjK.mp4?ik-sdk-version=javascript-1.4.3&updatedAt=1668887007286
 ---
 
-ShopIT is a Fullstack Ecommerce webapp. it's where you can shop the things that you want with out worring about long processes.
+ShopIT is a Fullstack Ecommerce webapp. it's where you can shop the things that you want with out worrying about long processes.
 
-it's a monorepo with two frontends and same backend created using turborepo. One is for client to use and place order and other is admin panel for administrator work process. there one comman package for validation created for value validation using **ZOD**.
+it's a monorepo with two frontend's and same backend created using turboRepo. One is for client to use and place order and other is admin panel for administrator work process. there one common package for validation created for value validation using **ZOD**.
 
-Client web app it is well tested by react-testing lib. the paypment is powered by paypal. it is a PWA which is installlable and is **semi** workable in **offline** mode. cahceing worked by workbox. Other frontend is a for admin work and which is build using react-admin. it show's interactive ways to handle orders, review and other work. There are end-to-end test for the client apps by cypress.
+Client web app it is well tested by react-testing lib. the payment is powered by paypal. it is a PWA which is installable and is **semi** workable in **offline** mode. caching worked by workbox. Other frontend is a for admin work and which is build using react-admin. it show's interactive ways to handle orders, review and other work. There are end-to-end test for the client apps by cypress.
 
 ## Video
-
-
 
 Client Side
 
@@ -30,7 +28,6 @@ https://user-images.githubusercontent.com/72823974/205494063-3ca16515-b722-4fb8-
 Admin Side
 
 https://user-images.githubusercontent.com/72823974/205494089-5fda4ba1-9fc5-4b1a-a9c6-5063d9937932.mp4
-
 
 ## Technologies
 
@@ -61,7 +58,7 @@ https://user-images.githubusercontent.com/72823974/205494089-5fda4ba1-9fc5-4b1a-
 - Carousel
 - Full featured shopping cart
 - Product reviews and ratings
-- Suggrested Products
+- Suggested Products
 - Wishlist Products
 - Product search feature
 - Product Reviews
@@ -75,7 +72,7 @@ https://user-images.githubusercontent.com/72823974/205494089-5fda4ba1-9fc5-4b1a-
 
 ## Admin Features
 
-- Dashborad 
+- Dashboard
 - Admin User management
 - Admin Product management
 - Admin Order management
@@ -91,30 +88,31 @@ https://user-images.githubusercontent.com/72823974/205494089-5fda4ba1-9fc5-4b1a-
 - Seeder
 - Cors
 
-
-
-
 ### Env Variables
 
 Create a .env file in then root and add the following
 
 ```
 NODE_ENV = development
-PORT = 5000
+PORT = 5001 or 5000 // make sure refactor the vite.config.ts proxy API end point.
 MONGO_URI = your mongodb uri
+TEST_MONGO_URI = use mongodb uri or change it for testing. this will the db that connected in development mode.
 JWT_SECRET = 'abc123'
 PAYPAL_CLIENT_ID = your paypal client id
 END_POINT = imagekit url
+PRIVATE_KEY = imagekit private key
+PUBLIC_KEY = imagekit public key
 SENDGRID_API_KEY = your sendgrid api key
 
 ```
-
 
 ### Install Dependencies (frontend & backend & Admin)
 
 ```
 npm install
 ```
+
+or install separately by going inside their dir.
 
 ### Run
 
@@ -125,14 +123,14 @@ npm run client
 npm run admin
 npm run server
 
-# Run frontend (:3000) & backend (:5000)
+# Run frontend (:5173) & backend (:5001)
 npm run dev
 
-# Run frontend (:3000) & backend (:5000)
+# Run frontend (:5173) & backend (:5001)
 npm run dev:admin
 
 # Cypress e2e tests
-	npm run e2e
+npm run e2e
 
 ```
 

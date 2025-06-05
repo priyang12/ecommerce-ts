@@ -6,3 +6,4 @@ build
 .turbo
 coverage
 .vscode/settings.json
+.vscode
