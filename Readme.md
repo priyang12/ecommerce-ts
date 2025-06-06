@@ -72,7 +72,11 @@ https://user-images.githubusercontent.com/72823974/205494089-5fda4ba1-9fc5-4b1a-
 
 ## Admin Features
 
-- Dashboard
+<<<<<<< HEAD
+
+- # Dashboard
+- Dashborad
+  > > > > > > > vite-migrate
 - Admin User management
 - Admin Product management
 - Admin Order management
@@ -104,6 +108,12 @@ PRIVATE_KEY = imagekit private key
 PUBLIC_KEY = imagekit public key
 SENDGRID_API_KEY = your sendgrid api key
 
+```
+
+Create a .env file in then admin and add the following
+
+```
+VITE_REACT_APP_BACKEND=your backend server url
 ```
 
 ### Install Dependencies (frontend & backend & Admin)
