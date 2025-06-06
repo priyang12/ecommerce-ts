@@ -21,8 +21,6 @@ Client web app it is well tested by react-testing lib. the paypment is powered b
 
 ## Video
 
-
-
 Client Side
 
 https://user-images.githubusercontent.com/72823974/205494063-3ca16515-b722-4fb8-9211-2e63074ac963.mp4
@@ -30,7 +28,6 @@ https://user-images.githubusercontent.com/72823974/205494063-3ca16515-b722-4fb8-
 Admin Side
 
 https://user-images.githubusercontent.com/72823974/205494089-5fda4ba1-9fc5-4b1a-a9c6-5063d9937932.mp4
-
 
 ## Technologies
 
@@ -75,7 +72,7 @@ https://user-images.githubusercontent.com/72823974/205494089-5fda4ba1-9fc5-4b1a-
 
 ## Admin Features
 
-- Dashborad 
+- Dashborad
 - Admin User management
 - Admin Product management
 - Admin Order management
@@ -90,9 +87,6 @@ https://user-images.githubusercontent.com/72823974/205494089-5fda4ba1-9fc5-4b1a-
 - Jobs Scheduling
 - Seeder
 - Cors
-
-
-
 
 ### Env Variables
 
@@ -109,6 +103,11 @@ SENDGRID_API_KEY = your sendgrid api key
 
 ```
 
+Create a .env file in then admin and add the following
+
+```
+VITE_REACT_APP_BACKEND=your backend server url
+```
 
 ### Install Dependencies (frontend & backend & Admin)
 
