@@ -1,8 +1,9 @@
 import axios from "axios";
 
-const apiUrl = process.env.REACT_APP_BACKEND
-  ? `${process.env.REACT_APP_BACKEND}/api/users`
-  : "/api/users";
+// import.meta.env
+const backendUrl: string = import.meta.env.VITE_REACT_APP_BACKEND;
+
+const apiUrl = backendUrl ? `${backendUrl}/api/users` : "/api/users";
 
 const authProvider = {
   login: async ({
@@ -13,7 +14,7 @@ const authProvider = {
     password: string;
   }) => {
     try {
-      const { data } = await axios.post(`${apiUrl}/login`, {
+      const { data } = await axios.post(`${backendUrl}/login`, {
         email: username,
         password,
       });
