@@ -37,10 +37,10 @@ function Home() {
 
   if (Err) return <AlertDisplay msg={"Something Went Wrong"} type={"error"} />;
   const NextPage = () => {
-    Navigate(`/search/name=${keyword}/${page + 1}`);
+    Navigate(`/search/${keyword}/${page + 1}`);
   };
   const PreviousPage = () => {
-    Navigate(`/search/name=${keyword}/${page - 1}`);
+    Navigate(`/search/${keyword}/${page - 1}`);
   };
 
   return (

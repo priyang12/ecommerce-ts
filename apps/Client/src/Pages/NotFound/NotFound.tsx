@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { StyledPage } from "./StyledNotFoundPage";
 
 interface Props {
-  data: {
+  data?: {
     heading: string;
     message: string;
     link: string;

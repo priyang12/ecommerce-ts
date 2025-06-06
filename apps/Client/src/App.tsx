@@ -52,8 +52,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/Home" element={<Home />} />
-        <Route path="/search/name=:keyword" element={<Search />} />
-        <Route path="/search/name=:keyword/:pageNumber" element={<Search />} />
+        <Route path="/search/:keyword" element={<Search />} />
+        <Route path="/search/:keyword/:pageNumber" element={<Search />} />
         <Route path="/product/:id" element={<SingleProduct />} />
         <Route path="/Auth" element={<Auth />}>
           <Route path="register" element={<Register />} />

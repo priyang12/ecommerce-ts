@@ -12,8 +12,10 @@ function SearchBar({ searchedValue }: { searchedValue: string }) {
 
   const search = () => {
     if (searchValue !== "") {
-      const path = `/search/name=${searchValue}`;
+      const path = `/search/${searchValue}`;
       Navigate(path);
+    } else {
+      Navigate("/");
     }
   };
 

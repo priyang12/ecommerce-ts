@@ -29,5 +29,5 @@ it("Should not search when value is empty", async () => {
     charCode: 13,
     code: 13,
   });
-  expect(window.location.pathname).toMatch("/search/name=Iphone");
+  expect(window.location.pathname).toMatch("/search/Iphone");
 });

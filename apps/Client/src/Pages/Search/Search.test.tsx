@@ -25,12 +25,12 @@ const Setup = (History: any, route: string, path: string) => {
 
 it("Check For Url without Page", async () => {
   const keyword = "Playstation";
-  const route = `/search/name=${keyword}`;
+  const route = `/search/${keyword}`;
   const History = createMemoryHistory({ initialEntries: [route] });
 
   mock.onGet(`/api/products/?keyword=${keyword}`).reply(200, SerachResult);
 
-  await Setup(History, route, "/search/name=:keyword");
+  await Setup(History, route, "/search/:keyword");
 
   await waitFor(() => {
     expect(
@@ -58,7 +58,7 @@ it("Check For Url without Page", async () => {
 
 it("Show Pagination", async () => {
   const keyword = "Playstation";
-  const route = `/search/name=${keyword}/2`;
+  const route = `/search/${keyword}/2`;
   const History = createMemoryHistory({ initialEntries: [route] });
 
   const current = { ...SerachResult, pages: 3, page: 2 };
@@ -69,7 +69,7 @@ it("Show Pagination", async () => {
 
   mock.onGet(`/api/products/?keyword=Playstation&page=3`).reply(200, NextData);
 
-  Setup(History, route, "/search/name=:keyword/:pageNumber");
+  Setup(History, route, "/search/:keyword/:pageNumber");
 
   await waitFor(() => {
     expect(
@@ -84,25 +84,25 @@ it("Show Pagination", async () => {
   //Check Location on next click
 
   await waitFor(() => {
-    expect(History.location.pathname).toMatch(`/name=${keyword}/3`);
+    expect(History.location.pathname).toMatch(`/${keyword}/3`);
   });
 
   Prev.click();
 
   //Check Location on prev click
-  expect(History.location.pathname).toMatch(`/name=${keyword}/1`);
+  expect(History.location.pathname).toMatch(`/${keyword}/1`);
 });
 
 it("Pagination not exist", async () => {
   const keyword = "Playstation";
-  const route = `/search/name=${keyword}/1`;
+  const route = `/search/${keyword}/1`;
   const History = createMemoryHistory({ initialEntries: [route] });
 
   const newResult = { ...SerachResult, pages: 1 };
 
   mock.onGet(`/api/products/?keyword=Playstation&page=1`).reply(200, newResult);
 
-  Setup(History, route, "/search/name=:keyword/:pageNumber");
+  Setup(History, route, "/search/:keyword/:pageNumber");
 
   await waitFor(() => {
     expect(
