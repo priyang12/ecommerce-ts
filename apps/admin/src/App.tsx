@@ -27,22 +27,26 @@ const MyAppBar = (props: any) => (
     <Box flex="1">
       <Typography variant="h6" id="react-admin-title"></Typography>
     </Box>
-    <ToggleThemeButton lightTheme={Theme} darkTheme={darkTheme} />
+    {/* fix this deprecated component later. causing run time errors */}
+    {/* <ToggleThemeButton lightTheme={Theme} darkTheme={darkTheme} /> */}
   </AppBar>
 );
 
 const MyLayout = (props: any) => <Layout {...props} appBar={MyAppBar} />;
+
+console.log("Theme:", Theme);
+console.log("Dark Theme:", darkTheme);
 
 function App() {
   return (
     <>
       <Admin
         dashboard={Dashboard}
+        theme={Theme}
         loginPage={MyLoginPage}
         layout={MyLayout}
         dataProvider={DataProviderWithFormData}
         authProvider={authProvider}
-        theme={Theme}
       >
         <Resource
           name="users"
