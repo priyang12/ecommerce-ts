@@ -8,7 +8,13 @@ interface Props {
     link: string;
   };
 }
-function NotFound({ data }: Props) {
+function NotFound({
+  data = {
+    heading: "404 Not Found",
+    message: "The page you are looking for does not exist.",
+    link: "Go to the home page",
+  },
+}: Props) {
   return (
     <StyledPage>
       <h1>{data.heading}</h1>
@@ -20,13 +26,5 @@ function NotFound({ data }: Props) {
     </StyledPage>
   );
 }
-
-NotFound.defaultProps = {
-  data: {
-    heading: "404 Not Found",
-    message: "The page you are looking for does not exist.",
-    link: "Go to the home page",
-  },
-};
 
 export default NotFound;

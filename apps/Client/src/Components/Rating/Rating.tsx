@@ -7,7 +7,7 @@ type rating = {
   color: string;
 };
 
-function Rating({ value, text, color }: rating) {
+function Rating({ value, text, color = "#f8e825" }: rating) {
   return (
     <StyledStars>
       <span>
@@ -59,9 +59,5 @@ function Rating({ value, text, color }: rating) {
     </StyledStars>
   );
 }
-
-Rating.defaultProps = {
-  color: "#f8e825",
-};
 
 export default Rating;
