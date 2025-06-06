@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "typeRoots": ["@types", "node_modules/@types"],
+    "typeRoots": ["node_modules/@types"],
     "outDir": "./build",
     "strict": true,
     "noImplicitAny": false,
@@ -15,6 +15,6 @@
     "allowUnreachableCode": true,
     "useUnknownInCatchVariables": false
   },
-  "include": ["/**/*.ts", "/**/*.d.ts", "/@types/express/index.d.ts"],
+  "include": ["/**/*.ts", "/**/*.d.ts"],
   "exclude": ["node_modules", "<node_internals>/**"]
 }

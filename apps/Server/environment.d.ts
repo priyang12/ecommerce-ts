@@ -13,6 +13,16 @@ declare global {
       SENDGRID_API_KEY: string;
     }
   }
+  namespace Express {
+    interface Request {
+      user: {
+        id: string;
+      };
+      orinialUrl: string;
+      userModal: any;
+      file: any;
+    }
+  }
 }
 
 // If this file has no import/export statements (i.e. is a script)
