@@ -14,7 +14,7 @@ const authProvider = {
     password: string;
   }) => {
     try {
-      const { data } = await axios.post(`${backendUrl}/login`, {
+      const { data } = await axios.post(`${apiUrl}/login`, {
         email: username,
         password,
       });

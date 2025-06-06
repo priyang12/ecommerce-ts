@@ -107,7 +107,7 @@ END_POINT = imagekit url
 PRIVATE_KEY = imagekit private key
 PUBLIC_KEY = imagekit public key
 SENDGRID_API_KEY = your sendgrid api key
-
+CLIENT_URL =  admin url for using cross origin. do not a "/" at the end ex: http://localhost:5173
 ```
 
 Create a .env file in then admin and add the following

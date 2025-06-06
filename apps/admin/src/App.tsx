@@ -27,8 +27,6 @@ const MyAppBar = (props: any) => (
     <Box flex="1">
       <Typography variant="h6" id="react-admin-title"></Typography>
     </Box>
-
-    <ToggleThemeButton />
   </AppBar>
 );
 
