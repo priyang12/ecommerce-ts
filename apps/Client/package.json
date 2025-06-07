@@ -91,6 +91,7 @@
     "axios-mock-adapter": "^2.1.0",
     "eslint-config-custom": "*",
     "eslint-plugin-react-hooks": "^5.2.0",
+    "jsdom": "^26.1.0",
     "react-test-renderer": "^18.2.0",
     "remove": "^0.1.5",
     "vite": "^6.3.5",

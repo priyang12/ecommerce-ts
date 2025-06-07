@@ -29,7 +29,6 @@ export const ProductsSchema = z.object({
 export const CreateProductValidation = ProductsSchema.omit({
   _id: true,
   user: true,
-  reviews: true,
   createdAt: true,
   updatedAt: true,
   numReviews: true,
