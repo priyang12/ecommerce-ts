@@ -1,8 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 import { useMutation, useQuery } from "react-query";
-import { queryClient } from "../query";
+import { queryClient } from "../Utils/query";
 import { toast } from "react-toastify";
-import { DetailedProduct } from "../interfaces";
+import { DetailedProduct } from "../Types/interfaces";
 
 type wishlist = {
   products: Pick<

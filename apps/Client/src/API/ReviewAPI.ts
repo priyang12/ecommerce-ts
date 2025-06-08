@@ -1,8 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 import { useMutation, useQuery } from "react-query";
 import { toast } from "react-toastify";
-import { IOrder, Product, Review } from "../interfaces";
-import { queryClient } from "../query";
+import { IOrder, Product, Review } from "../Types/interfaces";
+import { queryClient } from "../Utils/query";
 import { CustomAxiosError } from "./interface";
 
 const ErrorHandle = (error: unknown) => {

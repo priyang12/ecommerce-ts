@@ -11,7 +11,7 @@ import {
 import ProductCard from "../../Components/ProductCard";
 import AlertDisplay from "../../Components/AlertDisplay";
 import Spinner from "../../Components/Spinner";
-import { Product } from "../../interfaces";
+import { Product } from "../../Types/interfaces";
 
 function Home() {
   const { keyword, pageNumber }: any = useParams();

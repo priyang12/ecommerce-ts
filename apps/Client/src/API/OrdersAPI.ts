@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { useMutation, useQuery } from "react-query";
-import { IOrder } from "../interfaces";
-import { queryClient } from "../query";
+import { IOrder } from "../Types/interfaces";
+import { queryClient } from "../Utils/query";
 import { OrderListItem } from "./interface";
 
 export const useLoadOrders = (url: string) => {

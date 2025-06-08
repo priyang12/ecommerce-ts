@@ -1,6 +1,6 @@
 import React, { createContext, useReducer } from "react";
 import { AuthActions, AuthReducer } from "./AuthReducer";
-import { User } from "../../interfaces";
+import { User } from "../../Types/interfaces";
 
 export interface IContextModel {
   state: AuthState;

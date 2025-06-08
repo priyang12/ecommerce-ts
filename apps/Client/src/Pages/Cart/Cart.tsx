@@ -10,7 +10,7 @@ import {
   StyledCartContainer,
 } from "./StyledCart";
 import { useDeleteCartApi, useLoadCartQuery } from "../../API/CartAPI";
-import { DetailedProduct } from "../../interfaces";
+import { DetailedProduct } from "../../Types/interfaces";
 import CartItemsUI from "./CartItemsUI";
 import Cartwishlist from "./Cartwishlist";
 

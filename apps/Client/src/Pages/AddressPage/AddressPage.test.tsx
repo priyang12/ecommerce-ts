@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 
 //components
 import AddressPage from "./AddressPage";
-import { Address } from "../../interfaces";
+import { Address } from "../../Types/interfaces";
 import { Wrapper } from "../../TestSetup";
 
 const cart = [

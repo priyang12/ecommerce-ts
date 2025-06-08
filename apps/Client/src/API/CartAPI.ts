@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { useMutation, useQuery } from "react-query";
 import { CartItem } from "../Pages/PlaceOrder/ProductList";
-import { queryClient } from "../query";
+import { queryClient } from "../Utils/query";
 import { CustomAxiosError } from "./interface";
 
 type CartResponse = z.infer<typeof CartSchema> & {

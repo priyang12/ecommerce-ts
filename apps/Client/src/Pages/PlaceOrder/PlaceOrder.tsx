@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState } from "react";
 import { Navigate as Redirect, useNavigate } from "react-router";
 import { Helmet } from "react-helmet-async";
-import { Address } from "../../interfaces";
+import { Address } from "../../Types/interfaces";
 import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
 import ProductList from "./ProductList";
 import Navigators from "../../Components/Navigators";

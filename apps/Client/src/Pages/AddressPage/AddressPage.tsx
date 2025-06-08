@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "../../Utils/CustomHooks";
-import { Address } from "../../interfaces";
+import { Address } from "../../Types/interfaces";
 import Navigators from "../../Components/Navigators";
 import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
 import { OrderSchema } from "../../validation";

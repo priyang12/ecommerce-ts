@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { CartProducts, ListProduct } from "../../interfaces";
+import { CartProducts, ListProduct } from "../../Types/interfaces";
 import { StyledItem, StyledPrice, StyledQuantity } from "./StyledProductList";
 
 export type CartItem = {

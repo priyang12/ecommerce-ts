@@ -1,6 +1,6 @@
 import { OrderSchema, z } from "../validation";
 import { AxiosError } from "axios";
-import { DetailedProduct, Product, User } from "../interfaces";
+import { DetailedProduct, Product, User } from "../Types/interfaces";
 
 export interface ProductAPI {
   products: Product[];

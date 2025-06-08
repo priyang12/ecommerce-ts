@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { media } from "../../../Variables";
+import { media } from "../../../Utils/Variables";
 
 export const StyledContainer = styled.section`
   max-width: 120ch;

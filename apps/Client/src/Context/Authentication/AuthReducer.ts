@@ -1,4 +1,4 @@
-import { User } from "../../interfaces";
+import { User } from "../../Types/interfaces";
 import { AuthState } from "./AuthContext";
 import {
   LOGIN_SUCCESS,

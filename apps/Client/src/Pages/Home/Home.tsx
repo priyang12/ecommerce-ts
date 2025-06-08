@@ -10,10 +10,6 @@ const Carousel = React.lazy(() => import("../../Components/Carousel/Carousel"));
 const HeroImage = React.lazy(() => import("./HeroImage"));
 
 const Home = () => {
-  useEffect(() => {
-    console.log("effect");
-  }, []); // 🔥 should warn: missing dependency `count`
-
   return (
     <>
       <Helmet>

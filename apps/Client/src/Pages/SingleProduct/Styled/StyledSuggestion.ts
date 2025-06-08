@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { media } from "../../../Variables";
+import { media } from "../../../Utils/Variables";
 import { StyledContainer } from "./StyledSingleProduct";
 
 export const StyleSuggestion = styled(StyledContainer)`

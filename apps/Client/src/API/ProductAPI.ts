@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { useQuery } from "react-query";
-import { DetailedProduct } from "../interfaces";
+import { DetailedProduct } from "../Types/interfaces";
 import { CustomAxiosError, ProductAPI, SearchProductAPI } from "./interface";
 
 export const useProducts = () => {

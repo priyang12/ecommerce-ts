@@ -5,7 +5,7 @@ import {
 } from "./StyledComponents/Products";
 import { Link, useNavigate } from "react-router-dom";
 import Rating from "./Rating";
-import type { Product } from "../interfaces";
+import type { Product } from "../Types/interfaces";
 
 type CardProps = {
   product: Product;

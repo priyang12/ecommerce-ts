@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { serviceWorkerRegister } from "./serviceWokerRegister";
+import { serviceWorkerRegister } from "./serviceWorkerRegister";
 
 describe("serviceWokerRegister", () => {
   it("should be defined", () => {

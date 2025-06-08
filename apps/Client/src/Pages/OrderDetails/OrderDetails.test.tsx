@@ -17,7 +17,7 @@ import OrderDetails from "./OrderDetails";
 // Mock Data
 import { MockedOrderDetails } from "../Testdata/Data";
 import ReactModal from "react-modal";
-import { queryClient } from "../../query";
+import { queryClient } from "../../Utils/query";
 
 const Mock = new MockAdapter(axios);
 

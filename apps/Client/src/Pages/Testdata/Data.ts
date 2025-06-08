@@ -1,4 +1,4 @@
-import { DetailedProduct } from "../../interfaces";
+import { DetailedProduct } from "../../Types/interfaces";
 
 type SearchResult = {
   products: DetailedProduct[];
