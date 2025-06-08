@@ -4,7 +4,7 @@ import { useForm } from "../../Utils/CustomHooks";
 import { Address } from "../../interfaces";
 import Navigators from "../../Components/Navigators";
 import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
-import { OrderSchema } from "@ecommerce/validation";
+import { OrderSchema } from "../../validation";
 import { FormControl, Input, Label } from "../../StyledComponents/FormControl";
 import { useLoadCartQuery } from "../../API/CartAPI";
 

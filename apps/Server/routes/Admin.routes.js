@@ -1,4 +1,4 @@
-import { CreateUserValidation } from "@ecommerce/validation";
+import { CreateUserValidation } from "../validation";
 import express from "express";
 
 import {

@@ -1,5 +1,5 @@
 import { Create, SimpleForm, TextInput, BooleanInput } from "react-admin";
-import { CreateUserValidation } from "@ecommerce/validation";
+import { CreateUserValidation } from "../../validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Typography } from "@mui/material";
 import HelmetComponent from "../../HelmetComponent";

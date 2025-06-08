@@ -1,5 +1,5 @@
 import express from "express";
-import { CartPost } from "@ecommerce/validation";
+import { CartPost } from "../validation";
 import Auth from "../middleware/AuthMiddleware";
 import ZodMiddleware from "../middleware/ZodMiddleware";
 const {

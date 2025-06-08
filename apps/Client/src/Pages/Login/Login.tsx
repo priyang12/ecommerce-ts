@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { LoginSchema } from "@ecommerce/validation";
+import { LoginSchema } from "../../validation";
 import { useForm } from "../../Utils/CustomHooks";
 import { LoginUser } from "../../Context/Authentication/AuthActions";
 import { AuthContext } from "../../Context/Authentication/AuthContext";

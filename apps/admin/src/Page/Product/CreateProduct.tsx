@@ -7,7 +7,7 @@ import {
   ImageInput,
   SelectInput,
 } from "react-admin";
-import { CreateProductValidation } from "@ecommerce/validation";
+import { CreateProductValidation } from "../../validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import HelmetComponent from "../../HelmetComponent";
 

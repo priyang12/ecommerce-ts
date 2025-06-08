@@ -5,7 +5,7 @@ import {
   ReviewSchema,
   UserSchema,
   z,
-} from "@ecommerce/validation";
+} from "./validation";
 
 export type User = z.infer<typeof UserSchema>;
 

@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@ecommerce/validation": "*",
     "@paypal/react-paypal-js": "^8.8.3",
     "@priyang/react-component-lib": "^1.0.2",
     "axios": "^1.9.0",
@@ -24,6 +23,7 @@
     "styled-components": "^6.1.18",
     "styled-normalize": "^8.1.1",
     "typescript": "^5.8.3",
+    "vite-plugin-pwa": "^1.0.0",
     "web-vitals": "^5.0.2",
     "workbox-core": "^7.3.0",
     "workbox-expiration": "^7.3.0",
