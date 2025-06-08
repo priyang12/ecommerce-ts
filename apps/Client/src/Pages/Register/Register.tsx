@@ -11,7 +11,7 @@ import {
   Label,
   SubmitButton,
 } from "../../StyledComponents/FormControl";
-import { RegisterSchema } from "@ecommerce/validation";
+import { RegisterSchema } from "../../validation";
 import Spinner from "../../Components/Spinner";
 const init = {
   name: "",

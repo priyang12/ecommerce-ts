@@ -1,4 +1,4 @@
-import { CartSchema, z } from "@ecommerce/validation";
+import { CartSchema, z } from "../validation";
 import axios, { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { useMutation, useQuery } from "react-query";

@@ -7,7 +7,7 @@ import {
 } from "../controllers/OrderController";
 import Auth from "../middleware/AuthMiddleware";
 import ZodMiddleware from "../middleware/ZodMiddleware";
-import { CreateOrder } from "@ecommerce/validation";
+import { CreateOrder } from "../validation";
 
 const router = express.Router();
 router

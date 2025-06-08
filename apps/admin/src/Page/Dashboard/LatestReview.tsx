@@ -1,4 +1,4 @@
-import { ReviewSchema, z } from "@ecommerce/validation";
+import { ReviewSchema, z } from "../../validation";
 import { Link } from "react-router-dom";
 import { Typography } from "@mui/material";
 import { Loading, useGetList } from "react-admin";

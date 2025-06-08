@@ -18,7 +18,7 @@ import {
   ResetpasswordSchema,
   UpdateUserProfileSchema,
   recoverMailSchema,
-} from "@ecommerce/validation";
+} from "../validation";
 
 const router = express.Router();
 router.route("/test").get(test);

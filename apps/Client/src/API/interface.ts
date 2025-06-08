@@ -1,4 +1,4 @@
-import { OrderSchema, z } from "@ecommerce/validation";
+import { OrderSchema, z } from "../validation";
 import { AxiosError } from "axios";
 import { DetailedProduct, Product, User } from "../interfaces";
 

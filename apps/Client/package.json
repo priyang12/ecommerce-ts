@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@ecommerce/validation": "*",
     "@paypal/react-paypal-js": "^8.8.3",
     "@priyang/react-component-lib": "^1.0.2",
     "axios": "^1.9.0",

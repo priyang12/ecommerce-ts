@@ -4,7 +4,6 @@
   "private": true,
   "proxy": "http://localhost:5001",
   "dependencies": {
-    "@ecommerce/validation": "*",
     "@hookform/resolvers": "^5.0.1",
     "axios": "^1.9.0",
     "date-fns": "^4.1.0",
