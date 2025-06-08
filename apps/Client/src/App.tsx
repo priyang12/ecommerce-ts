@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useOnlineStatus } from "./Utils/CustomHooks";
 import Navbar from "./Components/Navbar";
 import Auth from "./Pages/Auth";
 import Home from "./Pages/Home";
@@ -15,11 +16,13 @@ import Register from "./Pages/Register";
 import Login from "./Pages/Login";
 
 function App() {
+  const isOnline = useOnlineStatus();
+
   return (
     <BrowserRouter>
       <ScrollToTop />
-      {!window.navigator.onLine && (
-        <AlertDisplay msg="Offline" type={"error"} />
+      {!isOnline && (
+        <AlertDisplay msg="Offline connect to internet!" type="error" />
       )}
       <Navbar />
       <Routes>
