@@ -1,8 +1,7 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import Spinner from "../../Components/Spinner";
 import SearchBar from "../../Components/SearchBar";
-import ErrorCatch from "../../Components/ErrorCatch";
 import { StyledHeroContainer, StyledHero } from "./StyledHero";
 import DisplayProducts from "./DisplayProducts";
 import CarouselBoundary from "../../Components/Carousel/CarouselBoundary";
@@ -11,6 +10,10 @@ const Carousel = React.lazy(() => import("../../Components/Carousel/Carousel"));
 const HeroImage = React.lazy(() => import("./HeroImage"));
 
 const Home = () => {
+  useEffect(() => {
+    console.log("effect");
+  }, []); // 🔥 should warn: missing dependency `count`
+
   return (
     <>
       <Helmet>

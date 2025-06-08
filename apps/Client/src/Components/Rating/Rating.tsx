@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import { StyledStars } from "./StyledRating";
 type rating = {

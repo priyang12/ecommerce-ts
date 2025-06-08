@@ -10,17 +10,19 @@ import {
 export type User = z.infer<typeof UserSchema>;
 
 // Generate Types from
-const ProductSchema = ProductsSchema.pick({
-  _id: true,
-  name: true,
-  price: true,
-  description: true,
-  image: true,
-  rating: true,
-  numReviews: true,
-});
+type pickProductSchema = {
+  _id: true;
+  name: true;
+  price: true;
+  description: true;
+  image: true;
+  rating: true;
+  numReviews: true;
+};
 
-export type Product = z.infer<typeof ProductSchema>;
+export type Product = z.infer<
+  ReturnType<typeof ProductsSchema.pick<pickProductSchema>>
+>;
 
 export type DetailedProduct = z.infer<typeof ProductsSchema>;
 

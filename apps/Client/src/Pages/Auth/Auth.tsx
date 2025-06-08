@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { AuthContext } from "../../Context/Authentication/AuthContext";
-import { StyledAuthPage, Waves } from "./StyledAuth";
+import { StyledAuthPage } from "./StyledAuth";
 import { StopLoading } from "../../Context/Authentication/AuthActions";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import Spinner from "../../Components/Spinner";

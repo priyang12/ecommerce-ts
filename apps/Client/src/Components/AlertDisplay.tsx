@@ -1,7 +1,6 @@
-import { ReactNode, FC, useState, useEffect } from "react";
+import { ReactNode, FC } from "react";
 import { CustomAxiosError } from "../API/interface";
 import { Alert, AlertContainer } from "./StyledComponents/AlertDisplayStyled";
-import { AiOutlineCloseCircle } from "react-icons/ai";
 
 type AlertDisplayProps = {
   msg: string;

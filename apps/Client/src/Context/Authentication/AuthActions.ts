@@ -178,7 +178,7 @@ export const Logout = (dispatch: React.Dispatch<AuthActions>) => {
       type: LOG_OUT,
       payload: null,
     });
-  } catch (error) {
+  } catch {
     dispatch({
       type: AUTH_ERROR,
       payload: "Server Error Reload",

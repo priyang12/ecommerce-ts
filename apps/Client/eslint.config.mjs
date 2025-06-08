@@ -8,6 +8,7 @@ export default [
   ...tseslint.configs.recommended,
   {
     files: ["**/*.ts", "**/*.tsx"],
+    ignores: ["node_modules", "pubic"],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
@@ -21,6 +22,7 @@ export default [
     },
     plugins: {
       react,
+      // not working at the moment for some reason.
       "react-hooks": reactHooks,
     },
     settings: {
@@ -32,6 +34,5 @@ export default [
       "no-console": "error",
       "@typescript-eslint/no-explicit-any": "off",
     },
-    ignores: ["node_modules", "pubic"],
   },
 ];

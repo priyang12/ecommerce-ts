@@ -40,7 +40,7 @@ const AddressPage = () => {
       );
       Navigate("/paymentMethod");
     } catch (error: any) {
-      // Need To Handle Error
+      console.error(error);
     }
   };
   return (

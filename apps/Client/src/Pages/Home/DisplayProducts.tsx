@@ -1,5 +1,4 @@
 import { useProducts } from "../../API/ProductAPI";
-import { Product } from "../../interfaces";
 import {
   StyledDisplay,
   StyledProducts,
