@@ -1,6 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
+import ReactModal from "react-modal";
 import ErrorCatch from "./Components/ErrorCatch";
 import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "./Context/Authentication/AuthContext";
@@ -11,9 +12,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { queryClient } from "./Utils/query";
 import { serviceWorkerRegister } from "./ServiceWorkers/serviceWorkerRegister";
 import "react-toastify/dist/ReactToastify.css";
-
 import "./Style/Globle.css";
-import ReactModal from "react-modal";
 
 declare global {
   interface Window {

@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { AuthContext } from "../../Context/Authentication/AuthContext";
 import { StyledAuthPage } from "./StyledAuth";
-import { StopLoading } from "../../Context/Authentication/AuthActions";
+import { stopLoading } from "../../Context/Authentication/AuthActions";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import Spinner from "../../Components/Spinner";
 import { Link } from "react-router-dom";
@@ -15,7 +15,7 @@ function Auth() {
   const { loading, err, token } = state;
 
   useEffect(() => {
-    StopLoading(dispatch);
+    stopLoading(dispatch);
   }, [dispatch]);
 
   if (token) return <Navigate to="/" />;

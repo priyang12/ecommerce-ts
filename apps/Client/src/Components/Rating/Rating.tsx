@@ -3,7 +3,7 @@ import { StyledStars } from "./StyledRating";
 type rating = {
   value: number;
   text: string;
-  color: string;
+  color?: string;
 };
 
 function Rating({ value, text, color = "#f8e825" }: rating) {

@@ -1,6 +1,3 @@
-import { useContext, useEffect } from "react";
-import { AuthContext } from "./Context/Authentication/AuthContext";
-import { loadUser } from "./Context/Authentication/AuthActions";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import Auth from "./Pages/Auth";
@@ -9,7 +6,6 @@ import Search from "./Pages/Search";
 import SingleProduct from "./Pages/SingleProduct";
 import StillWorking from "./Pages/StillWorking";
 import PrivateRoute from "./PrivateRoute";
-import setAuthToken from "./Utils/setAuthToken";
 import Footer from "./Components/Footer";
 import ScrollToTop from "./Utils/ScrollToTop";
 import ForgotPassword from "./Pages/ForgotPassword";
@@ -17,29 +13,8 @@ import ResetPassword from "./Pages/ResetPassword";
 import AlertDisplay from "./Components/AlertDisplay";
 import Register from "./Pages/Register";
 import Login from "./Pages/Login";
-import { LOG_OUT } from "./Context/Authentication/Authtypes";
 
 function App() {
-  const { state, dispatch } = useContext(AuthContext);
-  const { token, user } = state;
-
-  useEffect(() => {
-    if (token) {
-      if (user) {
-        setAuthToken(token);
-      } else {
-        loadUser(token, dispatch);
-      }
-    } else {
-      dispatch({
-        type: LOG_OUT,
-        payload: null,
-      });
-    }
-  }, [token, dispatch, user]);
-
-  if (token) setAuthToken(token);
-
   return (
     <BrowserRouter>
       <ScrollToTop />

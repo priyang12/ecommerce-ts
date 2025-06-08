@@ -10,7 +10,6 @@ export const Footer = styled.footer`
   font-weight: bold;
   gap: 1rem;
   font-family: "Roboto", sans-serif;
-  margin: 1em 0;
   padding: 1em;
   p {
     margin: 0;

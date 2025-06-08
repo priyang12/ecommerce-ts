@@ -1,17 +1,18 @@
+import React from "react";
 import {
   LOGIN_SUCCESS,
   AUTH_ERROR,
-  LOAD_USER,
   SET_LOADING,
   LOG_OUT,
   UPDATE_USER,
   MailSEND_SUCCESS,
   RESET_PASSWORD_SUCCESS,
-} from "./Authtypes";
+  LOAD_USER,
+} from "./AuthTypes";
 
 import axios, { AxiosError } from "axios";
 import { AuthActions } from "./AuthReducer";
-import React from "react";
+import type { User } from "../../Types/interfaces";
 
 export const loadUser = async (
   token: any,
@@ -20,16 +21,20 @@ export const loadUser = async (
   if (token) {
     try {
       setLoading(dispatch);
-      const { data }: any = await axios.get("/api/users", {
+      const { data }: { data: User } = await axios.get("/api/users", {
         headers: {
           "x-auth-token": token,
         },
       });
-      sessionStorage.setItem("User", JSON.stringify(data));
+      const { password, createdAt, updatedAt, ...authUser } = data;
+
       dispatch({
         type: LOAD_USER,
-        payload: data,
+        payload: authUser,
       });
+
+      sessionStorage.setItem("User", JSON.stringify(authUser));
+      stopLoading(dispatch);
     } catch (err: any | AxiosError) {
       let ErrorMessage = "Server Error Try Again Later";
       if (err as AxiosError) {
@@ -55,8 +60,7 @@ export const LoginUser = async (
       payload: data.token,
     });
     localStorage.setItem("token", data.token);
-
-    // loadUser(data.token, dispatch);
+    await loadUser(data.token, dispatch);
   } catch (err: any | AxiosError) {
     let ErrorMessage = "Server Error Try Again Later";
     if (err as AxiosError) {
@@ -82,7 +86,7 @@ export const RegisterUser = async (
     });
     localStorage.setItem("token", data.token);
 
-    loadUser(data.token, dispatch);
+    await loadUser(data.token, dispatch);
   } catch (err: any | AxiosError) {
     let ErrorMessage = "Server Error Try Again Later";
     if (err as AxiosError) {
@@ -192,7 +196,7 @@ export const setLoading = (dispatch: React.Dispatch<AuthActions>) => {
   });
 };
 
-export const StopLoading = (dispatch: React.Dispatch<AuthActions>) => {
+export const stopLoading = (dispatch: React.Dispatch<AuthActions>) => {
   dispatch({
     type: SET_LOADING,
     payload: false,
