@@ -1,6 +1,12 @@
 import { OrderSchema, z } from "../validation";
 import { AxiosError } from "axios";
-import { DetailedProduct, Product, User } from "../Types/interfaces";
+import {
+  DetailedProduct,
+  IOrder,
+  Product,
+  Review,
+  User,
+} from "../Types/interfaces";
 
 export interface ProductAPI {
   products: Product[];
@@ -33,3 +39,5 @@ export type OrderListItem = Pick<
 export type CustomAxiosError = AxiosError<{
   msg: string;
 }>;
+
+export type UserReviews = Partial<IOrder> & Partial<Product> & Review;

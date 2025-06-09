@@ -4,8 +4,7 @@ import Spinner from "../../Components/Spinner";
 import { Helmet } from "react-helmet-async";
 
 const OrderStatus = () => {
-  const { isLoading: isOrdersLoading, data: OrderData } =
-    useLoadOrders("/api/orders");
+  const { isLoading: isOrdersLoading, data: OrderData } = useLoadOrders();
 
   if (isOrdersLoading) return <Spinner />;
 

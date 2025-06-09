@@ -3,6 +3,8 @@ import { useMutation, useQuery } from "react-query";
 import { queryClient } from "../Utils/query";
 import { toast } from "react-toastify";
 import { DetailedProduct } from "../Types/interfaces";
+import { QUERY_KEYS } from "../Constants/queryKeys";
+import { API_ENDPOINTS } from "../Constants/apiendpoints";
 
 type wishlist = {
   products: Pick<
@@ -20,19 +22,33 @@ type wishlist = {
   createdAt: string;
 };
 
+/**
+ * Fetches the user's wishlist.
+ *
+ * @returns React Query result containing the wishlist.
+ */
 export const useLoadWishListQuery = () => {
-  return useQuery("wishList", async () => {
-    const { data }: AxiosResponse<wishlist> = await axios.get("/api/wishlist");
+  return useQuery(QUERY_KEYS.WISHLIST, async () => {
+    const { data }: AxiosResponse<wishlist> = await axios.get(
+      API_ENDPOINTS.WISHLIST
+    );
     return data;
   });
 };
 
+/**
+ * Fetches the user's wishlist with optional sorting and pagination.
+ *
+ * @param sort - Sorting parameter (e.g., "price", "date")
+ * @param perPage - Number of items per page (default: 5)
+ * @returns React Query result containing the filtered wishlist.
+ */
 export const useFilterWishlist = (sort: string, perPage = 5) => {
   return useQuery(
-    "wishList",
+    QUERY_KEYS.WISHLIST,
     async () => {
       const { data }: AxiosResponse<wishlist> = await axios.get(
-        "/api/wishlist",
+        API_ENDPOINTS.WISHLIST,
         {
           params: {
             perPage,
@@ -55,17 +71,22 @@ export const useFilterWishlist = (sort: string, perPage = 5) => {
   );
 };
 
+/**
+ * Adds a product to the user's wishlist.
+ *
+ * @returns Mutation result for the add wishlist action.
+ */
 export const useAddWishlistQuery = () => {
   const Query = useMutation(
-    async (id: string) => {
-      return await axios.patch(`/api/wishlist/${id}`);
+    async (productId: string) => {
+      return await axios.patch(`${API_ENDPOINTS.WISHLIST}/${productId}`);
     },
     {
       onSuccess: (res: any) => {
         toast.success(res.data.msg, {
           autoClose: 2000,
         });
-        queryClient.invalidateQueries(["wishList"]);
+        queryClient.invalidateQueries(QUERY_KEYS.WISHLIST);
       },
       onError: (error: unknown) => {
         if (
@@ -90,19 +111,26 @@ export const useAddWishlistQuery = () => {
   return Query;
 };
 
+/**
+ * Removes a product from the user's wishlist with optimistic update.
+ *
+ * @returns Mutation result and related states.
+ */
 export const useRemoveWishlistQuery = (): any => {
   const { mutate, isLoading, isError, isSuccess, data, error } = useMutation(
     "removeWishlist",
     async (id: string) => {
-      const response = await axios.delete(`/api/wishlist/${id}`);
+      const response = await axios.delete(`${API_ENDPOINTS.WISHLIST}/${id}`);
       return response.data;
     },
     {
       onMutate: async (id: string) => {
-        await queryClient.cancelQueries("wishList");
-        const snapshotOfPreviousWishlist = queryClient.getQueryData("wishList");
+        await queryClient.cancelQueries(QUERY_KEYS.WISHLIST);
+        const snapshotOfPreviousWishlist = queryClient.getQueryData(
+          QUERY_KEYS.WISHLIST
+        );
 
-        queryClient.setQueryData("wishList", (oldData: any) => {
+        queryClient.setQueryData(QUERY_KEYS.WISHLIST, (oldData: any) => {
           return {
             ...oldData,
             products: oldData.products.filter((item: any) => item._id !== id),
@@ -115,7 +143,7 @@ export const useRemoveWishlistQuery = (): any => {
       },
       onError: (err, newTodo, context) => {
         queryClient.setQueryData(
-          "wishList",
+          QUERY_KEYS.WISHLIST,
           context?.snapshotOfPreviousWishlist
         );
       },
