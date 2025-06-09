@@ -34,12 +34,11 @@ function ResetPassword() {
   const { Password, Password2 } = UserForm;
 
   useEffect(() => {
-    setAuthToken(id as string);
+    if (id) {
+      setAuthToken(id);
+      loadUser(id, dispatch);
+    }
   }, [id]);
-
-  useEffect(() => {
-    loadUser(id, dispatch);
-  }, [id, dispatch]);
 
   const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();

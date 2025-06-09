@@ -120,10 +120,10 @@ const OrderDetails = () => {
                   </p>
                 </StyledListItems>
                 {OrderDetails.isDelivered ? (
-                  !orderItems.Reviewed ? (
+                  !orderItems.Reviewed && id ? (
                     <ReviewModel
                       ProductID={orderItems.product._id}
-                      OrderID={id as string}
+                      OrderID={id}
                     />
                   ) : (
                     <ReviewButton

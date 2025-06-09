@@ -27,33 +27,35 @@ function ReviewModel({
   ProductID: string;
   OrderID: string;
 }) {
-  const { mutate, isLoading, isSuccess } = usePostReview();
+  const { mutate: makeReview, isLoading, isSuccess } = usePostReview();
   const [modalIsOpen, setIsOpen] = React.useState(false);
-
-  React.useEffect(() => {
-    if (isSuccess) {
-      closeModal();
-    }
-  }, [isSuccess]);
 
   function openModal() {
     setIsOpen(true);
   }
+
   function closeModal() {
     setIsOpen(false);
   }
 
   const MakeReview = (e: any) => {
     e.preventDefault();
-
-    mutate({
-      OrderID,
-      ProductID,
-      review: {
-        comment: e.target.elements.comment.value,
-        rating: e.target.elements.rating.value,
+    makeReview(
+      {
+        OrderID,
+        ProductID,
+        review: {
+          comment: e.target.elements.comment.value,
+          rating: e.target.elements.rating.value,
+        },
       },
-    });
+      {
+        // pass the state sync for closing the model in callback.
+        onSuccess: () => {
+          closeModal();
+        },
+      }
+    );
   };
   return (
     <>

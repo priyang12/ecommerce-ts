@@ -13,21 +13,17 @@ import AlertDisplay from "../../Components/AlertDisplay";
 import Spinner from "../../Components/Spinner";
 import { Product } from "../../Types/interfaces";
 
-function Home() {
-  const { keyword, pageNumber }: any = useParams();
+function Search() {
+  const { keyword, pageNumber } = useParams<{
+    keyword: string;
+    pageNumber: string;
+  }>();
   const page: number = pageNumber ? parseInt(pageNumber) : 1;
+  const Url = pageNumber
+    ? `?keyword=${keyword}&page=${pageNumber}`
+    : `?keyword=${keyword}`;
 
   const Navigate = useNavigate();
-  const [Url, setUrl] = useState(
-    pageNumber
-      ? `?keyword=${keyword}&page=${pageNumber}`
-      : `?keyword=${keyword}`
-  );
-
-  useEffect(() => {
-    if (pageNumber) setUrl(`?keyword=${keyword}&page=${pageNumber}`);
-    else setUrl(`?keyword=${keyword}`);
-  }, [keyword, pageNumber]);
 
   const { data: ProductData, isLoading, error: Err } = useSearchProduct(Url);
 
@@ -36,12 +32,15 @@ function Home() {
   if (!ProductData) return null;
 
   if (Err) return <AlertDisplay msg={"Something Went Wrong"} type={"error"} />;
+
   const NextPage = () => {
     Navigate(`/search/${keyword}/${page + 1}`);
   };
   const PreviousPage = () => {
     Navigate(`/search/${keyword}/${page - 1}`);
   };
+
+  if (!keyword) Navigate("/");
 
   return (
     <>
@@ -53,7 +52,7 @@ function Home() {
         />
       </Helmet>
       <StyledDisplay>
-        <SearchBar searchedValue={keyword} />
+        <SearchBar searchedValue={keyword as string} />
         <h1>{`Search Results for ${keyword}`}</h1>
         {ProductData?.products.length > 0 ? (
           <StyledProducts id="Products">
@@ -84,4 +83,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Search;

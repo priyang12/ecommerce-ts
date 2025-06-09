@@ -24,16 +24,12 @@ type CartItem = {
 };
 
 const Cart = () => {
-  const [TotalAmount, setTotalAmount] = useState(0);
-  const [TotalProducts, setTotalProducts] = useState(0);
-  const [CartItems, setCart] = useState<CartItem[]>([]);
-
   const [Alert, setAlert] = useState({
     msg: "",
     type: false,
   });
 
-  const { data: Cart, isFetching, isLoading: loading } = useLoadCartQuery();
+  const { data: Cart, isFetching } = useLoadCartQuery();
 
   const { mutate: DeleteCart, isLoading: Deleting } =
     useDeleteCartApi(setAlert);
@@ -42,27 +38,16 @@ const Cart = () => {
     DeleteCart(id);
   };
 
-  useEffect(() => {
-    if (Cart) {
-      setCart(Cart.products);
-    }
-  }, [Cart]);
+  const CartItems: CartItem[] = Cart?.products ?? [];
 
-  useEffect(() => {
-    if (CartItems?.length !== 0) {
-      let TotalProducts = 0;
-      let TotalAmount = 0;
-      const Total = CartItems?.reduce((acc: any, item: CartItem) => {
-        TotalProducts += item.qty;
-        return acc + item.product.price * item.qty;
-      }, 0);
-      TotalAmount = Math.round(Total * 100) / 100;
-      setTotalAmount(TotalAmount);
-      setTotalProducts(TotalProducts);
-    }
-  }, [CartItems]);
+  const TotalProducts = CartItems.reduce((acc, item) => acc + item.qty, 0);
+  const TotalAmount =
+    Math.round(
+      CartItems.reduce((acc, item) => acc + item.product.price * item.qty, 0) *
+        100
+    ) / 100;
 
-  if (loading || isFetching) return <Spinner />;
+  if (isFetching) return <Spinner />;
 
   if (CartItems?.length === 0 || !CartItems)
     return (
