@@ -5,15 +5,19 @@ import { LinkContainer } from "./StyledComponents/StyledPayment";
 const Navigators = () => {
   const { pathname } = useLocation();
 
+  if (pathname === "/checkout/paypal") return null;
+
   return (
     <LinkContainer>
-      <li className={pathname === "/address" ? "Link-border" : ""}>
+      <li className={pathname === "/checkout/address" ? "Link-border" : ""}>
         <Link to="/checkout/address">Address</Link>
       </li>
-      <li className={pathname === "/paymentMethod" ? "Link-border" : ""}>
+      <li
+        className={pathname === "/checkout/paymentMethod" ? "Link-border" : ""}
+      >
         <Link to="/checkout/paymentMethod">Payment</Link>
       </li>
-      <li className={pathname === "/PlaceOrder" ? "Link-border" : ""}>
+      <li className={pathname === "/checkout/PlaceOrder" ? "Link-border" : ""}>
         <Link to="/checkout/PlaceOrder">Place Order</Link>
       </li>
     </LinkContainer>
