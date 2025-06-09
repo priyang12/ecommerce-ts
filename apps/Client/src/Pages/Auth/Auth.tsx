@@ -8,13 +8,15 @@ import { Link } from "react-router-dom";
 import Wave from "react-wavify";
 
 function Auth() {
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
+  const redirectTo = new URLSearchParams(search).get("redirectTo") || "/";
 
-  const { state } = useContext(AuthContext);
-  const { loading, err, token } = state;
+  const {
+    state: { loading, err, token },
+  } = useContext(AuthContext);
 
+  if (token) return <Navigate to={redirectTo} />;
   if (loading) return <Spinner />;
-  if (token) return <Navigate to="/" />;
 
   return (
     <div

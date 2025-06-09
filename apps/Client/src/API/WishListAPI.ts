@@ -22,7 +22,7 @@ type wishlist = {
 
 export const useLoadWishListQuery = () => {
   return useQuery("wishList", async () => {
-    const { data }: AxiosResponse<wishlist> = await axios.get("api/wishlist");
+    const { data }: AxiosResponse<wishlist> = await axios.get("/api/wishlist");
     return data;
   });
 };
@@ -32,7 +32,7 @@ export const useFilterWishlist = (sort: string, perPage = 5) => {
     "wishList",
     async () => {
       const { data }: AxiosResponse<wishlist> = await axios.get(
-        "api/wishlist",
+        "/api/wishlist",
         {
           params: {
             perPage,

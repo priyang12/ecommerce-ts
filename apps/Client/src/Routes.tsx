@@ -39,7 +39,6 @@ const Routes = () => {
         </Route>
         <Route element={<PrivateRoute />}>
           <Route path="/cart" element={<Cart />} />
-
           <Route
             path="/checkout"
             element={
