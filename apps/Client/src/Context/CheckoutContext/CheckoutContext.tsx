@@ -18,7 +18,8 @@ type Action =
   | { type: "SET_ORDER"; payload: any }
   | { type: "RESET" };
 
-const CheckoutContext = createContext<{
+// export for testing
+export const CheckoutContext = createContext<{
   state: CheckoutState;
   dispatch: React.Dispatch<Action>;
 }>({

@@ -15,18 +15,21 @@ import {
 } from "./StyledPlaceOrder";
 import { useLoadCartQuery } from "../../API/CartAPI";
 import Spinner from "../../Components/Spinner";
+import { useCheckout } from "../../Context/CheckoutContext/CheckoutContext";
 
 const PlaceOrder = () => {
   const Navigate = useNavigate();
   const { data: Cart, isLoading } = useLoadCartQuery();
+
   const [ProductsAmount, setProductsAmount] = useState(0);
   const ShippingAmount = ProductsAmount > 500 ? 0 : 100;
   const TaxAmount = 0.15 * ProductsAmount;
   const TotalAmount = ProductsAmount + ShippingAmount + TaxAmount;
 
-  const Address: Address =
-    localStorage.address && JSON.parse(localStorage.address);
-  const PayMethod = localStorage.payMethod;
+  const {
+    state: { address, payMethod },
+    dispatch,
+  } = useCheckout();
 
   useLayoutEffect(() => {
     if (Cart) {
@@ -44,23 +47,27 @@ const PlaceOrder = () => {
     e.preventDefault();
     const Order = {
       orderItems: Cart?.products,
-      shippingAddress: Address,
-      paymentMethod: PayMethod,
+      shippingAddress: address,
+      paymentMethod: payMethod,
       itemsPrice: ProductsAmount,
       taxPrice: TaxAmount,
       shippingPrice: ShippingAmount,
       totalPrice: Math.round(TotalAmount),
     };
-    localStorage.setItem("order", JSON.stringify(Order));
-    Navigate("/PayPal");
+
+    dispatch({
+      type: "SET_ORDER",
+      payload: Order,
+    });
+
+    Navigate("/checkout/PayPal");
   };
 
-  if (!Address) return <Redirect to="/address" />;
-  if (!PayMethod) return <Redirect to="/paymentMethod" />;
-
   if (isLoading) return <Spinner />;
-
   if (Cart && Cart.products?.length === 0) return <Redirect to="/" />;
+
+  if (!address) return <Redirect to="/checkout/address" />;
+  if (!payMethod) return <Redirect to="/checkout/paymentMethod" />;
 
   return (
     <StyledPaymentContainer theme={{ maxWidth: "80vw" }}>
@@ -74,12 +81,12 @@ const PlaceOrder = () => {
           <div className="detail">
             <StyledHeader>SHIPPING </StyledHeader>
             <StyledParagraph>
-              Address: {Address.address} , {Address.city} ,{Address.postalcode},
+              Address: {address.address} , {address.city} ,{address.postalcode},
             </StyledParagraph>
           </div>
           <div className="detail">
             <StyledHeader>PAYMENT METHOD</StyledHeader>
-            <StyledParagraph>Method: {PayMethod}</StyledParagraph>
+            <StyledParagraph>Method: {payMethod}</StyledParagraph>
           </div>
           <div className="order-details">
             <StyledHeader>ORDER ITEMS</StyledHeader>

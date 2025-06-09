@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router";
+import { useCheckout } from "../../Context/CheckoutContext/CheckoutContext";
 import Navigators from "../../Components/Navigators";
 import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
 import {
@@ -10,21 +11,26 @@ import {
 
 const PaymentMethod = () => {
   const Navigate = useNavigate();
-  const [Method, setMethod] = useState(
-    localStorage.payMethod || "PayPal or Credit Card"
+  const { state, dispatch } = useCheckout();
+  const [method, setMethod] = useState(
+    state.payMethod || "PayPal or Credit Card"
   );
+
+  useEffect(() => {
+    if (state.address === undefined) {
+      Navigate("/checkout/address");
+    }
+  }, []);
 
   const SelectMethod = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    localStorage.setItem("payMethod", Method);
-    Navigate("/PlaceOrder");
+    localStorage.setItem("payMethod", method);
+    dispatch({
+      type: "SET_PAYMENT_METHOD",
+      payload: method,
+    });
+    Navigate("/checkout/PlaceOrder");
   };
-
-  useEffect(() => {
-    if (!localStorage.address) {
-      Navigate("/address");
-    }
-  }, [localStorage.address]);
 
   return (
     <StyledPaymentContainer>
@@ -43,7 +49,7 @@ const PaymentMethod = () => {
                 type="radio"
                 id="PayMethod"
                 name="PayMethod"
-                checked={Method === "PayPal or Credit Card"}
+                checked={method === "PayPal or Credit Card"}
                 value="PayPal or Credit Card"
                 data-testid="PayPalButton"
                 onChange={(e) => setMethod(e.target.value)}
@@ -55,7 +61,7 @@ const PaymentMethod = () => {
                 type="radio"
                 id="PayMethod"
                 name="PayMethod"
-                checked={Method === "Cash on Delivery"}
+                checked={method === "Cash on Delivery"}
                 value="Cash on Delivery"
                 data-testid="CashButton"
                 onChange={(e) => setMethod(e.target.value)}

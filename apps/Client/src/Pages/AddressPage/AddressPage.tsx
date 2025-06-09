@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCheckout } from "../../Context/CheckoutContext/CheckoutContext";
 import { useForm } from "../../Utils/CustomHooks";
 import { Address } from "../../Types/interfaces";
 import Navigators from "../../Components/Navigators";
@@ -16,10 +17,11 @@ const init: Address = {
 
 const AddressPage = () => {
   const Navigate = useNavigate();
+  const { state, dispatch } = useCheckout();
+
   const { state: ShippingAddress, ChangeState } = useForm(
-    localStorage.address ? JSON.parse(localStorage.address) : init
+    state.address ? state.address : init
   );
-  const { address, city, postalcode } = ShippingAddress;
   const { data: Cart, isSuccess, isError } = useLoadCartQuery();
 
   useEffect(() => {
@@ -34,12 +36,10 @@ const AddressPage = () => {
       OrderSchema.pick({
         shippingAddress: true,
       }).parse({ shippingAddress: ShippingAddress });
-      localStorage.setItem(
-        "address",
-        JSON.stringify({ address, city, postalcode })
-      );
-      Navigate("/paymentMethod");
+      dispatch({ type: "SET_ADDRESS", payload: ShippingAddress });
+      Navigate("/checkout/paymentMethod");
     } catch (error: any) {
+      // toast notification.
       console.error(error);
     }
   };
@@ -54,7 +54,7 @@ const AddressPage = () => {
             name="address"
             id="address"
             onChange={ChangeState}
-            value={address}
+            value={ShippingAddress.address}
             required
           />
           <span className="highlight"></span>
@@ -67,7 +67,7 @@ const AddressPage = () => {
             name="city"
             id="City"
             onChange={ChangeState}
-            value={city}
+            value={ShippingAddress.city}
             required
           />
           <span className="highlight"></span>
@@ -80,7 +80,7 @@ const AddressPage = () => {
             name="postalcode"
             id="postalcode"
             onChange={ChangeState}
-            value={postalcode}
+            value={ShippingAddress.postalcode}
             required
           />
           <span className="highlight"></span>

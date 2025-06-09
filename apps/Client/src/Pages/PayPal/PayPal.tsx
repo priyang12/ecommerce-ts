@@ -1,4 +1,5 @@
 import React, { Suspense, useEffect, useState } from "react";
+import { useCheckout } from "../../Context/CheckoutContext/CheckoutContext";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { Navigate } from "react-router";
 import axios, { AxiosResponse } from "axios";
@@ -27,12 +28,14 @@ function Paypal() {
   } = useMakeOrder();
 
   const [ClientId, setClientId] = useState("");
-  const Order = localStorage.order && JSON.parse(localStorage.order);
+  const {
+    state: { order },
+  } = useCheckout();
 
   useEffect(() => {
     const GetClientId = async () => {
       const { data: ClientId }: ClientIdRes = await axios.get(
-        "api/config/paypal"
+        "/api/config/paypal"
       );
       setClientId(ClientId);
     };
@@ -40,18 +43,16 @@ function Paypal() {
   }, []);
 
   const successPaymentHandler = (paymentResult: object) => {
-    Order.paymentResult = paymentResult;
-    placeOrder(Order);
+    order.paymentResult = paymentResult;
+    placeOrder(order);
   };
   const DisplayPaymentError = (err: any) => {
     throw new Error(err);
   };
-
-  if (isOrderLoading || !ClientId) return <Spinner />;
-
+  if (!order) return <Navigate to="/cart" />;
   if (isOrderSuccess) return <Navigate to="/OrderStatus" />;
 
-  if (!Order) return <Navigate to="/" />;
+  if (isOrderLoading || !ClientId) return <Spinner />;
 
   return (
     <ErrorCatch>
@@ -59,7 +60,11 @@ function Paypal() {
         <Helmet>
           <title>PayPal</title>
         </Helmet>
-        <PayPalScriptProvider options={{ clientId: ClientId }}>
+        <PayPalScriptProvider
+          options={{
+            clientId: ClientId,
+          }}
+        >
           <PayPalButtons
             style={{ layout: "horizontal" }}
             createOrder={(data, actions) => {
@@ -67,7 +72,7 @@ function Paypal() {
                 purchase_units: [
                   {
                     amount: {
-                      value: String(Order.totalPrice).toString(),
+                      value: String(100).toString(),
                       currency_code: "USD",
                     },
                   },
