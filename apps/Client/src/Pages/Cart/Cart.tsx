@@ -83,7 +83,7 @@ const Cart = () => {
             <StyledCheckout>
               <h3>SUBTOTAL ({TotalProducts}) ITEMS</h3>
               <p>$ {TotalAmount}</p>
-              <Link className="btn" to="/address">
+              <Link className="btn" to="/checkout/address">
                 Checkout
               </Link>
             </StyledCheckout>

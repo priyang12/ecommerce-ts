@@ -1,4 +1,5 @@
-import { Route, Routes as RouterRoutes } from "react-router-dom";
+import { Outlet, Route, Routes as RouterRoutes } from "react-router-dom";
+import { CheckoutProvider } from "./Context/CheckoutContext/CheckoutContext";
 import Auth from "./Pages/Auth";
 import ForgotPassword from "./Pages/ForgotPassword";
 import Home from "./Pages/Home";
@@ -36,15 +37,26 @@ const Routes = () => {
         </Route>
         <Route element={<PrivateRoute />}>
           <Route path="/cart" element={<Cart />} />
+
+          <Route
+            path="/checkout"
+            element={
+              <CheckoutProvider>
+                <Outlet />
+              </CheckoutProvider>
+            }
+          >
+            <Route path="address" element={<AddressPage />} />
+            <Route path="paymentMethod" element={<PaymentMethod />} />
+            <Route path="placeOrder" element={<PlaceOrder />} />
+            <Route path="paypal" element={<PayPal />} />
+          </Route>
+
           <Route path="/Wishlist" element={<Wishlist />} />
           <Route path="/Reviews" element={<Reviews />} />
-          <Route path="/PlaceOrder" element={<PlaceOrder />} />
           <Route path="/OrderStatus" element={<OrderStatus />} />
           <Route path="/OrderStatus/:id" element={<OrderDetails />} />
           <Route path="/Profile" element={<Profile />} />
-          <Route path="/address" element={<AddressPage />} />
-          <Route path="/paymentMethod" element={<PaymentMethod />} />
-          <Route path="/PayPal" element={<PayPal />} />
           <Route path="*" element={<NotFound />} />
         </Route>
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
