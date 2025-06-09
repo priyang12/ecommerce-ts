@@ -42,8 +42,9 @@ const reducer = (state: CheckoutState, action: Action): CheckoutState => {
   }
 };
 
+const storedAddress = localStorage.getItem("checkout-address");
 const initialState: CheckoutState = {
-  address: JSON.parse(localStorage.getItem("checkout-address") || "null"),
+  address: storedAddress ? JSON.parse(storedAddress) : undefined,
   payMethod: undefined,
   order: undefined,
 };

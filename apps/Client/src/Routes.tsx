@@ -43,12 +43,10 @@ const Routes = () => {
             path="/checkout"
             element={
               <CheckoutProvider>
-                <>
-                  <StyledPaymentContainer>
-                    <Navigators />
-                  </StyledPaymentContainer>
+                <StyledPaymentContainer style={{ height: "100vh" }}>
+                  <Navigators />
                   <Outlet />
-                </>
+                </StyledPaymentContainer>
               </CheckoutProvider>
             }
           >
