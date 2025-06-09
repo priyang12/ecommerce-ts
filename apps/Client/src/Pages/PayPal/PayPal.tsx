@@ -21,7 +21,7 @@ const StyledContainer = styled.div`
 
 function Paypal() {
   const {
-    mutate: CallOrder,
+    mutate: placeOrder,
     isLoading: isOrderLoading,
     isSuccess: isOrderSuccess,
   } = useMakeOrder();
@@ -34,7 +34,6 @@ function Paypal() {
       const { data: ClientId }: ClientIdRes = await axios.get(
         "api/config/paypal"
       );
-
       setClientId(ClientId);
     };
     GetClientId();
@@ -42,7 +41,7 @@ function Paypal() {
 
   const successPaymentHandler = (paymentResult: object) => {
     Order.paymentResult = paymentResult;
-    CallOrder(Order);
+    placeOrder(Order);
   };
   const DisplayPaymentError = (err: any) => {
     throw new Error(err);
@@ -60,7 +59,7 @@ function Paypal() {
         <Helmet>
           <title>PayPal</title>
         </Helmet>
-        <PayPalScriptProvider options={{ "client-id": ClientId }}>
+        <PayPalScriptProvider options={{ clientId: ClientId }}>
           <PayPalButtons
             style={{ layout: "horizontal" }}
             createOrder={(data, actions) => {
@@ -68,10 +67,12 @@ function Paypal() {
                 purchase_units: [
                   {
                     amount: {
-                      value: Order.totalPrice,
+                      value: String(Order.totalPrice).toString(),
+                      currency_code: "USD",
                     },
                   },
                 ],
+                intent: "CAPTURE",
               });
             }}
             onApprove={(data, actions) => {

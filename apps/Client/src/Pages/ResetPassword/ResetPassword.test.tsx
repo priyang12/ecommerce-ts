@@ -21,7 +21,7 @@ const setup = () =>
     <Router navigator={history} location={route}>
       <Routes>
         <Route
-          path="/ResetPassword/:id"
+          path="/ResetPassword/:token"
           element={
             <AuthProvider>
               <ResetPassword />

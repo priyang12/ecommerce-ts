@@ -19,7 +19,8 @@ import { ConfirmPassword, ValidatePassword } from "../../Utils/Validation";
 import { StyledResetPasswordPage } from "./StyledResetPasswordPage";
 
 function ResetPassword() {
-  const { id } = useParams<{ id: string }>();
+  const { token } = useParams<{ token: string }>();
+
   const { state, dispatch } = useContext(AuthContext);
   const {
     state: UserForm,
@@ -34,11 +35,13 @@ function ResetPassword() {
   const { Password, Password2 } = UserForm;
 
   useEffect(() => {
-    if (id) {
-      setAuthToken(id);
-      loadUser(id, dispatch);
-    }
-  }, [id]);
+    (async () => {
+      if (token) {
+        await loadUser(token, dispatch);
+        setAuthToken(token);
+      }
+    })();
+  }, [token, dispatch]);
 
   const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -66,6 +69,9 @@ function ResetPassword() {
       setErrors(Errors);
     }
   };
+
+  console.log(state);
+
   if (state.loading) return <Spinner />;
   if (state.err)
     return (
@@ -73,6 +79,8 @@ function ResetPassword() {
         <Link to="/Auth/login"> Go back to Login Page</Link>
       </AlertDisplay>
     );
+  if (state.user === null) return null;
+
   return (
     <StyledResetPasswordPage>
       <h1>Reset Password</h1>

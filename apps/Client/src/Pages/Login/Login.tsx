@@ -85,7 +85,7 @@ const Login = () => {
         <SubmitButton type="submit" value="login" className="btn" />
       </form>
       <div className="help">
-        <Link to="/ForgotPassword">Forget Password /</Link>
+        <Link to="/Auth/ForgotPassword">Forget Password /</Link>
         <br />
         <Link to="/StillWorking"> Need Help</Link>
       </div>

@@ -48,7 +48,7 @@ const Routes = () => {
           <Route path="*" element={<NotFound />} />
         </Route>
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
-        <Route path="/ResetPassword/:id" element={<ResetPassword />} />
+        <Route path="/ResetPassword/:token" element={<ResetPassword />} />
         <Route path="/StillWorking" element={<StillWorking />} />
       </RouterRoutes>
     </>
