@@ -38,7 +38,6 @@ const PaymentMethod = () => {
         <title>Payment Method</title>
         <meta name="description" content="Payment Method" />
       </Helmet>
-      <Navigators />
       <section className="container payments" id="payment">
         <h1>PAYMENT METHOD</h1>
         <h2>Select Method</h2>

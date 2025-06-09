@@ -21,6 +21,9 @@ import PlaceOrder from "./Pages/PlaceOrder";
 import Profile from "./Pages/Profile";
 import Reviews from "./Pages/Reviews";
 import Wishlist from "./Pages/WishList";
+import Navigators from "./Components/Navigators";
+import styled from "styled-components";
+import { StyledPaymentContainer } from "./Components/StyledComponents/StyledPayment";
 
 const Routes = () => {
   return (
@@ -42,7 +45,12 @@ const Routes = () => {
             path="/checkout"
             element={
               <CheckoutProvider>
-                <Outlet />
+                <>
+                  <StyledPaymentContainer>
+                    <Navigators />
+                  </StyledPaymentContainer>
+                  <Outlet />
+                </>
               </CheckoutProvider>
             }
           >

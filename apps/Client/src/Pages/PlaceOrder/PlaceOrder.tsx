@@ -75,7 +75,6 @@ const PlaceOrder = () => {
         <title>Place Order</title>
         <meta name="description" content="Place Order" />
       </Helmet>
-      <Navigators />
       <StyledPlaceOrder>
         <div className="OrderDetails">
           <div className="detail">
