@@ -70,8 +70,6 @@ function ResetPassword() {
     }
   };
 
-  console.log(state);
-
   if (state.loading) return <Spinner />;
   if (state.err)
     return (

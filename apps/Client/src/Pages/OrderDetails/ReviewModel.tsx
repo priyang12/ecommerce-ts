@@ -27,7 +27,7 @@ function ReviewModel({
   ProductID: string;
   OrderID: string;
 }) {
-  const { mutate: makeReview, isLoading, isSuccess } = usePostReview();
+  const { mutate: makeReview, isLoading } = usePostReview();
   const [modalIsOpen, setIsOpen] = React.useState(false);
 
   function openModal() {

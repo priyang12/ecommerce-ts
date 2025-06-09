@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSearchProduct } from "../../API/ProductAPI";
 import { Helmet } from "react-helmet-async";

@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense } from "react";
 import { Helmet } from "react-helmet-async";
 import Spinner from "../../Components/Spinner";
 import SearchBar from "../../Components/SearchBar";

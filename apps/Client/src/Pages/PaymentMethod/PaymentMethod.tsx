@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router";
 import { useCheckout } from "../../Context/CheckoutContext/CheckoutContext";
-import Navigators from "../../Components/Navigators";
 import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
 import {
   StyledRadioFormContainer,

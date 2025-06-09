@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useCheckout } from "../../Context/CheckoutContext/CheckoutContext";
 import { useForm } from "../../Utils/CustomHooks";
 import { Address } from "../../Types/interfaces";
-import Navigators from "../../Components/Navigators";
 import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
 import { OrderSchema } from "../../validation";
 import { FormControl, Input, Label } from "../../StyledComponents/FormControl";
 import { useLoadCartQuery } from "../../API/CartAPI";
+import { toast } from "react-toastify";
 
 const init: Address = {
   address: "",
@@ -39,8 +39,7 @@ const AddressPage = () => {
       dispatch({ type: "SET_ADDRESS", payload: ShippingAddress });
       Navigate("/checkout/paymentMethod");
     } catch (error: any) {
-      // toast notification.
-      console.error(error);
+      if (error instanceof Error) toast(error.message);
     }
   };
   return (
