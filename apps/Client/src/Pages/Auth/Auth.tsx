@@ -1,8 +1,7 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { Helmet } from "react-helmet-async";
 import { AuthContext } from "../../Context/Authentication/AuthContext";
 import { StyledAuthPage } from "./StyledAuth";
-import { stopLoading } from "../../Context/Authentication/AuthActions";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import Spinner from "../../Components/Spinner";
 import { Link } from "react-router-dom";
@@ -11,12 +10,8 @@ import Wave from "react-wavify";
 function Auth() {
   const { pathname } = useLocation();
 
-  const { state, dispatch } = useContext(AuthContext);
+  const { state } = useContext(AuthContext);
   const { loading, err, token } = state;
-
-  useEffect(() => {
-    stopLoading(dispatch);
-  }, [dispatch]);
 
   if (token) return <Navigate to="/" />;
 
