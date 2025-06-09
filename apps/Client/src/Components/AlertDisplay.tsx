@@ -1,5 +1,5 @@
 import { ReactNode, FC } from "react";
-import { CustomAxiosError } from "../API/interface";
+import { CustomAxiosError } from "../Constants/interface";
 import { Alert, AlertContainer } from "./StyledComponents/AlertDisplayStyled";
 
 type AlertDisplayProps = {

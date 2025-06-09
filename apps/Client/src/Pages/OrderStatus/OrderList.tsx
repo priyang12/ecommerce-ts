@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { StyledContainer } from "../../Components/StyledComponents/Container";
-import { OrderListItem } from "../../API/interface";
+import { OrderListItem } from "../../Constants/interface";
 import { ListItem, OrderLists } from "./StyledOrderStatus";
 
 type Props = {
