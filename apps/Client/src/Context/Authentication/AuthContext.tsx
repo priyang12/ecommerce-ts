@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useReducer } from "react";
 import { AuthActions, AuthReducer } from "./AuthReducer";
-import { loadUser } from "./AuthActions";
+import { loadUser, stopLoading } from "./AuthActions";
 import setAuthToken from "../../Utils/setAuthToken";
 import { LOAD_USER, LOG_OUT, SetAuth } from "./AuthTypes";
 import type { User } from "../../Types/interfaces";
@@ -26,7 +26,8 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-  loading: false,
+  // temp setting it to true , then setting it to false end of effect lifecycle.
+  loading: true,
   err: null,
   token: null,
   user: null,
@@ -71,9 +72,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           type: LOG_OUT,
           payload: null,
         });
-        setAuthToken(null);
       }
     })();
+    // temp solution. so user can access to auth and spinner don't showup.
+    // some ResetPassword test cases are failing using this approach.
+    stopLoading(dispatch);
   }, []);
 
   return (

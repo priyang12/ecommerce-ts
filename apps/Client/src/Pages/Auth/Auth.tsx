@@ -13,9 +13,8 @@ function Auth() {
   const { state } = useContext(AuthContext);
   const { loading, err, token } = state;
 
-  if (token) return <Navigate to="/" />;
-
   if (loading) return <Spinner />;
+  if (token) return <Navigate to="/" />;
 
   return (
     <div
