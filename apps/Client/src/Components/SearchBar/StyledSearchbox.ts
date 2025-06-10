@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import { styled } from "@linaria/react";
+import { media } from "../../Utils/Variables";
 
 export const SearchBarContainer = styled.div`
   position: sticky;
@@ -12,9 +13,12 @@ export const SearchBarContainer = styled.div`
   margin: 1em;
   z-index: 10;
   background-color: var(--secondary-light-color);
+  ${media.tablet} {
+    font-size: 1rem;
+  }
 `;
 
-export const SerachButton = styled.button`
+export const SearchButton = styled.button`
   border: none;
   cursor: pointer;
   width: 20%;
@@ -33,9 +37,12 @@ export const SerachButton = styled.button`
     outline: none;
     border: 5px solid var(--assertive-color);
   }
+  ${media.tablet} {
+    font-size: 1rem;
+  }
 `;
 
-export const SerachInput = styled.input`
+export const SearchInput = styled.input`
   color: var(--bg-contrast-color);
   padding: 0.7em;
   font-size: 1.1rem;
@@ -53,5 +60,9 @@ export const SerachInput = styled.input`
     background-color: var(--primary-dark-color);
     outline: none;
     border: 5px solid var(--assertive-color);
+  }
+  ${media.tablet} {
+    width: 50%;
+    font-size: 1rem;
   }
 `;

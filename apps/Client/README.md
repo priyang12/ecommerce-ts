@@ -18,4 +18,9 @@
 [] migrate to linaria for components
 [] docs components and refactor component.
 [] change global styling color in root.
-[x] Navbar refactor and tests
+
+#### components
+
+[] Refactor and tests
+[x] Navbar
+[x] SearchBar
