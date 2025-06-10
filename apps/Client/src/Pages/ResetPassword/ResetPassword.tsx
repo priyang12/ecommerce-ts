@@ -13,7 +13,7 @@ import {
   Label,
   SubmitButton,
 } from "../../StyledComponents/FormControl";
-import { useForm } from "../../Utils/CustomHooks";
+import { useForm } from "../../Hooks/useForm";
 import setAuthToken from "../../Utils/setAuthToken";
 import { ConfirmPassword, ValidatePassword } from "../../Utils/Validation";
 import { StyledResetPasswordPage } from "./StyledResetPasswordPage";

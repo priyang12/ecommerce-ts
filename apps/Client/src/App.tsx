@@ -1,5 +1,5 @@
 import { BrowserRouter } from "react-router-dom";
-import { useOnlineStatus } from "./Utils/CustomHooks";
+import { useOnlineStatus } from "./Hooks/useOnlineStatus";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
 import ScrollToTop from "./Utils/ScrollToTop";

@@ -1,6 +1,6 @@
 import React, { Dispatch } from "react";
 import { Link } from "react-router-dom";
-import { useTilt } from "../Utils/CustomHooks";
+import { useTilt } from "../Hooks/useTilt";
 import {
   StyledContentInner,
   StyledSlideBackground,
@@ -21,8 +21,9 @@ const Slide = ({
   onMouseLeave: () => void;
   dispatch: Dispatch<any>;
 }) => {
-  const active = offset === 0 ? true : null;
+  const active = offset === 0 ? true : false;
   const ref = useTilt(active);
+
   return (
     <div
       ref={ref}

@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Link, Navigate as Redirect } from "react-router-dom";
 import { RegisterUser } from "../../Context/Authentication/AuthActions";
 import { AuthContext } from "../../Context/Authentication/AuthContext";
-import { useForm } from "../../Utils/CustomHooks";
+import { useForm } from "../../Hooks/useForm";
 import { StyledContainer } from "../../Components/StyledComponents/Container";
 import { Helmet } from "react-helmet-async";
 import {
