@@ -2,6 +2,7 @@ import fs from "fs";
 import { defineConfig } from "vitest/config";
 import { VitePWA } from "vite-plugin-pwa";
 import react from "@vitejs/plugin-react";
+import wyw from "@wyw-in-js/vite";
 
 const manifest = JSON.parse(
   fs.readFileSync("../Client/public/manifest.json", "utf-8")
@@ -22,6 +23,7 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
+    wyw(),
     VitePWA({
       srcDir: "src/ServiceWorkers",
       filename: "Service-Workers.ts",

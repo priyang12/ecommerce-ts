@@ -16,8 +16,9 @@ function App() {
         <AlertDisplay msg="Offline connect to internet!" type="error" />
       )}
       <Navbar />
-      <Routes />
-      <Footer />
+
+      {/* <Routes />
+      <Footer /> */}
     </BrowserRouter>
   );
 }

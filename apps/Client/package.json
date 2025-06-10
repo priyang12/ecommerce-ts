@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@linaria/core": "^6.3.0",
+    "@linaria/react": "^6.3.0",
     "@paypal/react-paypal-js": "^8.8.3",
     "@priyang/react-component-lib": "^1.0.2",
     "axios": "^1.9.0",
@@ -90,6 +92,7 @@
     "@vitejs/plugin-react": "^4.5.1",
     "@vitest/coverage-v8": "^3.2.2",
     "@vitest/ui": "^3.2.2",
+    "@wyw-in-js/vite": "^0.7.0",
     "axios-mock-adapter": "^2.1.0",
     "eslint": "^9.28.0",
     "eslint-plugin-react": "^7.37.5",
