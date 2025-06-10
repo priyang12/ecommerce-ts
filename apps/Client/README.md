@@ -10,4 +10,6 @@
 [x] docs comments in Utils and test cases.
 [x] each file for different hooks.
 [] docs components and refactor the folder.
-[] on reload the page redirect to auth.after auth page authcontext fire and set the token redirect '/' on token available. this is making the protected route in onload redirect to '/' fix this
+[] replace useForm with react-hook-form.
+[] migrate to vanilla-extract or linaria
+[x] on reload the page redirect to auth.after auth page authcontext fire and set the token redirect '/' on token available. this is making the protected route in onload redirect to '/' fix this (temp fix added yesterday)
