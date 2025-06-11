@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useState } from "react";
 import { useLoadTopProducts } from "../../API/ProductAPI";
-import Slide from "../Slide";
+import Slide from "./Slide";
 import {
   StyledSlide,
   StyledSlideButton,
@@ -72,6 +72,7 @@ function Carousel() {
                 offset={offset}
                 key={i}
                 onMouseEnter={handleHover}
+                onFocus={handleHover}
                 onMouseLeave={handleLeave}
                 dispatch={dispatch}
               />

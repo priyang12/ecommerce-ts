@@ -12,6 +12,7 @@
 
 [] replace useForm with react-hook-form.
 [x] on reload the page redirect to auth.after auth page authcontext fire and set the token redirect '/' on token available. this is making the protected route in onload redirect to '/' fix this (temp fix added yesterday)
+[] memoize and optimize the Carousel component.
 
 ### change UI
 
@@ -26,3 +27,4 @@
 [x] SearchBar
 [x] Rating
 [x] LoadingButton
+[x] Slide
