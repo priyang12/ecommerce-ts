@@ -29,3 +29,4 @@
 [x] AlertDisplay
 [x] Navigators
 [x] Spinner
+[x] FallbackUI
