@@ -32,6 +32,7 @@ import type { Product } from "../../../Types/interfaces";
 const Slide = ({
   slide,
   offset,
+  DisplayProductsLength,
   onMouseEnter,
   onMouseLeave,
   onFocus,
@@ -39,6 +40,7 @@ const Slide = ({
 }: {
   slide: Product;
   offset: number;
+  DisplayProductsLength: number;
   onMouseEnter: React.MouseEventHandler<HTMLDivElement>;
   onMouseLeave: React.MouseEventHandler<HTMLDivElement>;
   onFocus: React.FocusEventHandler<HTMLDivElement>;
@@ -67,10 +69,10 @@ const Slide = ({
   const moveSlideOnTouch = (e: React.TouchEvent<HTMLDivElement>) => {
     if (e.touches.length >= 1) {
       if (offset === 1) {
-        dispatch({ type: "NEXT" });
+        dispatch({ type: "NEXT", length: DisplayProductsLength });
       }
       if (offset === -1) {
-        dispatch({ type: "PREV" });
+        dispatch({ type: "PREV", length: DisplayProductsLength });
       }
     }
   };

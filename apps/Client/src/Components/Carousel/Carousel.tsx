@@ -5,7 +5,7 @@ import {
   StyledSlide,
   StyledSlideButton,
   StyledSlidesContainer,
-} from "../StyledComponents/Styledslides";
+} from "./StyledCarousel";
 import { FaChevronCircleLeft, FaChevronCircleRight } from "react-icons/fa";
 
 const initialState = {
@@ -77,6 +77,7 @@ function Carousel() {
               <Slide
                 slide={slide}
                 offset={offset}
+                DisplayProductsLength={DisplayProducts.length}
                 key={i}
                 onMouseEnter={handleHover}
                 onFocus={handleHover}

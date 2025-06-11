@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "@linaria/react";
 import { media } from "../../Utils/Variables";
 
 export const StyledSlidesContainer = styled.div`
@@ -39,7 +39,7 @@ export const StyledSlideButton = styled.button`
     opacity: 1;
   }
   &:focus {
-    outline: 5px solid #e65d5d;
+    outline: 5px solid var(--secondary-500);
   }
   &:first-child {
     left: 10%;

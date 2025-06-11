@@ -28,3 +28,4 @@
 [x] Rating
 [x] LoadingButton
 [x] Slide
+[x] Carousel
