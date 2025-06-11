@@ -5,11 +5,7 @@ import Footer from "./Components/Footer";
 import ScrollToTop from "./Utils/ScrollToTop";
 import AlertDisplay from "./Components/AlertDisplay";
 import Routes from "./Routes";
-import { styled } from "@linaria/react";
-
-const Button = styled.button`
-  background-color: red;
-`;
+import Carousel from "./Components/Carousel";
 
 function App() {
   const isOnline = useOnlineStatus();
@@ -20,6 +16,7 @@ function App() {
       {!isOnline && (
         <AlertDisplay msg="Offline connect to internet!" type="error" />
       )}
+      <Carousel />
 
       {/* <Navbar /> */}
       {/* <Routes /> */}

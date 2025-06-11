@@ -11,18 +11,18 @@
   --primary-800: #0d3b66;
   --primary-900: #071e33;
 
-  /* Secondary Palette */
-  --secondary-50: #fff5f9;
-  --secondary-100: #ffe0ec;
-  --secondary-200: #ffb8cf;
-  --secondary-300: #ff8db2;
-  --secondary-400: #ff6699;
-  --secondary-500: #ff407f; /* Accent */
-  --secondary-600: #cc3366;
-  --secondary-700: #99264d;
-  --secondary-800: #661933;
-  --secondary-900: #330d1a;
-
+  --secondary-50: #FFFCFC;
+  --secondary-100: #FCEAEA;
+  --secondary-200: #F6C7C7;
+  --secondary-300: #F1A4A4;
+  --secondary-400: #EB8080;
+  --secondary-500: #E65D5D;
+  --secondary-600: #DE2C2C;
+  --secondary-700: #B71C1C;
+  --secondary-800: #861515;
+  --secondary-900: #550D0D;
+  --secondary-950: #3D0909
+  
   /* Neutral */
   --neutral-50: #f9f9f9;
   --neutral-100: #f0f0f0;
@@ -79,7 +79,7 @@
 
     /* change in dark mode later*/
     --primary-500: #4fa8ff;
-    --secondary-500: #ff6699;
+    --secondary-500: #E65D5D;
   }
 }
 
