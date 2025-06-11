@@ -30,3 +30,4 @@
 [x] Navigators
 [x] Spinner
 [x] FallbackUI
+[x] Footer

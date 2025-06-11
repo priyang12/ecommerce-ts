@@ -1,23 +1,44 @@
 import { Link, useLocation } from "react-router-dom";
-import LogoImage from "../Assets/Logo.png";
+import LogoImage from "../../Assets/Logo.png";
 import {
   ContactInfo,
-  ContentInfo,
-  Footer as StyledFooter,
+  StyledFooter,
   FooterContainer,
-} from "./StyledComponents/StyledFooter";
+  FooterItem,
+  FooterLogo,
+  HorizontalContentInfo,
+} from "./StyledFooter";
 import { FaMapMarker, FaPhone, FaEnvelope } from "react-icons/fa";
+
+/**
+ * Footer component
+ *
+ * @description
+ * The Footer component renders a styled footer section containing company information, contact 
+ * details, navigation links, and a logo. It is conditionally hidden on specific routes 
+ * where a footer would be inappropriate or clutter the UI, such as authentication or 
+ * checkout-related pages.
+
+ * @return {*} 
+ */
 const Footer = () => {
   const location = useLocation();
   const isAuth =
     location.pathname == "/Auth/login" || location.pathname == "/Auth/register";
   const isPlaceOrder = location.pathname === "/PlaceOrder";
   const isPaypal = location.pathname === "/PayPal";
+
   if (isAuth || isPlaceOrder || isPaypal) return null;
+
   return (
     <StyledFooter>
       <FooterContainer>
-        <div className="footer-item">
+        <FooterItem>
+          <FooterLogo>
+            <Link to="/home">
+              <img src={LogoImage} alt="logo" />
+            </Link>
+          </FooterLogo>
           <p>
             ECommerce, also known as electronic commerce or internet commerce,
             refers to the buying and selling of goods or services using the
@@ -29,6 +50,24 @@ const Footer = () => {
             business, ecommerce refers specifically to the transaction of goods
             and services.
           </p>
+        </FooterItem>
+        <FooterItem>
+          <h4>Links</h4>
+          <HorizontalContentInfo>
+            <li>
+              <Link to={`/StillWorking`}>Home</Link>
+            </li>
+            <li>
+              <Link to={`/StillWorking`}>About</Link>
+            </li>
+            <li>
+              <Link to={`/StillWorking`}>Services</Link>
+            </li>
+            <li>
+              <Link to={`/StillWorking`}>Contact</Link>
+            </li>
+          </HorizontalContentInfo>
+
           <ContactInfo>
             <li>
               <FaMapMarker />
@@ -45,31 +84,7 @@ const Footer = () => {
               <a href="mailto:patelpriyang95@gmail.com">shopitTeam@gmail.com</a>
             </li>
           </ContactInfo>
-        </div>
-      </FooterContainer>
-      <FooterContainer>
-        <div className="footer-item">
-          <h4>Links</h4>
-          <ContentInfo>
-            <li>
-              <Link to={`/StillWorking`}>Home</Link>
-            </li>
-            <li>
-              <Link to={`/StillWorking`}>About</Link>
-            </li>
-            <li>
-              <Link to={`/StillWorking`}>Services</Link>
-            </li>
-            <li>
-              <Link to={`/StillWorking`}>Contact</Link>
-            </li>
-          </ContentInfo>
-          <div className="footer-logo">
-            <Link to="/home">
-              <img src={LogoImage} alt="logo" />
-            </Link>
-          </div>
-        </div>
+        </FooterItem>
       </FooterContainer>
     </StyledFooter>
   );
