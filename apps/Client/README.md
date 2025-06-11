@@ -26,3 +26,4 @@
 [x] SearchBar
 [x] Rating
 [x] LoadingButton
+[x] AlertDisplay

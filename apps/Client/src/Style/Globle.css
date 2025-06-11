@@ -53,12 +53,20 @@
   /* remove this later and import the variable from const*/
   --border-radius: 0.5rem;
 
+  /* Button */
   --btn-bg: var(--primary-500);
   --btn-bg-hover: var(--bg-contrast);
   --btn-text: var(--bg-default);
   --btn-text-hover: var(--bg-color);
   --btn-border: transparent;
   --btn-border-hover: var(--primary-400);
+
+  /* alert */
+  --alert-success-bg: #afdbaf;
+  --alert-error-bg: #ef251b;
+  --alert-warning-bg: #ff9800;
+  --alert-info-bg: #2196f3;
+  --alert-text-color: #fff;
 }
 
 @media (prefers-color-scheme: dark) {
