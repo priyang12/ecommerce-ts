@@ -28,3 +28,4 @@
 [x] LoadingButton
 [x] AlertDisplay
 [x] Navigators
+[x] Spinner
