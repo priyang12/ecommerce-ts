@@ -27,3 +27,4 @@
 [x] Rating
 [x] LoadingButton
 [x] AlertDisplay
+[x] Navigators

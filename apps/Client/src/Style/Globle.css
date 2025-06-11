@@ -148,11 +148,6 @@ form input[type="submit"] {
   cursor: pointer;
 }
 
-.Link-border {
-  padding-bottom: 20px;
-  border-bottom: 4px solid sandybrown;
-  border-radius: 5px;
-}
 .display {
   font-size: 2.5rem;
 }
