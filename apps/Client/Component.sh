@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 # variables
 Path="src/Components"
@@ -10,73 +10,95 @@ read choice
 
 Rfce() {
     # Write the Component Name
-    echo "import React from 'react';" >>$Path/$1.tsx
-    echo "import './$1.scss';" >>$Path/$1.tsx
-    echo "function $1() {" >>$Path/$1.tsx
-    echo "    return ( " >>$Path/$1.tsx
-    echo "        <div>" >>$Path/$1.tsx
-    echo "           $1" >>$Path/$1.tsx
-    echo "        </div>" >>$Path/$1.tsx
-    echo "    )" >>$Path/$1.tsx
-    echo "}" >>$Path/$1.tsx
-    echo "export default $1" >>$Path/$1.tsx
+    echo "import React from 'react';" > $Path/$1/$1.tsx
+    echo "import { Styled$1 } from './Styled$1';" >> $Path/$1/$1.tsx
+    echo "" >> $Path/$1/$1.tsx
+    echo "interface ${1}Props {}" >> $Path/$1/$1.tsx
+    echo "" >> $Path/$1/$1.tsx
+    echo "function $1({}: ${1}Props) {" >> $Path/$1/$1.tsx
+    echo "    return (" >> $Path/$1/$1.tsx
+    echo "        <Styled$1>" >> $Path/$1/$1.tsx
+    echo "            $1 Component" >> $Path/$1/$1.tsx
+    echo "        </Styled$1>" >> $Path/$1/$1.tsx
+    echo "    );" >> $Path/$1/$1.tsx
+    echo "}" >> $Path/$1/$1.tsx
+    echo "" >> $Path/$1/$1.tsx
+    echo "export default $1;" >> $Path/$1/$1.tsx
 }
 
-Test() {
+StyledComponent() {
+    # Write the Styled Component
+    echo "import styled from 'styled-components';" > $Path/$1/Styled$1.ts
+    echo "" >> $Path/$1/Styled$1.ts
+    echo "export const Styled$1 = styled.div\`" >> $Path/$1/Styled$1.ts
+    echo "    // Your styles here" >> $Path/$1/Styled$1.ts
+    echo "\`;" >> $Path/$1/Styled$1.ts
+}
+
+IndexFile() {
+    # Write the index.ts file
+    echo "export { default } from './$1';" > $Path/$1/index.ts
+    echo "export * from './Styled$1';" >> $Path/$1/index.ts
+}
+
+TestFile() {
     # Test Boilerplate
-    echo "import React from 'react';" >>$Path/__tests__/$1.test.tsx
-    echo "import $1 from './$1';" >>$Path/__tests__/$1.test.tsx
-    echo "import { render, fireEvent, screen } from '@testing-library/react';" >>$Path/__tests__/$1.test.tsx
-    echo "import '@testing-library/jest-dom/extend-expect';" >>$Path/__tests__/$1.test.tsx
-    echo "describe('$1', () => {" >>$Path/__tests__/$1.test.tsx
-    echo "    it('should render without crashing', () => {" >>$Path/__tests__/$1.test.tsx
-    echo "        const div = document.createElement('div');" >>$Path/__tests__/$1.test.tsx
-    echo "        render(<$1 />, div);" >>$Path/__tests__/$1.test.tsx
-    echo "    });" >>$Path/__tests__/$1.test.tsx
-    echo "});" >>$Path/$1.test.tsx
+    echo "import $1 from './$1';" >> $Path/$1/$1.test.tsx
+    echo "import { render, screen } from '@testing-library/react';" >> $Path/$1/$1.test.tsx
+    echo "" >> $Path/$1/$1.test.tsx
+    echo "describe('$1', () => {" >> $Path/$1/$1.test.tsx
+    echo "    it('renders without crashing', () => {" >> $Path/$1/$1.test.tsx
+    echo "        render(<$1 />);" >> $Path/$1/$1.test.tsx
+    echo "        expect(screen.getByText('$1 Component')).toBeInTheDocument();" >> $Path/$1/$1.test.tsx
+    echo "    });" >> $Path/$1/$1.test.tsx
+    echo "});" >> $Path/$1/$1.test.tsx
 }
 
 # if user input is 1 then create component
-
 if [ "$choice" -eq 1 ]; then
     echo "Creating Component"
     read -p "Enter Component Name: " NAME
 
     if [ -z "$NAME" ]; then
-        echo "You did not Component Name"
+        echo "You did not enter a Component Name"
     else
-        # get Path of directory
-        DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-        # get name of directory
-        DIR_NAME=$(basename "$DIR")
-
         echo "Component Name: $NAME"
 
         # check if directory exists
-        DIRECTORY='/home/data'
         if [ ! -d "$Path/$NAME" ]; then
-            # touch src/components/Form/{Form.js,Form.test.js,Form.css}
+            # Create component directory
+            mkdir -p "$Path/$NAME"
+            
+            # Create all files
+            touch $Path/$NAME/$NAME.tsx
+            touch $Path/$NAME/Styled$NAME.ts
+            touch $Path/$NAME/index.ts
+            touch $Path/$NAME/$NAME.test.tsx
 
-            touch $Path/$NAME.tsx
-            touch $Path/StyledComponents/$NAME.ts
-            touch $Path/__tests__/$NAME.test.tsx
-
-            # Write in Component Files
+            # Write content to files
             Rfce $NAME
-            Test $NAME
+            StyledComponent $NAME
+            IndexFile $NAME
+            TestFile $NAME
 
-            echo "Component Created"
+            echo "Component '$NAME' created successfully with all files"
         else
-            echo "Component Already Exists"
+            echo "Component '$NAME' already exists"
         fi
-
     fi
 
 else
-
     echo "Deleting Component"
     read -p "Enter Component Name: " NAME
-    rm -rf $Path/$NAME.tsx
-    rm -rf $Path/StyledComponents/$NAME.ts
-    rm -rf $Path/__tests__/$NAME.test.tsx
+    
+    if [ -z "$NAME" ]; then
+        echo "You did not enter a Component Name"
+    else
+        if [ -d "$Path/$NAME" ]; then
+            rm -rf "$Path/$NAME"
+            echo "Component '$NAME' deleted successfully"
+        else
+            echo "Component '$NAME' does not exist"
+        fi
+    fi
 fi
