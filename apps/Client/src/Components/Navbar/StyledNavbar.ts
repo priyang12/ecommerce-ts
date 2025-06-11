@@ -5,8 +5,8 @@ export const StyledNavbar = styled.nav`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  background-color: var(--primary-light-color);
-  color: var(--primary-dark-color);
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
   top: 0;
   padding: 1em;
   ${media.mobile} {
@@ -22,7 +22,7 @@ export const Logo = styled.div`
   gap: 0.5rem;
   h1 {
     font-size: 2rem;
-    color: var(--text-color);
+    color: var(--text-primary);
     margin: 0;
   }
   img {
@@ -45,8 +45,8 @@ export const StyledSkipNav = styled.a`
     height: auto;
     z-index: 1000;
     padding: 0.5rem 1rem;
-    background-color: var(--primary-color);
-    color: white;
+    background-color: var(--primary-500);
+    color: var(--text-primary);
   }
 `;
 
@@ -65,7 +65,7 @@ export const StyledSecondaryNav = styled.div`
 export const StyledLinks = styled.div`
   a {
     text-decoration: none;
-    color: var(--bg-contrast-color);
+    color: var(--text-primary);
     font-weight: 500;
     font-size: 1rem;
     transition: color 0.3s;

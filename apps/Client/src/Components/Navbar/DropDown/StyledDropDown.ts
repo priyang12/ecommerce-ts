@@ -6,19 +6,19 @@ export const DropDown = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-
   .dropdown-content {
     position: absolute;
     top: 100%;
     right: 0;
     margin-top: 0.5rem;
-    background-color: var(--assertive-color);
+    background-color: var(--primary-500);
     border-radius: 12px;
     box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
     padding: 0.5rem 0;
     z-index: 1000;
     list-style: none;
     min-width: 180px;
+    border: 3px solid var(--secondary-500);
   }
   ${media.mobile} {
     right: -100;
@@ -28,7 +28,7 @@ export const DropDown = styled.div`
 `;
 
 export const StyledUserName = styled.div`
-  color: var(--bg-contrast-color);
+  color: var(--text-primary);
   font-size: 1.5rem;
   margin: 0;
 `;
@@ -37,12 +37,12 @@ export const StyledDropDownButton = styled.button`
   cursor: pointer;
   font-size: 1.5rem;
   background-color: transparent;
-  color: var(--bg-contrast-color);
+  color: var(--text-secondary);
   border-radius: 50%;
-  border-color: var(--secondary-color);
+  border-color: var(--secondary-500);
   transition: all 0.3s ease-in-out;
   &:hover {
-    background-color: var(--assertive-color);
+    background-color: var(--primary-300);
   }
   &:focus ~ .dropdown-content,
   & ~ .dropdown-content:hover {
@@ -54,9 +54,8 @@ export const StyledListItem = styled.div`
   padding: 0.5rem 1rem;
   transition: background-color 0.2s;
   text-align: left;
-
   a {
-    color: var(--secondary-color);
+    color: var(--text-secondary);
     text-decoration: none;
     display: block;
     width: 100%;
@@ -65,7 +64,7 @@ export const StyledListItem = styled.div`
   &:hover {
     background-color: var(--primary-color);
     a {
-      color: #fff;
+      color: var(--primary-600);
     }
   }
 `;
