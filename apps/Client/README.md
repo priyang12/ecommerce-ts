@@ -25,3 +25,4 @@
 [x] Navbar
 [x] SearchBar
 [x] Rating
+[x] LoadingButton

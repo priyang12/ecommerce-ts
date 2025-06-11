@@ -52,6 +52,13 @@
 
   /* remove this later and import the variable from const*/
   --border-radius: 0.5rem;
+
+  --btn-bg: var(--primary-500);
+  --btn-bg-hover: var(--bg-contrast);
+  --btn-text: var(--bg-default);
+  --btn-text-hover: var(--bg-color);
+  --btn-border: transparent;
+  --btn-border-hover: var(--primary-400);
 }
 
 @media (prefers-color-scheme: dark) {
