@@ -17,7 +17,7 @@
 
 [] migrate to linaria for components
 [] docs components and refactor component.
-[] change global styling color in root.
+[x] change global styling color in root.
 
 #### components
 
