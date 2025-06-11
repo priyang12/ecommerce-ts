@@ -1,6 +1,6 @@
 import { BrowserRouter } from "react-router-dom";
 import { useOnlineStatus } from "./Hooks/useOnlineStatus";
-import Navbar from "./Components/Navbar/Navbar";
+import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
 import ScrollToTop from "./Utils/ScrollToTop";
 import AlertDisplay from "./Components/AlertDisplay";
@@ -16,11 +16,10 @@ function App() {
       {!isOnline && (
         <AlertDisplay msg="Offline connect to internet!" type="error" />
       )}
-      <Carousel />
 
-      {/* <Navbar /> */}
-      {/* <Routes /> */}
-      {/* <Footer /> */}
+      <Navbar />
+      <Routes />
+      <Footer />
     </BrowserRouter>
   );
 }

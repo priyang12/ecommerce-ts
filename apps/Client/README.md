@@ -20,6 +20,7 @@
 [] docs components and refactor component.
 [x] change global styling color in root.
 [] "Limited Time Deal" and "FREE delivery within a week" dummy UI in product Card
+[] optimized rendering in Carousel
 
 #### components
 
