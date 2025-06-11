@@ -18,6 +18,7 @@
 [] migrate to linaria for components
 [] docs components and refactor component.
 [x] change global styling color in root.
+[] "Limited Time Deal" and "FREE delivery within a week" dummy UI in product Card
 
 #### components
 
@@ -31,3 +32,4 @@
 [x] Spinner
 [x] FallbackUI
 [x] Footer
+[x] Product Card

@@ -47,7 +47,8 @@ export const Products = [
     countInStock: 6,
     _id: "60d5e622e5179e2bb44bd83b",
     name: "Sony Playstation 4 Pro White Version",
-    image: "/Photos/image-1628092377429.webp",
+    image:
+      "https://ik.imagekit.io/5aalo5l7bu7/image-1627385386692_1jmB_46rs.webp",
     description:
       "The ultimate home entertainment center starts with PlayStation. Whether you are into gaming, HD movies, television, music",
     brand: "Sony",
