@@ -24,3 +24,4 @@
 [] Refactor and tests
 [x] Navbar
 [x] SearchBar
+[x] Rating
