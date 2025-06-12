@@ -3,14 +3,24 @@ import { useSearchProduct } from "../../API/ProductAPI";
 import { Helmet } from "react-helmet-async";
 import { Pagination, PaginationButton } from "./Styled";
 import SearchBar from "../../Components/SearchBar";
-import {
-  StyledDisplay,
-  StyledProducts,
-} from "../../Components/StyledComponents/Products";
 import ProductCard from "../../Components/ProductCard";
 import AlertDisplay from "../../Components/AlertDisplay";
 import Spinner from "../../Components/Spinner";
 import { Product } from "../../Types/interfaces";
+import {
+  CardBoard,
+  StyledDisplay,
+} from "../../Components/UI/CardBoard/StyledCardBoard";
+import { styled } from "@linaria/react";
+
+const StyledProducts = styled(CardBoard)`
+  backdrop-filter: blur(8px) saturate(142%);
+  -webkit-backdrop-filter: blur(8px) saturate(142%);
+  background-color: var(--bg-color-alpha);
+  border: 1px solid rgba(255, 255, 255, 0.125);
+  max-width: 80%;
+  width: 100%;
+`;
 
 function Search() {
   const { keyword, pageNumber } = useParams<{

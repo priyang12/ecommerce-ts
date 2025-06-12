@@ -1,11 +1,21 @@
+import { styled } from "@linaria/react";
 import { useProducts } from "../../API/ProductAPI";
-import {
-  StyledDisplay,
-  StyledProducts,
-} from "../../Components/StyledComponents/Products";
 import AlertDisplay from "../../Components/AlertDisplay";
 import ProductCard from "../../Components/ProductCard";
 import Spinner from "../../Components/Spinner";
+import {
+  StyledDisplay,
+  CardBoard,
+} from "../../Components/UI/CardBoard/StyledCardBoard";
+
+const StyledProducts = styled(CardBoard)`
+  backdrop-filter: blur(8px) saturate(142%);
+  -webkit-backdrop-filter: blur(8px) saturate(142%);
+  background-color: var(--bg-color-alpha);
+  border: 1px solid rgba(255, 255, 255, 0.125);
+  max-width: 80%;
+  width: 100%;
+`;
 
 function DisplayProducts({ title }: { title?: string }) {
   const { data: ProductsData, error: Err, isLoading } = useProducts();

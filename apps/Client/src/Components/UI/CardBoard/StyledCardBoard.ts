@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { media } from "../../Utils/Variables";
+import { styled } from "@linaria/react";
+import { media } from "../../../Utils/Variables";
 
 export const CardBoard = styled.section`
   display: grid;
@@ -26,4 +26,13 @@ export const Card = styled.article`
       height: 50vh;
     }
   }
+`;
+
+export const StyledDisplay = styled.section`
+  text-align: center;
+  color: var(--primary-light-color);
+  background-color: var(--primary-dark-color);
+  background: url("./images/haikei.svg") repeat center/cover;
+  margin: 0;
+  min-height: 1000px;
 `;
