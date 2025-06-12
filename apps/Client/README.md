@@ -39,3 +39,4 @@
 [x] Carousel
 [x] Select List
 [x] Form Control
+[x] replace with UI component and remove StyledComponents
