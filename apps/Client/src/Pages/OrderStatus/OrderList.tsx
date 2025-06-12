@@ -1,15 +1,21 @@
 import { Link } from "react-router-dom";
-import { StyledContainer } from "../../Components/StyledComponents/Container";
 import { OrderListItem } from "../../Constants/interface";
 import { ListItem, OrderLists } from "./StyledOrderStatus";
+import { css } from "@linaria/core";
 
 type Props = {
   Orders: OrderListItem[];
 };
 
+const StyledContainer = css`
+  width: 100%;
+  max-width: 100ch;
+  margin: 5rem auto;
+`;
+
 const OrderList = ({ Orders }: Props) => {
   return (
-    <StyledContainer theme={{ marginTop: 5 }}>
+    <div className={StyledContainer}>
       <OrderLists>
         {Orders.map((order, index: number) => (
           <Link to={`/OrderStatus/${order._id}`} key={index}>
@@ -26,7 +32,7 @@ const OrderList = ({ Orders }: Props) => {
           </Link>
         ))}
       </OrderLists>
-    </StyledContainer>
+    </div>
   );
 };
 

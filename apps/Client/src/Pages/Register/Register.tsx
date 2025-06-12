@@ -3,7 +3,6 @@ import { Link, Navigate as Redirect } from "react-router-dom";
 import { RegisterUser } from "../../Context/Authentication/AuthActions";
 import { AuthContext } from "../../Context/Authentication/AuthContext";
 import { useForm } from "../../Hooks/useForm";
-import { StyledContainer } from "../../Components/StyledComponents/Container";
 import { Helmet } from "react-helmet-async";
 import {
   FormControl,
@@ -13,6 +12,14 @@ import {
 } from "../../Components/UI/FormControl";
 import { RegisterSchema } from "../../validation";
 import Spinner from "../../Components/Spinner";
+import { styled } from "@linaria/react";
+
+const StyledContainer = styled.div`
+  width: 100%;
+  margin: 0em auto;
+  max-width: 100ch;
+`;
+
 const init = {
   name: "",
   email: "",
