@@ -38,3 +38,4 @@
 [x] Slide
 [x] Carousel
 [x] Select List
+[x] Form Control
