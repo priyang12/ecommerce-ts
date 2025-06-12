@@ -2,11 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router";
 import { useCheckout } from "../../Context/CheckoutContext/CheckoutContext";
-import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
+import { StyledCheckoutContainer } from "../../Components/UI/CheckoutContainer";
 import {
   StyledRadioFormContainer,
   StyledRadioFormControl,
 } from "./StyledPaymentMethod";
+import { css } from "@linaria/core";
+
+const containerWidth = css`
+  max-width: 60ch;
+`;
 
 const PaymentMethod = () => {
   const Navigate = useNavigate();
@@ -32,7 +37,7 @@ const PaymentMethod = () => {
   };
 
   return (
-    <StyledPaymentContainer>
+    <StyledCheckoutContainer className={containerWidth}>
       <Helmet>
         <title>Payment Method</title>
         <meta name="description" content="Payment Method" />
@@ -71,7 +76,7 @@ const PaymentMethod = () => {
           <input type="submit" className="btn" value="Continue" />
         </form>
       </section>
-    </StyledPaymentContainer>
+    </StyledCheckoutContainer>
   );
 };
 

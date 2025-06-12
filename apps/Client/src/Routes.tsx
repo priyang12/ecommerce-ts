@@ -1,5 +1,7 @@
 import { Outlet, Route, Routes as RouterRoutes } from "react-router-dom";
 import { CheckoutProvider } from "./Context/CheckoutContext/CheckoutContext";
+import { StyledCheckoutContainer } from "./Components/UI/CheckoutContainer";
+import { StyledCheckoutLayout } from "./Components/UI/CheckoutContainer/CheckoutContainer";
 import Auth from "./Pages/Auth";
 import ForgotPassword from "./Pages/ForgotPassword";
 import Home from "./Pages/Home";
@@ -22,7 +24,6 @@ import Profile from "./Pages/Profile";
 import Reviews from "./Pages/Reviews";
 import Wishlist from "./Pages/WishList";
 import Navigators from "./Components/Navigators";
-import { StyledPaymentContainer } from "./Components/StyledComponents/StyledPayment";
 
 const Routes = () => {
   return (
@@ -43,10 +44,12 @@ const Routes = () => {
             path="/checkout"
             element={
               <CheckoutProvider>
-                <StyledPaymentContainer style={{ height: "100vh" }}>
-                  <Navigators />
+                <StyledCheckoutLayout>
+                  <StyledCheckoutContainer style={{ maxWidth: "50vw" }}>
+                    <Navigators />
+                  </StyledCheckoutContainer>
                   <Outlet />
-                </StyledPaymentContainer>
+                </StyledCheckoutLayout>
               </CheckoutProvider>
             }
           >

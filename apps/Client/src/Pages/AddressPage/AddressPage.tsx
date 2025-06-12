@@ -3,17 +3,22 @@ import { useNavigate } from "react-router-dom";
 import { useCheckout } from "../../Context/CheckoutContext/CheckoutContext";
 import { useForm } from "../../Hooks/useForm";
 import { Address } from "../../Types/interfaces";
-import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
+import { StyledCheckoutContainer } from "../../Components/UI/CheckoutContainer";
 import { OrderSchema } from "../../validation";
-import { FormControl, Input, Label } from "../../StyledComponents/FormControl";
+import { FormControl, Input, Label } from "../../Components/UI/FormControl";
 import { useLoadCartQuery } from "../../API/CartAPI";
 import { toast } from "react-toastify";
+import { css } from "@linaria/core";
 
 const init: Address = {
   address: "",
   city: "",
   postalcode: "",
 };
+
+const containerWidth = css`
+  max-width: 60ch;
+`;
 
 const AddressPage = () => {
   const Navigate = useNavigate();
@@ -43,7 +48,7 @@ const AddressPage = () => {
     }
   };
   return (
-    <StyledPaymentContainer theme={{ maxWidth: "60ch" }}>
+    <StyledCheckoutContainer className={containerWidth}>
       <form onSubmit={SubmitAddress}>
         <h1>SHIPPING</h1>
         <FormControl>
@@ -88,7 +93,7 @@ const AddressPage = () => {
 
         <input type="submit" className="btn" value="Continue" />
       </form>
-    </StyledPaymentContainer>
+    </StyledCheckoutContainer>
   );
 };
 

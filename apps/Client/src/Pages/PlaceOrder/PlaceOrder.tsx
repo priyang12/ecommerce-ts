@@ -1,6 +1,5 @@
 import { Navigate as Redirect, useNavigate } from "react-router";
 import { Helmet } from "react-helmet-async";
-import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
 import ProductList from "./ProductList";
 import {
   StyledHeader,
@@ -13,6 +12,13 @@ import {
 import { useLoadCartQuery } from "../../API/CartAPI";
 import Spinner from "../../Components/Spinner";
 import { useCheckout } from "../../Context/CheckoutContext/CheckoutContext";
+import { StyledCheckoutContainer } from "../../Components/UI/CheckoutContainer";
+import { css } from "@linaria/core";
+
+const containerWidth = css`
+  max-width: 80vw;
+  height: 100vh;
+`;
 
 const PlaceOrder = () => {
   const Navigate = useNavigate();
@@ -58,7 +64,7 @@ const PlaceOrder = () => {
   if (!payMethod) return <Redirect to="/checkout/paymentMethod" />;
 
   return (
-    <StyledPaymentContainer theme={{ maxWidth: "80vw" }}>
+    <StyledCheckoutContainer className={containerWidth}>
       <Helmet>
         <title>Place Order</title>
         <meta name="description" content="Place Order" />
@@ -107,7 +113,7 @@ const PlaceOrder = () => {
           </form>
         </StyledOrderSummary>
       </StyledPlaceOrder>
-    </StyledPaymentContainer>
+    </StyledCheckoutContainer>
   );
 };
 

@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useOrderDetails } from "../../API/OrdersAPI";
-import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
 import Spinner from "../../Components/Spinner";
 import {
   ReviewButton,
@@ -14,6 +13,12 @@ import {
 } from "./StyledOrderDeatails";
 import { Helmet } from "react-helmet-async";
 import ReviewModel from "./ReviewModel";
+import { StyledCheckoutContainer } from "../../Components/UI/CheckoutContainer";
+import { css } from "@linaria/core";
+
+const containerWidth = css`
+  max-width: 70vw;
+`;
 
 const OrderDetails = () => {
   const Navigate = useNavigate();
@@ -49,7 +54,8 @@ const OrderDetails = () => {
         `}
         />
       </Helmet>
-      <StyledPaymentContainer theme={{ maxWidth: "70vw" }}>
+
+      <StyledCheckoutContainer className={containerWidth}>
         <StyledOrderDetails>
           <h1>SHIPPING</h1>
           <p>
@@ -179,7 +185,7 @@ const OrderDetails = () => {
             Not Delivered
           </StyledDelivery>
         )}
-      </StyledPaymentContainer>
+      </StyledCheckoutContainer>
     </>
   );
 };
