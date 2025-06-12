@@ -4,6 +4,16 @@ import { media } from "../../../Utils/Variables";
 export const StyledSlide = styled.div`
   width: 50vw;
   height: 50vh;
+  transform: perspective(1000px) translateX(calc(100% * var(--offset)))
+    rotateY(calc(-45deg * var(--dir)));
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease-in-out;
+  .active {
+    &:hover {
+      transform: perspective(1000px) rotateX(calc((0.5 - var(--py)) * 20deg))
+        rotateY(calc((var(--px) - 0.5) * 20deg));
+    }
+  }
 `;
 
 export const StyledSlideContent = styled.div`
@@ -12,16 +22,11 @@ export const StyledSlideContent = styled.div`
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  transition: transform 0.5s ease-in-out;
   opacity: 0.7;
-
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
 
-  transform-style: preserve-3d;
-  transform: perspective(1000px) translateX(calc(100% * var(--offset)))
-    rotateY(calc(-45deg * var(--dir)));
   &:hover {
     > button {
       opacity: 1;
@@ -73,6 +78,8 @@ export const StyledShowMore = styled.div`
   a {
     display: inline-block;
     background: rgba(255, 255, 255, 0.85);
+    border: 2px solid var(--secondary-500);
+    border-radius: 1rem;
     color: #111;
     font-weight: bold;
     text-decoration: none;
@@ -107,7 +114,7 @@ export const StyledSlideButton = styled.button`
     opacity: 1;
   }
   &:focus {
-    outline: 5px solid #e65d5d;
+    outline: 5px solid var(--secondary-500);
   }
   &:first-child {
     left: 10%;

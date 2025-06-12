@@ -93,9 +93,6 @@ const Slide = ({
         {
           "--offset": offset,
           "--dir": offset === 0 ? 0 : offset > 0 ? 1 : -1,
-          transform: `perspective(1000px)
-            rotateX(calc((0.5 - var(--py)) * 20deg))
-            rotateY(calc((var(--px) - 0.5) * 20deg))`,
         } as React.CSSProperties
       }
     >
