@@ -16,11 +16,13 @@
 
 ### change UI
 
-[] migrate to linaria for components
-[] docs components and refactor component.
+[x] migrate to linaria for components
+[x] docs components and refactor component.
 [x] change global styling color in root.
 [x] "Limited Time Deal" and "FREE delivery within a week" dummy UI in product Card
 [] optimized rendering in Carousel
+[] Migrate to linaria for Pages.
+[] global dark mode by flipping the temp of color pallet.
 
 #### components
 
@@ -40,3 +42,7 @@
 [x] Select List
 [x] Form Control
 [x] replace with UI component and remove StyledComponents
+
+#### Pages
+
+[x] Home

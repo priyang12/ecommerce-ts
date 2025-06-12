@@ -2,12 +2,15 @@ import { styled } from "@linaria/react";
 import { media } from "../../Utils/Variables";
 
 export const StyledSlidesContainer = styled.div`
+  background-color: var(--secondary-300);
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #fff;
+  color: var(--text-primary);
   position: relative;
+  // keep it for now look for UI change.
+  height: 90vh;
   margin: 10% 5%;
 `;
 
