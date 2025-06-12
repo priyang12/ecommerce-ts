@@ -3,8 +3,19 @@ import { useParams } from "react-router-dom";
 import { ImageMagnifier } from "@priyang/react-component-lib";
 import Reviews from "./Reviews";
 import Rating from "../../Components/Rating";
-import Quantity from "../../Components/Quantity";
+import Quantity, {
+  StyledQuantityOptions,
+} from "../../Components/Select/Quantity";
+import Select from "../../Components/Select";
 import AlertDisplay from "../../Components/AlertDisplay";
+import { usePostCartQuery } from "../../API/CartAPI";
+import { Helmet } from "react-helmet-async";
+import { useSingleProduct } from "../../API/ProductAPI";
+import { useAddWishlistQuery } from "../../API/WishListAPI";
+import Spinner from "../../Components/Spinner";
+import LoadingButton from "../../Components/LoadingButton";
+import { useAuth } from "../../Context/Authentication/AuthContext";
+import SuggestionProducts from "./SuggestionProducts";
 
 //styles
 import {
@@ -16,16 +27,6 @@ import {
   StyledQuantity,
   CheckFormControl,
 } from "./Styled/StyledSingleProduct";
-
-import { usePostCartQuery } from "../../API/CartAPI";
-import { Helmet } from "react-helmet-async";
-import { useSingleProduct } from "../../API/ProductAPI";
-import { useAddWishlistQuery } from "../../API/WishListAPI";
-import Spinner from "../../Components/Spinner";
-import { Select } from "../../StyledComponents/FormControl";
-import LoadingButton from "../../Components/LoadingButton";
-import { useAuth } from "../../Context/Authentication/AuthContext";
-import SuggestionProducts from "./SuggestionProducts";
 
 const SingleProduct = () => {
   const { state } = useAuth();
@@ -122,7 +123,11 @@ const SingleProduct = () => {
                       name="Quantity"
                       onChange={(e) => setQty(e.target.value)}
                     >
-                      <Quantity countInStock={Product.countInStock} />
+                      <Quantity countInStock={Product.countInStock}>
+                        <StyledQuantityOptions key={"initial"} value={""}>
+                          select number
+                        </StyledQuantityOptions>
+                      </Quantity>
                     </Select>
                   </CheckFormControl>
                   <br />

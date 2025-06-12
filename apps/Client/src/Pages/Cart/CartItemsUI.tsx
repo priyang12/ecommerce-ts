@@ -11,9 +11,9 @@ import {
   StyledTotalPrice,
 } from "./StyledCart";
 import { useAddWishlistQuery } from "../../API/WishListAPI";
-import Quantity from "../../Components/Quantity";
+import Select from "../../Components/Select";
+import Quantity from "../../Components/Select/Quantity";
 import { usePostCartQuery } from "../../API/CartAPI";
-import { Select } from "../../StyledComponents/FormControl";
 
 function CartItemsUI({
   CartItem,

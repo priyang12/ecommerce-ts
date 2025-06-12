@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import { usePostCartQuery } from "../../API/CartAPI";
 import { useFilterWishlist } from "../../API/WishListAPI";
 import LoadingButton from "../../Components/LoadingButton";
-import Quantity from "../../Components/Quantity";
+import Select from "../../Components/Select";
+import Quantity from "../../Components/Select/Quantity";
 import Spinner from "../../Components/Spinner";
-import { Select } from "../../StyledComponents/FormControl";
 import { ImageContainer } from "../Reviews/StyledReview";
 import { StyledWishlistItem, StyledWishlistProduct } from "./StyledCart";
 

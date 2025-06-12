@@ -22,7 +22,13 @@ interface QuantityProps {
 function Quantity({ children, countInStock }: QuantityProps) {
   return (
     <>
-      {children ? children : <option value={""}>select quantity</option>}
+      {children ? (
+        children
+      ) : (
+        <StyledQuantityOptions value={""}>
+          select quantity
+        </StyledQuantityOptions>
+      )}
       {Array.from(Array(countInStock).keys()).map((x) => (
         <StyledQuantityOptions key={x + 1} value={x + 1}>
           {x + 1}
