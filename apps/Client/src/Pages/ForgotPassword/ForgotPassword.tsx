@@ -10,7 +10,7 @@ import {
   Input,
   Label,
   SubmitButton,
-} from "../../StyledComponents/FormControl";
+} from "../../Components/UI/FormControl";
 import { ValidateEmail } from "../../Utils/Validation";
 import { StyledForgetPassword } from "./StyledForgetPassword";
 

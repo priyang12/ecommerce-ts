@@ -12,7 +12,7 @@ import {
   Input,
   Label,
   SubmitButton,
-} from "../../StyledComponents/FormControl";
+} from "../../Components/UI/FormControl";
 import { useForm } from "../../Hooks/useForm";
 import setAuthToken from "../../Utils/setAuthToken";
 import { ConfirmPassword, ValidatePassword } from "../../Utils/Validation";

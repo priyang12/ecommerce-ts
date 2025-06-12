@@ -10,7 +10,7 @@ import {
   Input,
   Label,
   SubmitButton,
-} from "../../StyledComponents/FormControl";
+} from "../../Components/UI/FormControl";
 
 const Login = () => {
   const { dispatch } = useContext(AuthContext);

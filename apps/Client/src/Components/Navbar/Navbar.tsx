@@ -16,9 +16,11 @@ import {
 
 const GuestLink = () => {
   return (
-    <Link to="/Auth/login" className="Auth">
-      Login/Register
-    </Link>
+    <StyledLinks>
+      <Link to="/Auth/login" className="Auth">
+        Login/Register
+      </Link>
+    </StyledLinks>
   );
 };
 

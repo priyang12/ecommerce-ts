@@ -47,6 +47,7 @@ const SingleProduct = () => {
 
   const AddToCart = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     PostQty({
       ProductId: Product?._id,
       qty: parseInt(Qty),
@@ -124,8 +125,8 @@ const SingleProduct = () => {
                       onChange={(e) => setQty(e.target.value)}
                     >
                       <Quantity countInStock={Product.countInStock}>
-                        <StyledQuantityOptions key={"initial"} value={""}>
-                          select number
+                        <StyledQuantityOptions key={"initial"} value={Qty}>
+                          select number default to {Qty}
                         </StyledQuantityOptions>
                       </Quantity>
                     </Select>

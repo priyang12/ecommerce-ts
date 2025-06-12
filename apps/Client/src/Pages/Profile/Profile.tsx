@@ -10,7 +10,7 @@ import {
 } from "../../Utils/Validation";
 import Spinner from "../../Components/Spinner";
 import { Helmet } from "react-helmet-async";
-import { FormControl, Input, Label } from "../../StyledComponents/FormControl";
+import { FormControl, Input, Label } from "../../Components/UI/FormControl";
 const Profile = () => {
   const { state, dispatch } = useContext(AuthContext);
   const {

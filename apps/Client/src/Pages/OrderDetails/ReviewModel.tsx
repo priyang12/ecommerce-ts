@@ -1,6 +1,6 @@
 import Modal from "react-modal";
 import * as React from "react";
-import { FormControl, Input, Form } from "../../StyledComponents/FormControl";
+import { FormControl, Input, Form } from "../../Components/UI/FormControl";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { IconButton, ReviewButton } from "./StyledOrderDeatails";
 import { usePostReview } from "../../API/ReviewAPI";

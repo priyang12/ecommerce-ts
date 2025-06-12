@@ -10,7 +10,7 @@ import {
   Input,
   Label,
   SubmitButton,
-} from "../../StyledComponents/FormControl";
+} from "../../Components/UI/FormControl";
 import { RegisterSchema } from "../../validation";
 import Spinner from "../../Components/Spinner";
 const init = {
