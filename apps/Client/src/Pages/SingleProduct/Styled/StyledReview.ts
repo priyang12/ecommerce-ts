@@ -1,11 +1,13 @@
-import styled from "styled-components";
+import { styled } from "@linaria/react";
 
 export const ReviewContainer = styled.div`
   width: 100%;
-  max-width: 100ch;
+  height: 100vh;
+  overflow-y: scroll;
   margin: auto;
-  border-top: 2px solid var(--bg-contrast-color);
+  background-color: var(--bg-surface);
   background: url("../images/circle-scatter-haikei.svg") repeat;
+  border-top: 2px solid var(--bg-contrast);
   border-radius: 20px;
   h1 {
     color: aliceblue;
@@ -19,6 +21,7 @@ export const ReviewList = styled.ul`
   flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
+  overflow: hidden;
 `;
 
 export const ReviewItem = styled.li`
@@ -41,6 +44,21 @@ export const ReviewItem = styled.li`
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.125);
     color: $AssetColor;
+  }
+`;
+
+export const StyledLoadingReview = styled.div`
+  padding: 1rem;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--bg-contrast);
+  border-radius: 6px;
+  margin-top: 2rem;
+  text-align: center;
+  height: 50vh;
+  p {
+    font-size: 5rem;
+    font-weight: 500;
+    color: var(--text-secondary);
   }
 `;
 

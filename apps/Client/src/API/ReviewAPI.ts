@@ -99,13 +99,19 @@ export const usePostReview = () => {
  * @returns {UseQueryResult<Review[], CustomAxiosError>}
  *
  */
-export const useProductReviews = (id: string) => {
-  return useQuery<Review[], CustomAxiosError>(["reviews", id], async () => {
-    const response: AxiosResponse<Review[]> = await axios.get(
-      API_ENDPOINTS.PRODUCT_REVIEWS(id)
-    );
-    return response.data;
-  });
+export const useProductReviews = (id: string | undefined) => {
+  return useQuery<Review[], CustomAxiosError>(
+    ["reviews", id],
+    async () => {
+      const response: AxiosResponse<Review[]> = await axios.get(
+        API_ENDPOINTS.PRODUCT_REVIEWS(id!)
+      );
+      return response.data;
+    },
+    {
+      enabled: !!id,
+    }
+  );
 };
 
 /**
