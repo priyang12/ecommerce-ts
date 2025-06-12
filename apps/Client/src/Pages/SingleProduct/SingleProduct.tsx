@@ -32,6 +32,30 @@ import {
   haveOfStock,
 } from "./Styled/StyledSingleProduct";
 
+/**
+ * Single Product Page Component
+ *
+ * This component renders the detailed view of a single product based on its unique ID.
+ * It includes image magnification, product details, stock status, and purchasing options.
+ *
+ * ## Route
+ * - `/product/:id`
+ *
+ * ## Params
+ * - `id` (string): The unique identifier of the product to be fetched and displayed.
+ *
+ * ## Features
+ * - Fetches product data using `useSingleProduct`.
+ * - Displays product image with zoom (via `ImageMagnifier`).
+ * - Renders product name, brand, category, description, rating, and price.
+ * - Shows availability status (in/out of stock).
+ * - Provides quantity selection and add-to-cart functionality.
+ * - Enables adding the product to a wishlist for authenticated users.
+ * - Displays user reviews via the `<Reviews />` component.
+ * - Suggests related products based on brand and category.
+ * - Handles loading and error states with `<Spinner />` and error messages.
+ * - Sets dynamic page metadata with `react-helmet-async`.
+ */
 const SingleProduct = () => {
   const { state } = useAuth();
   const { id } = useParams<{ id: string }>();

@@ -47,3 +47,4 @@
 
 [x] Home
 [x] Search
+[x] Single Page.
