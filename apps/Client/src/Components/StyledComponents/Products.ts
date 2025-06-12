@@ -8,11 +8,6 @@ export const StyledDisplay = styled.section`
   background: url("./images/haikei.svg") repeat center/cover;
   margin: 0;
   min-height: 1000px;
-  h1 {
-    margin: 0;
-    font-size: clamp(1.913rem, calc(12px + 2.475vw), 2.587rem);
-    padding: 1em;
-  }
 `;
 
 // export const StyledProducts = styled.section`

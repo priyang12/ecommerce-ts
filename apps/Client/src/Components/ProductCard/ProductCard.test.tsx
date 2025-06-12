@@ -35,7 +35,7 @@ describe("ProductCard", () => {
       "src",
       expect.stringContaining(product.image)
     );
-    expect(screen.getByText("$99.99")).toBeInTheDocument();
+    expect(screen.getByText("$99.99 Only")).toBeInTheDocument();
     expect(screen.getByText(/10 reviews/i)).toBeInTheDocument();
   });
 
@@ -48,5 +48,34 @@ describe("ProductCard", () => {
 
     const card = screen.getByText("Test Product").closest("div");
     expect(card).toHaveAttribute("tabIndex", "0");
+  });
+  it("displays 'Limited Time Deal' when showLimitedDeal condition is met", () => {
+    vi.spyOn(Math, "random").mockReturnValueOnce(0.3).mockReturnValueOnce(0.6); // limited deal = true, free delivery = false
+
+    render(
+      <MemoryRouter>
+        <ProductCard product={product} />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText(/Limited Time Deal/i)).toBeInTheDocument();
+
+    (Math.random as any).mockRestore(); // Restore original function
+  });
+
+  it("displays 'FREE delivery within 1 week' when showFreeDelivery condition is met", () => {
+    vi.spyOn(Math, "random").mockReturnValueOnce(0.6).mockReturnValueOnce(0.4); // limited deal = false, free delivery = true
+
+    render(
+      <MemoryRouter>
+        <ProductCard product={product} />
+      </MemoryRouter>
+    );
+
+    expect(
+      screen.getByText(/FREE delivery within 1 week/i)
+    ).toBeInTheDocument();
+
+    (Math.random as any).mockRestore(); // Restore original function
   });
 });
