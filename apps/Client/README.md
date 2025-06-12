@@ -46,3 +46,4 @@
 #### Pages
 
 [x] Home
+[x] Search

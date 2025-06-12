@@ -27,7 +27,7 @@ export const StyledProductCard = styled.div`
   }
 `;
 
-export const StyledCardTitle = styled.h1`
+export const StyledCardTitle = styled.h2`
   height: 15%;
   font-size: 1.1rem;
   font-weight: 600;
