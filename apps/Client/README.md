@@ -37,4 +37,4 @@
 [x] Product Card
 [x] Slide
 [x] Carousel
-[] Product Grid
+[x] Select List

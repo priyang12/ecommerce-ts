@@ -6,6 +6,8 @@ import ScrollToTop from "./Utils/ScrollToTop";
 import AlertDisplay from "./Components/AlertDisplay";
 import Routes from "./Routes";
 import Carousel from "./Components/Carousel";
+import Select from "./Components/Select";
+import Quantity, { StyledQuantityOptions } from "./Components/Select/Quantity";
 
 function App() {
   const isOnline = useOnlineStatus();
@@ -17,9 +19,16 @@ function App() {
         <AlertDisplay msg="Offline connect to internet!" type="error" />
       )}
 
-      <Navbar />
-      <Routes />
-      <Footer />
+      <Select>
+        <StyledQuantityOptions key={"initial"} value={""}>
+          select quantity
+        </StyledQuantityOptions>
+        <Quantity countInStock={5} />
+      </Select>
+
+      {/* <Navbar /> */}
+      {/* <Routes /> */}
+      {/* <Footer /> */}
     </BrowserRouter>
   );
 }
