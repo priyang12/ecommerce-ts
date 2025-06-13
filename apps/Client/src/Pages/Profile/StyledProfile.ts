@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "@linaria/react";
 import { media } from "../../Utils/Variables";
 
 export const StyledProfile = styled.div`

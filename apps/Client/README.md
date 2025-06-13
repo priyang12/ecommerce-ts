@@ -66,3 +66,4 @@
 [x] Reviews
 [x] OrderStatus
 [x] OrderDetails
+[x] NotFound

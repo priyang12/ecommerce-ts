@@ -8,6 +8,20 @@ interface Props {
     link: string;
   };
 }
+
+/**
+ * NotFound component
+ *
+ * A reusable error fallback page for invalid or undefined routes (typically 404).
+ *
+ * Props:
+ * - `data`: Optional object to customize the heading, message, and link text.
+ *   - `heading` (string): Main title (e.g. "404 Not Found").
+ *   - `message` (string): Brief description of the issue.
+ *   - `link` (string): Text for the navigation link back to a safe page (usually home).
+ *
+ * Defaults to a generic 404 message and link to the home route.
+ */
 function NotFound({
   data = {
     heading: "404 Not Found",
