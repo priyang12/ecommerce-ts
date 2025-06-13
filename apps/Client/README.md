@@ -62,3 +62,4 @@
 [x] paymentMethod
 [x] placeOrder
 [x] paypal
+[x] Wishlist

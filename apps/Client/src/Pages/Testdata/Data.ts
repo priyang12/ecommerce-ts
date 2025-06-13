@@ -77,7 +77,8 @@ export const Products = [
     countInStock: -39,
     _id: "60d5e622e5179e2bb44bd838",
     name: "Airpods Wireless Bluetooth Headphones",
-    image: "/Photos/image-1627384388351.webp",
+    image:
+      "https://ik.imagekit.io/5aalo5l7bu7/image-1627385386692_1jmB_46rs.webp",
     description:
       "Bluetooth technology lets you connect it with compatible devices wirelessly High-quality AAC audio offers immersive listening experience Built-in microphone allows you to take calls while working",
     brand: "Apple",
@@ -106,7 +107,8 @@ export const Products = [
     countInStock: 0,
     _id: "60d5e622e5179e2bb44bd839",
     name: "iPhone",
-    image: "/Photos/image-1628092416984.webp",
+    image:
+      "https://ik.imagekit.io/5aalo5l7bu7/image-1627385386692_1jmB_46rs.webp",
     description: "Iphone is a good apple product",
     brand: "Sony",
     category: "Electronics",
