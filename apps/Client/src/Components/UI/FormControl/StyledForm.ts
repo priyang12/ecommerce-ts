@@ -19,6 +19,7 @@ export const FormControl = styled.div`
 
   input:valid ~ label {
     transform: translateY(-150%) translateX(-1%);
+    color: var(--text-primary);
     text-align: left;
   }
   textarea:valid ~ label {
@@ -27,7 +28,7 @@ export const FormControl = styled.div`
   }
   input:focus ~ .bar {
     height: 5px;
-    background-color: #333;
+    background-color: var(--bg-default);
   }
 `;
 
@@ -39,19 +40,39 @@ export const Label = styled.label`
   overflow: hidden;
   text-overflow: ellipsis;
   transition: all 0.5s ease;
+  color: var(--primary-500);
 `;
 
 export const Input = styled.input`
-  border: none;
   font-size: 1rem;
   padding: 1em;
+  border-radius: 8px;
+  transition: linear border 0.5s;
+
   &:focus {
     border: 4px solid white;
-    outline: none;
+    border-color: var(--primary-500);
+  }
+  &.error-input {
+    border-color: var(--error);
   }
 `;
 
 export const SubmitButton = styled.input`
   width: 100%;
+  margin: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text-primary);
+  background-color: var(--primary-500);
+  border: 2px solid transparent;
   border-radius: var(--border-radius);
+  padding: 1rem 2rem;
+  transition: background-color 1s;
+
+  &:hover {
+    color: var(--text-secondary);
+    background-color: var(--bg-default);
+    border: 2px solid var(--secondary-500);
+  }
 `;

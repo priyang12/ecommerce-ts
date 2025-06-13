@@ -10,23 +10,37 @@ import {
   Label,
   SubmitButton,
 } from "../../Components/UI/FormControl";
-import { RegisterSchema } from "../../validation";
+import { RegisterSchema, z } from "../../validation";
 import Spinner from "../../Components/Spinner";
 import { styled } from "@linaria/react";
 
-const StyledContainer = styled.div`
-  width: 100%;
-  margin: 0em auto;
-  max-width: 100ch;
+const StyledRegisterContainer = styled.div`
+  margin-top: 10%;
 `;
 
-const init = {
-  name: "",
-  email: "",
-  password: "",
-  password2: "",
-};
-
+/**
+ * Register Page Component
+ *
+ * Renders the registration form and handles new user sign-up.
+ * Incorporates form validation using Zod and manages form state through a custom `useForm` hook.
+ * Also uses `AuthContext` for authentication state and dispatching registration logic.
+ *
+ *
+ * ## Route
+ * - `/auth/register`
+ *
+ * ## Form State
+ * - Controlled form inputs managed by `useForm`
+ * - Validation schema: `RegisterSchema` (Zod)
+ * - Fields: `name`, `email`, `password`, `password2` (confirm password)
+ * - Error messages shown inline using Zod's `.flatten().fieldErrors`
+ *
+ * ## UI Features
+ * - Custom styled input fields with error highlighting via `FormControl`
+ * - Uses `react-helmet-async` to manage page metadata (`<title>`)
+ * - Displays a loading spinner when auth state is loading
+ * - Redirects to homepage if already authenticated
+ */
 const Register = () => {
   const { state, dispatch } = useContext(AuthContext);
   const {
@@ -34,18 +48,21 @@ const Register = () => {
     ChangeState,
     ErrorsState: FormErrors,
     setErrors,
-  } = useForm(init);
+  } = useForm({ name: "", email: "", password: "", password2: "" });
   const { name, email, password, password2 } = User;
 
   const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     try {
       RegisterUser(RegisterSchema.parse(User), dispatch);
     } catch (error: any) {
-      setErrors(error.flatten().fieldErrors);
+      if (error instanceof z.ZodError) {
+        const { fieldErrors } = error.flatten();
+        setErrors(fieldErrors);
+      }
     }
   };
+
   if (state.token) {
     return <Redirect to="/" />;
   }
@@ -53,7 +70,7 @@ const Register = () => {
     return <Spinner />;
   }
   return (
-    <StyledContainer>
+    <StyledRegisterContainer>
       <Helmet>
         <title>Register</title>
       </Helmet>
@@ -64,6 +81,7 @@ const Register = () => {
             name="name"
             id="name"
             value={name}
+            className={FormErrors.name ? "error-input" : ""}
             onChange={ChangeState}
             required
           />
@@ -81,6 +99,7 @@ const Register = () => {
             type="text"
             name="email"
             id="email"
+            className={FormErrors.email ? "error-input" : ""}
             value={email}
             onChange={ChangeState}
             required
@@ -99,6 +118,7 @@ const Register = () => {
             type="password"
             name="password"
             id="password"
+            className={FormErrors.password ? "error-input" : ""}
             value={password}
             onChange={ChangeState}
             required
@@ -118,6 +138,7 @@ const Register = () => {
             name="password2"
             id="password2"
             value={password2}
+            className={FormErrors.password2 ? "error-input" : ""}
             onChange={ChangeState}
             required
           />
@@ -130,12 +151,12 @@ const Register = () => {
             )}
           </Label>
         </FormControl>
-        <SubmitButton type="submit" className="btn" value="Register" />
+        <SubmitButton type="submit" value="Register" />
       </form>
       <div className="help">
         <Link to="#"> Need Help</Link>
       </div>
-    </StyledContainer>
+    </StyledRegisterContainer>
   );
 };
 

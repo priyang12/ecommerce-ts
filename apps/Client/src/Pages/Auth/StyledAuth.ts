@@ -50,21 +50,13 @@ export const StyledAuthPage = styled.section`
 
     label {
       font-size: 1rem;
-      color: #002227;
       margin-bottom: 0.25em;
     }
 
     input {
       padding: 0.75em;
       font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
       outline: none;
-
-      &:focus {
-        border-color: var(--primary-500);
-        box-shadow: 0 0 0 2px rgba(128, 216, 228, 0.4);
-      }
     }
   }
 
