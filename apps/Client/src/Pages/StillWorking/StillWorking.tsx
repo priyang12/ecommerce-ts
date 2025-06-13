@@ -10,11 +10,6 @@ import { StyledContainer } from "./StyledStillWorking";
  * ## Route
  * - Typically used on incomplete feature routes (e.g. `/features/upcoming`)
  *
- * ## UI Features
- * - Centered message using flex layout.
- * - Styled using `styled-components` with global design tokens (CSS variables).
- * - Responsive typography and spacing.
- *
  * ## Global Theme
  * - Colors utilize `--primary`, `--text`, and `--bg-surface` variables for consistency.
  */
