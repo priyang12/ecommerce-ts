@@ -64,3 +64,4 @@
 [x] paypal
 [x] Wishlist
 [x] Reviews
+[x] OrderStatus

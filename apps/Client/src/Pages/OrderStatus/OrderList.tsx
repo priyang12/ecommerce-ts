@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
 import { OrderListItem } from "../../Constants/interface";
-import { ListItem, OrderLists } from "./StyledOrderStatus";
+import {
+  StyledListItem as ListItem,
+  StyledOrderLists as OrderLists,
+} from "./StyledOrderStatus";
 import { css } from "@linaria/core";
 
 type Props = {
-  Orders: OrderListItem[];
+  orders: OrderListItem[];
 };
 
 const StyledContainer = css`
@@ -13,11 +16,11 @@ const StyledContainer = css`
   margin: 5rem auto;
 `;
 
-const OrderList = ({ Orders }: Props) => {
+const OrderList = ({ orders }: Props) => {
   return (
     <div className={StyledContainer}>
       <OrderLists>
-        {Orders.map((order, index: number) => (
+        {orders.map((order, index: number) => (
           <Link to={`/OrderStatus/${order._id}`} key={index}>
             <ListItem>
               <p>ORDER:{order._id}</p>
