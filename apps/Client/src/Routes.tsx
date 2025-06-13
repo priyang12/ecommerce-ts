@@ -29,7 +29,7 @@ function Checkout() {
   return (
     <CheckoutProvider>
       <StyledCheckoutLayout>
-        <StyledCheckoutContainer style={{ maxWidth: "50vw" }}>
+        <StyledCheckoutContainer>
           <Navigators />
         </StyledCheckoutContainer>
         <Outlet />

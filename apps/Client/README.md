@@ -58,3 +58,4 @@
 [x] ResetPassword
 [x] StillWorking
 [x] Cart
+[x] addressPage

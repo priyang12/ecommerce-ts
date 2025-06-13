@@ -18,7 +18,7 @@ export const FormControl = styled.div`
   }
 
   input:valid ~ label {
-    transform: translateY(-150%) translateX(-1%);
+    transform: translateY(-170%) translateX(-1%);
     color: var(--text-primary);
     text-align: left;
   }
@@ -50,6 +50,7 @@ export const Input = styled.input`
   transition: linear border 0.5s;
 
   &:focus {
+    outline: none;
     border: 4px solid white;
     border-color: var(--primary-500);
   }
