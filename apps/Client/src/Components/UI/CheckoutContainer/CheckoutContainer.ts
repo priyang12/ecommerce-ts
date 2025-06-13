@@ -17,5 +17,5 @@ export const StyledCheckoutContainer = styled.section`
 `;
 
 export const StyledCheckoutLayout = styled.div`
-  height: 100vh;
+  min-height: 100vh;
 `;

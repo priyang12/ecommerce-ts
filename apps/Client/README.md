@@ -60,3 +60,4 @@
 [x] Cart
 [x] addressPage
 [x] paymentMethod
+[x] placeOrder

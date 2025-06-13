@@ -42,9 +42,9 @@ it("dispatches SET_ADDRESS on valid form submit", async () => {
   renderWithCheckoutContext();
 
   const address: Address = {
-    address: "Pipload",
-    city: "Surat",
-    postalcode: "456123",
+    address: "742 Evergreen Terrace",
+    city: "Springfield",
+    postalcode: "62704",
   };
 
   await userEvent.type(screen.getByLabelText(/address/i), address.address);

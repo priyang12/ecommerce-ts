@@ -57,7 +57,7 @@ export const CheckoutProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const Navigate = useNavigate();
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { data: Cart, isSuccess, isError, isLoading } = useLoadCartQuery();
+  const { data: cart, isSuccess, isError, isLoading } = useLoadCartQuery();
 
   useEffect(() => {
     if (state.address) {
@@ -66,10 +66,10 @@ export const CheckoutProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [state.address]);
 
   useEffect(() => {
-    if ((isSuccess && Cart.products.length === 0) || isError) {
+    if ((isSuccess && cart.products.length === 0) || isError) {
       Navigate("/cart");
     }
-  }, [Cart, isError, isSuccess]);
+  }, [cart, isError, isSuccess]);
 
   if (isLoading) return <Spinner />;
 
