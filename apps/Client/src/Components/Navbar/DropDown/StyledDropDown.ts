@@ -35,16 +35,33 @@ export const StyledUserName = styled.div`
 
 export const StyledDropDownButton = styled.button`
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  margin: 0;
   font-size: 1.5rem;
-  background-color: transparent;
-  color: var(--text-secondary);
+  line-height: 1;
   border-radius: 50%;
-  border-color: var(--secondary-500);
-  transition: all 0.3s ease-in-out;
-  &:hover {
+  border: 2px solid transparent;
+  background-color: var(--neutral-100);
+  color: var(--primary-700);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  &:hover,
+  &:focus-visible {
     background-color: var(--primary-300);
+    color: var(--neutral-900);
+    transform: scale(1.05);
+    outline: none;
   }
-  &:focus ~ .dropdown-content,
+  &:active {
+    transform: scale(0.95);
+    background-color: var(--primary-400);
+  }
+
+  &:focus-within ~ .dropdown-content,
   & ~ .dropdown-content:hover {
     display: block;
   }
