@@ -14,7 +14,7 @@ import MockWishlist from "../../../FakeData/WishlistData.json";
 import { Wrapper } from "../../../TestSetup";
 
 // Component
-import CartWishlist from "./CartWishList";
+import CartWishList from "./CartWishList";
 import { act } from "react";
 
 const mock = new MockAdapter(axios);
@@ -23,7 +23,7 @@ const setup = () =>
   render(
     <Wrapper>
       <BrowserRouter>
-        <CartWishlist />
+        <CartWishList />
       </BrowserRouter>
     </Wrapper>
   );

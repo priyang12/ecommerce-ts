@@ -25,6 +25,7 @@
 [] global dark mode by flipping the temp of color pallet.
 [] added test cases for PrivateRoute.
 [] fix no token, authorization denied in setAuthToken on load.
+[] fix Menu logo in Navbar.
 
 #### components
 

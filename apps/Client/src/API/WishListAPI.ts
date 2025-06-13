@@ -67,7 +67,6 @@ export const useFilterWishlist = (sort: string, perPage = 5) => {
           throw err;
         }
       },
-      suspense: true,
     }
   );
 };

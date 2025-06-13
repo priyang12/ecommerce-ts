@@ -17,7 +17,24 @@ interface FormData {
   selectQty: { value: string };
 }
 
-function CartWishlist() {
+/**
+ * CartWishList Component
+ *
+ * Displays the user's wishlist items with the option to add selected products to the cart.
+ * Includes product images, names, descriptions, prices, and a quantity selector for each item.
+ *
+ * ## UI Features
+ * - `Spinner`: Displayed while wishlist data is loading.
+ * - `Select` + `Quantity`: Dropdown menu populated based on product stock availability.
+ * - `LoadingButton`: Shows loading state during "Add to Cart" operation.
+ * - Styled with `StyledWishlistProduct`, `StyledWishlistItem`, and `StyledImageContainer`.
+ *
+ * ## Accessibility
+ * - Lazy-loaded images for performance.
+ * - Proper form semantics and labeled inputs.
+ */
+
+function CartWishList() {
   const { data: wishList, isLoading } = useFilterWishlist(
     JSON.stringify({
       created: -1,
@@ -72,4 +89,4 @@ function CartWishlist() {
   );
 }
 
-export default CartWishlist;
+export default CartWishList;
