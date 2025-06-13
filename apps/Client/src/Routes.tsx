@@ -50,6 +50,7 @@ const Routes = () => {
         <Route path="/Auth" element={<Auth />}>
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
+          <Route path="forgotPassword" element={<ForgotPassword />} />
         </Route>
         <Route element={<PrivateRoute />}>
           <Route path="/cart" element={<Cart />} />
@@ -67,7 +68,6 @@ const Routes = () => {
           <Route path="/Profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
         </Route>
-        <Route path="/ForgotPassword" element={<ForgotPassword />} />
         <Route path="/ResetPassword/:token" element={<ResetPassword />} />
         <Route path="/StillWorking" element={<StillWorking />} />
       </RouterRoutes>

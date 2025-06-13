@@ -49,3 +49,6 @@
 [x] Search
 [x] Single Page.
 [x] AuthLayout
+[x] Login
+[x] Register
+[x] ForgotPassword
