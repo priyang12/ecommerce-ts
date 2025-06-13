@@ -24,6 +24,7 @@
 [] Migrate to linaria for Pages.
 [] global dark mode by flipping the temp of color pallet.
 [] added test cases for PrivateRoute.
+[] fix no token, authorization denied in setAuthToken on load.
 
 #### components
 
@@ -55,3 +56,4 @@
 [x] ForgotPassword
 [x] ResetPassword
 [x] StillWorking
+[x] Cart

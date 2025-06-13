@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import AlertDisplay from "../../Components/AlertDisplay";
+import CartWishlist from "./CartWishListSection/CartWishlist";
+import CartContainer from "./CartProductions/CartProductions";
 import { StyledContainer } from "./StyledCart";
-import CartWishList from "./Cartwishlist";
-import CartContainer from "./CartProductions/CartContainer";
 
 const Cart = () => {
   const [Alert, setAlert] = useState({
@@ -24,7 +24,7 @@ const Cart = () => {
       <StyledContainer>
         <h1>SHOPPING CART</h1>
         <CartContainer setAlert={setAlert} />
-        {/* <CartWishList /> */}
+        <CartWishlist />
       </StyledContainer>
     </>
   );
