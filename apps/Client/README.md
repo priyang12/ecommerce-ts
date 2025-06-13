@@ -23,6 +23,7 @@
 [] optimized rendering in Carousel
 [] Migrate to linaria for Pages.
 [] global dark mode by flipping the temp of color pallet.
+[] added test cases for PrivateRoute.
 
 #### components
 
