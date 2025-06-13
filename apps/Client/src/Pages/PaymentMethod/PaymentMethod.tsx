@@ -8,10 +8,32 @@ import {
   StyledRadioFormControl,
 } from "./StyledPaymentMethod";
 import { css } from "@linaria/core";
+import { SubmitButton } from "../../Components/UI/FormControl";
 
 const containerWidth = css`
   max-width: 60ch;
 `;
+
+/**
+ * Payment Method Component
+ *
+ * Handles the selection of a payment method during the checkout process.
+ * Integrates with global checkout state via `CheckoutContext` and navigates
+ * the user to the next step in the checkout flow.
+ *
+ * ## Navigation Logic
+ * - Redirects to `/checkout/address` if no shipping address is found.
+ * - On submission, stores the selected method in localStorage and dispatches
+ *   a context action to update the checkout state.
+ *
+ * ## Payment Options
+ * - "PayPal or Credit Card" (default)
+ * - "Cash on Delivery"
+ *
+ * ## State Management
+ * - `useCheckout` context for global checkout state.
+ * - Local state (`useState`) for selected payment method.
+ */
 
 const PaymentMethod = () => {
   const Navigate = useNavigate();
@@ -73,7 +95,7 @@ const PaymentMethod = () => {
             </StyledRadioFormControl>
           </StyledRadioFormContainer>
 
-          <input type="submit" className="btn" value="Continue" />
+          <SubmitButton type="submit" value="Continue" />
         </form>
       </section>
     </StyledCheckoutContainer>

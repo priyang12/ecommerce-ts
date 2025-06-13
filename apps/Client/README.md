@@ -59,3 +59,4 @@
 [x] StillWorking
 [x] Cart
 [x] addressPage
+[x] paymentMethod
