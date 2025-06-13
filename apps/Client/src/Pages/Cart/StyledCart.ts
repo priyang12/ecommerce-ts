@@ -3,9 +3,9 @@ import { media } from "../../Utils/Variables";
 
 export const StyledContainer = styled.div`
   margin: 0 auto;
-  max-width: 1200px;
-  width: 100%;
   min-height: 100vh;
+  text-align: center;
+
   h1 {
     font-size: 2.5rem;
   }
@@ -16,13 +16,6 @@ export const StyledContainer = styled.div`
       text-align: center;
     }
   }
-
-  ${media.LargerThanLaptop} {
-    h1 {
-      font-size: 4rem;
-      text-align: start;
-    }
-  }
 `;
 
 export const StyledCartContainer = styled.div`
@@ -30,14 +23,6 @@ export const StyledCartContainer = styled.div`
   gap: 1rem;
   ${media.tablet} {
     flex-direction: column;
-  }
-`;
-
-export const StyledCart = styled.div`
-  width: 70%;
-  height: 100%;
-  ${media.tablet} {
-    width: 100%;
   }
 `;
 

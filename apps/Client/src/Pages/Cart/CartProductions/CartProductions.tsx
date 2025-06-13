@@ -2,6 +2,8 @@ import {
   StyledCart as Cart,
   StyledCartContainer as CartContainer,
   StyledCheckout as Checkout,
+  StyledCheckoutButton as CheckoutButton,
+  StyledEmptyContainer as EmptyContainer,
 } from "./StyledCartProductions"; // use your Linaria file
 import { Link } from "react-router-dom";
 import { CartItem } from "../../PlaceOrder/ProductList";
@@ -10,8 +12,8 @@ import CartItemsUI from "./CartItemsUI";
 import Spinner from "../../../Components/Spinner";
 
 const CartContainerComponent = ({ setAlert }: { setAlert: any }) => {
-  const { mutate: deleteCart } = useDeleteCartApi(setAlert);
   const { data: CartData, isFetching } = useLoadCartQuery();
+  const { mutate: deleteCart } = useDeleteCartApi(setAlert);
 
   const CartItems: CartItem[] = CartData?.products ?? [];
   const TotalProducts = CartItems.reduce((acc, item) => acc + item.qty, 0);
@@ -25,12 +27,22 @@ const CartContainerComponent = ({ setAlert }: { setAlert: any }) => {
     deleteCart(id);
   };
 
-  if (CartItems?.length === 0 || !CartItems) return <h1>Your Cart is Empty</h1>;
-
   if (isFetching) return <Spinner />;
 
+  if (CartItems?.length === 0 || !CartItems)
+    return (
+      <CartContainer isWideLayout={false}>
+        <EmptyContainer>
+          <h1>Your Cart is Empty</h1>
+          <p>Why not add things to it! by going below</p>
+        </EmptyContainer>
+      </CartContainer>
+    );
+
+  const isWideLayout = TotalProducts > 10;
+
   return (
-    <CartContainer>
+    <CartContainer isWideLayout={isWideLayout}>
       <Cart>
         {CartItems.map((item, index) => (
           <CartItemsUI
@@ -41,11 +53,11 @@ const CartContainerComponent = ({ setAlert }: { setAlert: any }) => {
         ))}
       </Cart>
 
-      <Checkout>
+      <Checkout isWideLayout={isWideLayout}>
         <h3>SUBTOTAL ({TotalProducts}) ITEMS</h3>
         <p>$ {TotalAmount}</p>
-        <Link className="btn" to="/checkout/address">
-          Checkout
+        <Link to="/checkout/address">
+          <CheckoutButton>Checkout</CheckoutButton>
         </Link>
       </Checkout>
     </CartContainer>

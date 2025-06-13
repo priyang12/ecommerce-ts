@@ -1,19 +1,20 @@
 import { Link } from "react-router-dom";
-import { CartItem } from "../PlaceOrder/ProductList";
 import { FaTrash } from "react-icons/fa";
 import { AiFillSave } from "react-icons/ai";
+import Select from "../../../Components/Select";
+import Quantity from "../../../Components/Select/Quantity";
+import { useAddWishlistQuery } from "../../../API/WishListAPI";
+import { usePostCartQuery } from "../../../API/CartAPI";
+import type { CartItem } from "../../PlaceOrder/ProductList";
+
 import {
+  CartCard as StyledCartCard,
+  CartImageContainer as StyledCartImageContainer,
+  CartInfo as StyledCartInfo,
+  CartInfoContainer as StyledCartInfoContainer,
+  TotalPrice as StyledTotalPrice,
   IconButton,
-  StyledCartCard,
-  StyledCartImageContainer,
-  StyledCartInfo,
-  StyledCartInfoContainer,
-  StyledTotalPrice,
-} from "./StyledCart";
-import { useAddWishlistQuery } from "../../API/WishListAPI";
-import Select from "../../Components/Select";
-import Quantity from "../../Components/Select/Quantity";
-import { usePostCartQuery } from "../../API/CartAPI";
+} from "./StyledCartProductions";
 
 function CartItemsUI({
   CartItem,
@@ -23,9 +24,7 @@ function CartItemsUI({
   RemoveFromCart: (id: string) => void;
 }) {
   const { mutate: AddToWishlist } = useAddWishlistQuery();
-
-  const PostCart = usePostCartQuery();
-  const { mutate: UpdateCart } = PostCart;
+  const { mutate: UpdateCart } = usePostCartQuery();
 
   return (
     <StyledCartCard>
@@ -77,7 +76,9 @@ function CartItemsUI({
         </>
       </StyledCartInfoContainer>
       <StyledTotalPrice>
-        <span>Total : {CartItem.product.price * CartItem.qty}</span>
+        <span>
+          Total: ${(CartItem.product.price * CartItem.qty).toFixed(2)}
+        </span>
       </StyledTotalPrice>
     </StyledCartCard>
   );
