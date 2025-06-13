@@ -65,3 +65,4 @@
 [x] Wishlist
 [x] Reviews
 [x] OrderStatus
+[x] OrderDetails

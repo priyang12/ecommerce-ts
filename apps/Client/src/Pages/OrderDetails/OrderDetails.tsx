@@ -3,6 +3,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useOrderDetails } from "../../API/OrdersAPI";
 import Spinner from "../../Components/Spinner";
 import {
+  deliveryDone,
+  deliveryNotDone,
   ReviewButton,
   StyledDelivery,
   StyledImageContainer,
@@ -20,11 +22,31 @@ const containerWidth = css`
   max-width: 70vw;
 `;
 
+/**
+ * OrderDetails component
+ *
+ * Displays detailed information about a specific order, including:
+ * - User shipping address
+ * - Payment method
+ * - List of ordered products
+ * - Delivery status
+ * - Review submission status per item
+ * - Order price breakdown (items, shipping, tax, total)
+ *
+ *
+ * * ## Route
+ * - `/OrderStatus/:id`
+ *
+ * Fetches order data based on the route `id` param using `useOrderDetails`.
+ * Shows a spinner while loading, and returns nothing if data is unavailable.
+ *
+ * Integrates the `ReviewModel` for unreviewed items in delivered orders.
+ * Provides semantic HTML and accessible keyboard support for navigating to product pages.
+ */
 const OrderDetails = () => {
   const Navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const { data: OrderDetails, isLoading: isOrderDetailsLoading } =
-    useOrderDetails(id as string);
+  const { data: orderDetails, isLoading } = useOrderDetails(id as string);
 
   const EnterProduct = (
     e: React.KeyboardEvent<HTMLLIElement>,
@@ -35,9 +57,8 @@ const OrderDetails = () => {
     }
   };
 
-  if (isOrderDetailsLoading) return <Spinner />;
-
-  if (!OrderDetails) return null;
+  if (isLoading) return <Spinner />;
+  if (!orderDetails) return null;
 
   return (
     <>
@@ -47,10 +68,10 @@ const OrderDetails = () => {
           name="description"
           content={`
         Order Details
-        ${OrderDetails._id}
-        ${OrderDetails.shippingAddress.address}
-        ${OrderDetails.shippingAddress.city}
-        ${OrderDetails.paymentMethod}
+        ${orderDetails._id}
+        ${orderDetails.shippingAddress.address}
+        ${orderDetails.shippingAddress.city}
+        ${orderDetails.paymentMethod}
         `}
         />
       </Helmet>
@@ -61,40 +82,40 @@ const OrderDetails = () => {
           <p>
             Name: &nbsp;
             <span>
-              {typeof OrderDetails.user !== "string" && OrderDetails.user.name}
+              {typeof orderDetails.user !== "string" && orderDetails.user.name}
             </span>
           </p>
           <p>
             Email: &nbsp;
             <span>
-              {typeof OrderDetails.user !== "string" && OrderDetails.user.email}
+              {typeof orderDetails.user !== "string" && orderDetails.user.email}
             </span>
           </p>
           <p>
             Address:
             <span>
               &nbsp;
-              {OrderDetails.shippingAddress.address}
+              {orderDetails.shippingAddress.address}
               &nbsp;
               <>&#44;</>
             </span>
             <span>
               &nbsp;
-              {OrderDetails.shippingAddress.city} <>&#44;</>
+              {orderDetails.shippingAddress.city} <>&#44;</>
             </span>
-            <span>{OrderDetails.shippingAddress.postalcode}</span>
+            <span>{orderDetails.shippingAddress.postalcode}</span>
           </p>
         </StyledOrderDetails>
 
         <StyledOrderDetails>
           <h2>PAYMENT METHOD</h2>
-          <p>Method: {OrderDetails.paymentMethod}</p>
+          <p>Method: {orderDetails.paymentMethod}</p>
         </StyledOrderDetails>
 
         <StyledOrderItems>
           <h3>ORDER ITEMS</h3>
           <StyledOrderList>
-            {OrderDetails.orderItems.map((orderItems: any) => (
+            {orderDetails.orderItems.map((orderItems: any) => (
               <div
                 key={orderItems._id}
                 style={{
@@ -125,22 +146,15 @@ const OrderDetails = () => {
                     {Math.round(orderItems.qty * orderItems.product.price)}
                   </p>
                 </StyledListItems>
-                {OrderDetails.isDelivered ? (
+                {orderDetails.isDelivered ? (
                   !orderItems.Reviewed && id ? (
                     <ReviewModel
                       ProductID={orderItems.product._id}
                       OrderID={id}
                     />
                   ) : (
-                    <ReviewButton
-                      className="success"
-                      style={{
-                        width: "auto",
-                      }}
-                    >
-                      <Link to="/reviews" className="success">
-                        Review Submitted
-                      </Link>
+                    <ReviewButton>
+                      <Link to="/reviews">Review Submitted</Link>
                     </ReviewButton>
                   )
                 ) : null}
@@ -153,35 +167,23 @@ const OrderDetails = () => {
           <h3>ORDER SUMMARY</h3>
           <ul>
             <li>
-              Items : <span> ${OrderDetails.itemsPrice}</span>
+              Items : <span> ${orderDetails.itemsPrice}</span>
             </li>
             <li>
-              Shipping : <span> ${OrderDetails.shippingPrice}</span>
+              Shipping : <span> ${orderDetails.shippingPrice}</span>
             </li>
             <li>
-              Tax : <span> ${OrderDetails.taxPrice}</span>
+              Tax : <span> ${orderDetails.taxPrice.toFixed(2)}</span>
             </li>
             <li className="Total">
-              Total : <span>${OrderDetails.totalPrice}</span>
+              Total : <span>${orderDetails.totalPrice}</span>
             </li>
           </ul>
         </StyledOrderDetails>
-        {OrderDetails.isDelivered ? (
-          <StyledDelivery
-            theme={{
-              color: "green",
-              backgroundColor: "rgba(0, 255, 0, 0.1)",
-            }}
-          >
-            Delivered
-          </StyledDelivery>
+        {orderDetails.isDelivered ? (
+          <StyledDelivery className={deliveryDone}>Delivered</StyledDelivery>
         ) : (
-          <StyledDelivery
-            theme={{
-              color: "red",
-              backgroundColor: "rgba(255, 0, 0, 0.1)",
-            }}
-          >
+          <StyledDelivery className={deliveryNotDone}>
             Not Delivered
           </StyledDelivery>
         )}
