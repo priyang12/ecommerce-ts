@@ -48,9 +48,10 @@
 
 [x] Home
 [x] Search
-[x] Single Page.
+[x] Single Page
 [x] AuthLayout
 [x] Login
 [x] Register
 [x] ForgotPassword
-[x] ResetPassword.
+[x] ResetPassword
+[x] StillWorking
