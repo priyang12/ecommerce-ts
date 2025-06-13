@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 import { CartProducts, ListProduct } from "../../Types/interfaces";
-import { StyledItem, StyledPrice, StyledQuantity } from "./StyledProductList";
+import {
+  StyledItem as Item,
+  StyledPrice as Price,
+  StyledQuantity as Quantity,
+} from "./StyledPlaceOrder";
 
 export type CartItem = {
   _id: string;
@@ -13,10 +17,10 @@ type PropType = {
   styledWidth: string;
 };
 
-function ProductList({ Cart, styledWidth }: PropType) {
+function OrderItem({ Cart, styledWidth }: PropType) {
   const { product, qty } = Cart;
   return (
-    <StyledItem theme={{ width: styledWidth }}>
+    <Item theme={{ width: styledWidth }}>
       <div>
         <Link to={`/product/${product._id}`}>
           <img src={product.image} alt={Image.name} />
@@ -24,14 +28,14 @@ function ProductList({ Cart, styledWidth }: PropType) {
         <Link to={`/product/${product._id}`}>{product.name}</Link>
       </div>
       <div>
-        <StyledPrice>{`${product.price} x ${qty}`}</StyledPrice>
-        <StyledQuantity>
+        <Price>{`${product.price} x ${qty}`}</Price>
+        <Quantity>
           <label htmlFor="selectQty">Total</label>
           <div>: {Math.round(qty * product.price)}</div>
-        </StyledQuantity>
+        </Quantity>
       </div>
-    </StyledItem>
+    </Item>
   );
 }
 
-export default ProductList;
+export default OrderItem;

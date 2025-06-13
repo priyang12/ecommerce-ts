@@ -1,17 +1,39 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useSearchProduct } from "../../API/ProductAPI";
 import { Helmet } from "react-helmet-async";
-import { Pagination, PaginationButton } from "./Styled";
-import SearchBar from "../../Components/SearchBar";
 import {
+  Pagination,
+  PaginationButton,
+  StyledHeader,
+  StyledNoProducts,
   StyledDisplay,
   StyledProducts,
-} from "../../Components/StyledComponents/Products";
+} from "./Styled";
+import SearchBar from "../../Components/SearchBar";
 import ProductCard from "../../Components/ProductCard";
 import AlertDisplay from "../../Components/AlertDisplay";
 import Spinner from "../../Components/Spinner";
 import { Product } from "../../Types/interfaces";
 
+/**
+ * Search Page Component
+ *
+ * This component renders the search results for a given keyword and optional page number.
+ * It supports pagination, displays product cards, and shows loading or error states appropriately.
+ *
+ * ## Route
+ * - `/search/:keyword`
+ * - `/search/:keyword/:pageNumber`
+ *
+ * ## Params
+ * - `keyword` (string): The term used to search for products.
+ * - `pageNumber` (string): Optional page number for pagination (defaults to 1).
+ *
+ * ## Conditional Rendering
+ * - Shows `<ProductCard />` components for each search result.
+ * - Renders "No Products Found" message when the result list is empty.
+ * - Displays pagination controls if there are multiple pages.
+ */
 function Search() {
   const { keyword, pageNumber } = useParams<{
     keyword: string;
@@ -26,11 +48,7 @@ function Search() {
 
   const { data: ProductData, isLoading, error: Err } = useSearchProduct(Url);
 
-  if (isLoading) return <Spinner />;
-
-  if (!ProductData) return null;
-
-  if (Err) return <AlertDisplay msg={"Something Went Wrong"} type={"error"} />;
+  const productsLength = ProductData?.products.length;
 
   const NextPage = () => {
     Navigate(`/search/${keyword}/${page + 1}`);
@@ -38,6 +56,12 @@ function Search() {
   const PreviousPage = () => {
     Navigate(`/search/${keyword}/${page - 1}`);
   };
+
+  if (isLoading) return <Spinner />;
+
+  if (!ProductData) return null;
+
+  if (Err) return <AlertDisplay msg={"Something Went Wrong"} type={"error"} />;
 
   if (!keyword) Navigate("/");
 
@@ -50,29 +74,47 @@ function Search() {
           content={`${keyword} - ${ProductData.products.length} results"`}
         />
       </Helmet>
-      <StyledDisplay>
+      <StyledDisplay
+        style={{
+          minHeight: productsLength && productsLength > 0 ? "150vh" : "100vh",
+        }}
+      >
         <SearchBar searchedValue={keyword as string} />
-        <h1>{`Search Results for ${keyword}`}</h1>
-        {ProductData?.products.length > 0 ? (
+        <StyledHeader>
+          {ProductData.page > 1 && (
+            <PaginationButton tabIndex={0} onClick={PreviousPage}>
+              Previous
+            </PaginationButton>
+          )}
+          <h1>{`Search Results for ${keyword}`}</h1>
+          {ProductData.pages !== page && (
+            <PaginationButton tabIndex={0} onClick={NextPage}>
+              Next
+            </PaginationButton>
+          )}
+        </StyledHeader>
+        {productsLength ? (
           <StyledProducts id="Products">
             {ProductData?.products.map((product: Product) => (
               <ProductCard product={product} key={product._id} />
             ))}
           </StyledProducts>
         ) : (
-          <h1>No Products Found</h1>
+          <StyledNoProducts>
+            <h2>No Products Found</h2>
+          </StyledNoProducts>
         )}
       </StyledDisplay>
 
       {ProductData.pages > 1 && (
         <Pagination>
           {ProductData.page > 1 && (
-            <PaginationButton active onClick={PreviousPage}>
+            <PaginationButton tabIndex={0} onClick={PreviousPage}>
               Previous
             </PaginationButton>
           )}
           {ProductData.pages !== page && (
-            <PaginationButton active onClick={NextPage}>
+            <PaginationButton tabIndex={0} onClick={NextPage}>
               Next
             </PaginationButton>
           )}

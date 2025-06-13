@@ -1,27 +1,51 @@
 import { useContext, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import AlertDisplay from "../../Components/AlertDisplay";
-import Spinner from "../../Components/Spinner";
+import { useForm } from "../../Hooks/useForm";
 import {
   loadUser,
   UpdatePassword,
 } from "../../Context/Authentication/AuthActions";
 import { AuthContext } from "../../Context/Authentication/AuthContext";
+import AlertDisplay from "../../Components/AlertDisplay";
+import Spinner from "../../Components/Spinner";
+import { ConfirmPassword, ValidatePassword } from "../../Utils/Validation";
+import setAuthToken from "../../Utils/setAuthToken";
+
 import {
   FormControl,
   Input,
   Label,
   SubmitButton,
-} from "../../StyledComponents/FormControl";
-import { useForm } from "../../Hooks/useForm";
-import setAuthToken from "../../Utils/setAuthToken";
-import { ConfirmPassword, ValidatePassword } from "../../Utils/Validation";
-import { StyledResetPasswordPage } from "./StyledResetPasswordPage";
+} from "../../Components/UI/FormControl";
+import {
+  StyledResetContainer,
+  StyledResetPasswordPage,
+} from "./StyledResetPasswordPage";
 
+/**
+ * Reset Password Page Component
+ *
+ * Renders the reset password UI for authenticated or verified users via token.
+ * Handles secure password reset logic with validation and dispatch to auth context.
+ *
+ * ## Route
+ * - `/auth/reset/:token`
+ *
+ * ## Token Handling
+ * - Extracts token from URL params using `useParams`.
+ * - Loads user data via `loadUser` action and sets the token in headers via `setAuthToken`.
+ *
+ * ## Form State
+ * - Controlled inputs for `Password` and `Password2` managed via custom `useForm` hook.
+ * - Validation logic:
+ *   - `ValidatePassword`: Ensures password length/security.
+ *   - `ConfirmPassword`: Ensures both inputs match.
+ * - Error state dynamically updated and displayed inline.
+ */
 function ResetPassword() {
   const { token } = useParams<{ token: string }>();
-
   const { state, dispatch } = useContext(AuthContext);
+
   const {
     state: UserForm,
     ChangeState,
@@ -32,6 +56,7 @@ function ResetPassword() {
     Password: "",
     Password2: "",
   });
+
   const { Password, Password2 } = UserForm;
 
   useEffect(() => {
@@ -58,6 +83,7 @@ function ResetPassword() {
       Errors.password2 = "Password and Confirm Password do not match";
       validate = false;
     }
+
     if (validate) {
       UpdatePassword(dispatch, Password, Password2);
       setErrors(Errors);
@@ -71,34 +97,38 @@ function ResetPassword() {
   };
 
   if (state.loading) return <Spinner />;
-  if (state.err)
-    return (
-      <AlertDisplay msg={state.err} type={"error"}>
-        <Link to="/Auth/login"> Go back to Login Page</Link>
-      </AlertDisplay>
-    );
-  if (state.user === null) return null;
 
   return (
     <StyledResetPasswordPage>
       <h1>Reset Password</h1>
-      {state.alert && (
+      {state.err ? (
+        <AlertDisplay msg={state.err} type={"error"}>
+          <Link to="/Auth/login"> Go back to Login Page</Link>
+        </AlertDisplay>
+      ) : null}
+
+      {state.alert ? (
         <div>
           <AlertDisplay msg={state.alert?.message} type={"success"}>
             <Link to="/">Home Page</Link>
           </AlertDisplay>
         </div>
-      )}
-      {state.user && (
-        <div>
-          <h1>{state.user.name}</h1>
-          <p>{state.user.email}</p>
+      ) : null}
+      {state.user ? (
+        <StyledResetContainer>
+          <h1>
+            Your Name : <span>{state.user.name}</span>
+          </h1>
+          <p>
+            Your Email address : <span>{state.user.email}</span>{" "}
+          </p>
           <form onSubmit={onSubmit}>
             <FormControl>
               <Input
                 type="password"
                 name="Password"
                 id="Password"
+                className={FormErrors.password ? "error-input" : ""}
                 value={Password}
                 onChange={ChangeState}
                 required
@@ -117,6 +147,7 @@ function ResetPassword() {
                 type="password"
                 name="Password2"
                 id="Password2"
+                className={FormErrors.password2 ? "error-input" : ""}
                 value={Password2}
                 onChange={ChangeState}
                 required
@@ -130,10 +161,10 @@ function ResetPassword() {
                 )}
               </Label>
             </FormControl>
-            <SubmitButton type="submit" className="btn" value="Reset" />
+            <SubmitButton type="submit" value="Reset" />
           </form>
-        </div>
-      )}
+        </StyledResetContainer>
+      ) : null}
     </StyledResetPasswordPage>
   );
 }

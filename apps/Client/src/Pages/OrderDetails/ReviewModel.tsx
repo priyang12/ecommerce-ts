@@ -1,6 +1,6 @@
 import Modal from "react-modal";
 import * as React from "react";
-import { FormControl, Input, Form } from "../../StyledComponents/FormControl";
+import { FormControl, Input, Form } from "../../Components/UI/FormControl";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { IconButton, ReviewButton } from "./StyledOrderDeatails";
 import { usePostReview } from "../../API/ReviewAPI";
@@ -59,9 +59,7 @@ function ReviewModel({
   };
   return (
     <>
-      <ReviewButton className="btn" onClick={openModal}>
-        Review
-      </ReviewButton>
+      <ReviewButton onClick={openModal}>Review</ReviewButton>
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -76,7 +74,7 @@ function ReviewModel({
           }}
         >
           {!isLoading && (
-            <IconButton onClick={closeModal} className="btn">
+            <IconButton onClick={closeModal}>
               close
               <AiOutlineCloseCircle />
             </IconButton>
@@ -111,9 +109,7 @@ function ReviewModel({
                 required
               />
             </FormControl>
-            <LoadingButton isLoading={isLoading} className="btn">
-              Submit Review
-            </LoadingButton>
+            <LoadingButton isLoading={isLoading}>Submit Review</LoadingButton>
           </Form>
         </div>
       </Modal>

@@ -1,5 +1,7 @@
 import { Outlet, Route, Routes as RouterRoutes } from "react-router-dom";
 import { CheckoutProvider } from "./Context/CheckoutContext/CheckoutContext";
+import { StyledCheckoutContainer } from "./Components/UI/CheckoutContainer";
+import { StyledCheckoutLayout } from "./Components/UI/CheckoutContainer/CheckoutContainer";
 import Auth from "./Pages/Auth";
 import ForgotPassword from "./Pages/ForgotPassword";
 import Home from "./Pages/Home";
@@ -22,7 +24,19 @@ import Profile from "./Pages/Profile";
 import Reviews from "./Pages/Reviews";
 import Wishlist from "./Pages/WishList";
 import Navigators from "./Components/Navigators";
-import { StyledPaymentContainer } from "./Components/StyledComponents/StyledPayment";
+
+function Checkout() {
+  return (
+    <CheckoutProvider>
+      <StyledCheckoutLayout>
+        <StyledCheckoutContainer>
+          <Navigators />
+        </StyledCheckoutContainer>
+        <Outlet />
+      </StyledCheckoutLayout>
+    </CheckoutProvider>
+  );
+}
 
 const Routes = () => {
   return (
@@ -36,20 +50,11 @@ const Routes = () => {
         <Route path="/Auth" element={<Auth />}>
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
+          <Route path="forgotPassword" element={<ForgotPassword />} />
         </Route>
         <Route element={<PrivateRoute />}>
           <Route path="/cart" element={<Cart />} />
-          <Route
-            path="/checkout"
-            element={
-              <CheckoutProvider>
-                <StyledPaymentContainer style={{ height: "100vh" }}>
-                  <Navigators />
-                  <Outlet />
-                </StyledPaymentContainer>
-              </CheckoutProvider>
-            }
-          >
+          <Route path="/checkout" element={<Checkout />}>
             <Route path="address" element={<AddressPage />} />
             <Route path="paymentMethod" element={<PaymentMethod />} />
             <Route path="placeOrder" element={<PlaceOrder />} />
@@ -63,7 +68,6 @@ const Routes = () => {
           <Route path="/Profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
         </Route>
-        <Route path="/ForgotPassword" element={<ForgotPassword />} />
         <Route path="/ResetPassword/:token" element={<ResetPassword />} />
         <Route path="/StillWorking" element={<StillWorking />} />
       </RouterRoutes>

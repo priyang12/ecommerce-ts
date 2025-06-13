@@ -1,37 +1,30 @@
-import styled from "styled-components";
+import { styled } from "@linaria/react";
 
 export const StyledRadioFormContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  padding: 0 20px;
-  box-sizing: border-box;
+  gap: 2rem;
+  margin-block: 2rem;
+  padding: 1rem;
+  background-color: var(--bg-surface);
+  border-radius: 0.5rem;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
 `;
 
 export const StyledRadioFormControl = styled.div`
   display: flex;
-  justify-content: flex-start;
-  width: 100%;
-  color: var(--bg-contrast-color);
-  font-size: 1.2rem;
-  input {
-    margin: 0 2em;
-  }
-  label {
-    padding: 1em 1em;
-  }
+  align-items: center;
+  gap: 1rem;
+
   input[type="radio"] {
-    cursor: pointer;
-    width: 50px;
-    &:checked {
-      border-radius: 50%;
-    }
+    accent-color: var(--secondary-500);
+    width: 1.2rem;
+    height: 1.2rem;
   }
-  input[type="radio"]:checked + label {
-    color: var(--primary-color);
-    border: 2px solid var(--primary-color);
+
+  label {
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
   }
 `;

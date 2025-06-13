@@ -15,6 +15,7 @@ import { Wrapper } from "../../TestSetup";
 import { act } from "react-test-renderer";
 import { CheckoutContext } from "../../Context/CheckoutContext/CheckoutContext";
 import { vi } from "vitest";
+import { Address } from "../../Types/interfaces";
 
 const route = "/PlaceOrder";
 const History = createMemoryHistory({ initialEntries: [route] });
@@ -22,11 +23,10 @@ const mock = new MockAdapter(axios);
 
 mock.onGet("/api/cart").reply(200, MockedData.LoadUserCart);
 
-const address = {
-  homeAddress: "202,Pipload",
-  city: "Surat",
-  postalCode: "456123",
-  country: "India",
+const address: Address = {
+  address: "742 Evergreen Terrace",
+  city: "Springfield",
+  postalcode: "62704",
 };
 
 const Method = "PayPal or Credit Card";
@@ -59,7 +59,7 @@ const mockContextValue = (overrides = {}) =>
       payMethod: "PayPal or Credit Card",
       ...overrides,
     },
-    mockDispatch,
+    dispatch: mockDispatch,
   } as any);
 
 const Setup = (contextOverrides = {}) => {
@@ -93,11 +93,10 @@ it("Return to payMethod Page", async () => {
   expect(History.location.pathname).toBe("/checkout/paymentMethod");
 });
 
-// fix loading issue
-it.skip("Check For Amount Summery", async () => {
-  Setup();
-
-  await waitForElementToBeRemoved(screen.getByTestId("Loading"));
+it("Check For Amount Summery", async () => {
+  await act(() => {
+    Setup({ address: address, payMethod: "none" });
+  });
 
   expect(screen.getByTestId("ShippingCost").textContent).toMatch(
     String(ShippingAmount)
@@ -109,9 +108,11 @@ it.skip("Check For Amount Summery", async () => {
   );
 });
 
-// fix loading issue
-it.skip("Store Order in state And Redirect to Payment Gateway", async () => {
-  Setup();
+it("Store Order in state And Redirect to Payment Gateway", async () => {
+  await act(() => {
+    Setup({ address: address });
+  });
+
   const placeOrderButton = screen.getByText(/PlaceOrder/i);
   await userEvent.click(placeOrderButton);
 
@@ -126,7 +127,7 @@ it.skip("Store Order in state And Redirect to Payment Gateway", async () => {
 it("Redirect on Empty Cart", async () => {
   mock.onGet("/api/cart").reply(200, { products: [] });
   await act(() => {
-    Setup();
+    Setup({ address: {} });
   });
   expect(History.location.pathname).toBe("/");
 });

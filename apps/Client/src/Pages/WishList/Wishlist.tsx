@@ -6,16 +6,38 @@ import {
 import AlertDisplay from "../../Components/AlertDisplay";
 import Spinner from "../../Components/Spinner";
 import {
-  StyledHeading,
-  StyledProduct,
-  StyledProductDescription,
-  StyledProductPrice,
-  StyledProducts,
-  StyledProductTitle,
+  StyledHeading as Heading,
+  StyledProduct as Product,
+  StyledProductDescription as ProductDescription,
+  StyledProductPrice as ProductPrice,
+  StyledProducts as Products,
+  StyledProductTitle as ProductTitle,
+  StyledImgContainer as ImgContainer,
+  StyledEmptyContainer as EmptyContainer,
 } from "./StyledWishList";
 
+/**
+ * Wishlist Page Component
+ *
+ * Renders the user's wishlist, allowing them to view and remove products.
+ * Fetches wishlist data from the backend using `useLoadWishListQuery`, and allows
+ * product removal via `useRemoveWishlistQuery`.
+ *
+ * ## Route
+ * - `/wishlist`
+ *
+ * ## UI Features
+ * - Styled components via Linaria for clean, responsive design.
+ * - Includes SEO-friendly metadata using `react-helmet-async`.
+ * - Image container includes object-fit styling for consistent visuals.
+ *
+ * ## Accessibility
+ * - Products are keyboard focusable (`tabIndex={0}`).
+ * - Buttons have proper labels and interactions for screen readers.
+ */
 function Wishlist() {
-  const { data: WishList, isFetched, isLoading } = useLoadWishListQuery();
+  const { data: wishList, isFetched, isLoading } = useLoadWishListQuery();
+
   const {
     isError: DeleteError,
     isLoading: Deleting,
@@ -26,8 +48,19 @@ function Wishlist() {
 
   if (isLoading || !isFetched) return <Spinner />;
 
-  if (WishList?.products.length === 0 && isFetched) {
-    return <div>No Products in WishList</div>;
+  if (wishList?.products.length === 0 && isFetched) {
+    return (
+      <>
+        <Helmet>
+          <title>WishList</title>
+          <meta name="description" content="WishList is currently empty" />
+        </Helmet>
+        <Heading>Wishlist</Heading>
+        <EmptyContainer>
+          <h1>No Products in WishList</h1>
+        </EmptyContainer>
+      </>
+    );
   }
 
   return (
@@ -38,7 +71,7 @@ function Wishlist() {
           name="description"
           content={`
         WishList
-        ${WishList?.products.map((product) => product.name)}
+        ${wishList?.products.map((product) => product.name)}
         `}
         />
       </Helmet>
@@ -47,20 +80,20 @@ function Wishlist() {
           <div>Server Problem Please try again later</div>
         </AlertDisplay>
       )}
-      <StyledHeading>Wishlist</StyledHeading>
+      <Heading>Wishlist</Heading>
       {DeleteSuccess && <AlertDisplay msg={"Product Deleted"} type={"error"} />}
       {Deleting && <AlertDisplay msg="Deleting...." type={"warning"} />}
-      <StyledProducts>
-        {WishList?.products.map((product) => (
-          <StyledProduct key={product._id} tabIndex={0}>
-            <StyledProductTitle>{product.name}</StyledProductTitle>
-            <StyledProductDescription>
-              {product.description}
-            </StyledProductDescription>
-            <img src={product.image} alt={product.name} />
-            <StyledProductPrice>
+      <Products>
+        {wishList?.products.map((product) => (
+          <Product key={product._id} tabIndex={0}>
+            <ProductTitle>{product.name}</ProductTitle>
+            <ImgContainer>
+              <img src={product.image} alt={product.name} />
+            </ImgContainer>
+            <ProductDescription>{product.description}</ProductDescription>
+            <ProductPrice>
               <span>$</span> {product.price}
-            </StyledProductPrice>
+            </ProductPrice>
             <button
               data-testid={`Delete-${product._id}`}
               className="btn"
@@ -70,9 +103,9 @@ function Wishlist() {
             >
               Delete
             </button>
-          </StyledProduct>
+          </Product>
         ))}
-      </StyledProducts>
+      </Products>
     </>
   );
 }

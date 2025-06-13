@@ -1,4 +1,11 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
-  "cSpell.words": ["Deatails", "Nunito", "postalcode", "Priyang", "testid"]
+  "cSpell.words": [
+    "Deatails",
+    "linaria",
+    "Nunito",
+    "postalcode",
+    "Priyang",
+    "testid"
+  ]
 }

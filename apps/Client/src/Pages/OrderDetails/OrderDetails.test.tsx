@@ -62,7 +62,7 @@ it("Render OrderDetails without delivered", async () => {
     screen.getByText(`$${MockedOrderDetails.shippingPrice}`)
   ).toBeInTheDocument();
   expect(
-    screen.getByText(`$${MockedOrderDetails.taxPrice}`)
+    screen.getByText(`$${MockedOrderDetails.taxPrice.toFixed(2)}`)
   ).toBeInTheDocument();
   expect(
     screen.getByText(`$${MockedOrderDetails.totalPrice}`)

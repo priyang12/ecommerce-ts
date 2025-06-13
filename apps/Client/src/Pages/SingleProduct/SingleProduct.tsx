@@ -1,10 +1,21 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { ImageMagnifier } from "@priyang/react-component-lib";
+import { useAuth } from "../../Context/Authentication/AuthContext";
+import { usePostCartQuery } from "../../API/CartAPI";
+import { Helmet } from "react-helmet-async";
+import { useSingleProduct } from "../../API/ProductAPI";
+import { useAddWishlistQuery } from "../../API/WishListAPI";
+import Quantity, {
+  StyledQuantityOptions,
+} from "../../Components/Select/Quantity";
 import Reviews from "./Reviews";
 import Rating from "../../Components/Rating";
-import Quantity from "../../Components/Quantity";
+import Select from "../../Components/Select";
 import AlertDisplay from "../../Components/AlertDisplay";
+import Spinner from "../../Components/Spinner";
+import LoadingButton from "../../Components/LoadingButton";
+import SuggestionProducts from "./SuggestionProducts";
 
 //styles
 import {
@@ -14,45 +25,63 @@ import {
   StyledCheckout,
   StyledImageContainer,
   StyledQuantity,
-  CheckFormControl,
+  StyledLoginButton,
+  cartButton,
+  wishlistButton,
+  outOfStock,
+  haveOfStock,
 } from "./Styled/StyledSingleProduct";
 
-import { usePostCartQuery } from "../../API/CartAPI";
-import { Helmet } from "react-helmet-async";
-import { useSingleProduct } from "../../API/ProductAPI";
-import { useAddWishlistQuery } from "../../API/WishListAPI";
-import Spinner from "../../Components/Spinner";
-import { Select } from "../../StyledComponents/FormControl";
-import LoadingButton from "../../Components/LoadingButton";
-import { useAuth } from "../../Context/Authentication/AuthContext";
-import SuggestionProducts from "./SuggestionProducts";
-
+/**
+ * Single Product Page Component
+ *
+ * This component renders the detailed view of a single product based on its unique ID.
+ * It includes image magnification, product details, stock status, and purchasing options.
+ *
+ * ## Route
+ * - `/product/:id`
+ *
+ * ## Params
+ * - `id` (string): The unique identifier of the product to be fetched and displayed.
+ *
+ * ## Features
+ * - Fetches product data using `useSingleProduct`.
+ * - Displays product image with zoom (via `ImageMagnifier`).
+ * - Renders product name, brand, category, description, rating, and price.
+ * - Shows availability status (in/out of stock).
+ * - Provides quantity selection and add-to-cart functionality.
+ * - Enables adding the product to a wishlist for authenticated users.
+ * - Displays user reviews via the `<Reviews />` component.
+ * - Suggests related products based on brand and category.
+ * - Handles loading and error states with `<Spinner />` and error messages.
+ * - Sets dynamic page metadata with `react-helmet-async`.
+ */
 const SingleProduct = () => {
   const { state } = useAuth();
   const { id } = useParams<{ id: string }>();
+  const [qty, setQty] = useState("1");
 
   const {
     data: Product,
     error: ProductError,
-    isLoading: loading,
+    isLoading: fetchingProduct,
   } = useSingleProduct(id as string, false);
 
   const { mutate: AddWishlist, isLoading: AddingWishList } =
     useAddWishlistQuery();
 
-  const { isLoading: CartMutation, mutate: PostQty } = usePostCartQuery();
-
-  const [Qty, setQty] = useState("1");
+  const { isLoading: CartMutation, mutate: postQty } = usePostCartQuery();
 
   const AddToCart = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    PostQty({
+
+    postQty({
       ProductId: Product?._id,
-      qty: parseInt(Qty),
+      qty: parseInt(qty),
     });
   };
 
-  if (loading) return <Spinner />;
+  if (fetchingProduct) return <Spinner />;
 
   if (ProductError) return <div className="Error">{ProductError.message}</div>;
 
@@ -89,8 +118,12 @@ const SingleProduct = () => {
                   />
                 </span>
               </div>
-              <div>Brand: {Product.brand}</div>
-              <div>Category: {Product.category}</div>
+              <div>
+                Brand: <span className="highlight">{Product.brand}</span>
+              </div>
+              <div>
+                Category: <span className="highlight">{Product.category}</span>
+              </div>
               <br />
               <div className="Description">
                 Description: <span>{Product.description}</span>
@@ -101,50 +134,48 @@ const SingleProduct = () => {
             <StyledCheckout>
               <h2 className="status-label">Price: {Product.price}</h2>
               {Product.countInStock <= 0 ? (
-                <p style={{ color: "red" }}>Status: Out In Stock</p>
+                <p className={outOfStock}>Status: Out In Stock</p>
               ) : (
-                <p className="status-label">Status: In Stock</p>
+                <p className={haveOfStock}>Status: In Stock</p>
               )}
             </StyledCheckout>
 
             <StyledQuantity>
-              {Product.countInStock > 0 && (
+              {Product.countInStock > 0 ? (
                 <form onSubmit={AddToCart}>
-                  <CheckFormControl>
-                    <label htmlFor="Quantity" aria-label="Quantity of product">
-                      Quantity
-                    </label>
-                    <Select
-                      style={{
-                        width: "90%",
-                      }}
-                      id="Quantity"
-                      name="Quantity"
-                      onChange={(e) => setQty(e.target.value)}
-                    >
-                      <Quantity countInStock={Product.countInStock} />
-                    </Select>
-                  </CheckFormControl>
-                  <br />
+                  <label htmlFor="Quantity" aria-label="Quantity of product">
+                    Quantity
+                  </label>
+                  <Select
+                    style={{
+                      width: "90%",
+                    }}
+                    id="Quantity"
+                    name="Quantity"
+                    onChange={(e) => setQty(e.target.value)}
+                  >
+                    <Quantity countInStock={Product.countInStock}>
+                      <StyledQuantityOptions key={"initial"} value={qty}>
+                        select number default to {qty}
+                      </StyledQuantityOptions>
+                    </Quantity>
+                  </Select>
 
+                  <br />
                   {state.token ? (
                     <LoadingButton
                       isLoading={CartMutation}
                       loadingText={"Adding To Cart"}
-                      className="btn"
+                      className={cartButton}
                     >
                       TO CART
                     </LoadingButton>
                   ) : (
-                    <div className="btn-gray">Login/Register</div>
+                    <StyledLoginButton>Login/Register</StyledLoginButton>
                   )}
-
                   {state.token ? (
                     <LoadingButton
-                      className="btn"
-                      style={{
-                        backgroundColor: " #626d78",
-                      }}
+                      className={wishlistButton}
                       isLoading={AddingWishList}
                       loadingText={"Adding To Wishlist"}
                       onClick={(e) => {
@@ -156,12 +187,12 @@ const SingleProduct = () => {
                     </LoadingButton>
                   ) : null}
                 </form>
-              )}
+              ) : null}
             </StyledQuantity>
           </StyledProduct>
         </StyledContainer>
       )}
-      {id && <Reviews id={id as string} />}
+      <Reviews />
       <br />
       {Product ? (
         <SuggestionProducts brand={Product.brand} category={Product.category} />

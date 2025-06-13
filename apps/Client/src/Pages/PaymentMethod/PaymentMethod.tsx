@@ -2,11 +2,38 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router";
 import { useCheckout } from "../../Context/CheckoutContext/CheckoutContext";
-import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
+import { StyledCheckoutContainer } from "../../Components/UI/CheckoutContainer";
 import {
-  StyledRadioFormContainer,
-  StyledRadioFormControl,
+  StyledRadioFormContainer as RadioFormContainer,
+  StyledRadioFormControl as RadioFormControl,
 } from "./StyledPaymentMethod";
+import { css } from "@linaria/core";
+import { SubmitButton } from "../../Components/UI/FormControl";
+
+const containerWidth = css`
+  max-width: 60ch;
+`;
+
+/**
+ * Payment Method Component
+ *
+ * Handles the selection of a payment method during the checkout process.
+ * Integrates with global checkout state via `CheckoutContext` and navigates
+ * the user to the next step in the checkout flow.
+ *
+ * ## Navigation Logic
+ * - Redirects to `/checkout/address` if no shipping address is found.
+ * - On submission, stores the selected method in localStorage and dispatches
+ *   a context action to update the checkout state.
+ *
+ * ## Payment Options
+ * - "PayPal or Credit Card" (default)
+ * - "Cash on Delivery"
+ *
+ * ## State Management
+ * - `useCheckout` context for global checkout state.
+ * - Local state (`useState`) for selected payment method.
+ */
 
 const PaymentMethod = () => {
   const Navigate = useNavigate();
@@ -32,7 +59,7 @@ const PaymentMethod = () => {
   };
 
   return (
-    <StyledPaymentContainer>
+    <StyledCheckoutContainer className={containerWidth}>
       <Helmet>
         <title>Payment Method</title>
         <meta name="description" content="Payment Method" />
@@ -41,8 +68,8 @@ const PaymentMethod = () => {
         <h1>PAYMENT METHOD</h1>
         <h2>Select Method</h2>
         <form onSubmit={SelectMethod}>
-          <StyledRadioFormContainer>
-            <StyledRadioFormControl>
+          <RadioFormContainer>
+            <RadioFormControl>
               <input
                 type="radio"
                 id="PayMethod"
@@ -53,8 +80,8 @@ const PaymentMethod = () => {
                 onChange={(e) => setMethod(e.target.value)}
               />
               <label htmlFor="PayMethod">PayPal or Credit Card</label>
-            </StyledRadioFormControl>
-            <StyledRadioFormControl>
+            </RadioFormControl>
+            <RadioFormControl>
               <input
                 type="radio"
                 id="PayMethod"
@@ -65,13 +92,13 @@ const PaymentMethod = () => {
                 onChange={(e) => setMethod(e.target.value)}
               />
               <label htmlFor="PayMethod">Cash on Delivery</label>
-            </StyledRadioFormControl>
-          </StyledRadioFormContainer>
+            </RadioFormControl>
+          </RadioFormContainer>
 
-          <input type="submit" className="btn" value="Continue" />
+          <SubmitButton type="submit" value="Continue" />
         </form>
       </section>
-    </StyledPaymentContainer>
+    </StyledCheckoutContainer>
   );
 };
 

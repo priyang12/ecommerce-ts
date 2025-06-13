@@ -22,8 +22,14 @@ export const RegisterSchema = UserSchema.pick({
   password: true,
 })
   .extend({ password2: z.string() })
-  .refine((data) => data.password === data.password2, {
-    message: "Passwords do not match",
+  .superRefine((data, ctx) => {
+    if (data.password !== data.password2) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Passwords do not match",
+        path: ["password2"],
+      });
+    }
   });
 
 export const ResetpasswordSchema = UserSchema.pick({
