@@ -53,3 +53,4 @@
 [x] Login
 [x] Register
 [x] ForgotPassword
+[x] ResetPassword.
