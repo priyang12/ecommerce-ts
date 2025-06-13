@@ -61,3 +61,4 @@
 [x] addressPage
 [x] paymentMethod
 [x] placeOrder
+[x] paypal
