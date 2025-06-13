@@ -25,6 +25,19 @@ import Reviews from "./Pages/Reviews";
 import Wishlist from "./Pages/WishList";
 import Navigators from "./Components/Navigators";
 
+function Checkout() {
+  return (
+    <CheckoutProvider>
+      <StyledCheckoutLayout>
+        <StyledCheckoutContainer style={{ maxWidth: "50vw" }}>
+          <Navigators />
+        </StyledCheckoutContainer>
+        <Outlet />
+      </StyledCheckoutLayout>
+    </CheckoutProvider>
+  );
+}
+
 const Routes = () => {
   return (
     <>
@@ -40,19 +53,7 @@ const Routes = () => {
         </Route>
         <Route element={<PrivateRoute />}>
           <Route path="/cart" element={<Cart />} />
-          <Route
-            path="/checkout"
-            element={
-              <CheckoutProvider>
-                <StyledCheckoutLayout>
-                  <StyledCheckoutContainer style={{ maxWidth: "50vw" }}>
-                    <Navigators />
-                  </StyledCheckoutContainer>
-                  <Outlet />
-                </StyledCheckoutLayout>
-              </CheckoutProvider>
-            }
-          >
+          <Route path="/checkout" element={<Checkout />}>
             <Route path="address" element={<AddressPage />} />
             <Route path="paymentMethod" element={<PaymentMethod />} />
             <Route path="placeOrder" element={<PlaceOrder />} />
