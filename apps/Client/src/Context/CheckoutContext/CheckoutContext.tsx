@@ -1,4 +1,7 @@
 import React, { createContext, useContext, useEffect, useReducer } from "react";
+import { useLoadCartQuery } from "../../API/CartAPI";
+import { useNavigate } from "react-router-dom";
+import Spinner from "../../Components/Spinner";
 
 interface ShippingAddress {
   address: string;
@@ -52,13 +55,23 @@ const initialState: CheckoutState = {
 export const CheckoutProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const Navigate = useNavigate();
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { data: Cart, isSuccess, isError, isLoading } = useLoadCartQuery();
 
   useEffect(() => {
     if (state.address) {
       localStorage.setItem("checkout-address", JSON.stringify(state.address));
     }
   }, [state.address]);
+
+  useEffect(() => {
+    if ((isSuccess && Cart.products.length === 0) || isError) {
+      Navigate("/cart");
+    }
+  }, [Cart, isError, isSuccess]);
+
+  if (isLoading) return <Spinner />;
 
   return (
     <CheckoutContext.Provider value={{ state, dispatch }}>

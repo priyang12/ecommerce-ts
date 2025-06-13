@@ -27,6 +27,7 @@ const PlaceOrder = () => {
     dispatch,
   } = useCheckout();
 
+  // get the cart data from context.
   const { data: Cart, isLoading } = useLoadCartQuery();
   const ProductsAmount = Cart
     ? Cart.products.reduce((pre, current) => {
@@ -58,7 +59,7 @@ const PlaceOrder = () => {
   };
 
   if (isLoading) return <Spinner />;
-  if (Cart && Cart.products?.length === 0) return <Redirect to="/" />;
+  // if (Cart && Cart.products?.length === 0) return <Redirect to="/" />;
 
   if (!address) return <Redirect to="/checkout/address" />;
   if (!payMethod) return <Redirect to="/checkout/paymentMethod" />;

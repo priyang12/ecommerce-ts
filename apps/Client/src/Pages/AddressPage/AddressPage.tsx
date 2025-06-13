@@ -27,13 +27,6 @@ const AddressPage = () => {
   const { state: ShippingAddress, ChangeState } = useForm(
     state.address ? state.address : init
   );
-  const { data: Cart, isSuccess, isError } = useLoadCartQuery();
-
-  useEffect(() => {
-    if ((isSuccess && Cart.products.length === 0) || isError) {
-      Navigate("/cart");
-    }
-  }, [Cart, Navigate, isError, isSuccess]);
 
   const SubmitAddress: React.ComponentProps<"form">["onSubmit"] = (e) => {
     e.preventDefault();
