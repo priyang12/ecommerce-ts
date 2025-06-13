@@ -28,7 +28,7 @@ Rfce() {
 
 StyledComponent() {
     # Write the Styled Component
-    echo "import styled from 'styled-components';" > $Path/$1/Styled$1.ts
+    echo "import styled from '@linaria/react';" > $Path/$1/Styled$1.ts
     echo "" >> $Path/$1/Styled$1.ts
     echo "export const Styled$1 = styled.div\`" >> $Path/$1/Styled$1.ts
     echo "    // Your styles here" >> $Path/$1/Styled$1.ts

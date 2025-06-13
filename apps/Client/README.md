@@ -21,7 +21,8 @@
 [x] change global styling color in root.
 [x] "Limited Time Deal" and "FREE delivery within a week" dummy UI in product Card
 [] optimized rendering in Carousel
-[] Migrate to linaria for Pages.
+[x] Migrate to linaria for Pages.
+[x] remove styled-components and styled-normalize and replace it with normal.css
 [] global dark mode by flipping the temp of color pallet.
 [] added test cases for PrivateRoute.
 [] fix no token, authorization denied in setAuthToken on load.
