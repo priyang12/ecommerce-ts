@@ -63,3 +63,4 @@
 [x] placeOrder
 [x] paypal
 [x] Wishlist
+[x] Reviews

@@ -53,9 +53,7 @@ it("Render Reviews", async () => {
     // Review
 
     expect(screen.getByText(item.comment)).toBeInTheDocument();
-    expect(
-      screen.getByText(`Given Rating :${item.rating}`)
-    ).toBeInTheDocument();
+    expect(screen.getByText(`Rating :${item.rating}`)).toBeInTheDocument();
     expect(
       screen.getByText(format(parseISO(item.createdAt), "yyyy-MM-dd' 'HH:mm"))
     ).toBeInTheDocument();
