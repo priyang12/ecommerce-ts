@@ -35,7 +35,7 @@ export const StyledResetContainer = styled.div`
   h1 {
     font-size: 1.75rem;
     margin-bottom: 0.5rem;
-    color: var(--primary-color);
+    color: var(--text-primary);
   }
 
   p {

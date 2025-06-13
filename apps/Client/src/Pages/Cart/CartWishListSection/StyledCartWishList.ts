@@ -69,7 +69,7 @@ export const StyledWishlistItem = styled.div`
   p:first-child {
     font-size: 1.25rem;
     font-weight: 600;
-    color: var(--primary-color);
+    color: var(--text-primary);
   }
 `;
 

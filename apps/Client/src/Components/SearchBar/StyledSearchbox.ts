@@ -42,13 +42,13 @@ export const SearchButton = styled.button`
 `;
 
 export const SearchInput = styled.input`
-  color: var(--primary-color);
+  color: var(--text-primary);
   padding: 0.7em;
   font-size: 1.1rem;
   width: 60%;
   border-radius: 10px;
-  background-color: var(--secondary-color);
-  border: 1px solid var(--assertive-color);
+  background-color: var(--neutral-700);
+  border: 1px solid var(--primary-300);
   transition: border 0.3s ease-in-out;
   ::placeholder {
     color: var(--text-primary);

@@ -6,7 +6,7 @@ export const StyledHeroContainer = styled.section`
   overflow: hidden;
   display: flex;
   padding: 2rem;
-  background-color: var(--primary-700);
+  background-color: var(--primary-300);
   box-sizing: border-box;
   width: 100%;
   height: 90vh;

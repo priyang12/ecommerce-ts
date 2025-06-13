@@ -79,9 +79,9 @@ export const StyledListItem = styled.div`
   }
 
   &:hover {
-    background-color: var(--primary-color);
+    background-color: var(--text-secondary);
     a {
-      color: var(--primary-600);
+      color: var(--primary-100);
     }
   }
 `;

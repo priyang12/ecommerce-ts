@@ -9,7 +9,7 @@ export const StyledContainer = styled.section`
 `;
 
 export const StyledProduct = styled.div`
-  color: var(--secondary-light-color);
+  color: var(--text-primary);
   display: grid;
   gap: 1.5rem;
   margin: 5%;

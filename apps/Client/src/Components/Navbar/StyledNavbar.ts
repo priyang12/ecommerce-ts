@@ -70,7 +70,7 @@ export const StyledLinks = styled.div`
     font-size: 1rem;
     transition: color 0.3s;
     &:hover {
-      color: var(--primary-color);
+      color: var(--text-primary);
     }
   }
 `;

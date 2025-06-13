@@ -1,7 +1,7 @@
 import { styled } from "@linaria/react";
 
 export const StyledLoadingButton = styled.button`
-  background-color: var(--btn-bg, var(--primary-color));
+  background-color: var(--btn-bg, var(--text-primary));
   color: var(--btn-text, var(--bg-color));
   cursor: pointer;
   padding: 1rem 2rem;
@@ -14,9 +14,9 @@ export const StyledLoadingButton = styled.button`
   text-transform: capitalize;
 
   &:hover {
-    background-color: var(--btn-bg-hover, var(--primary-dark-color));
-    color: var(--btn-text-hover, var(--secondary-color));
-    border-color: var(--btn-border-hover, var(--secondary-color));
+    background-color: var(--btn-bg-hover, var(--text-secondary));
+    color: var(--btn-text-hover, var(--secondary-500));
+    border-color: var(--btn-border-hover, var(--secondary-500));
   }
 
   &:disabled {
