@@ -83,11 +83,15 @@ describe("Carousel", () => {
         </BrowserRouter>
       </Wrapper>
     );
-    const initialSlide = screen.getAllByText(/Product/i)[0];
+
+    const initialSlide = screen.getByTestId("slide-0").textContent;
+
     act(() => {
       vi.advanceTimersByTime(3000);
     });
-    const newSlide = screen.getAllByText(/Product/i)[0];
+
+    const newSlide = screen.getByTestId("slide-0").textContent;
+
     expect(newSlide).not.toBe(initialSlide);
   });
 

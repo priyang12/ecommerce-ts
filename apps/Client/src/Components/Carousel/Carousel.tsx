@@ -1,4 +1,11 @@
-import { useEffect, useReducer, useState } from "react";
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useState,
+} from "react";
 import { useLoadTopProducts } from "../../API/ProductAPI";
 import Slide from "./Slide";
 import {
@@ -33,36 +40,41 @@ const slidesReducer = (
   return state;
 };
 
+const MemoedSlide = memo(Slide);
+
 function Carousel() {
-  const { data: Products } = useLoadTopProducts();
-  const DisplayProducts = Products || [];
+  const { data: products } = useLoadTopProducts();
+
+  const DisplayProducts = useMemo(() => {
+    if (!products || products.length === 0) return [];
+    return [...products, ...products, ...products];
+  }, [products]);
+  const productsLength = useMemo(() => products?.length || 0, [products]);
 
   const [state, dispatch] = useReducer(slidesReducer, initialState);
   const [Hover, setHover] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      dispatch({ type: "NEXT", length: DisplayProducts.length });
+      dispatch({ type: "NEXT", length: productsLength });
     }, 3000);
     if (Hover) clearInterval(interval);
     return () => clearInterval(interval);
   }, [Hover]);
 
-  const handleHover = () => {
+  const handleHover = useCallback(() => {
     setHover(true);
-  };
+  }, []);
 
-  const handleLeave = () => {
+  const handleLeave = useCallback(() => {
     setHover(false);
-  };
+  }, []);
 
   return (
     <StyledSlidesContainer>
       <StyledSlide>
         <StyledSlideButton
-          onClick={() =>
-            dispatch({ type: "PREV", length: DisplayProducts.length })
-          }
+          onClick={() => dispatch({ type: "PREV", length: productsLength })}
           tabIndex={0}
           aria-label="Previous Slide"
           aria-describedby="Previous Slide"
@@ -70,27 +82,24 @@ function Carousel() {
           <FaChevronCircleLeft />
         </StyledSlideButton>
 
-        {[...DisplayProducts, ...DisplayProducts, ...DisplayProducts].map(
-          (slide, i) => {
-            const offset = DisplayProducts.length + (state.slideIndex - i);
-            return (
-              <Slide
-                slide={slide}
-                offset={offset}
-                DisplayProductsLength={DisplayProducts.length}
-                key={i}
-                onMouseEnter={handleHover}
-                onFocus={handleHover}
-                onMouseLeave={handleLeave}
-                dispatch={dispatch}
-              />
-            );
-          }
-        )}
+        {DisplayProducts.map((slide, i) => {
+          const offset = productsLength + (state.slideIndex - i);
+          return (
+            <MemoedSlide
+              data-testid={`slide-${offset}`}
+              slide={slide}
+              offset={offset}
+              DisplayProductsLength={productsLength}
+              key={i}
+              onMouseEnter={handleHover}
+              onFocus={handleHover}
+              onMouseLeave={handleLeave}
+              dispatch={dispatch}
+            />
+          );
+        })}
         <StyledSlideButton
-          onClick={() =>
-            dispatch({ type: "NEXT", length: DisplayProducts.length })
-          }
+          onClick={() => dispatch({ type: "NEXT", length: productsLength })}
           tabIndex={0}
           aria-label="Next Slide"
           aria-describedby="Next Slide"

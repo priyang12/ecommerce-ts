@@ -37,6 +37,7 @@ const Slide = ({
   onMouseLeave,
   onFocus,
   dispatch,
+  ...props
 }: {
   slide: Product;
   offset: number;
@@ -95,6 +96,7 @@ const Slide = ({
           "--dir": offset === 0 ? 0 : offset > 0 ? 1 : -1,
         } as React.CSSProperties
       }
+      {...props}
     >
       <StyledSlideContent
         style={{

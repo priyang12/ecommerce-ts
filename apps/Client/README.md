@@ -13,7 +13,7 @@
 [] replace useForm with react-hook-form.
 [x] on reload the page redirect to auth.after auth page authcontext fire and set the token redirect '/' on token available. this is making the protected route in onload redirect to '/' fix this (temp fix added yesterday)
 [x] migrated fully to linaria and change the UI.
-[] memoize and optimize the Carousel component.
+[x] memoize and optimize the Carousel component.
 
 ### change UI
 
@@ -25,7 +25,7 @@
 [x] remove styled-components and styled-normalize and replace it with normal.css
 [x] fix Menu logo in Navbar.
 [x] global dark mode by flipping the temp of color pallet.
-[] optimized rendering in Carousel
+[x] optimized rendering in Carousel
 [x] added test cases for PrivateRoute.
 [x] fix no token, authorization denied in setAuthToken on login after actions.
 
