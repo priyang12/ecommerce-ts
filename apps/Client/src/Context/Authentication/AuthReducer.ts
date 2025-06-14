@@ -1,6 +1,7 @@
-import { User } from "../../interfaces";
-import { AuthState } from "./AuthContext";
+import { User } from "../../Types/interfaces";
+import { AuthState, AuthUser } from "./AuthContext";
 import {
+  SetAuth,
   LOGIN_SUCCESS,
   AUTH_ERROR,
   LOAD_USER,
@@ -9,12 +10,13 @@ import {
   UPDATE_USER,
   MailSEND_SUCCESS,
   RESET_PASSWORD_SUCCESS,
-} from "./Authtypes";
+} from "./AuthTypes";
 
 type AuthPayload = {
+  [SetAuth]: string;
   [LOGIN_SUCCESS]: string | null;
   [AUTH_ERROR]: string | null;
-  [LOAD_USER]: User | null;
+  [LOAD_USER]: AuthUser | null;
   [UPDATE_USER]: User;
   [SET_LOADING]: boolean;
   [LOG_OUT]: null;
@@ -37,6 +39,11 @@ export type AuthActions = ActionMap<AuthPayload>[keyof ActionMap<AuthPayload>];
 
 export const AuthReducer = (state: AuthState, action: AuthActions) => {
   switch (action.type) {
+    case SetAuth:
+      return {
+        ...state,
+        token: action.payload,
+      };
     case LOGIN_SUCCESS:
       return {
         ...state,
@@ -47,6 +54,7 @@ export const AuthReducer = (state: AuthState, action: AuthActions) => {
     case UPDATE_USER:
       return {
         ...state,
+        // here should be a type error since we are not setting the User but AuthUser.
         user: action.payload,
         loading: false,
       };

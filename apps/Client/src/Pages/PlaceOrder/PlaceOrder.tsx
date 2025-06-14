@@ -1,119 +1,149 @@
-import React, { useLayoutEffect, useState } from "react";
 import { Navigate as Redirect, useNavigate } from "react-router";
 import { Helmet } from "react-helmet-async";
-import { Address } from "../../interfaces";
-import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
-import ProductList from "./ProductList";
-import Navigators from "../../Components/Navigators";
 import {
-  StyledHeader,
-  StyledOrderSummary,
-  StyledOrderSummaryBody,
-  StyledOrderSummaryItem,
-  StyledParagraph,
+  StyledHeader as Header,
+  StyledOrderSummary as OrderSummary,
+  StyledOrderSummaryBody as OrderSummaryBody,
+  StyledOrderSummaryItem as OrderSummaryItem,
+  StyledParagraph as Paragraph,
+  StyledItemContainer,
   StyledPlaceOrder,
 } from "./StyledPlaceOrder";
 import { useLoadCartQuery } from "../../API/CartAPI";
 import Spinner from "../../Components/Spinner";
+import { useCheckout } from "../../Context/CheckoutContext/CheckoutContext";
+import { StyledCheckoutContainer } from "../../Components/UI/CheckoutContainer";
+import { SubmitButton } from "../../Components/UI/FormControl";
+import OrderItem from "./ProductList";
 
+import { css } from "@linaria/core";
+
+const containerWidth = css`
+  max-width: 80vw;
+`;
+
+/**
+ * PlaceOrder Component
+ *
+ * Displays the final step of the checkout process where users can review
+ * shipping details, payment method, and a summary of their order before placing it.
+ *
+ *
+ * ## Route
+ * - `/checkout/placeOrder`
+ * @component
+ *
+ * @returns {JSX.Element} A React component that renders the place order page.
+ *
+ * @requires
+ * - A valid address in checkout state or localStorage
+ * - A selected payment method
+ * - A non-empty cart (from `useLoadCartQuery`)
+ *
+ * @behavior
+ * - Redirects to `/checkout/address` if no address
+ * - Redirects to `/checkout/paymentMethod` if no payment method
+ * - Redirects to `/` if the cart is empty
+ *
+ * @todo
+ * - Replace local calculation logic with backend-confirmed values if applicable.
+ * - Add validation/error states for failed order submissions
+ * - Animate transitions or confirmation modals
+ */
 const PlaceOrder = () => {
   const Navigate = useNavigate();
-  const { data: Cart, isLoading } = useLoadCartQuery();
-  const [ProductsAmount, setProductsAmount] = useState(0);
+  const {
+    state: { address, payMethod },
+    dispatch,
+  } = useCheckout();
+
+  const { data: cart, isLoading } = useLoadCartQuery();
+
+  const ProductsAmount = cart
+    ? cart.products.reduce((pre, current) => {
+        return (pre += current.product.price * current.qty);
+      }, 0)
+    : 0;
   const ShippingAmount = ProductsAmount > 500 ? 0 : 100;
   const TaxAmount = 0.15 * ProductsAmount;
   const TotalAmount = ProductsAmount + ShippingAmount + TaxAmount;
 
-  const Address: Address =
-    localStorage.address && JSON.parse(localStorage.address);
-  const PayMethod = localStorage.payMethod;
-
-  useLayoutEffect(() => {
-    if (Cart) {
-      setProductsAmount(() => {
-        let Total = 0;
-        Cart?.products?.forEach((item) => {
-          Total += item.product.price * item.qty;
-        });
-        return Total;
-      });
-    }
-  }, [Cart]);
-
   const PlaceTheOrder = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     const Order = {
-      orderItems: Cart?.products,
-      shippingAddress: Address,
-      paymentMethod: PayMethod,
+      orderItems: cart?.products,
+      shippingAddress: address,
+      paymentMethod: payMethod,
       itemsPrice: ProductsAmount,
       taxPrice: TaxAmount,
       shippingPrice: ShippingAmount,
       totalPrice: Math.round(TotalAmount),
     };
-    localStorage.setItem("order", JSON.stringify(Order));
-    Navigate("/PayPal");
+
+    dispatch({
+      type: "SET_ORDER",
+      payload: Order,
+    });
+
+    Navigate("/checkout/paypal");
   };
 
-  if (!Address) return <Redirect to="/address" />;
-  if (!PayMethod) return <Redirect to="/paymentMethod" />;
+  if (!address) return <Redirect to="/checkout/address" />;
+  if (!payMethod) return <Redirect to="/checkout/paymentMethod" />;
 
-  if (isLoading) return <Spinner />;
-
-  if (Cart && Cart.products?.length === 0) return <Redirect to="/" />;
+  if (false) return <Spinner />;
+  if (cart && cart.products?.length === 0) return <Redirect to="/" />;
 
   return (
-    <StyledPaymentContainer theme={{ maxWidth: "80vw" }}>
+    <StyledCheckoutContainer className={containerWidth}>
       <Helmet>
         <title>Place Order</title>
         <meta name="description" content="Place Order" />
       </Helmet>
-      <Navigators />
       <StyledPlaceOrder>
-        <div className="OrderDetails">
-          <div className="detail">
-            <StyledHeader>SHIPPING </StyledHeader>
-            <StyledParagraph>
-              Address: {Address.address} , {Address.city} ,{Address.postalcode},
-            </StyledParagraph>
+        <div>
+          <div>
+            <Header>SHIPPING </Header>
+            <Paragraph>
+              Address: {address.address} , {address.city} ,{address.postalcode},
+            </Paragraph>
+            <Header>PAYMENT METHOD</Header>
+            <Paragraph>Method: {payMethod}</Paragraph>
           </div>
-          <div className="detail">
-            <StyledHeader>PAYMENT METHOD</StyledHeader>
-            <StyledParagraph>Method: {PayMethod}</StyledParagraph>
-          </div>
+
           <div className="order-details">
-            <StyledHeader>ORDER ITEMS</StyledHeader>
-            <ul className="order-list">
-              {Cart?.products.map((item) => (
-                <ProductList Cart={item} key={item._id} styledWidth="80%" />
+            <Header>ORDER ITEMS</Header>
+            <StyledItemContainer>
+              {cart?.products.map((item) => (
+                <OrderItem Cart={item} key={item._id} styledWidth="80%" />
               ))}
-            </ul>
+            </StyledItemContainer>
           </div>
         </div>
-        <StyledOrderSummary>
+        <OrderSummary>
           <form onSubmit={PlaceTheOrder} data-testid="PlaceOrder">
-            <StyledOrderSummaryBody>
-              <StyledHeader>ORDER SUMMARY</StyledHeader>
-              <StyledOrderSummaryItem>
+            <OrderSummaryBody>
+              <Header>ORDER SUMMARY</Header>
+              <OrderSummaryItem>
                 Items Cost : <span> {ProductsAmount}</span>
-              </StyledOrderSummaryItem>
-              <StyledOrderSummaryItem>
+              </OrderSummaryItem>
+              <OrderSummaryItem>
                 Shipping Cost :
                 <span data-testid="ShippingCost">{ShippingAmount}</span>
-              </StyledOrderSummaryItem>
-              <StyledOrderSummaryItem>
+              </OrderSummaryItem>
+              <OrderSummaryItem>
                 Tax Cost :<span data-testid="TaxCost">{TaxAmount}</span>
-              </StyledOrderSummaryItem>
-              <StyledOrderSummaryItem>
+              </OrderSummaryItem>
+              <OrderSummaryItem>
                 Total Cost :
                 <span data-testid="TotalAmount">{Math.round(TotalAmount)}</span>
-              </StyledOrderSummaryItem>
-            </StyledOrderSummaryBody>
-            <button className="btn">PlaceOrder</button>
+              </OrderSummaryItem>
+            </OrderSummaryBody>
+            <SubmitButton type="submit" value="PlaceOrder" />
           </form>
-        </StyledOrderSummary>
+        </OrderSummary>
       </StyledPlaceOrder>
-    </StyledPaymentContainer>
+    </StyledCheckoutContainer>
   );
 };
 

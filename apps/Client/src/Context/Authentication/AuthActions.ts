@@ -1,35 +1,38 @@
+import React from "react";
 import {
   LOGIN_SUCCESS,
   AUTH_ERROR,
-  LOAD_USER,
   SET_LOADING,
   LOG_OUT,
   UPDATE_USER,
   MailSEND_SUCCESS,
   RESET_PASSWORD_SUCCESS,
-} from "./Authtypes";
+  LOAD_USER,
+} from "./AuthTypes";
 
 import axios, { AxiosError } from "axios";
+import setAuthToken from "../../Utils/setAuthToken";
 import { AuthActions } from "./AuthReducer";
-import React from "react";
+import type { User } from "../../Types/interfaces";
 
 export const loadUser = async (
   token: any,
   dispatch: React.Dispatch<AuthActions>
 ) => {
   if (token) {
+    setAuthToken(token);
     try {
       setLoading(dispatch);
-      const { data }: any = await axios.get("/api/users", {
-        headers: {
-          "x-auth-token": token,
-        },
-      });
-      sessionStorage.setItem("User", JSON.stringify(data));
+      const { data }: { data: User } = await axios.get("/api/users");
+      const { password, createdAt, updatedAt, ...authUser } = data;
+
       dispatch({
         type: LOAD_USER,
-        payload: data,
+        payload: authUser,
       });
+
+      sessionStorage.setItem("User", JSON.stringify(authUser));
+      stopLoading(dispatch);
     } catch (err: any | AxiosError) {
       let ErrorMessage = "Server Error Try Again Later";
       if (err as AxiosError) {
@@ -49,14 +52,16 @@ export const LoginUser = async (
 ) => {
   try {
     setLoading(dispatch);
-    const { data }: any = await axios.post("/api/users/login", user);
-    dispatch({
-      type: LOGIN_SUCCESS,
-      payload: data.token,
-    });
-    localStorage.setItem("token", data.token);
+    const { data } = await axios.post("/api/users/login", user);
+    if (data.token) {
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: data.token,
+      });
+      localStorage.setItem("token", data.token);
 
-    // loadUser(data.token, dispatch);
+      await loadUser(data.token, dispatch);
+    }
   } catch (err: any | AxiosError) {
     let ErrorMessage = "Server Error Try Again Later";
     if (err as AxiosError) {
@@ -75,14 +80,15 @@ export const RegisterUser = async (
 ) => {
   try {
     setLoading(dispatch);
-    const { data }: any = await axios.post("/api/users/register", user);
-    dispatch({
-      type: LOGIN_SUCCESS,
-      payload: data.token,
-    });
-    localStorage.setItem("token", data.token);
-
-    loadUser(data.token, dispatch);
+    const { data } = await axios.post("/api/users/register", user);
+    if (data.toke) {
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: data.token,
+      });
+      localStorage.setItem("token", data.token);
+    }
+    await loadUser(data.token, dispatch);
   } catch (err: any | AxiosError) {
     let ErrorMessage = "Server Error Try Again Later";
     if (err as AxiosError) {
@@ -178,7 +184,8 @@ export const Logout = (dispatch: React.Dispatch<AuthActions>) => {
       type: LOG_OUT,
       payload: null,
     });
-  } catch (error) {
+    setAuthToken(null);
+  } catch {
     dispatch({
       type: AUTH_ERROR,
       payload: "Server Error Reload",
@@ -192,7 +199,7 @@ export const setLoading = (dispatch: React.Dispatch<AuthActions>) => {
   });
 };
 
-export const StopLoading = (dispatch: React.Dispatch<AuthActions>) => {
+export const stopLoading = (dispatch: React.Dispatch<AuthActions>) => {
   dispatch({
     type: SET_LOADING,
     payload: false,

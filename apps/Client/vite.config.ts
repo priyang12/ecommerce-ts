@@ -2,15 +2,19 @@ import fs from "fs";
 import { defineConfig } from "vitest/config";
 import { VitePWA } from "vite-plugin-pwa";
 import react from "@vitejs/plugin-react";
+import wyw from "@wyw-in-js/vite";
 
 const manifest = JSON.parse(
   fs.readFileSync("../Client/public/manifest.json", "utf-8")
 );
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   build: {
     outDir: "build",
     sourcemap: true,
+  },
+  define: {
+    "process.env.NODE_ENV": JSON.stringify(mode),
   },
   test: {
     globals: true,
@@ -19,9 +23,10 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    wyw(),
     VitePWA({
-      srcDir: "src",
-      filename: "service-worker.ts",
+      srcDir: "src/ServiceWorkers",
+      filename: "Service-Workers.ts",
       strategies: "injectManifest",
       injectRegister: false, // because you register manually
       manifest,
@@ -36,4 +41,4 @@ export default defineConfig({
       },
     },
   },
-});
+}));
