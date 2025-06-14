@@ -26,12 +26,11 @@
 [x] fix Menu logo in Navbar.
 [x] global dark mode by flipping the temp of color pallet.
 [] optimized rendering in Carousel
-[] added test cases for PrivateRoute.
-[] fix no token, authorization denied in setAuthToken on load.
+[x] added test cases for PrivateRoute.
+[x] fix no token, authorization denied in setAuthToken on login after actions.
 
 #### components
 
-[] Refactor and tests
 [x] Navbar
 [x] SearchBar
 [x] Rating
