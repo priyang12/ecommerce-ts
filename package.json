@@ -14,8 +14,9 @@
     "build:server": "npm run build --prefix apps/Server",
     "build:admin": "npm run build --prefix apps/admin",
     "build:remove": "cd Client && rm -rf build && cd .. && cd Server && rm -rf build && cd ..",
-    "data:import": "ts-node apps/Server/seeder",
-    "data:destroy": "ts-node apps/Server/seeder -d",
+    "test": "turbo run test",
+    "data:import": "npm run data:import --prefix apps/Server",
+    "data:destroy": "npm run data:destroy --prefix apps/Server",
     "e2e": "cypress open"
   },
   "workspaces": [
