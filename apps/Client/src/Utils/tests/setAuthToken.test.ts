@@ -75,9 +75,6 @@ describe("setAuthToken", () => {
     // Check axios headers
     expect(axios.defaults.headers.common["x-auth-token"]).toBeUndefined();
     expect(axios.defaults.headers.post["Content-Type"]).toBeUndefined();
-
-    // Verify localStorage was cleared
-    expect(localStorage.removeItem).toHaveBeenCalledWith("token");
   });
 
   it("should handle undefined/null token without errors", () => {

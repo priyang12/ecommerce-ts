@@ -9,9 +9,7 @@
 [x] docs comments and keys in API with separate API endPoints in file.
 [x] docs comments in Utils and test cases.
 [x] each file for different hooks.
-
-[] replace useForm with react-hook-form.
-[x] on reload the page redirect to auth.after auth page authcontext fire and set the token redirect '/' on token available. this is making the protected route in onload redirect to '/' fix this (temp fix added yesterday)
+[x] on reload the page redirect to auth.after auth page authcontext fire and set the token redirect '/' on token available. this is making the protected route in onload redirect to '/' fix this (remove the temp loading on render and issue is still there but since we added redirectTo in Auth it's safely ensure the user end up at intended route. still little hacky but works. still not sure how data flow should be with localstorage and context.)
 [x] migrated fully to linaria and change the UI.
 [x] memoize and optimize the Carousel component.
 

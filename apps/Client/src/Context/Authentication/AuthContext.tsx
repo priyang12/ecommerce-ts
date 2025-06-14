@@ -26,8 +26,7 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-  // temp setting it to true , then setting it to false end of effect lifecycle.
-  loading: true,
+  loading: false,
   err: null,
   token: null,
   user: null,
@@ -74,9 +73,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         });
       }
     })();
-    // temp solution. so user can access to auth and spinner don't showup.
-    // some ResetPassword test cases are failing using this approach.
-    stopLoading(dispatch);
   }, []);
 
   return (
