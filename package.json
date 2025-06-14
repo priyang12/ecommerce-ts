@@ -17,8 +17,8 @@
     "build:dev": "turbo run build --filter=./apps/Server --filter=./apps/Client",
     "build:remove": "cd Client && rm -rf build && cd .. && cd Server && rm -rf build && cd ..",
     "test": "turbo run test",
-    "data:import": "ts-node apps/Server/seeder",
-    "data:destroy": "ts-node apps/Server/seeder -d",
+    "data:import": "npm run data:import --prefix apps/Server",
+    "data:destroy": "npm run data:destroy --prefix apps/Server",
     "e2e": "cypress open"
   },
   "workspaces": [

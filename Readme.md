@@ -146,7 +146,7 @@ npm run e2e
 
 ### Seed Database
 
-You can use the following commands to seed the database with some sample users and products as well as destroy all data
+You can use the following commands to seed the database with some sample users and products and other seeds as well as destroy all data
 
 ```
 # Import data
