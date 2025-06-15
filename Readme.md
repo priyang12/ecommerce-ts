@@ -1,54 +1,64 @@
----
-TechName: FULL-STACK-MonoRepo
-Title: ShopIT E-commerce & Admin
-Description: It's a full-stack web application that allows users to create an account, log in, and create an order. The application also allows users to view their order history, and view their cart. The application is built with Node.js, Express, MongoDB, React, Context API, and Styled Component. The application is deployed on Vercel.
-Technologies: [Node.js, Express, MongoDB, React, Styled Component]
-ProjectLink: https://www.shop.web-club.co
-AdminLink: http://shop-admin.web-club.co
-GithubLink: https://github.com/priyang12/ecommerce-ts
-Image: https://ik.imagekit.io/5aalo5l7bu7/Ecommerce_8WgWzew6o.png?ik-sdk-version=javascript-1.4.3&updatedAt=1660117461345
-ClientImage: https://ik.imagekit.io/5aalo5l7bu7/Ecommerce_8WgWzew6o.png?ik-sdk-version=javascript-1.4.3&updatedAt=1660117461345
-ClientVideo: https://ik.imagekit.io/5aalo5l7bu7/Portfolio/EcommerceClient_9av_ILt4v.mp4?ik-sdk-version=javascript-1.4.3&updatedAt=1668355268526
-AdminImage: https://ik.imagekit.io/5aalo5l7bu7/Portfolio/Admin_4pWkBKF7g?ik-sdk-version=javascript-1.4.3&updatedAt=1668887257201
-AdminVideo: https://ik.imagekit.io/5aalo5l7bu7/Portfolio/EcommerceAdmin_DDzIsBmjK.mp4?ik-sdk-version=javascript-1.4.3&updatedAt=1668887007286
+# ShopIT – Fullstack E-commerce Web App
+
+ShopIT is a fullstack, monorepo-based e-commerce platform where users can effortlessly shop for products without navigating through complicated processes. It includes a user-facing client app and an admin dashboard, both built on a shared backend using TurboRepo.
+
+Recently migrated to a new UI for the client application. The legacy UI is preserved in a separate branch. [See UI Migration below for more details.](#ui-migration)
+
 ---
 
-ShopIT is a Fullstack Ecommerce webapp. it's where you can shop the things that you want with out worrying about long processes.
+## Demo Videos
 
-it's a monorepo with two frontend's and same backend created using turboRepo. One is for client to use and place order and other is admin panel for administrator work process. there one common package for validation created for value validation using **ZOD**.
+Client App:
+https://ik.imagekit.io/5aalo5l7bu7/Github/NEW%20UI_A8TaSqdd3V.mp4?updatedAt=1750006853983
 
-Client web app it is well tested by react-testing lib. the payment is powered by paypal. it is a PWA which is installable and is **semi** workable in **offline** mode. caching worked by workbox. Other frontend is a for admin work and which is build using react-admin. it show's interactive ways to handle orders, review and other work. There are end-to-end test for the client apps by cypress.
-
-## Video
-
-Client Side
-
-https://user-images.githubusercontent.com/72823974/205494063-3ca16515-b722-4fb8-9211-2e63074ac963.mp4
-
-Admin Side
-
+Admin Panel:
 https://user-images.githubusercontent.com/72823974/205494089-5fda4ba1-9fc5-4b1a-a9c6-5063d9937932.mp4
 
-## Technologies
+---
 
-1. Client
-   - React
-   - Styled Component
-   - react-query
-   - workbox
-   - @testing-library
-2. Admin
-   - React
-   - React-admin
-   - recharts
-   - @mui/material
-3. Backend
-   - Node.js
-   - Express.js
-   - imagekit
-   - mongoose
-   - agenda
-   - @sendgrid/mail
+## Monorepo Structure
+
+- apps/client – User-facing shopping application (PWA)
+- apps/admin – Admin panel for managing orders, products, reviews
+- apps/server – Shared backend using Express.js and MongoDB
+- packages/validation – Shared validation logic using Zod(seperated for now for deplyment issues will merger again.)
+
+---
+
+## Testing
+
+- Client App: Unit tested with React Testing Library
+- End-to-End: Cypress tests for complete client app flow
+
+---
+
+## Technologies Used
+
+### Client
+
+- React
+- React Query
+- linaria
+- Workbox (for PWA and caching)
+- @testing-library/react
+
+### Admin
+
+- React
+- React-Admin
+- Recharts
+- @mui/material
+
+### Backend
+
+- Node.js
+- Express.js
+- MongoDB & Mongoose
+- Agenda (Job Scheduler)
+- ImageKit (for images)
+- SendGrid (for emails)
+
+---
 
 ## Client Features
 
@@ -70,85 +80,84 @@ https://user-images.githubusercontent.com/72823974/205494089-5fda4ba1-9fc5-4b1a-
 - Forget password
 - Servive worker cache
 
+---
+
 ## Admin Features
 
-<<<<<<< HEAD
-
-- # Dashboard
-- Dashborad
-  > > > > > > > vite-migrate
+- Dashboard
 - Admin User management
 - Admin Product management
 - Admin Order management
 - User's Review management
 - Filtering in Products
 
+---
+
 ## Server Features
 
-- Admin and Client APIs
-- Cache Response
-- Rate Limiter
-- Jobs Scheduling
-- Seeder
-- Cors
+- RESTful APIs for Admin and Client
+- CORS Support
+- Caching and Rate Limiting
+- Job Scheduling (Email, Cleanup)
+- Seed & Destroy DB Data
 
-### Env Variables
+---
 
-Create a .env file in then root and add the following
+## Environment Variables
 
-```
-NODE_ENV = development
-PORT = 5001 or 5000 // make sure refactor the vite.config.ts proxy API end point.
-MONGO_URI = your mongodb uri
-TEST_MONGO_URI = use mongodb uri or change it for testing. this will the db that connected in development mode.
-JWT_SECRET = 'abc123'
-PAYPAL_CLIENT_ID = your paypal client id
-END_POINT = imagekit url
-PRIVATE_KEY = imagekit private key
-PUBLIC_KEY = imagekit public key
-SENDGRID_API_KEY = your sendgrid api key
-CLIENT_URL =  admin url for using cross origin. do not a "/" at the end ex: http://localhost:5173
-```
+Create a .env file in apps/server:
 
-Create a .env file in then admin and add the following
-
-```
-VITE_REACT_APP_BACKEND=your backend server url
+```.env
+NODE_ENV=development
+PORT=5001
+MONGO_URI=your_mongo_uri
+TEST_MONGO_URI=your_test_mongo_uri
+JWT_SECRET=your_jwt_secret
+PAYPAL_CLIENT_ID=your_paypal_client_id
+END_POINT=your_imagekit_url
+PRIVATE_KEY=your_imagekit_private_key
+PUBLIC_KEY=your_imagekit_public_key
+SENDGRID_API_KEY=your_sendgrid_api_key
+CLIENT_URL=you admin url (or localhost) to alllow client to pass cross.
 ```
 
-### Install Dependencies (frontend & backend & Admin)
+Create a .env file in apps/admin:
 
+```.env
+VITE_REACT_APP_BACKEND=your backend API(http://localhost:5001)
 ```
+
+---
+
+## Installation & Running
+
+### Install All Dependencies
+
+```bash
 npm install
 ```
 
-or install separately by going inside their dir.
+Or install individually by navigating into each app directory.
 
-### Run
+### Run Apps
 
-```
-# Run individual
-
+```bash
+# Client (http://localhost:5173)
 npm run client
+# Admin (http://localhost:5174)
 npm run admin
+# Server (http://localhost:5001)
 npm run server
 
-# Run frontend (:5173) & backend (:5001)
+# Dev mode: Client + Server
 npm run dev
-
-# Run frontend (:5173) & backend (:5001)
+# Dev mode: Admin + Server
 npm run dev:admin
-
-# Cypress e2e tests
-npm run e2e
-
 ```
 
 ### Seed Database
 
-You can use the following commands to seed the database with some sample users and products and other seeds as well as destroy all data
-
-```
+```bash
 # Import data
 npm run data:import
 
@@ -156,17 +165,34 @@ npm run data:import
 npm run data:destroy
 ```
 
-```
-Sample User Logins
+---
 
-admin@example.com (Admin)
-123456
+## Sample Users:
 
-john@example.com (Customer)
-123456
+| Role     | Email                                         | Password |
+| -------- | --------------------------------------------- | -------- |
+| Admin    | [admin@example.com](mailto:admin@example.com) | 123456   |
+| Customer | [john@example.com](mailto:john@example.com)   | 123456   |
+| Customer | [jane@example.com](mailto:jane@example.com)   | 123456   |
 
-jane@example.com (Customer)
-123456
+You can modify user credentials in apps/server/data/User.js and re-import.
 
-You can change credentials in Server/data/User file than use the `# Import data` command
-```
+---
+
+## UI Migration
+
+### New UI (2025)
+
+The client app has been fully migrated to a modern, refactored UI in the refactor-ui branch under apps/client. This migration includes:
+
+- Modernized component structure
+- Better mobile responsiveness
+- Improved performance and accessibility
+- Cleanup of unused code and files
+- Refactored state management and hooks
+
+Check [apps/client/README.md](https://github.com/priyang12/ecommerce-ts/tree/refactor-Client/apps/Client) in the refactor-ui branch for full details of the UI migration process and reasoning.
+
+### Legacy UI
+
+The original UI is preserved in the [legacy-ui branch](https://github.com/priyang12/ecommerce-ts/tree/v1-Client-UI) and will be deployed separately. It remains functional and serves as a fallback/reference.
