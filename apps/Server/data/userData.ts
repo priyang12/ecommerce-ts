@@ -24,12 +24,12 @@ const users = [
   },
   {
     name: "John Doe 3",
-    email: "jane2@example.com",
+    email: "jane3@example.com",
     password: "123456",
   },
   {
     name: "John Doe 5",
-    email: "jane2@example.com",
+    email: "jane5@example.com",
     password: "123456",
   },
 ];

@@ -16,7 +16,7 @@ const getRandomProducts = (products, maxCount = 10) => {
   const shuffled = [...products].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count).map((product) => ({
     product: product._id,
-    quantity: Math.floor(Math.random() * 3) + 1,
+    qty: Math.floor(Math.random() * 3) + 1,
   }));
 };
 
