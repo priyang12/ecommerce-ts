@@ -1,7 +1,7 @@
 import React, { Suspense, useEffect, useState } from "react";
 import { useCheckout } from "../../Context/CheckoutContext/CheckoutContext";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import { Navigate } from "react-router";
+import { Navigate } from "react-router-dom";
 import axios, { AxiosResponse } from "axios";
 import Spinner from "../../Components/Spinner";
 import { useMakeOrder } from "../../API/OrdersAPI";

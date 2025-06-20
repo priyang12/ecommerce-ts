@@ -1,4 +1,4 @@
-import { Navigate as Redirect, useNavigate } from "react-router";
+import { Navigate as Redirect, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
 import ProductList from "./ProductList";
