@@ -154,7 +154,7 @@ const Register = () => {
         <SubmitButton type="submit" value="Register" />
       </form>
       <div className="help">
-        <Link to="#"> Need Help</Link>
+        <Link to="/StillWorking"> Need Help</Link>
       </div>
     </StyledRegisterContainer>
   );

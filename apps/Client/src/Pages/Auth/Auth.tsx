@@ -82,7 +82,7 @@ function Auth() {
   const redirectTo = new URLSearchParams(search).get("redirectTo") || "/";
 
   const {
-    state: { loading, token },
+    state: { loading, token, err },
   } = useContext(AuthContext);
 
   if (token) return <Navigate to={redirectTo} />;
@@ -100,6 +100,7 @@ function Auth() {
         </Helmet>
         <div className="container">
           <AuthNavigator />
+          {err ? <div className="alert">{err}</div> : null}
           <Outlet />
         </div>
       </StyledAuthPage>
