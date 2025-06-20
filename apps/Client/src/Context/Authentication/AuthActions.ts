@@ -8,7 +8,7 @@ import {
   MailSEND_SUCCESS,
   RESET_PASSWORD_SUCCESS,
   LOAD_USER,
-} from "./AuthTypes";
+} from "./Authtypes";
 
 import axios, { AxiosError } from "axios";
 import setAuthToken from "../../Utils/setAuthToken";

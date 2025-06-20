@@ -10,7 +10,7 @@ import {
   UPDATE_USER,
   MailSEND_SUCCESS,
   RESET_PASSWORD_SUCCESS,
-} from "./AuthTypes";
+} from "./Authtypes";
 
 type AuthPayload = {
   [SetAuth]: string;

@@ -2,7 +2,7 @@ import React, { createContext, useEffect, useReducer } from "react";
 import { AuthActions, AuthReducer } from "./AuthReducer";
 import { loadUser, stopLoading } from "./AuthActions";
 import setAuthToken from "../../Utils/setAuthToken";
-import { LOAD_USER, LOG_OUT, SetAuth } from "./AuthTypes";
+import { LOAD_USER, LOG_OUT, SetAuth } from "./Authtypes";
 import type { User } from "../../Types/interfaces";
 
 export interface IContextModel {
