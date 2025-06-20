@@ -35,3 +35,13 @@ it("Input Valid Email and Password and Logout", () => {
   //click on logout
   cy.get(".dropdown-content").contains("Logout").click({ force: true });
 });
+
+it("redirect check", () => {
+  cy.visit("/Auth/login?redirectTo=/cart");
+
+  cy.findByLabelText("Email").type(AdminUser.email, { force: true });
+  cy.findByLabelText("Password").type(AdminUser.password, { force: true });
+
+  cy.get("form").submit();
+  cy.url().should("eq", `${Cypress.config("baseUrl")}/cart`);
+});
