@@ -81,17 +81,17 @@ function Search() {
       >
         <SearchBar searchedValue={keyword as string} />
         <StyledHeader>
-          {ProductData.page > 1 && (
+          {ProductData.page > 1 ? (
             <PaginationButton tabIndex={0} onClick={PreviousPage}>
               Previous
             </PaginationButton>
-          )}
+          ) : null}
           <h1>{`Search Results for ${keyword}`}</h1>
-          {ProductData.pages !== page && (
+          {ProductData.pages !== page ? (
             <PaginationButton tabIndex={0} onClick={NextPage}>
               Next
             </PaginationButton>
-          )}
+          ) : null}
         </StyledHeader>
         {productsLength ? (
           <StyledProducts id="Products">
