@@ -27,7 +27,7 @@ function CartItemsUI({
   const { mutate: UpdateCart } = usePostCartQuery();
 
   return (
-    <StyledCartCard>
+    <StyledCartCard data-testid="cart-item">
       <StyledCartImageContainer>
         <img src={CartItem.product.image} alt={CartItem.product.name} />
       </StyledCartImageContainer>
