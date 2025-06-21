@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { redirect, useNavigate, useParams } from "react-router-dom";
 import { ImageMagnifier } from "@priyang/react-component-lib";
 import { useAuth } from "../../Context/Authentication/AuthContext";
 import { usePostCartQuery } from "../../API/CartAPI";
@@ -58,6 +58,7 @@ import {
  */
 const SingleProduct = () => {
   const { state } = useAuth();
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [qty, setQty] = useState("1");
 
@@ -100,6 +101,7 @@ const SingleProduct = () => {
           <StyledProduct>
             <StyledImageContainer>
               <ImageMagnifier
+                aria-label="products image"
                 src={Product.image}
                 width={""}
                 height={""}
@@ -171,7 +173,15 @@ const SingleProduct = () => {
                       TO CART
                     </LoadingButton>
                   ) : (
-                    <StyledLoginButton>Login/Register</StyledLoginButton>
+                    <StyledLoginButton
+                      onClick={(e) => {
+                        e.preventDefault();
+                        // need to fix redirect here so we Quantity form URL.
+                        navigate(`/auth/login`);
+                      }}
+                    >
+                      Login/Register
+                    </StyledLoginButton>
                   )}
                   {state.token ? (
                     <LoadingButton

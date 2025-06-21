@@ -1,4 +1,5 @@
 import "@testing-library/cypress/add-commands";
+import { AdminUser } from "../../data/userData";
 
 Cypress.Commands.add("login", (email, password) => {
   cy.visit("/Auth");
@@ -8,13 +9,12 @@ Cypress.Commands.add("login", (email, password) => {
   cy.get("form").submit();
 });
 
-// -- This is a child command -
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+Cypress.Commands.add("loginByApi", () => {
+  cy.request("POST", `${Cypress.config("baseUrl")}/api/users/login`, {
+    email: AdminUser.email,
+    password: AdminUser.password,
+  }).then((response) => {
+    const { token } = response.body;
+    window.localStorage.setItem("token", token);
+  });
+});
