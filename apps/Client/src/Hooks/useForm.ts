@@ -12,7 +12,7 @@ import { useState } from "react";
  */
 export const useForm = (initialState: any) => {
   const [state, setState] = useState(initialState);
-  const [ErrorsState, setErrorsState] = useState(initialState);
+  const [ErrorsState, setErrorsState] = useState<typeof initialState>({});
 
   const SetState = (NewState: unknown) => {
     setState(NewState);

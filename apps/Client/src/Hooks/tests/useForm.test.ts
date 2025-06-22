@@ -6,7 +6,7 @@ describe("useForm", () => {
     const { result } = renderHook(() => useForm({ username: "", email: "" }));
 
     expect(result.current.state).toEqual({ username: "", email: "" });
-    expect(result.current.ErrorsState).toEqual({ username: "", email: "" });
+    expect(result.current.ErrorsState).toEqual({});
   });
 
   it("should update state on ChangeState", () => {
