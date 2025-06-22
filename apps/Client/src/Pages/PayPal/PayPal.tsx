@@ -2,7 +2,7 @@ import React, { Suspense, useEffect, useState } from "react";
 import { useCheckout } from "../../Context/CheckoutContext/CheckoutContext";
 import { Helmet } from "react-helmet-async";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import { Navigate } from "react-router";
+import { Navigate } from "react-router-dom";
 import { useMakeOrder } from "../../API/OrdersAPI";
 import axios, { AxiosResponse } from "axios";
 import Spinner from "../../Components/Spinner";
