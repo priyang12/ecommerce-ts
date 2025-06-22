@@ -66,8 +66,14 @@ const AddressPage = () => {
       Navigate("/checkout/paymentMethod");
     } catch (error: any) {
       if (error instanceof z.ZodError) {
-        const { fieldErrors } = error.flatten();
-        setErrors(fieldErrors);
+        const result: any = {};
+        error.errors.forEach((e) => {
+          const field = e.path[e.path.length - 1];
+          if (typeof field === "string") {
+            result[field] = e.message;
+          }
+        });
+        setErrors(result);
       }
     }
   };
