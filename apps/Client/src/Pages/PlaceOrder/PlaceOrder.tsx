@@ -64,9 +64,11 @@ const PlaceOrder = () => {
         return (pre += current.product.price * current.qty);
       }, 0)
     : 0;
+  const roundedProductAmount = ProductsAmount.toFixed(2);
   const ShippingAmount = ProductsAmount > 500 ? 0 : 100;
-  const TaxAmount = 0.15 * ProductsAmount;
-  const TotalAmount = ProductsAmount + ShippingAmount + TaxAmount;
+  const TaxAmount = +(0.15 * ProductsAmount).toFixed(2);
+
+  const TotalAmount = +(ProductsAmount + ShippingAmount + TaxAmount).toFixed(2);
 
   const PlaceTheOrder = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -91,7 +93,8 @@ const PlaceOrder = () => {
   if (!address) return <Redirect to="/checkout/address" />;
   if (!payMethod) return <Redirect to="/checkout/paymentMethod" />;
 
-  if (false) return <Spinner />;
+  if (isLoading) return <Spinner />;
+
   if (cart && cart.products?.length === 0) return <Redirect to="/" />;
 
   return (
@@ -125,7 +128,7 @@ const PlaceOrder = () => {
             <OrderSummaryBody>
               <Header>ORDER SUMMARY</Header>
               <OrderSummaryItem>
-                Items Cost : <span> {ProductsAmount}</span>
+                Items Cost : <span> {roundedProductAmount}</span>
               </OrderSummaryItem>
               <OrderSummaryItem>
                 Shipping Cost :
