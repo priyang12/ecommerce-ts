@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { redirect, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { ImageMagnifier } from "@priyang/react-component-lib";
 import { useAuth } from "../../Context/Authentication/AuthContext";
 import { usePostCartQuery } from "../../API/CartAPI";
@@ -58,9 +58,11 @@ import {
  */
 const SingleProduct = () => {
   const { state } = useAuth();
-  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const [qty, setQty] = useState("1");
+  const { search } = useLocation();
+  const queryQty = new URLSearchParams(search).get("qty");
+  const [qty, setQty] = useState(queryQty || "1");
+  const navigate = useNavigate();
 
   const {
     data: Product,
@@ -176,8 +178,9 @@ const SingleProduct = () => {
                     <StyledLoginButton
                       onClick={(e) => {
                         e.preventDefault();
-                        // need to fix redirect here so we Quantity form URL.
-                        navigate(`/auth/login`);
+                        navigate(
+                          `/auth/login?redirectTo=/product/${Product._id}?qty=${qty}`
+                        );
                       }}
                     >
                       Login/Register
