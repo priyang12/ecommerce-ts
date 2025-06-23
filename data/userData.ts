@@ -19,4 +19,10 @@ const users = [
   },
 ];
 
+export const TestUser = {
+  name: "Test User",
+  email: "Test@example.com",
+  password: "123456",
+};
+
 export default users;

@@ -17,7 +17,8 @@
     "test": "turbo run test",
     "data:import": "npm run data:import --prefix apps/Server",
     "data:destroy": "npm run data:destroy --prefix apps/Server",
-    "e2e": "cypress open"
+    "e2e": "cypress open",
+    "userVideo": "cypress run --spec \"cypress/e2e/userExp.spec.ts\""
   },
   "workspaces": [
     "apps/*"

@@ -66,8 +66,6 @@ describe("Place Order Page", () => {
   it("should render cart items and summary from API", () => {
     const token = window.localStorage.getItem("token");
 
-    console.log(token);
-
     cy.request({
       method: "GET",
       url: `${Cypress.config("baseUrl")}/api/cart`,
@@ -96,7 +94,6 @@ describe("Place Order Page", () => {
             return (pre += current.product.price * current.qty);
           }, 0)
         : 0;
-      const roundedProductAmount = ProductsAmount.toFixed(2);
       const ShippingAmount = ProductsAmount > 500 ? 0 : 100;
       const TaxAmount = +(0.15 * ProductsAmount).toFixed(2);
       const TotalAmount = +(
