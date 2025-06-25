@@ -103,6 +103,7 @@ const SingleProduct = () => {
           <StyledProduct>
             <StyledImageContainer>
               <ImageMagnifier
+                data-cy="image-magnifier"
                 aria-label="products image"
                 src={Product.image}
                 width={""}

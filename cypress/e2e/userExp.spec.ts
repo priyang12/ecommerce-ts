@@ -1,7 +1,8 @@
 import users, { TestUser } from "../../data/userData";
+import "cypress-real-events/support";
 
 describe("Recording User Experience", () => {
-  it("User Journey: no logged Home Page", () => {
+  it.skip("User Journey: no logged Home Page", () => {
     cy.visit("/");
 
     // Hero Container
@@ -18,7 +19,7 @@ describe("Recording User Experience", () => {
     });
 
     // wait for Carousel auto slide change.
-    // cy.wait(4000);
+    cy.wait(4000);
 
     // click next and prev button for slide changes
     cy.get('button[aria-label="Next Slide"]').click();
@@ -27,9 +28,51 @@ describe("Recording User Experience", () => {
 
     // Click "Show More" inside the new active slide
     cy.get("a").contains("Show More").click({ force: true });
+    cy.wait(500);
+
+    // Single Product Page
+
+    // image hover
+    cy.get("[data-cy=image-magnifier]")
+      .find("img")
+      .scrollIntoView()
+      .realHover()
+      .then(($img) => {
+        const width = $img[0].clientWidth;
+        const height = $img[0].clientHeight;
+        const step = 20;
+        const maxSteps = Math.min(width, height) / step;
+
+        for (let i = 0; i <= maxSteps; i++) {
+          const x = i * step;
+          const y = i * step;
+          cy.wrap($img).realMouseMove(x, y);
+        }
+
+        // 🔷 Bottom-right to bottom-left (horizontal)
+        for (let x = width; x >= 0; x -= step) {
+          cy.wrap($img).realMouseMove(x, height);
+        }
+
+        // 🔷 Bottom-left to top-right (diagonal up)
+        for (let i = 0; i <= maxSteps; i++) {
+          const x = i * step;
+          const y = height - i * step;
+          cy.wrap($img).realMouseMove(x, y);
+        }
+
+        cy.get("body").realHover();
+      });
+
+    //  footer
+    cy.scrollTo("bottom", { duration: 1000 });
     cy.wait(1000);
 
-    // need to add single product review and redirect to auth
+    // qty
+    cy.get("#Quantity").select("2");
+
+    // redirect to auth
+    cy.contains("Login/Register").click();
   });
 
   it.skip("User journey: Auth to Home Page", () => {
@@ -56,7 +99,10 @@ describe("Recording User Experience", () => {
     cy.findByLabelText("Confirm password").type("12345", { force: true });
     cy.get("form").submit();
 
-    cy.visit("/auth/register");
+    // ad hoc
+    cy.visit(
+      "/auth/register?redirectTo=/product/60d5e622e5179e2bb44bd83b?qty=3"
+    );
     cy.scrollTo(0, 200, { duration: 1000 });
     // Valid User but it's already exists
     cy.findByLabelText("Username").type(users[1].name, { force: true });
@@ -68,16 +114,16 @@ describe("Recording User Experience", () => {
     cy.get("form").submit();
 
     // valid User that does not exist
-    cy.findByLabelText("Username").type(TestUser.name, { force: true });
-    cy.findByLabelText("Email").type(TestUser.email, { force: true });
-    cy.findByLabelText("Password").type(TestUser.password, { force: true });
-    cy.findByLabelText("Confirm password").type(TestUser.password, {
-      force: true,
-    });
-    cy.get("form").submit();
-    cy.get(".Dropdown-btn").click({ force: true });
-    //click on logout
-    cy.get(".dropdown-content").contains("Logout").click({ force: true });
+    // cy.findByLabelText("Username").type(TestUser.name, { force: true });
+    // cy.findByLabelText("Email").type(TestUser.email, { force: true });
+    // cy.findByLabelText("Password").type(TestUser.password, { force: true });
+    // cy.findByLabelText("Confirm password").type(TestUser.password, {
+    //   force: true,
+    // });
+    // cy.get("form").submit();
+    // cy.get(".Dropdown-btn").click({ force: true });
+    // //click on logout
+    // cy.get(".dropdown-content").contains("Logout").click({ force: true });
 
     cy.get('[data-testid="login"]').click();
     cy.scrollTo(0, 200, { duration: 1000 });
@@ -93,4 +139,5 @@ describe("Recording User Experience", () => {
 
     cy.wait(500);
   });
+  it("User Journey:Add to Cart and Cart Page", () => {});
 });
