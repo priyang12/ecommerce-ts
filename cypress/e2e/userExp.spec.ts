@@ -99,10 +99,7 @@ describe("Recording User Experience", () => {
     cy.findByLabelText("Confirm password").type("12345", { force: true });
     cy.get("form").submit();
 
-    // ad hoc
-    cy.visit(
-      "/auth/register?redirectTo=/product/60d5e622e5179e2bb44bd83b?qty=3"
-    );
+    cy.visit("/auth/register");
     cy.scrollTo(0, 200, { duration: 1000 });
     // Valid User but it's already exists
     cy.findByLabelText("Username").type(users[1].name, { force: true });
@@ -125,7 +122,9 @@ describe("Recording User Experience", () => {
     // //click on logout
     // cy.get(".dropdown-content").contains("Logout").click({ force: true });
 
-    cy.get('[data-testid="login"]').click();
+    // temp
+    cy.visit("/auth/login?redirectTo=/product/60d5e622e5179e2bb44bd83b?qty=3");
+    // cy.get('[data-testid="login"]').click();
     cy.scrollTo(0, 200, { duration: 1000 });
     cy.applyCommandDelay(1000);
 
@@ -138,6 +137,64 @@ describe("Recording User Experience", () => {
     cy.get("form").submit();
 
     cy.wait(500);
+
+    // add to cart
+    cy.contains("TO CART").click();
+    cy.wait(500);
   });
-  it("User Journey:Add to Cart and Cart Page", () => {});
+  it.skip("User Journey:Check out", () => {
+    cy.loginByApi(TestUser.email, TestUser.password);
+    cy.visit("/cart");
+
+    cy.get("button").contains("Checkout").click();
+
+    // address Page
+
+    // invalid input
+    cy.get('input[name="address"]').type("123 Test Street", { force: true });
+    cy.get('input[name="city"]').type("T", { force: true });
+    cy.get('input[name="postalcode"]').type("123", { force: true });
+
+    cy.get('input[type="submit"]').click();
+
+    // valid input
+    cy.get('input[name="address"]')
+      .clear()
+      .type("123 Test Street", { force: true });
+    cy.get('input[name="city"]').clear().type("Testville", { force: true });
+    cy.get('input[name="postalcode"]').clear().type("123456", { force: true });
+    cy.get('input[type="submit"]').click();
+
+    cy.wait(1000);
+    // payment method Page
+
+    // click on address to recheck
+    cy.contains("a", "Address").click();
+    cy.get('input[name="postalcode"]').clear().type("567891", { force: true });
+    cy.wait(1000);
+    // go to payment again
+    cy.get('input[type="submit"]').click();
+
+    cy.get('[data-testid="CashButton"]').check({ force: true });
+    cy.wait(1000);
+    cy.get('[data-testid="PayPalButton"]').check({ force: true });
+
+    // go to Place order page
+    cy.get('input[type="submit"]').click();
+
+    cy.scrollTo(0, 200, { duration: 1000 });
+
+    // go to PayPal Page
+    cy.get('input[type="submit"]').click();
+
+    cy.wait(4000);
+
+    cy.visit("/OrderStatus");
+  });
+
+  it("User Journey: Order and Reviews", () => {
+    cy.loginByApi(TestUser.email, TestUser.password);
+    cy.visit("/OrderStatus");
+    // need to populate data
+  });
 });
