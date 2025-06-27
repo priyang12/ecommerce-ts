@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { ImageMagnifier } from "@priyang/react-component-lib";
 import { useAuth } from "../../Context/Authentication/AuthContext";
 import { usePostCartQuery } from "../../API/CartAPI";
@@ -59,7 +59,10 @@ import {
 const SingleProduct = () => {
   const { state } = useAuth();
   const { id } = useParams<{ id: string }>();
-  const [qty, setQty] = useState("1");
+  const { search } = useLocation();
+  const queryQty = new URLSearchParams(search).get("qty");
+  const [qty, setQty] = useState(queryQty || "1");
+  const navigate = useNavigate();
 
   const {
     data: Product,
@@ -100,6 +103,8 @@ const SingleProduct = () => {
           <StyledProduct>
             <StyledImageContainer>
               <ImageMagnifier
+                data-cy="image-magnifier"
+                aria-label="products image"
                 src={Product.image}
                 width={""}
                 height={""}
@@ -171,7 +176,16 @@ const SingleProduct = () => {
                       TO CART
                     </LoadingButton>
                   ) : (
-                    <StyledLoginButton>Login/Register</StyledLoginButton>
+                    <StyledLoginButton
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate(
+                          `/auth/login?redirectTo=/product/${Product._id}?qty=${qty}`
+                        );
+                      }}
+                    >
+                      Login/Register
+                    </StyledLoginButton>
                   )}
                   {state.token ? (
                     <LoadingButton

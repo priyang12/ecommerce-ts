@@ -71,7 +71,7 @@ function Carousel() {
   }, []);
 
   return (
-    <StyledSlidesContainer>
+    <StyledSlidesContainer data-testid="CarouselContainer">
       <StyledSlide>
         <StyledSlideButton
           onClick={() => dispatch({ type: "PREV", length: productsLength })}

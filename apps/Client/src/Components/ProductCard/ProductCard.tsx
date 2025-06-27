@@ -49,7 +49,12 @@ function ProductCard({
   };
 
   return (
-    <StyledProductCard tabIndex={0} onKeyDown={EnterProduct}>
+    <StyledProductCard
+      tabIndex={0}
+      onKeyDown={EnterProduct}
+      role="article"
+      aria-labelledby={`${name}-title`}
+    >
       <Link to={`/product/${_id}`}>
         <StyledCardTitle>{name}</StyledCardTitle>
       </Link>

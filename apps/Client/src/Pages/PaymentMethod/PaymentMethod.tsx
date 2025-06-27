@@ -46,7 +46,7 @@ const PaymentMethod = () => {
     if (state.address === undefined) {
       Navigate("/checkout/address");
     }
-  }, []);
+  }, [state]);
 
   const SelectMethod = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();

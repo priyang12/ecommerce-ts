@@ -79,7 +79,7 @@ const CartContainerComponent = ({ setAlert }: { setAlert: any }) => {
 
       <Checkout isWideLayout={isWideLayout}>
         <h3>SUBTOTAL ({TotalProducts}) ITEMS</h3>
-        <p>$ {TotalAmount}</p>
+        <p>$ {TotalAmount.toFixed(2)}</p>
         <Link to="/checkout/address">
           <CheckoutButton>Checkout</CheckoutButton>
         </Link>

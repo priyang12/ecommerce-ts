@@ -44,7 +44,7 @@ it("dispatches SET_ADDRESS on valid form submit", async () => {
   const address: Address = {
     address: "742 Evergreen Terrace",
     city: "Springfield",
-    postalcode: "62704",
+    postalcode: "627043",
   };
 
   await userEvent.type(screen.getByLabelText(/address/i), address.address);

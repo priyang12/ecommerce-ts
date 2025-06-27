@@ -35,10 +35,9 @@ const ProductsAmount = MockedData.LoadUserCart.products.reduce(
   (acc, item) => acc + item.product.price * item.qty,
   0
 );
-
-const ShippingAmount = ProductsAmount! > 500 ? 0 : 100;
-const TaxAmount = 0.15 * ProductsAmount!;
-const TotalAmount = ProductsAmount! + ShippingAmount + TaxAmount;
+const ShippingAmount = ProductsAmount > 500 ? 0 : 100;
+const TaxAmount = +(0.15 * ProductsAmount).toFixed(2);
+const TotalAmount = +(ProductsAmount + ShippingAmount + TaxAmount).toFixed(2);
 
 const expectedOrder = {
   orderItems: MockedData.LoadUserCart.products,
@@ -99,12 +98,14 @@ it("Check For Amount Summery", async () => {
   });
 
   expect(screen.getByTestId("ShippingCost").textContent).toMatch(
-    String(ShippingAmount)
+    ShippingAmount.toString()
   );
-  expect(screen.getByTestId("TaxCost").textContent).toMatch(String(TaxAmount));
+  expect(screen.getByTestId("TaxCost").textContent).toMatch(
+    TaxAmount.toString()
+  );
 
   expect(screen.getByTestId("TotalAmount").textContent).toMatch(
-    String(Math.round(TotalAmount))
+    Math.round(TotalAmount).toString()
   );
 });
 
