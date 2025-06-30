@@ -1,7 +1,6 @@
 import { Identifier, useTheme } from "react-admin";
 import { Review } from "../Dashboard/LatestReview";
-import green from "@mui/material/colors/green";
-import red from "@mui/material/colors/red";
+import { red, green } from "@mui/material/colors";
 import { Theme } from "../../Theme";
 
 export const rowStyle = (selectedRow?: Identifier) => (record: Review) => {

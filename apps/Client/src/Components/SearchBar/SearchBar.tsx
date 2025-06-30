@@ -2,14 +2,26 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   SearchBarContainer,
-  SerachInput,
-  SerachButton,
+  SearchButton,
+  SearchInput,
 } from "./StyledSearchbox";
 
+/**
+ * SearchBar component for product search functionality.
+ *
+ * @component
+ * @param {Object} props
+ * @param {string} props.searchedValue - Initial value for the search input.
+ *
+ * @returns {JSX.Element} The rendered SearchBar component.
+ */
 function SearchBar({ searchedValue }: { searchedValue: string }) {
   const Navigate = useNavigate();
   const [searchValue, setSearchValue] = useState<string>("");
 
+  /**
+   * Navigates to the search results page or homepage depending on input value.
+   */
   const search = () => {
     if (searchValue !== "") {
       const path = `/search/${searchValue}`;
@@ -21,19 +33,20 @@ function SearchBar({ searchedValue }: { searchedValue: string }) {
 
   return (
     <SearchBarContainer>
-      <SerachInput
+      <SearchInput
         type="text"
+        aria-label="Search Product"
         placeholder="Search Product"
         name="search"
         defaultValue={searchedValue}
-        onKeyUp={(e: any) => {
-          setSearchValue(e.target.value);
+        onChange={(e) => setSearchValue(e.target.value)}
+        onKeyUp={(e) => {
           if (e.key === "Enter") {
             search();
           }
         }}
       />
-      <SerachButton onClick={search}>Find</SerachButton>
+      <SearchButton onClick={search}>Find</SearchButton>
     </SearchBarContainer>
   );
 }

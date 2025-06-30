@@ -1,10 +1,6 @@
 import { defaultTheme } from "react-admin";
 import { createTheme } from "@mui/material";
-import red from "@mui/material/colors/red";
-import pink from "@mui/material/colors/pink";
-import indigo from "@mui/material/colors/pink";
-import amber from "@mui/material/colors/amber";
-import deepPurple from "@mui/material/colors/deepPurple";
+import { red, pink, indigo, amber, deepPurple } from "@mui/material/colors";
 
 export const darkTheme = createTheme({
   palette: {

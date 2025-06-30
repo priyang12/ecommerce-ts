@@ -1,3 +1,4 @@
+export const SetAuth = "SetAuth";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const MailSEND_SUCCESS = "MailSEND_SUCCESS";
 export const RESET_PASSWORD_SUCCESS = "RESET_PASSWORD_SUCCESS";

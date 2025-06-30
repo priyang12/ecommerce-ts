@@ -10,7 +10,7 @@ import { Products } from "../Testdata/Data";
 import userEvent from "@testing-library/user-event";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { queryClient } from "../../query";
+import { queryClient } from "../../Utils/query";
 import Wishlist from "./Wishlist";
 
 const mock = new MockAdapter(axios);

@@ -1,62 +1,54 @@
-import { Fragment } from "react";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
-import { StyledStars } from "./StyledRating";
+import { StyledRatingContainer, StyledStars } from "./StyledRating";
+
 type rating = {
   value: number;
-  text: string;
-  color: string;
+  text?: string;
+  color?: string;
 };
 
-function Rating({ value, text, color = "#f8e825" }: rating) {
+const starColor = "#f8e825";
+const totalStar = 5;
+const halfStar = 0.5;
+
+/**
+ * Rating component for rendering star Icons from rating value.
+ *
+ * @component
+ * @param {string} props.value - rating value.
+ * @param {string} props.text - optional text value which can be render beside stars.
+ * @param {string} props.color - optional color value of stars.
+ *
+ * @returns {JSX.Element} The rendered Rating component.
+ *
+ * @example
+ * <Rating value={1.5} text={`${numReviews} reviews`} />
+ */
+function Rating({ value, text, color = starColor }: rating) {
   return (
-    <StyledStars>
-      <span>
-        {value >= 1 ? (
-          <FaStar color={color} />
-        ) : value >= 0.5 ? (
-          <FaStarHalfAlt color={color} />
-        ) : (
-          <FaRegStar color={color} />
-        )}
-      </span>
-      <span>
-        {value >= 2 ? (
-          <FaStar color={color} />
-        ) : value >= 1.5 ? (
-          <FaStarHalfAlt color={color} />
-        ) : (
-          <FaRegStar color={color} />
-        )}
-      </span>
-      <span>
-        {value >= 3 ? (
-          <FaStar color={color} />
-        ) : value >= 2.5 ? (
-          <FaStarHalfAlt color={color} />
-        ) : (
-          <FaRegStar color={color} />
-        )}
-      </span>
-      <span>
-        {value >= 4 ? (
-          <FaStar color={color} />
-        ) : value >= 3.5 ? (
-          <FaStarHalfAlt color={color} />
-        ) : (
-          <FaRegStar color={color} />
-        )}
-      </span>
-      <span>
-        {value >= 5 ? (
-          <FaStar color={color} />
-        ) : value >= 4.5 ? (
-          <FaStarHalfAlt color={color} />
-        ) : (
-          <FaRegStar color={color} />
-        )}
-      </span>
-      <span>{text && text}</span>
-    </StyledStars>
+    <StyledRatingContainer>
+      <StyledStars>
+        {Array.from({ length: totalStar }).map((_, index) => {
+          const starValue = index + 1;
+          return (
+            <span key={index}>
+              {value >= starValue ? (
+                <FaStar role="img" aria-label="full-star" color={color} />
+              ) : value >= starValue - halfStar ? (
+                <FaStarHalfAlt
+                  role="img"
+                  aria-label="half-star"
+                  color={color}
+                />
+              ) : (
+                <FaRegStar role="img" aria-label="empty-star" color={color} />
+              )}
+            </span>
+          );
+        })}
+      </StyledStars>
+      <span>{text ? text : null}</span>
+    </StyledRatingContainer>
   );
 }
 

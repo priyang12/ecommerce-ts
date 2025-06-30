@@ -6,21 +6,33 @@ const notFound = (req, res, next) => {
   next(error);
 };
 
+interface ErrorResponse {
+  msg: string;
+  MessageStack: object;
+  stack?: string;
+  directory?: string;
+}
+
 const errorHandler = (err, req, res, next) => {
   let ZodError = {};
   if ("issues" in err) {
     ZodError = err.flatten();
   }
-  if (process.env.NODE_ENV !== "production") {
-    console.log(ZodError);
-  }
-  res.status(res.statusCode === 200 ? 500 : res.statusCode);
-  const _dirname = path.resolve();
-  res.json({
-    msg: err.message + `dire + ${_dirname}`,
+  const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+  res.status(statusCode);
+
+  const response: ErrorResponse = {
+    msg: err.message,
     MessageStack: ZodError,
-    stack: process.env.NODE_ENV === "production" ? err.stack : err.stack,
-  });
+  };
+
+  // Include stack only in non-production
+  if (process.env.NODE_ENV !== "production") {
+    response.stack = err.stack;
+    response.directory = path.resolve(); // optional, for debug
+  }
+
+  res.json(response);
 };
 
 export { notFound, errorHandler };

@@ -1,17 +1,16 @@
 import React, { useContext, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import AlertDisplay from "../../Components/AlertDisplay";
-import Spinner from "../../Components/Spinner";
-
 import { RecoverPassword } from "../../Context/Authentication/AuthActions";
 import { AuthContext } from "../../Context/Authentication/AuthContext";
+import AlertDisplay from "../../Components/AlertDisplay";
+import Spinner from "../../Components/Spinner";
+import { ValidateEmail } from "../../Utils/Validation";
 import {
   FormControl,
   Input,
   Label,
   SubmitButton,
-} from "../../StyledComponents/FormControl";
-import { ValidateEmail } from "../../Utils/Validation";
+} from "../../Components/UI/FormControl";
 import { StyledForgetPassword } from "./StyledForgetPassword";
 
 function ForgotPassword() {
@@ -37,14 +36,14 @@ function ForgotPassword() {
         <title>Forgot Password</title>
         <meta name="description" content="Forgot Password" />
       </Helmet>
-      <h1>Forgot Password ?</h1>
-      {state?.alert && (
+      {state.alert && (
         <AlertDisplay
           msg={state.alert.message}
           type={state.alert.type as any}
         />
       )}
       {state?.err && <AlertDisplay msg={state.err} type={"error"} />}
+      <h1>Forgot Password ?</h1>
       <form onSubmit={SendMail}>
         <FormControl>
           <Input
@@ -52,6 +51,7 @@ function ForgotPassword() {
             name="email"
             id="email"
             value={email}
+            className={error ? "error-input" : ""}
             onChange={(e) => {
               if (e.target.value.length > 0) {
                 setError("");
@@ -67,21 +67,11 @@ function ForgotPassword() {
             {error ? (
               <span className="error">{error}</span>
             ) : (
-              <span
-                style={{
-                  color: "var(--primary-color)",
-                }}
-              >
-                Email
-              </span>
+              <span>Email</span>
             )}
           </Label>
         </FormControl>
-        <SubmitButton
-          type="submit"
-          className="btn"
-          value="Send Recovery Mail"
-        />
+        <SubmitButton type="submit" value="Send Recovery Mail" />
       </form>
     </StyledForgetPassword>
   );

@@ -1,0 +1,33 @@
+{
+  "WishListProducts": {
+    "_id": "62c869c12fda57c3f4df388f",
+    "user": "62c869c12fda57c3f4df388d",
+    "products": [
+      {
+        "product": {
+          "_id": "62c2f4fd9582eb7c98d40b38",
+          "price": 89.99,
+          "countInStock": 10,
+          "name": "Airpods Wireless Bluetooth Headphones",
+          "image": "https://ik.imagekit.io/5aalo5l7bu7/icon_tbjLQliBH.png?ik-sdk-version=javascript-1.4.3&updatedAt=1656944748475"
+        },
+        "qty": 3,
+        "_id": "62ccf8c99ce81fe9087e161b"
+      },
+      {
+        "product": {
+          "_id": "62c2f4fd9582eb7c98d40b39",
+          "price": 89.99,
+          "countInStock": 10,
+          "name": "Airpods Wireless Bluetooth Headphones 2",
+          "image": "https://ik.imagekit.io/5aalo5l7bu7/icon_tbjLQliBH.png?ik-sdk-version=javascript-1.4.3&updatedAt=1656944748475"
+        },
+        "qty": 3,
+        "_id": "62ccf8c99ce81fe9087e161a"
+      }
+    ],
+    "createdAt": "2022-07-08T17:30:41.727Z",
+    "updatedAt": "2022-07-12T04:30:01.940Z",
+    "__v": 1
+  }
+}

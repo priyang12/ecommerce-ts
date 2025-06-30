@@ -1,12 +1,16 @@
-import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useForm } from "../../Utils/CustomHooks";
-import { Address } from "../../interfaces";
-import Navigators from "../../Components/Navigators";
-import { StyledPaymentContainer } from "../../Components/StyledComponents/StyledPayment";
-import { OrderSchema } from "../../validation";
-import { FormControl, Input, Label } from "../../StyledComponents/FormControl";
-import { useLoadCartQuery } from "../../API/CartAPI";
+import { useCheckout } from "../../Context/CheckoutContext/CheckoutContext";
+import { useForm } from "../../Hooks/useForm";
+import { Address } from "../../Types/interfaces";
+import { StyledCheckoutContainer } from "../../Components/UI/CheckoutContainer";
+import { OrderSchema, z } from "../../validation";
+import {
+  FormControl,
+  Input,
+  Label,
+  SubmitButton,
+} from "../../Components/UI/FormControl";
+import { css } from "@linaria/core";
 
 const init: Address = {
   address: "",
@@ -14,38 +18,68 @@ const init: Address = {
   postalcode: "",
 };
 
+const containerWidth = css`
+  max-width: 60ch;
+`;
+
+/**
+ * AddressPage Component
+ *
+ * A form page where users input their shipping address during checkout.
+ * Utilizes form state management with a custom `useForm` hook and validation via `Zod`.
+ *
+ * ## Route
+ * - `/checkout/address`
+ *
+ * ## Form Management
+ * - Initial form state defined using the `Address` interface.
+ * - Form state (`addressState`) and error state (`ErrorsState`) are controlled via `useForm`.
+ * - Validation schema: `OrderSchema.pick({ shippingAddress: true })` (Zod).
+ * - Validation errors are mapped to specific fields using `ZodError.flatten()` and displayed inline.
+ *
+ * ## UI Features
+ * - Styled using Linaria (`StyledCheckoutContainer`, `FormControl`, `Input`, `Label`, etc.).
+ * - Each form field displays contextual error messages if validation fails.
+ * - Form submission is blocked if validation throws.
+ *
+ * ## Accessibility
+ * - Each input is properly labeled and managed for screen readers and keyboard navigation.
+ */
 const AddressPage = () => {
   const Navigate = useNavigate();
-  const { state: ShippingAddress, ChangeState } = useForm(
-    localStorage.address ? JSON.parse(localStorage.address) : init
-  );
-  const { address, city, postalcode } = ShippingAddress;
-  const { data: Cart, isSuccess, isError } = useLoadCartQuery();
+  const { state, dispatch } = useCheckout();
 
-  useEffect(() => {
-    if ((isSuccess && Cart.products.length === 0) || isError) {
-      Navigate("/cart");
-    }
-  }, [Cart, Navigate, isError, isSuccess]);
+  const {
+    state: addressState,
+    ErrorsState,
+    ChangeState,
+    setErrors,
+  } = useForm(state.address ? state.address : init);
 
   const SubmitAddress: React.ComponentProps<"form">["onSubmit"] = (e) => {
     e.preventDefault();
     try {
       OrderSchema.pick({
         shippingAddress: true,
-      }).parse({ shippingAddress: ShippingAddress });
-      localStorage.setItem(
-        "address",
-        JSON.stringify({ address, city, postalcode })
-      );
-      Navigate("/paymentMethod");
+      }).parse({ shippingAddress: addressState });
+      dispatch({ type: "SET_ADDRESS", payload: addressState });
+      Navigate("/checkout/paymentMethod");
     } catch (error: any) {
-      // Need To Handle Error
+      if (error instanceof z.ZodError) {
+        const result: any = {};
+        error.errors.forEach((e) => {
+          const field = e.path[e.path.length - 1];
+          if (typeof field === "string") {
+            result[field] = e.message;
+          }
+        });
+        setErrors(result);
+      }
     }
   };
+
   return (
-    <StyledPaymentContainer theme={{ maxWidth: "60ch" }}>
-      <Navigators />
+    <StyledCheckoutContainer className={containerWidth}>
       <form onSubmit={SubmitAddress}>
         <h1>SHIPPING</h1>
         <FormControl>
@@ -53,13 +87,20 @@ const AddressPage = () => {
             type="text"
             name="address"
             id="address"
+            aria-label="address"
             onChange={ChangeState}
-            value={address}
+            value={addressState.address}
             required
           />
           <span className="highlight"></span>
           <span className="bar"></span>
-          <Label htmlFor="address">address</Label>
+          <Label htmlFor="address">
+            {ErrorsState.address ? (
+              <span className="error">{ErrorsState.address}</span>
+            ) : (
+              "address"
+            )}
+          </Label>
         </FormControl>
         <FormControl>
           <Input
@@ -67,12 +108,18 @@ const AddressPage = () => {
             name="city"
             id="City"
             onChange={ChangeState}
-            value={city}
+            value={addressState.city}
             required
           />
           <span className="highlight"></span>
           <span className="bar"></span>
-          <Label htmlFor="City">City</Label>
+          <Label htmlFor="City">
+            {ErrorsState.city ? (
+              <span className="error">{ErrorsState.city}</span>
+            ) : (
+              "City"
+            )}
+          </Label>
         </FormControl>
         <FormControl>
           <Input
@@ -80,17 +127,24 @@ const AddressPage = () => {
             name="postalcode"
             id="postalcode"
             onChange={ChangeState}
-            value={postalcode}
+            value={addressState.postalcode}
             required
           />
           <span className="highlight"></span>
           <span className="bar"></span>
-          <Label htmlFor="postalcode">Postal Code</Label>
+
+          <Label htmlFor="postalcode">
+            {ErrorsState.postalcode ? (
+              <span className="error">{ErrorsState.postalcode}</span>
+            ) : (
+              "Postal Code"
+            )}
+          </Label>
         </FormControl>
 
-        <input type="submit" className="btn" value="Continue" />
+        <SubmitButton type="submit" value="Continue" />
       </form>
-    </StyledPaymentContainer>
+    </StyledCheckoutContainer>
   );
 };
 

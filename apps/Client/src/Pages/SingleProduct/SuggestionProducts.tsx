@@ -10,6 +10,17 @@ import {
   StyleSuggestion,
 } from "./Styled/StyledSuggestion";
 
+/**
+ * SuggestBrand Component
+ *
+ * Displays a list of product suggestions based on the brand.
+ *
+ * ## Props
+ * @param {string} brand - Brand to filter suggested products by.
+ * @param {Function} EnterProduct - Keyboard handler for navigation.
+ *
+ 
+ */
 function SuggestBrand({
   brand,
   EnterProduct,
@@ -52,6 +63,15 @@ function SuggestBrand({
   );
 }
 
+/**
+ * SuggestCate Component
+ *
+ * Displays a list of product suggestions based on the category.
+ *
+ * ## Props
+ * @param {string} category - Category to filter suggested products by.
+ * @param {Function} EnterProduct - Keyboard handler for navigation.
+ */
 function SuggestCate({
   category,
   EnterProduct,
@@ -92,6 +112,31 @@ function SuggestCate({
   );
 }
 
+/**
+ * SuggestionProducts Component
+ *
+ * Displays a list of suggested products based on the current product's brand and category.
+ * Renders two sections:
+ * - Suggested products by brand
+ * - Suggested products by category
+ *
+ * ## Props
+ * @param {string} brand - The brand of the currently viewed product.
+ * @param {string} category - The category of the currently viewed product.
+ *
+ * ## Features
+ * - Fetches related products using `useSuggestProduct`.
+ * - Renders each suggestion with product name, rating, and image.
+ * - Supports keyboard accessibility (Enter key triggers navigation).
+ * - Wraps child components in <ErrorCatch /> to handle API/load errors.
+ *
+ * ## Accessibility
+ * - Each product item is focusable via `tabIndex`.
+ * - `Enter` key allows navigation to the product detail page.
+ *
+ * ## Route Navigation
+ * - Navigates to `/product/:id` when a suggested product is selected.
+ */
 function SuggestionProducts({
   brand,
   category,

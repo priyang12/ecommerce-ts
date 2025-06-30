@@ -12,6 +12,7 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
+import { useEffect, useState } from "react";
 
 const lastDay = new Date();
 const lastMonthDays = Array.from({ length: 30 }, (_, i) => subDays(lastDay, i));
@@ -48,23 +49,48 @@ const TotalRevenue = (order: any[]) => {
   );
 };
 
-function Chart() {
-  const { data: orders, isLoading: OrderLoading } = useQuery(
-    "LastMonth",
-    async () => {
-      const { data }: AxiosResponse<any> = await axios.get(
-        "/api/admin/orders/lastMonth",
-        {
-          headers: {
-            "x-auth-token": localStorage.token,
-          },
-        }
-      );
-      return data;
-    }
-  );
+interface Order {
+  _id: string;
+  createdAt: string;
+  status: string;
+  totalPrice: number;
+}
 
-  if (OrderLoading) return <Loading loadingPrimary="Loading Cart" />;
+const backendUrl: string = import.meta.env.VITE_REACT_APP_BACKEND;
+
+const apiUrl = backendUrl ? `${backendUrl}/api/admin` : "/api/admin";
+
+export const useOrders = () => {
+  const [orders, setOrders] = useState<Order[] | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data }: AxiosResponse<Order[]> = await axios.get(
+          `${apiUrl}/orders/lastMonth`,
+          {
+            headers: {
+              "x-auth-token": localStorage.token,
+            },
+          }
+        );
+        setOrders(data);
+      } catch (error) {
+        console.error("Failed to fetch orders", error);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
+  return { orders, loading };
+};
+
+function Chart() {
+  const { loading, orders } = useOrders();
+
+  if (loading) return <Loading loadingPrimary="Loading Cart" />;
 
   if (!orders) return null;
 

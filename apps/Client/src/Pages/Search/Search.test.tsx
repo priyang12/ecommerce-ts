@@ -77,17 +77,18 @@ it("Show Pagination", async () => {
     ).toBeInTheDocument();
   });
 
-  const Prev = screen.getByText("Previous");
-  const Next = screen.getByText("Next");
+  // since we added two pagination on at top and other at bottom.
+  const Prev = screen.getAllByText("Previous");
+  const Next = screen.getAllByText("Next");
 
-  Next.click();
+  Next[0].click();
   //Check Location on next click
 
   await waitFor(() => {
     expect(History.location.pathname).toMatch(`/${keyword}/3`);
   });
 
-  Prev.click();
+  Prev[0].click();
 
   //Check Location on prev click
   expect(History.location.pathname).toMatch(`/${keyword}/1`);

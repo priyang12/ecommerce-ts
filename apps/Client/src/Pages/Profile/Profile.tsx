@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "../../Context/Authentication/AuthContext";
-import { useForm } from "../../Utils/CustomHooks";
+import { useForm } from "../../Hooks/useForm";
 import { StyledProfile } from "./StyledProfile";
 import { UpdateUser } from "../../Context/Authentication/AuthActions";
 import {
@@ -10,7 +10,7 @@ import {
 } from "../../Utils/Validation";
 import Spinner from "../../Components/Spinner";
 import { Helmet } from "react-helmet-async";
-import { FormControl, Input, Label } from "../../StyledComponents/FormControl";
+import { FormControl, Input, Label } from "../../Components/UI/FormControl";
 const Profile = () => {
   const { state, dispatch } = useContext(AuthContext);
   const {

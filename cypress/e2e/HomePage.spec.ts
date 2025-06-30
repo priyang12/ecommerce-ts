@@ -1,26 +1,64 @@
-beforeEach(function () {
-  cy.visit("/");
-});
+describe("Home Page /", () => {
+  beforeEach(() => {
+    cy.visit("/");
+  });
 
-it("Click on iphone Product", () => {
-  cy.contains("iPhone").click();
-  cy.url().should("include", "/product/60d5e622e5179e2bb44bd839");
-});
+  it("Clicks 'Shop Now' and scrolls to #Products", () => {
+    cy.contains("Shop Now").click();
 
-it("Search Product", () => {
-  cy.get('input[name="search"]').type("iphone");
+    // Check that we scrolled to the #Products section
+    cy.url().should("include", "#Products");
+    cy.get("#Products").should("exist").and("be.visible");
+  });
 
-  //click on Find button
-  cy.get("button").contains("Find").click();
+  it("Carousel next/prev buttons change center slide's data-active", () => {
+    // Get the initial active slide
+    cy.get('[data-active="true"]').then(($initialSlide) => {
+      // Click the "Next Slide" button
+      cy.get('button[aria-label="Next Slide"]').click();
+      cy.wait(1000); // optional: depends on transition duration
 
-  cy.url().should("include", "/name=iphone");
+      // Get the new active slide
+      cy.get('[data-active="true"]').should(($newSlide) => {
+        expect($newSlide.get(0)).not.to.eq($initialSlide.get(0));
+      });
 
-  // check for iphone product
-  cy.get(".CardTitle").contains("iPhone");
+      // Click "Show More" inside the new active slide
+      cy.get('[data-active="true"] a').contains("Show More").click();
 
-  cy.get('input[name="search"]').clear();
-  // // check for Search Product Enter
-  cy.get('input[name="search"]').type("Not Found {enter}");
+      // Assert URL changes to product page
+      cy.url().should("match", /\/product\/[a-zA-Z0-9]+/);
+    });
+  });
 
-  cy.contains(/No Products Found/);
+  it("#Products section contains product items", () => {
+    cy.get("#Products")
+      .find(`[role="article"]`) // Adjust to your product item class/selector
+      .should("have.length.greaterThan", 0);
+  });
+
+  it("Searching 'iphone' updates the URL", () => {
+    cy.get('input[aria-label="Search Product"]').type("iphone{enter}");
+
+    cy.url().should("eq", `${Cypress.config("baseUrl")}/search/iphone`);
+
+    cy.get('[role="article"]').contains("iPhone").should("exist");
+  });
+
+  it("Pagination buttons on search page update URL correctly", () => {
+    // Start with /search/shoes
+    cy.visit(`${Cypress.config("baseUrl")}/search/shoes`);
+
+    // Ensure Next buttons exist
+    cy.get("button").filter(":contains('Next')").should("have.length", 2);
+
+    // Click one of them
+    cy.get("button").contains("Next").first().click();
+    cy.url().should("eq", `${Cypress.config("baseUrl")}/search/shoes/2`);
+
+    // Check for Previous button
+    // Back to page 1
+    cy.get("button").contains("Previous").should("exist").click();
+    cy.url().should("eq", `${Cypress.config("baseUrl")}/search/shoes/1`);
+  });
 });

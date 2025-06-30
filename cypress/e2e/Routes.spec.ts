@@ -1,24 +1,19 @@
 beforeEach(function () {
-  cy.visit("/Auth");
+  cy.visit("/auth");
 });
 it("Test Private Routes", () => {
   cy.visit("/cart");
-  // IT SHOULD BE REDIRECTED TO LOGIN PAGE
-  cy.url().should("include", "/Auth");
+  cy.url().should("include", "/auth/login?redirectTo=/cart");
 
-  cy.visit("/PlaceOrder");
-  // IT SHOULD BE REDIRECTED TO LOGIN PAGE
-  cy.url().should("include", "/Auth");
+  cy.visit("/placeOrder");
+  cy.url().should("include", "/auth/login?redirectTo=/placeOrder");
 
-  cy.visit("/OrderStatus");
-  // IT SHOULD BE REDIRECTED TO LOGIN PAGE
-  cy.url().should("include", "/Auth");
+  cy.visit("/orderStatus");
+  cy.url().should("include", "/auth/login?redirectTo=/orderStatus");
 
   cy.visit("/payment");
-  // IT SHOULD BE REDIRECTED TO LOGIN PAGE
-  cy.url().should("include", "/Auth");
+  cy.url().should("include", "/auth/login?redirectTo=/payment");
 
   cy.visit("/address");
-  // IT SHOULD BE REDIRECTED TO LOGIN PAGE
-  cy.url().should("include", "/Auth");
+  cy.url().should("include", "/auth/login?redirectTo=/address");
 });

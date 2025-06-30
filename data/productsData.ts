@@ -13,56 +13,58 @@ export const NoProductData = {
   category: "Electronics",
 };
 
+export const TestProduct = {
+  _id: "60d5e622e5179e2bb44bd839",
+  rating: 2.3333333333333335,
+  numReviews: 3,
+  price: 5000,
+  countInStock: 17,
+  name: "iPhone ",
+  image:
+    "https://ik.imagekit.io/5aalo5l7bu7/image-1628092416984_gMZA4LTKA.webp",
+  description:
+    "The ultimate home entertainment center starts with PlayStation. Whether you are into gaming, HD movies, television, music",
+  brand: "Sony",
+  category: "Electronics",
+  user: "60d5e622e5179e2bb44bd835",
+  reviews: [
+    {
+      _id: "6128b08c1506272944e27155",
+      name: "Priyang",
+      rating: 3,
+      comment: "sadsadasds",
+      user: "6106f4c09d285d000436ed0a",
+      createdAt: "2021-08-27T09:29:48.353Z",
+      updatedAt: "2021-08-27T09:29:48.353Z",
+    },
+    {
+      _id: "6128ab14046fa731e0b2604c",
+      name: "priyang",
+      rating: 0,
+      comment: "dsadsad",
+      user: "60d60298af846100040f3307",
+      createdAt: "2021-08-27T09:06:28.926Z",
+      updatedAt: "2021-08-27T09:06:28.926Z",
+    },
+    {
+      _id: "611e381fd6a4c53048f59062",
+      name: "Priyang",
+      rating: 4,
+      comment: "sadasdasdd",
+      user: "60d5e622e5179e2bb44bd835",
+      createdAt: "2021-08-19T10:53:19.690Z",
+      updatedAt: "2021-08-19T10:53:19.690Z",
+    },
+  ],
+  Date: "2021-06-25T14:20:18.613Z",
+  __v: 3,
+  createdAt: "2021-06-25T14:20:18.622Z",
+  updatedAt: "2022-06-14T19:26:03.025Z",
+};
+
 const products = [
   NoProductData,
-  {
-    _id: "60d5e622e5179e2bb44bd839",
-    rating: 2.3333333333333335,
-    numReviews: 3,
-    price: 5000,
-    countInStock: 17,
-    name: "iPhone ",
-    image:
-      "https://ik.imagekit.io/5aalo5l7bu7/image-1628092416984_gMZA4LTKA.webp",
-    description:
-      "The ultimate home entertainment center starts with PlayStation. Whether you are into gaming, HD movies, television, music",
-    brand: "Sony",
-    category: "Electronics",
-    user: "60d5e622e5179e2bb44bd835",
-    reviews: [
-      {
-        _id: "6128b08c1506272944e27155",
-        name: "Priyang",
-        rating: 3,
-        comment: "sadsadasds",
-        user: "6106f4c09d285d000436ed0a",
-        createdAt: "2021-08-27T09:29:48.353Z",
-        updatedAt: "2021-08-27T09:29:48.353Z",
-      },
-      {
-        _id: "6128ab14046fa731e0b2604c",
-        name: "priyang",
-        rating: 0,
-        comment: "dsadsad",
-        user: "60d60298af846100040f3307",
-        createdAt: "2021-08-27T09:06:28.926Z",
-        updatedAt: "2021-08-27T09:06:28.926Z",
-      },
-      {
-        _id: "611e381fd6a4c53048f59062",
-        name: "Priyang",
-        rating: 4,
-        comment: "sadasdasdd",
-        user: "60d5e622e5179e2bb44bd835",
-        createdAt: "2021-08-19T10:53:19.690Z",
-        updatedAt: "2021-08-19T10:53:19.690Z",
-      },
-    ],
-    Date: "2021-06-25T14:20:18.613Z",
-    __v: 3,
-    createdAt: "2021-06-25T14:20:18.622Z",
-    updatedAt: "2022-06-14T19:26:03.025Z",
-  },
+  TestProduct,
   {
     _id: "60d5e622e5179e2bb44bd83b",
     rating: 3,

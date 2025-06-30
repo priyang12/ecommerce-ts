@@ -1,5 +1,6 @@
-import styled from "styled-components";
-import { media } from "../../../Variables";
+import { styled } from "@linaria/react";
+import { css } from "@linaria/core";
+import { media } from "../../../Utils/Variables";
 
 export const StyledContainer = styled.section`
   max-width: 120ch;
@@ -8,75 +9,159 @@ export const StyledContainer = styled.section`
 `;
 
 export const StyledProduct = styled.div`
-  color: var(--secondary-light-color);
+  color: var(--text-primary);
   display: grid;
-  gap: 1rem;
-  @media (min-width: 100px) and (max-width: 600px) and (orientation: portrait) {
-    width: 90%;
-    margin: auto;
-    grid-template-columns: 1fr;
-  }
+  gap: 1.5rem;
+  margin: 5%;
+  grid-template-columns: 2fr 2fr 1fr;
+  grid-template-areas:
+    "image image ."
+    "image image ."
+    ". details details"
+    ". details details"
+    "checkout quantity quantity";
 
-  ${media.LargerThanTablet} {
-    grid-template-columns: 1fr 2fr;
+  ${media.laptop} {
+    grid-template-columns: 2fr 2fr;
+    grid-template-areas:
+      "image details"
+      ". details"
+      ". details"
+      "checkout quantity";
   }
-  ${media.LargerThanLaptop} {
-    grid-template-columns: 2fr 2fr 1fr;
-    grid-template-rows: 2fr 1fr;
+  ${media.mobile} {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "image"
+      "details"
+      "checkout"
+      "quantity";
   }
 `;
+
 export const StyledImageContainer = styled.div`
+  grid-area: image;
   width: 100%;
-  grid-column: 1 / span 2;
   img {
     width: 100%;
     border-radius: 1.5rem;
   }
-  ${media.mobile} {
-    grid-column: 1;
-  }
 `;
 
 export const StyledDetails = styled.div`
-  height: fit-content;
-  backdrop-filter: blur(8px) saturate(184%);
-  -webkit-backdrop-filter: blur(8px) saturate(184%);
-  color: var(--bg-contrast-color);
-  background-color: rgba(163, 172, 191, 0.22);
-  border: 1px solid var(--bg-contrast-color);
-  padding: 1em;
-  border-radius: var(--border-radius);
+  grid-area: details;
+  background-color: var(--bg-surface);
+  border-radius: 2%;
+  padding: 0 1em;
+  box-sizing: border-box;
   h1 {
-    margin: 0;
+    color: var(--text-primary);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .star-review {
+    margin: 1rem 0;
+    display: flex;
+    justify-content: flex-start;
+    .stars {
+      font-size: 1.2rem;
+    }
+  }
+  .Description {
+    font-size: 1.1rem;
+    span {
+      font-weight: 400;
+      color: var(--text-secondary);
+    }
+  }
+  .highlight {
+    color: var(--primary-500);
   }
 `;
+
 export const StyledCheckout = styled.div`
+  grid-area: checkout;
   padding: 1em;
-  background-color: var(--primary-dark-color);
+  background-color: var(--bg-surface);
   border: 1px solid #fff;
   .status-label {
     padding-bottom: 1em;
-    border-bottom: 2px solid var(--bg-contrast-color);
-  }
-  @media (min-width: 500px) and (max-width: 799px) {
-    grid-column: 1 / span 2;
+    border-bottom: 2px solid var(--bg-contrast);
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--primary-500);
   }
 `;
 
 export const StyledQuantity = styled.div`
-  ${media.laptop} {
-    grid-column: 1/3;
+  grid-area: quantity;
+  width: 80%;
+  margin: auto;
+  label {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
   }
-  ${media.mobile} {
-    grid-column: 1;
+  select {
+    padding: 0.5rem;
+    font-size: 1rem;
   }
 `;
 
-export const CheckFormControl = styled.div`
-  margin: 0 auto;
-  width: 90%;
-  label {
-    width: 100%;
-    font-size: 2rem;
+export const outOfStock = css`
+  color: var(--error);
+  font-weight: bold;
+  font-size: 2rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--error);
+  border-radius: 4px;
+  width: fit-content;
+  margin-top: 0.5rem;
+`;
+
+export const haveOfStock = css`
+  color: var(--success);
+  font-weight: bold;
+  font-size: 2rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--success);
+  border-radius: 4px;
+  width: fit-content;
+  margin-top: 0.5rem;
+`;
+
+export const StyledLoginButton = styled.button`
+  background-color: var(--primary-500);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  margin-top: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: var(--primary-600);
+  }
+`;
+
+export const cartButton = css`
+  composes: ${StyledLoginButton};
+  background-color: var(--primary-500);
+  color: white;
+
+  &:hover {
+    background-color: var(--primary-600);
+  }
+`;
+
+export const wishlistButton = css`
+  composes: ${StyledLoginButton};
+  background-color: #626d78;
+  color: white;
+
+  &:hover {
+    background-color: #505a63;
   }
 `;

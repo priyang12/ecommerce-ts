@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { media } from "../../Variables";
+import { styled } from "@linaria/react";
+import { media } from "../../Utils/Variables";
 
 export const StyledForgetPassword = styled.div`
   display: flex;
@@ -8,12 +8,7 @@ export const StyledForgetPassword = styled.div`
   max-width: 50ch;
   margin: 0 auto;
   padding: 0 1.5em;
-  input {
-    padding: 0.9em;
-  }
-  input:valid ~ label {
-    transform: translateY(-150%) translateX(-1%);
-  }
+
   ${media.tablet} {
     padding: 0;
   }

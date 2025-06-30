@@ -1,20 +1,17 @@
+import { BrowserRouter } from "react-router-dom";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { BrowserRouter } from "react-router-dom";
-
-//components
 import AddressPage from "./AddressPage";
-import { Address } from "../../interfaces";
+import { Address } from "../../Types/interfaces";
 import { Wrapper } from "../../TestSetup";
+import { CheckoutContext } from "../../Context/CheckoutContext/CheckoutContext";
+import { vi } from "vitest";
 
-const cart = [
-  {
-    name: "Test",
-  },
-];
-localStorage.setItem("cart", JSON.stringify(cart));
+beforeEach(() => {
+  localStorage.clear();
+});
 
-it("Do not Submit on inValid", async () => {
+it("does not submit on invalid input", async () => {
   render(
     <Wrapper>
       <BrowserRouter>
@@ -23,28 +20,44 @@ it("Do not Submit on inValid", async () => {
     </Wrapper>
   );
   await userEvent.click(screen.getByText(/Continue/i));
+  // You can assert that localStorage is still empty or error message appears
+  expect(localStorage.getItem("checkout-address")).toBeNull();
 });
 
-it("Store Address in Local Storage", async () => {
-  render(
+const mockDispatch = vi.fn();
+
+const renderWithCheckoutContext = () => {
+  return render(
     <Wrapper>
-      <BrowserRouter>
-        <AddressPage />
-      </BrowserRouter>
+      <CheckoutContext.Provider value={{ state: {}, dispatch: mockDispatch }}>
+        <BrowserRouter>
+          <AddressPage />
+        </BrowserRouter>
+      </CheckoutContext.Provider>
     </Wrapper>
   );
+};
+
+it("dispatches SET_ADDRESS on valid form submit", async () => {
+  renderWithCheckoutContext();
+
   const address: Address = {
-    address: "Pipload",
-    city: "Surat",
-    postalcode: "456123",
+    address: "742 Evergreen Terrace",
+    city: "Springfield",
+    postalcode: "627043",
   };
+
   await userEvent.type(screen.getByLabelText(/address/i), address.address);
   await userEvent.type(screen.getByLabelText(/city/i), address.city);
   await userEvent.type(
-    screen.getByLabelText(/Postal Code/i),
+    screen.getByLabelText(/postal code/i),
     address.postalcode
   );
 
   await userEvent.click(screen.getByText(/Continue/i));
-  expect(JSON.parse(localStorage.address)).toStrictEqual(address);
+
+  expect(mockDispatch).toHaveBeenCalledWith({
+    type: "SET_ADDRESS",
+    payload: address,
+  });
 });
