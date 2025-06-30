@@ -10,6 +10,7 @@ Recently migrated to a new UI for the client application. The legacy UI is prese
 
 Created using Cypress:
 https://ik.imagekit.io/5aalo5l7bu7/Github/userExp.spec.ts_er8JBmfI7.mp4?updatedAt=1751304979680
+
 Client App:
 https://ik.imagekit.io/5aalo5l7bu7/Github/NEW%20UI_A8TaSqdd3V.mp4?updatedAt=1750006853983
 
