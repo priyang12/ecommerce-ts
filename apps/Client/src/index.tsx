@@ -70,5 +70,3 @@ root.render(
     </QueryClientProvider>
   </React.StrictMode>
 );
-
-serviceWorkerRegister();
