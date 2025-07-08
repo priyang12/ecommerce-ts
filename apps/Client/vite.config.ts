@@ -11,7 +11,8 @@ const manifest = JSON.parse(
 export default defineConfig(({ mode }) => ({
   build: {
     outDir: "build",
-    sourcemap: true,
+    //@ts-ignore
+    sourcemap: process.env.NODE_ENV !== "production",
   },
   define: {
     "process.env.NODE_ENV": JSON.stringify(mode),
