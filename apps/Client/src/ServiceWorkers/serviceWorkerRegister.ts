@@ -1,40 +1,28 @@
-import { Workbox, WorkboxLifecycleWaitingEvent } from "workbox-window";
+import { Workbox } from "workbox-window";
 
-async function updateServiceWorker(
-  wb: Workbox,
-  event: WorkboxLifecycleWaitingEvent
-) {
-  wb.addEventListener("controlling", async () => {
-    if (event.isUpdate === true) {
-      if (
-        window.confirm(
-          "New Update of the website is available want to Update, Just Takes Seconds"
-        )
-      ) {
-        window.location.reload();
+export const serviceWorkerRegister = () => {
+  if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
+    const wb = new Workbox("/Service-Workers.js");
+
+    wb.addEventListener("installed", (event) => {
+      if (!event.isUpdate) {
+        console.log("Service worker installed for the first time.");
+        localStorage.setItem("install", "App fully installed");
       }
-      await wb.messageSkipWaiting();
-    }
-  });
-}
+    });
 
-export const serviceWorkerRegister = async () => {
-  if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
-    try {
-      const wb = new Workbox("/service-worker.js");
-      wb.addEventListener("installed", (event) => {
-        if (!event.isUpdate) {
-          window.localStorage.setItem("install", "The Apps is Fully Installed");
-        }
-      });
-      wb.addEventListener("waiting", (event) => {
-        updateServiceWorker(wb, event);
-      });
-      wb.register();
-    } catch (error) {
-      console.error(error);
-    }
-  } else {
-    // console.log("Service worker not supported");
+    // Equivalent to reg.onupdatefound
+    wb.addEventListener("waiting", () => {
+      // This is the same as: SW has been installed and is waiting to activate
+      console.log("Service worker update found.");
+      window.dispatchEvent(new Event("swUpdated"));
+    });
+
+    // Optional: listen for controller change and reload
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      window.location.reload();
+    });
+
+    wb.register();
   }
 };

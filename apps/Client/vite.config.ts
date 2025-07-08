@@ -25,10 +25,9 @@ export default defineConfig(({ mode }) => ({
     react(),
     wyw(),
     VitePWA({
-      srcDir: "src/ServiceWorkers",
-      filename: "Service-Workers.ts",
+      registerType: "prompt", //
+      injectRegister: "auto",
       strategies: "injectManifest",
-      injectRegister: false, // because you register manually
       manifest,
     }),
   ],
