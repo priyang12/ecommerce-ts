@@ -27,7 +27,12 @@ export default defineConfig(({ mode }) => ({
     VitePWA({
       registerType: "prompt", //
       injectRegister: "auto",
-      strategies: "injectManifest",
+      strategies: "generateSW",
+      workbox: {
+        cleanupOutdatedCaches: true,
+        globDirectory: "build",
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,md}"],
+      },
       manifest,
     }),
   ],

@@ -3,13 +3,13 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import ReactModal from "react-modal";
 import ErrorCatch from "./Components/ErrorCatch";
+import AppUpdatePrompt from "./Components/AppUpdatePrompt";
 import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "./Context/Authentication/AuthContext";
 import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { HelmetProvider } from "react-helmet-async";
 import { queryClient } from "./Utils/query";
-import { serviceWorkerRegister } from "./ServiceWorkers/serviceWorkerRegister";
 import "react-toastify/dist/ReactToastify.css";
 import "./Style/Globle.css";
 import "normalize.css";
@@ -63,6 +63,7 @@ root.render(
           <ReactQueryDevtools initialIsOpen={false} />
           <AuthProvider>
             <ToastContainer />
+            <AppUpdatePrompt />
             <App />
           </AuthProvider>
         </ErrorCatch>
