@@ -8,6 +8,9 @@ Recently migrated to a new UI for the client application. The legacy UI is prese
 
 ## Demo Videos
 
+Created using Cypress:
+https://ik.imagekit.io/5aalo5l7bu7/Github/userExp.spec.ts_er8JBmfI7.mp4?updatedAt=1751304979680
+
 Client App:
 https://ik.imagekit.io/5aalo5l7bu7/Github/NEW%20UI_A8TaSqdd3V.mp4?updatedAt=1750006853983
 
@@ -195,4 +198,4 @@ Check [apps/client/README.md](https://github.com/priyang12/ecommerce-ts/tree/ref
 
 ### Legacy UI
 
-The original UI is preserved in the [legacy-ui branch](https://github.com/priyang12/ecommerce-ts/tree/v1-Client-UI) and will be deployed separately. It remains functional and serves as a fallback/reference.
+The original UI is preserved in the [legacy-ui branch](https://github.com/priyang12/ecommerce-ts/tree/v1-Client-UI) and will be [deployed](https://ecommerce-ts-v1.onrender.com) separately. It remains functional and serves as a fallback/reference.
