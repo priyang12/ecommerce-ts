@@ -4,6 +4,8 @@ ShopIT is a fullstack, monorepo-based e-commerce platform where users can effort
 
 Recently migrated to a new UI for the client application. The legacy UI is preserved in a separate branch. [See UI Migration below for more details.](#ui-migration)
 
+Admin Deployment : [Link](https://ecommerce-ts-admin.vercel.app/)
+
 ---
 
 ## Demo Videos
