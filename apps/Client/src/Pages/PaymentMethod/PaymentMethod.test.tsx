@@ -43,7 +43,7 @@ it("Check if the payment method is displayed", async () => {
   expect(localStorage.payMethod).toBe("PayPal or Credit Card");
 
   // check location after clicking continue
-  expect(window.location.pathname).toBe("/PlaceOrder");
+  expect(window.location.pathname).toBe("/checkout/PlaceOrder");
 });
 
 it("Redirects to address page if no address is stored in local storage", () => {
@@ -55,5 +55,5 @@ it("Redirects to address page if no address is stored in local storage", () => {
       </BrowserRouter>
     </Wrapper>
   );
-  expect(window.location.pathname).toBe("/address");
+  expect(window.location.pathname).toBe("/checkout/address");
 });

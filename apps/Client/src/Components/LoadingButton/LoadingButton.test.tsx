@@ -4,6 +4,9 @@ import LoadingButton from "./LoadingButton";
 it("Display Loading State", () => {
   render(<LoadingButton isLoading={true}>Should Not Display</LoadingButton>);
   expect(screen.getByText(/Loading/)).toBeInTheDocument();
+  expect(screen.getByText(/Loading/)).toBeDisabled();
+  expect(screen.getByText(/Loading/)).toHaveAttribute("aria-busy", "true");
+
   expect(screen.queryByText(/Should Not Display/)).not.toBeInTheDocument();
 });
 

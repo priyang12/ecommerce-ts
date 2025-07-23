@@ -1,7 +1,9 @@
-import styled from "styled-components";
-import { media } from "../../Variables";
+import { styled } from "@linaria/react";
+import { media } from "../../Utils/Variables";
+import { css } from "@linaria/core";
 
 export const StyledOrderItems = styled.div`
+  background-color: var(--bg-default);
   h3 {
     font-size: 2.5rem;
     text-align: center;
@@ -27,12 +29,12 @@ export const StyledOrderList = styled.ul`
 export const StyledListItems = styled.li`
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--primary-color);
+  border: 1px solid var(--primary-300);
   border-radius: 0.5rem;
   padding: 1em;
 
   a {
-    color: var(--primary-color);
+    color: var(--primary-500);
     text-decoration: none;
     font-size: 1.5rem;
     text-overflow: ellipsis;
@@ -51,8 +53,8 @@ export const StyledListItems = styled.li`
   &:visited,
   &:link,
   &:active {
-    outline: 5px solid var(--bg-contrast-color);
-    border: 2px solid var(--bg-color);
+    outline: 5px solid var(--bg-contrast);
+    border: 2px solid var(--bg-surface);
   }
   ${media.mobile} {
     width: 80%;
@@ -79,11 +81,17 @@ export const StyledImageContainer = styled.div`
 
 export const StyledOrderDetails = styled.div`
   font-size: 1.5rem;
-  color: var(--secondary-light-color);
-  background-color: var(--assertive-color);
+  color: var(--primary-text);
+  background-color: var(--bg-surface);
   padding: 1em;
   border-radius: 5px;
   margin: 1em 0;
+  h1 {
+    color: var(--primary-400);
+  }
+  h2 {
+    color: var(--secondary-400);
+  }
   h3 {
     margin: 1em 0;
   }
@@ -107,10 +115,18 @@ export const StyledDelivery = styled.p`
   text-align: center;
   background-color: #fff;
   padding: 1em;
-  border: 2px solid ${(props) => props.theme.color};
   border-radius: var(--border-radius);
-  color: ${(props) => props.theme.color};
-  background-color: ${(props) => props.theme.backgroundColor};
+`;
+
+export const deliveryDone = css`
+  border: 2px solid var(--success);
+  color: var(--success);
+  background-color: rgba(0, 255, 0, 0.1);
+`;
+export const deliveryNotDone = css`
+  border: 2px solid var(--error);
+  color: var(--error);
+  background-color: rgba(255, 0, 0, 0.1);
 `;
 
 export const IconButton = styled.button`
@@ -122,7 +138,9 @@ export const IconButton = styled.button`
 
 export const ReviewButton = styled.button`
   margin: 0;
-  border: 2px solid var(--bg-contrast-color);
+  border: 2px solid var(--bg-contrast);
   border-radius: var(--border-radius);
   height: 5rem;
+  background-color: var(--secondary-200);
+  cursor: pointer;
 `;

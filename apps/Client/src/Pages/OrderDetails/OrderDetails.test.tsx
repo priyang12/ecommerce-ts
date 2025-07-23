@@ -17,7 +17,7 @@ import OrderDetails from "./OrderDetails";
 // Mock Data
 import { MockedOrderDetails } from "../Testdata/Data";
 import ReactModal from "react-modal";
-import { queryClient } from "../../query";
+import { queryClient } from "../../Utils/query";
 
 const Mock = new MockAdapter(axios);
 
@@ -62,7 +62,7 @@ it("Render OrderDetails without delivered", async () => {
     screen.getByText(`$${MockedOrderDetails.shippingPrice}`)
   ).toBeInTheDocument();
   expect(
-    screen.getByText(`$${MockedOrderDetails.taxPrice}`)
+    screen.getByText(`$${MockedOrderDetails.taxPrice.toFixed(2)}`)
   ).toBeInTheDocument();
   expect(
     screen.getByText(`$${MockedOrderDetails.totalPrice}`)

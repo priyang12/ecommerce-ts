@@ -1,23 +1,35 @@
-import styled from "styled-components";
-import { media } from "../../Variables";
+import { styled } from "@linaria/react";
+import { media } from "../../Utils/Variables";
 
-export const ReviewsList = styled.div`
+export const StyledReviewsContainer = styled.div`
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  align-items: center;
 `;
 
-export const ReviewContainer = styled.div`
+export const StyledReviewsList = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const StyledReviewContainer = styled.div`
+  margin: 5%;
+  padding: 2em;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 1rem;
-  border: 2px solid var(--bg-contrast-color);
+  gap: 2rem;
+  border: 2px solid var(--primary-500);
   border-radius: var(--border-radius);
-  padding: 2em;
+
+  h3 {
+    color: var(--primary-300);
+  }
+
   p {
-    color: var(--bg-contrast-color);
+    color: var(--secondary-300);
     span {
-      color: var(--primary-color);
+      color: var(--text-primary);
     }
   }
   ${media.tablet} {
@@ -28,16 +40,17 @@ export const ReviewContainer = styled.div`
   }
 `;
 
-export const ReviewOrder = styled.div`
+export const StyledReviewOrder = styled.div`
   display: flex;
   flex-direction: column;
+
   .btn {
     display: flex;
     margin: 0;
   }
 `;
 
-export const ReviewProduct = styled.div`
+export const StyledReviewProduct = styled.div`
   p {
     color: var(--bg-contrast-color);
     a {
@@ -47,21 +60,22 @@ export const ReviewProduct = styled.div`
   }
 `;
 
-export const UserReview = styled.div`
+export const StyledUserReview = styled.div`
   display: flex;
   flex-direction: column;
   p {
     font-size: 1.5rem;
     margin: 0.5rem;
   }
-  #rating {
+  .rating {
     display: flex;
-    gap: 1rem;
+    flex-direction: column;
     align-items: center;
+    gap: 1rem;
   }
 `;
 
-export const ImageContainer = styled.div`
+export const StyledImageContainer = styled.div`
   img {
     width: 100%;
     height: 100%;

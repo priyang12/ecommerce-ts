@@ -14,9 +14,11 @@
     "build:server": "npm run build --prefix apps/Server",
     "build:admin": "npm run build --prefix apps/admin",
     "build:remove": "cd Client && rm -rf build && cd .. && cd Server && rm -rf build && cd ..",
-    "data:import": "ts-node apps/Server/seeder",
-    "data:destroy": "ts-node apps/Server/seeder -d",
-    "e2e": "cypress open"
+    "test": "turbo run test",
+    "data:import": "npm run data:import --prefix apps/Server",
+    "data:destroy": "npm run data:destroy --prefix apps/Server",
+    "e2e": "cypress open",
+    "userVideo": "cypress run --spec \"cypress/e2e/userExp.spec.ts\""
   },
   "workspaces": [
     "apps/*"
@@ -29,8 +31,8 @@
     "@types/node": "^18.0.3",
     "concurrently": "^6.2.0",
     "cypress": "^14.4.1",
+    "cypress-real-events": "^1.14.0",
     "dotenv": "^16.0.1",
-    "nodemon": "^2.0.15",
     "ts-node": "^10.8.2",
     "typescript": "^4.7.4",
     "vite-plugin-pwa": "^1.0.0"
